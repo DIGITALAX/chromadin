@@ -91,7 +91,7 @@ const Channels: FunctionComponent<ChannelsProps> = ({
                     playsInline
                     preload="metadata"
                     className="relative object-cover w-full h-full"
-                    poster={`${INFURA_GATEWAY}/ipfs/${json[index].poster}`}
+                    poster={`${INFURA_GATEWAY}/ipfs/${json[index]?.poster}`}
                   >
                     <source
                       src={`${INFURA_GATEWAY}/ipfs/${

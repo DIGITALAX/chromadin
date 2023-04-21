@@ -134,7 +134,7 @@ const Fulfillment: FunctionComponent<FulfillmentProps> = ({
               "0x6968105460f67c3bf751be7c15f92f5286fd0ce5",
             ],
           ])
-            .filter((item) => acceptedtokens.includes(item[2]))
+            .filter((item) => acceptedtokens?.includes(item[2]))
             .map((item: string[], index: number) => {
               return (
                 <div
