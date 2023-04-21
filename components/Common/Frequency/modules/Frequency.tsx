@@ -81,7 +81,7 @@ const Frequency: FunctionComponent = (): JSX.Element => {
             muted
             playsInline
             autoPlay
-            className="flex w-full h-full p-7"
+            className="flex w-full h-full"
             ref={moshVideoRef}
           >
             <source
