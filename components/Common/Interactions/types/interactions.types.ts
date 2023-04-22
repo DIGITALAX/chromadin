@@ -22,6 +22,7 @@ export type CommentsProps = {
   hasReacted: boolean[];
   authStatus: boolean;
   lensProfile: Profile | undefined;
+  commentId: string;
 };
 
 export type AccountProps = {

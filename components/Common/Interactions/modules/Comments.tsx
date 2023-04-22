@@ -8,9 +8,10 @@ import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import FetchMoreLoading from "../../Loading/FetchMoreLoading";
 import { CommentsProps } from "../types/interactions.types";
 import descriptionRegex from "@/lib/helpers/descriptionRegex";
-import { AiOutlineLoading } from "react-icons/ai";
+import { AiFillFastBackward, AiOutlineLoading } from "react-icons/ai";
 import { setPurchase } from "@/redux/reducers/purchaseSlice";
 import { setFollowerOnly } from "@/redux/reducers/followerOnlySlice";
+import { setSecondaryComment } from "@/redux/reducers/secondaryCommentSlice";
 
 const Comments: FunctionComponent<CommentsProps> = ({
   commentors,
@@ -29,6 +30,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
   hasReacted,
   lensProfile,
   authStatus,
+  commentId,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col bg-verde">
@@ -57,13 +59,29 @@ const Comments: FunctionComponent<CommentsProps> = ({
         </div>
       </div>
       <div className="relative w-full h-[15rem] xl:h-[27.7rem] border-white border bg-offBlack overflow-y-scroll">
+        {commentId !== "" && (
+          <div className="sticky z-1 w-full h-10 flex flex-col items-center justify-start px-3 bg-offBlack">
+            <div
+              className="relative w-full h-full flex items-center cursor-pointer"
+              onClick={() => {
+                dispatch(setSecondaryComment(""));
+              }}
+            >
+              <AiFillFastBackward color="white" size={20} />
+            </div>
+          </div>
+        )}
         {commentsLoading ? (
           <div className="relative w-full h-full justify-center items-center flex">
             <FetchMoreLoading size="6" />
           </div>
         ) : !commentsLoading && commentors?.length < 1 ? (
-          <div className="relative text-white font-arcade w-full h-full justify-center items-start py-3 flex text-center">
-            Be the first to comment on this stream :)
+          <div className="relative text-white font-arcade w-full h-full justify-center items-center py-3 flex text-center">
+            <div className="relative w-3/4 h-full items-start justify-center flex">
+              {commentId !== ""
+                ? "Reply to this comment in the message box"
+                : "Be the first to comment on this stream :)"}
+            </div>
           </div>
         ) : (
           <div className="relative w-full h-full grid grid-flow-row auto-rows-auto gap-5">
@@ -163,143 +181,166 @@ const Comments: FunctionComponent<CommentsProps> = ({
                           {moment(`${comment?.createdAt}`).fromNow()}
                         </div>
                       </div>
-                      <div className="relative flex flex-col w-full h-full gap-2 items-end justify-center">
-                        <div
-                          className={`relative w-fit h-fit  grid grid-flow-col auto-cols-auto items-center justify-center flex-row gap-2 ${
-                            lensProfile && authStatus && "cursor-pointer"
-                          }`}
-                          onClick={() => likeComment(comment?.id)}
-                        >
-                          {likeCommentLoading[index] ? (
-                            <AiOutlineLoading
-                              size={9}
-                              color="white"
-                              className={`${
-                                likeCommentLoading?.[index] && "animate-spin"
-                              }
+                      <div className="relative flex flex-row w-full h-full gap-2 items-end justify-end flex-wrap">
+                        <div className="relative w-fit h-full flex flex-col gap-2 items-center justify-end">
+                          <div
+                            className={`relative w-fit h-full  grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 ${
+                              lensProfile && authStatus && "cursor-pointer"
+                            }`}
+                            onClick={() => likeComment(comment?.id)}
+                          >
+                            {likeCommentLoading[index] ? (
+                              <AiOutlineLoading
+                                size={9}
+                                color="white"
+                                className={`${
+                                  likeCommentLoading?.[index] && "animate-spin"
+                                }
                                 `}
-                            />
-                          ) : hasReacted?.[index] ? (
+                              />
+                            ) : hasReacted?.[index] ? (
+                              <Image
+                                src={`${INFURA_GATEWAY}/ipfs/Qmc3KCKWRgN8iKwwAPM5pYkAYNeVwWu3moa5RDMDTBV6ZS`}
+                                width={12}
+                                height={12}
+                                alt="mirror"
+                                draggable={false}
+                              />
+                            ) : (
+                              <Image
+                                src={`${INFURA_GATEWAY}/ipfs/QmSX1Y5cKp8p53jv2CnfQBuhu3dgLANjZMTyAMKtgFtvV6`}
+                                width={12}
+                                height={12}
+                                alt="backward"
+                                draggable={false}
+                              />
+                            )}
+                            <div className="relative w-fit h-fit font-arcade text-xs text-white flex">
+                              {comment?.stats?.totalUpvotes}
+                            </div>
+                          </div>
+                          <div
+                            className={`relative w-fit h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 cursor-pointer`}
+                            onClick={() =>
+                              dispatch(setSecondaryComment(comment?.id))
+                            }
+                          >
                             <Image
-                              src={`${INFURA_GATEWAY}/ipfs/Qmc3KCKWRgN8iKwwAPM5pYkAYNeVwWu3moa5RDMDTBV6ZS`}
-                              width={12}
-                              height={12}
-                              alt="mirror"
-                              draggable={false}
-                            />
-                          ) : (
-                            <Image
-                              src={`${INFURA_GATEWAY}/ipfs/QmSX1Y5cKp8p53jv2CnfQBuhu3dgLANjZMTyAMKtgFtvV6`}
+                              src={`${INFURA_GATEWAY}/ipfs/QmeuR9Fzv8QF9R6ntjGKB78GteQgmEcXhBfVPhsTyWbumA`}
                               width={12}
                               height={12}
                               alt="backward"
                               draggable={false}
                             />
-                          )}
-                          <div className="relative w-fit h-fit font-arcade text-xs text-white flex">
-                            {comment?.stats?.totalUpvotes}
+                            <div className="relative w-fit h-fit font-arcade text-xs text-white flex">
+                              {comment?.stats?.totalAmountOfComments}
+                            </div>
                           </div>
                         </div>
-                        <div
-                          className={`relative w-fit h-fit grid grid-flow-col auto-cols-auto items-center justify-center flex-row gap-2 ${
-                            comment?.collectModule?.type !==
-                              "RevertCollectModule" &&
-                            authStatus &&
-                            lensProfile &&
-                            "cursor-pointer"
-                          }`}
-                          onClick={
-                            comment?.collectModule?.type ===
-                            "RevertCollectModule"
-                              ? () => {}
-                              : comment?.collectModule?.followerOnly &&
-                                !comment?.profile?.isFollowedByMe
-                              ? () =>
-                                  dispatch(
-                                    setFollowerOnly({
-                                      actionOpen: true,
-                                      actionFollowerId: comment?.profile?.id,
-                                      actionId: comment?.id,
-                                      actionIndex: index,
-                                    })
-                                  )
-                              : comment?.collectModule?.type !==
-                                "FreeCollectModule"
-                              ? () =>
-                                  dispatch(
-                                    setPurchase({
-                                      actionOpen: true,
-                                      actionId: comment?.id,
-                                      actionIndex: index,
-                                    })
-                                  )
-                              : () => collectComment(comment?.id)
-                          }
-                        >
-                          {collectCommentLoading[index] ? (
-                            <AiOutlineLoading
-                              size={9}
-                              color="white"
-                              className={`${
-                                collectCommentLoading?.[index] && "animate-spin"
-                              }
+                        <div className="relative w-fit h-full flex flex-col gap-2 items-center justify-end">
+                          <div
+                            className={`relative w-fit h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 ${
+                              comment?.collectModule?.type !==
+                                "RevertCollectModule" &&
+                              authStatus &&
+                              lensProfile &&
+                              "cursor-pointer"
+                            }`}
+                            onClick={
+                              comment?.collectModule?.type ===
+                              "RevertCollectModule"
+                                ? () => {}
+                                : comment?.collectModule?.followerOnly &&
+                                  !comment?.profile?.isFollowedByMe
+                                ? () =>
+                                    dispatch(
+                                      setFollowerOnly({
+                                        actionOpen: true,
+                                        actionFollowerId: comment?.profile?.id,
+                                        actionId: comment?.id,
+                                        actionIndex: index,
+                                      })
+                                    )
+                                : comment?.collectModule?.type !==
+                                  "FreeCollectModule"
+                                ? () =>
+                                    dispatch(
+                                      setPurchase({
+                                        actionOpen: true,
+                                        actionId: comment?.id,
+                                        actionIndex: index,
+                                      })
+                                    )
+                                : () => collectComment(comment?.id)
+                            }
+                          >
+                            {collectCommentLoading[index] ? (
+                              <AiOutlineLoading
+                                size={9}
+                                color="white"
+                                className={`${
+                                  collectCommentLoading?.[index] &&
+                                  "animate-spin"
+                                }
                                 `}
-                            />
-                          ) : comment?.hasCollectedByMe ? (
-                            <Image
-                              src={`${INFURA_GATEWAY}/ipfs/QmXG1mnHdBDXMzMZ9t1wE1Tqo8DRXQ1oNLUxpETdUw17HU`}
-                              width={12}
-                              height={12}
-                              alt="collect"
-                              draggable={false}
-                            />
-                          ) : (
-                            <Image
-                              src={`${INFURA_GATEWAY}/ipfs/QmRGf1cz8h9bdw9VKp9zYXZoDfy15nRA1fKc7ARhxnRPwr`}
-                              width={12}
-                              height={12}
-                              alt="collect"
-                              draggable={false}
-                            />
-                          )}
-                          <div className="relative w-fit h-fit font-arcade text-xs text-white">
-                            {comment?.stats?.totalAmountOfCollects}
+                              />
+                            ) : comment?.hasCollectedByMe ? (
+                              <Image
+                                src={`${INFURA_GATEWAY}/ipfs/QmXG1mnHdBDXMzMZ9t1wE1Tqo8DRXQ1oNLUxpETdUw17HU`}
+                                width={12}
+                                height={12}
+                                alt="collect"
+                                draggable={false}
+                              />
+                            ) : (
+                              <Image
+                                src={`${INFURA_GATEWAY}/ipfs/QmRGf1cz8h9bdw9VKp9zYXZoDfy15nRA1fKc7ARhxnRPwr`}
+                                width={12}
+                                height={12}
+                                alt="collect"
+                                draggable={false}
+                              />
+                            )}
+                            <div className="relative w-fit h-fit font-arcade text-xs text-white">
+                              {comment?.stats?.totalAmountOfCollects}
+                            </div>
                           </div>
-                        </div>
-                        <div
-                          className={`relative w-fit h-fit grid grid-flow-col auto-cols-auto items-center justify-center flex-row gap-2 ${
-                            lensProfile && authStatus && "cursor-pointer"
-                          }`}
-                          onClick={() => mirrorComment(comment?.id)}
-                        >
-                          {mirrorCommentLoading?.[index] ? (
-                            <AiOutlineLoading
-                              size={9}
-                              color="white"
-                              className={`${
-                                mirrorCommentLoading?.[index] && "animate-spin"
-                              }
+                          <div
+                            className={`relative w-fit h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 ${
+                              lensProfile && authStatus && "cursor-pointer"
+                            }`}
+                            onClick={() => mirrorComment(comment?.id)}
+                          >
+                            {mirrorCommentLoading?.[index] ? (
+                              <AiOutlineLoading
+                                size={9}
+                                color="white"
+                                className={`${
+                                  mirrorCommentLoading?.[index] &&
+                                  "animate-spin"
+                                }
                                 `}
-                            />
-                          ) : hasMirrored?.[index] ? (
-                            <Image
-                              src={`${INFURA_GATEWAY}/ipfs/QmcMNSnbKvUfx3B3iHBd9deZCDf7E4J8W6UtyNer3xoMsB`}
-                              width={12}
-                              height={12}
-                              alt="mirror"
-                              draggable={false}
-                            />
-                          ) : (
-                            <Image
-                              src={`${INFURA_GATEWAY}/ipfs/QmXZi8e6UQaXm3BMMdsAUTnxoQSEr97nvuc19v7kBAgFsY`}
-                              width={12}
-                              height={12}
-                              alt="mirror"
-                              draggable={false}
-                            />
-                          )}
-                          <div className="relative w-fit h-fit font-arcade text-xs text-white">
-                            {comment?.stats?.totalAmountOfMirrors}
+                              />
+                            ) : hasMirrored?.[index] ? (
+                              <Image
+                                src={`${INFURA_GATEWAY}/ipfs/QmcMNSnbKvUfx3B3iHBd9deZCDf7E4J8W6UtyNer3xoMsB`}
+                                width={12}
+                                height={12}
+                                alt="mirror"
+                                draggable={false}
+                              />
+                            ) : (
+                              <Image
+                                src={`${INFURA_GATEWAY}/ipfs/QmXZi8e6UQaXm3BMMdsAUTnxoQSEr97nvuc19v7kBAgFsY`}
+                                width={12}
+                                height={12}
+                                alt="mirror"
+                                draggable={false}
+                              />
+                            )}
+                            <div className="relative w-fit h-fit font-arcade text-xs text-white">
+                              {comment?.stats?.totalAmountOfMirrors}
+                            </div>
                           </div>
                         </div>
                       </div>

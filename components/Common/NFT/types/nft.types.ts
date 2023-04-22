@@ -74,6 +74,8 @@ export type UserCommentProps = {
   collectNotif: string;
   dispatch: Dispatch<AnyAction>;
   handleKeyDownDelete: (e: KeyboardEvent<Element>) => void;
+  commentId: string | undefined;
+  canComment: boolean;
 };
 
 export type MainDropProps = {
@@ -113,7 +115,7 @@ export type OptionsProps = {
   setGifOpen: (e: boolean) => void;
   gifOpen: boolean;
   collectOpen: boolean;
-  dispatch: Dispatch<AnyAction>
+  dispatch: Dispatch<AnyAction>;
 };
 
 export type ImageUploadsProps = {

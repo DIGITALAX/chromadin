@@ -1,4 +1,5 @@
 import { Publication } from "@/components/Home/types/lens.types";
+import canCommentPub from "@/graphql/lens/queries/canComment";
 import {
   whoCommentedPublications,
   whoCommentedPublicationsAuth,
@@ -6,9 +7,10 @@ import {
 import whoCollectedPublications from "@/graphql/lens/queries/whoCollectedPublications";
 import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import checkPostReactions from "@/lib/helpers/checkPostReactions";
+import { setCanComment } from "@/redux/reducers/canCommentSlice";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const useInteractions = () => {
   const [commentsLoading, setCommentsLoading] = useState<boolean>(false);
@@ -21,12 +23,15 @@ const useInteractions = () => {
   const [collectLoading, setCollectLoading] = useState<boolean>(false);
   const [hasMoreCollects, setHasMoreCollects] = useState<boolean>(true);
   const [hasMoreComments, setHasMoreComments] = useState<boolean>(true);
-
+  const dispatch = useDispatch();
   const profileId = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
   const mainVideo = useSelector(
     (state: RootState) => state.app.mainVideoReducer
+  );
+  const commentId = useSelector(
+    (state: RootState) => state.app.secondaryCommentReducer.value
   );
   const index = useSelector((state: RootState) => state.app.indexModalReducer);
 
@@ -37,14 +42,14 @@ const useInteractions = () => {
 
       if (profileId) {
         comments = await whoCommentedPublicationsAuth({
-          commentsOf: mainVideo.id,
+          commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
           commentsOfOrdering: "RANKING",
           commentsRankingFilter: "RELEVANT",
         });
       } else {
         comments = await whoCommentedPublications({
-          commentsOf: mainVideo.id,
+          commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
           commentsOfOrdering: "RANKING",
           commentsRankingFilter: "RELEVANT",
@@ -70,7 +75,7 @@ const useInteractions = () => {
         setHasMirrored(hasMirroredArr);
         const response = await checkPostReactions(
           {
-            commentsOf: mainVideo.id,
+            commentsOf: commentId !== "" ? commentId : mainVideo.id,
             limit: 30,
             commentsOfOrdering: "RANKING",
             commentsRankingFilter: "RELEVANT",
@@ -95,7 +100,7 @@ const useInteractions = () => {
       let comments: any;
       if (profileId) {
         comments = await whoCommentedPublicationsAuth({
-          commentsOf: mainVideo.id,
+          commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
           cursor: paginated?.next,
           commentsOfOrdering: "RANKING",
@@ -103,7 +108,7 @@ const useInteractions = () => {
         });
       } else {
         comments = await whoCommentedPublications({
-          commentsOf: mainVideo.id,
+          commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
           cursor: paginated?.next,
           commentsOfOrdering: "RANKING",
@@ -133,7 +138,7 @@ const useInteractions = () => {
         setHasMirrored([...hasMirrored, ...hasMirroredArr]);
         const hasReactedArr = await checkPostReactions(
           {
-            commentsOf: mainVideo.id,
+            commentsOf: commentId !== "" ? commentId : mainVideo.id,
             limit: 30,
             cursor: paginated?.next,
             commentsOfOrdering: "RANKING",
@@ -197,12 +202,36 @@ const useInteractions = () => {
     }
   };
 
+  const canComment = async () => {
+    try {
+      const res = await canCommentPub(
+        {
+          publicationId: commentId,
+        },
+        profileId
+      );
+      if (!res.data.publication.canComment.result) {
+        dispatch(setCanComment(false));
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (commentId !== "" && profileId) {
+      canComment();
+    } else {
+      dispatch(setCanComment(true));
+    }
+  }, [commentId]);
+
   useEffect(() => {
     if (mainVideo.id) {
       getPostComments();
       getPostCollects();
     }
-  }, [mainVideo.id, profileId]);
+  }, [mainVideo.id, profileId, commentId]);
 
   useEffect(() => {
     if (index.message === "Successfully Indexed") {

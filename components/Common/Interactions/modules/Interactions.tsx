@@ -49,6 +49,9 @@ const Interactions: FunctionComponent<InteractionProps> = ({
   const dispatchVideos = useSelector(
     (state: RootState) => state.app.channelsReducer.value
   );
+  const commentId = useSelector(
+    (state: RootState) => state.app.secondaryCommentReducer.value
+  );
   const dispatch = useDispatch();
   return (
     <div className="relative w-full lg:w-80 lg:shrink-0 xl:h-full flex-col border border-white h-100 lg:h-128 xl:min-h-[55rem] flex overflow-y-scroll">
@@ -89,6 +92,7 @@ const Interactions: FunctionComponent<InteractionProps> = ({
             hasReacted={hasReacted}
             lensProfile={lensProfile}
             authStatus={authStatus}
+            commentId={commentId}
           />
         ) : (
           <Options />

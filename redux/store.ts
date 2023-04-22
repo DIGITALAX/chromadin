@@ -22,6 +22,8 @@ import imageViewerReducer from "./reducers/imageViewerSlice";
 import channelsReducer from "./reducers/channelsSlice";
 import collectOpenReducer from "./reducers/collectOpenSlice";
 import reactIdReducer from "./reducers/reactIdSlice";
+import secondaryCommentReducer from "./reducers/secondaryCommentSlice";
+import canCommentReducer from "./reducers/canCommentSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -45,7 +47,9 @@ const reducer = combineReducers({
   imageViewerReducer,
   channelsReducer,
   collectOpenReducer,
-  reactIdReducer
+  reactIdReducer,
+  secondaryCommentReducer,
+  canCommentReducer,
 });
 
 export const store = configureStore({

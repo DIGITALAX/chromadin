@@ -74,6 +74,8 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
   setValue,
   dispatch,
   handleKeyDownDelete,
+  commentId,
+  canComment,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-96 galaxy:h-80 sm:h-full border-y border-l border-white flex flex-col bg-pink">
@@ -264,17 +266,23 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
                 className="relative w-full h-full bg-offBlack font-arcade text-white p-2 z-1 rounded-lg overflow-y-scroll"
                 ref={textElement}
                 value={commentDescription}
-                disabled={commentLoading ? true : false}
+                disabled={commentLoading || !canComment ? true : false}
               ></textarea>
               <pre
                 id="highlighting"
-                className="absolute w-full h-full bg-offBlack font-arcade text-white p-2 rounded-lg overflow-y-scroll"
+                className={`absolute w-full h-full bg-offBlack font-arcade text-white p-2 rounded-lg overflow-y-scroll ${
+                  !canComment && "opacity-70"
+                }`}
               >
                 <code
                   id="highlighted-content"
                   className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-scroll z-0`}
                 >
-                  Have Something to Say?
+                  {!canComment
+                    ? "Looks Like Only Select Profiles Can Comment on this Post ATM"
+                    : commentId !== ""
+                    ? "Reply with a Comment?"
+                    : "Have Something to Say?"}
                 </code>
               </pre>
               {mentionProfiles?.length > 0 && profilesOpen && (

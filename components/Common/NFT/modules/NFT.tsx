@@ -78,6 +78,12 @@ const NFT: FunctionComponent<NFTProps> = ({ mainNFT, viewer }): JSX.Element => {
   const authStatus = useSelector(
     (state: RootState) => state.app.authStatusReducer.value
   );
+  const commentId = useSelector(
+    (state: RootState) => state.app.secondaryCommentReducer.value
+  );
+  const canComment = useSelector(
+    (state: RootState) => state.app.canCommentReducer.value
+  );
   const profileId = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
@@ -159,6 +165,8 @@ const NFT: FunctionComponent<NFTProps> = ({ mainNFT, viewer }): JSX.Element => {
           setValue={setValue}
           dispatch={dispatch}
           handleKeyDownDelete={handleKeyDownDelete}
+          commentId={commentId}
+          canComment={canComment}
         />
       ) : (
         <Description

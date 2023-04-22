@@ -61,6 +61,9 @@ const useComment = () => {
   const collectOpen = useSelector(
     (state: RootState) => state.app.collectOpenReducer.value
   );
+  const commentId = useSelector(
+    (state: RootState) => state.app.secondaryCommentReducer.value
+  );
   const dispatcher = useSelector(
     (state: RootState) => state.app.dispatcherReducer.value
   );
@@ -258,7 +261,7 @@ const useComment = () => {
       if (dispatcher) {
         result = await createDispatcherCommentData({
           profileId: profileId,
-          publicationId: mainVideo.id,
+          publicationId: commentId !== "" ? commentId : mainVideo.id,
           contentURI: "ipfs://" + contentURIValue,
           collectModule: collectModuleType,
           referenceModule: {
@@ -276,7 +279,7 @@ const useComment = () => {
       } else {
         result = await createCommentTypedData({
           profileId: profileId,
-          publicationId: mainVideo.id,
+          publicationId: commentId !== "" ? commentId : mainVideo.id,
           contentURI: "ipfs://" + contentURIValue,
           collectModule: collectModuleType,
           referenceModule: {
