@@ -8,7 +8,6 @@ const DROPS = `
       dropURI
       creator
       collectionIds
-      blockTimestamp
     }
   }
 `;

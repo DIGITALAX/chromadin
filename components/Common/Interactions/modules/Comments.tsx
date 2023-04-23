@@ -181,10 +181,10 @@ const Comments: FunctionComponent<CommentsProps> = ({
                           {moment(`${comment?.createdAt}`).fromNow()}
                         </div>
                       </div>
-                      <div className="relative flex flex-row w-full h-full gap-2 items-end justify-end flex-wrap">
-                        <div className="relative w-fit h-full flex flex-col gap-2 items-center justify-end">
+                      <div className="relative grid grid-rows-2 w-full h-full gap-2 items-end justify-end flex-wrap">
+                        <div className="relative w-full h-full grid grid-cols-2 gap-2 items-center justify-end">
                           <div
-                            className={`relative w-fit h-full  grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 ${
+                            className={`relative w-full h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 ${
                               lensProfile && authStatus && "cursor-pointer"
                             }`}
                             onClick={() => likeComment(comment?.id)}
@@ -220,7 +220,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
                             </div>
                           </div>
                           <div
-                            className={`relative w-fit h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 cursor-pointer`}
+                            className={`relative w-full h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 cursor-pointer`}
                             onClick={() =>
                               dispatch(setSecondaryComment(comment?.id))
                             }
@@ -237,9 +237,9 @@ const Comments: FunctionComponent<CommentsProps> = ({
                             </div>
                           </div>
                         </div>
-                        <div className="relative w-fit h-full flex flex-col gap-2 items-center justify-end">
+                        <div className="relative w-full h-full grid grid-cols-2 gap-2 items-center justify-end">
                           <div
-                            className={`relative w-fit h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 ${
+                            className={`relative w-full h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 ${
                               comment?.collectModule?.type !==
                                 "RevertCollectModule" &&
                               authStatus &&
@@ -306,7 +306,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
                             </div>
                           </div>
                           <div
-                            className={`relative w-fit h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 ${
+                            className={`relative w-full h-full grid grid-flow-col auto-cols-auto items-center justify-end flex-row gap-2 ${
                               lensProfile && authStatus && "cursor-pointer"
                             }`}
                             onClick={() => mirrorComment(comment?.id)}

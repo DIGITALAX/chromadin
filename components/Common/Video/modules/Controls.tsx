@@ -49,6 +49,7 @@ const Controls: FunctionComponent<ControlsProps> = ({
     videos?.length > 0 ? videos : dispatchVideos,
     { id: mainVideo.id }
   );
+
   return (
     <div className="relative h-fit flex flex-col md:flex-row w-full gap-3 items-center galaxy:px-2 justify-center">
       <div className="relative w-fit md:w-56 h-full flex justify-center items-center gap-3">

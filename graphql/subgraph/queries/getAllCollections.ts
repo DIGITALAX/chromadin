@@ -7,10 +7,8 @@ const COLLECTIONS = `
       prices
       owner
       name
-      id
       collectionId
       uri
-      transactionHash
       acceptedTokens
       amount
     }
