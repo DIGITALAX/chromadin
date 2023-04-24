@@ -40,10 +40,10 @@ const Switch: FunctionComponent = (): JSX.Element => {
     setPosterAmount,
     posterAmount,
     totalAmount,
-    approved,
-    buyNFT,
-    approveSpend,
-    purchaseLoading,
+    // approved,
+    // buyNFT,
+    // approveSpend,
+    // purchaseLoading,
   } = useFulfillment();
   // const { history, historyLoading } = useHistory();
   switch (action) {
@@ -67,11 +67,11 @@ const Switch: FunctionComponent = (): JSX.Element => {
           setPosterAmount={setPosterAmount}
           totalAmount={totalAmount}
           acceptedtokens={acceptedtokens!}
-          approved={approved}
+          // approved={approved}
           mainNFT={mainNFT}
-          buyNFT={buyNFT}
-          approveSpend={approveSpend}
-          purchaseLoading={purchaseLoading}
+          // buyNFT={buyNFT}
+          // approveSpend={approveSpend}
+          // purchaseLoading={purchaseLoading}
           collections={collections}
         />
       );

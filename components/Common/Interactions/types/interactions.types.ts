@@ -59,11 +59,11 @@ export type FulfillmentProps = {
   setPosterAmount: (e: number) => void;
   totalAmount: number;
   acceptedtokens: string[];
-  approved: boolean;
+  // approved: boolean;
   mainNFT: MainNFT | undefined;
-  approveSpend: () => Promise<void>;
-  buyNFT: () => void;
-  purchaseLoading: boolean;
+  // approveSpend: () => Promise<void>;
+  // buyNFT: () => void;
+  // purchaseLoading: boolean;
   collections: Collection[]
 };
 
@@ -88,7 +88,7 @@ export interface FollowArgs {
 
 export type PurchaseProps = {
   acceptedtokens: string[];
-  approved: boolean;
+  // approved: boolean;
   currency: string;
   setCurrency: (e: string) => void;
   totalAmount: number;
