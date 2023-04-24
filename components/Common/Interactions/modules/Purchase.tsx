@@ -4,16 +4,16 @@ import { FunctionComponent } from "react";
 import { PurchaseProps } from "../types/interactions.types";
 import { AiOutlineLoading } from "react-icons/ai";
 
-const Purchase: FunctionComponent<PurchaseProps> = ({
-  acceptedtokens,
-  approved,
-  currency,
-  setCurrency,
-  totalAmount,
-  mainNFT,
-  approveSpend,
-  buyNFT,
-  purchaseLoading,
+const Purchase: FunctionComponent = ({
+  // acceptedtokens,
+  // approved,
+  // currency,
+  // setCurrency,
+  // totalAmount,
+  // mainNFT,
+  // approveSpend,
+  // buyNFT,
+  // purchaseLoading,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col">

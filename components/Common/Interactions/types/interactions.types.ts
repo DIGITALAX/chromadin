@@ -88,7 +88,7 @@ export interface FollowArgs {
 
 export type PurchaseProps = {
   acceptedtokens: string[];
-  // approved: boolean;
+  approved: boolean;
   currency: string;
   setCurrency: (e: string) => void;
   totalAmount: number;
