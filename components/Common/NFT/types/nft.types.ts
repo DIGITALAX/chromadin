@@ -99,6 +99,8 @@ export interface MainNFT {
   };
   price: string[];
   acceptedTokens: string[];
+  // tokenIds: string[];
+  // tokensSold: string[] | null;
 }
 
 export type DescriptionProps = {

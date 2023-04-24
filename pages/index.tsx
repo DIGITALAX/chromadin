@@ -65,7 +65,7 @@ const Home: NextPage = (): JSX.Element => {
           </div>
           <div className="relative w-full h-full flex flex-col gap-5 items-center justify-center">
             <View viewer={viewer} />
-            <NFT mainNFT={mainNFT} viewer={viewer} />
+            {viewer !== "sampler" && <NFT mainNFT={mainNFT} viewer={viewer} />}
           </div>
         </div>
         <div className="w-full h-fit flex flex-col lg:hidden">
@@ -91,9 +91,11 @@ const Home: NextPage = (): JSX.Element => {
             <Interactions viewer={viewer} />
           )}
         </div>
-        <div className="w-fit h-full hidden xl:flex">
-          <Interactions viewer={viewer} />
-        </div>
+        {viewer !== "sampler" && (
+          <div className="w-fit h-full hidden xl:flex">
+            <Interactions viewer={viewer} />
+          </div>
+        )}
       </div>
       <Frequency />
       <Marquee />

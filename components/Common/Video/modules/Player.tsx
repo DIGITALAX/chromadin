@@ -22,19 +22,21 @@ const Player: FunctionComponent<PlayerProps> = ({
   setDuration,
   wrapperRef,
   dispatchVideos,
-  collectedArray
+  collectedArray,
 }): JSX.Element => {
   return (
     <div
       className={`relative justify-center items-center flex ${
-        viewer === "collect"
+        viewer === "sampler"
+          ? "w-0 h-0"
+          : viewer === "collect"
           ? "w-24 h-1/2"
           : "w-full h-[10rem] galaxy:h-[15rem] preG:h-[20rem] sm:h-[26rem] mid:h-[33rem]"
       }`}
       key={mainVideo.local}
       ref={wrapperRef}
     >
-      {heart && (
+      {viewer !== "sampler" && heart && (
         <Image
           src={`${INFURA_GATEWAY}/ipfs/QmNPPsBttGAxvu6cX3gWT4cnFF8PMF9C55GgJUehGp3nCA`}
           layout="fill"

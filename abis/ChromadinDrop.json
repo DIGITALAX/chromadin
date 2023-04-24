@@ -205,13 +205,6 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "collectionIdToDrop",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256[]",
@@ -238,18 +231,6 @@
     "inputs": [],
     "name": "dropSupply",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "drops",
-    "outputs": [
-      { "internalType": "uint256", "name": "dropId", "type": "uint256" },
-      { "internalType": "string", "name": "dropURI", "type": "string" },
-      { "internalType": "address", "name": "creator", "type": "address" },
-      { "internalType": "uint256", "name": "timestamp", "type": "uint256" }
-    ],
     "stateMutability": "view",
     "type": "function"
   },

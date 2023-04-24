@@ -27,6 +27,7 @@ module.exports = {
         playa: "#0D3DFF",
         rojo: "#DD3950",
         leche: "#FFFFF2",
+        cit: "#F7B500",
       },
       backgroundImage: {
         chroma:

@@ -1,5 +1,7 @@
 import { Profile, Publication } from "@/components/Home/types/lens.types";
 import { AnyAction, Dispatch } from "redux";
+import { MainNFT } from "../../NFT/types/nft.types";
+import { Collection } from "@/components/Home/types/home.types";
 
 export type InteractionProps = {
   viewer: string;
@@ -56,7 +58,13 @@ export type FulfillmentProps = {
   posterAmount: number;
   setPosterAmount: (e: number) => void;
   totalAmount: number;
-  acceptedtokens: string[]
+  acceptedtokens: string[];
+  approved: boolean;
+  mainNFT: MainNFT | undefined;
+  approveSpend: () => Promise<void>;
+  buyNFT: () => void;
+  purchaseLoading: boolean;
+  collections: Collection[]
 };
 
 export type CollectorsProps = {
@@ -77,3 +85,43 @@ export interface FollowArgs {
     deadline: any;
   };
 }
+
+export type PurchaseProps = {
+  acceptedtokens: string[];
+  approved: boolean;
+  currency: string;
+  setCurrency: (e: string) => void;
+  totalAmount: number;
+  mainNFT: MainNFT | undefined;
+  approveSpend: () => Promise<void>;
+  buyNFT: () => void;
+  purchaseLoading: boolean;
+};
+
+export interface History {
+  tokenIds: string[];
+  buyer: string;
+  totalPrice: string;
+  uri: {
+    description: string;
+    external_url: string;
+    image: string;
+    name: string;
+  };
+  name: string;
+  creator: string;
+  profile: any;
+  transactionHash: string;
+  blockTimestamp: string;
+}
+
+export type useHistoryResults = {
+  history: History[];
+  historyLoading: boolean;
+};
+
+export type HistoryProps = {
+  history: History[];
+  historyReducer: History[];
+  historyLoading: boolean;
+};

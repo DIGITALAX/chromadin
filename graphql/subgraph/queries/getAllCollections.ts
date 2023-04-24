@@ -5,12 +5,12 @@ const COLLECTIONS = `
   query {
     collectionMinteds {
       prices
-      owner
-      name
-      collectionId
       uri
-      acceptedTokens
+      collectionId
       amount
+      acceptedTokens
+      name
+      owner
     }
   }
 `;

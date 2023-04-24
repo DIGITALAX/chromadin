@@ -24,6 +24,9 @@ import collectOpenReducer from "./reducers/collectOpenSlice";
 import reactIdReducer from "./reducers/reactIdSlice";
 import secondaryCommentReducer from "./reducers/secondaryCommentSlice";
 import canCommentReducer from "./reducers/canCommentSlice";
+import errorReducer from "./reducers/errorSlice";
+import successReducer from "./reducers/successSlice";
+import historyReducer from "./reducers/historySlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -50,6 +53,9 @@ const reducer = combineReducers({
   reactIdReducer,
   secondaryCommentReducer,
   canCommentReducer,
+  errorReducer,
+  successReducer,
+  historyReducer,
 });
 
 export const store = configureStore({

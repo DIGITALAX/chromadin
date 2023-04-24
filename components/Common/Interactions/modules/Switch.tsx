@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Fulfillment from "./Fulfillment";
 import useFulfillment from "../hooks/useFulfillment";
+import useHistory from "../hooks/useHistory";
 
 const Switch: FunctionComponent = (): JSX.Element => {
   const action = useSelector(
@@ -15,6 +16,15 @@ const Switch: FunctionComponent = (): JSX.Element => {
   );
   const acceptedtokens = useSelector(
     (state: RootState) => state.app.mainNFTReducer.value?.acceptedTokens
+  );
+  const mainNFT = useSelector(
+    (state: RootState) => state.app.mainNFTReducer.value
+  );
+  const historyReducer = useSelector(
+    (state: RootState) => state.app.historyReducer.value
+  );
+  const collections = useSelector(
+    (state: RootState) => state.app.collectionsReducer.value
   );
   const {
     currency,
@@ -30,7 +40,12 @@ const Switch: FunctionComponent = (): JSX.Element => {
     setPosterAmount,
     posterAmount,
     totalAmount,
+    approved,
+    buyNFT,
+    approveSpend,
+    purchaseLoading,
   } = useFulfillment();
+  // const { history, historyLoading } = useHistory();
   switch (action) {
     case "account":
       return <Account profile={profile} />;
@@ -52,11 +67,23 @@ const Switch: FunctionComponent = (): JSX.Element => {
           setPosterAmount={setPosterAmount}
           totalAmount={totalAmount}
           acceptedtokens={acceptedtokens!}
+          approved={approved}
+          mainNFT={mainNFT}
+          buyNFT={buyNFT}
+          approveSpend={approveSpend}
+          purchaseLoading={purchaseLoading}
+          collections={collections}
         />
       );
 
     default:
-      return <History />;
+      return (
+        <History
+          // history={history}
+          // historyReducer={historyReducer}
+          // historyLoading={historyLoading}
+        />
+      );
   }
 };
 

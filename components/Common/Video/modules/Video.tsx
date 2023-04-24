@@ -53,10 +53,12 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
   );
   return (
     <div
-      className={`relative w-full ${
-        viewer === "collect"
-          ? "h-28 bg-chroma bg-cover"
-          : "h-[15rem] galaxy:h-[20rem] preG:h-[25rem] sm:h-[30rem] mid:h-[35.8rem]"
+      className={`${
+        viewer === "sampler"
+          ? "absolute top-0 z-2 w-0 h-0"
+          : viewer === "collect"
+          ? "h-28 bg-chroma bg-cover z-0 relative w-full"
+          : "h-[15rem] galaxy:h-[20rem] preG:h-[25rem] sm:h-[30rem] mid:h-[35.8rem] z-0 relative w-full"
       } flex gap-2 justify-center items-center`}
     >
       <div
@@ -81,42 +83,44 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
           dispatchVideos={dispatchVideos}
           collectedArray={collected}
         />
-        <Controls
-          fullScreen={fullScreen}
-          setFullScreen={setFullScreen}
-          formatTime={formatTime}
-          duration={duration}
-          currentTime={currentTime}
-          volume={volume}
-          handleVolumeChange={handleVolumeChange}
-          isPlaying={isPlaying}
-          volumeOpen={volumeOpen}
-          setVolumeOpen={setVolumeOpen}
-          handleHeart={handleHeart}
-          collected={mainVideo.collected}
-          mirrored={mainVideo.mirrored}
-          liked={mainVideo.liked}
-          mirrorVideo={mirrorVideo}
-          collectVideo={collectVideo}
-          likeVideo={likeVideo}
-          likeLoading={likeLoading}
-          collectLoading={collectLoading}
-          mirrorLoading={mirrorLoading}
-          authStatus={authStatus}
-          profileId={profileId}
-          mainVideo={mainVideo}
-          likedArray={liked}
-          mirroredArray={mirrored}
-          videos={videos}
-          setIsPlaying={setIsPlaying}
-          progressRef={progressRef}
-          handleSeek={handleSeek}
-          dispatchVideos={dispatchVideos}
-          collectedArray={collected}
-          collectAmount={collectAmount}
-          mirrorAmount={mirrorAmount}
-          likeAmount={likeAmount}
-        />
+        {viewer !== "sampler" && (
+          <Controls
+            fullScreen={fullScreen}
+            setFullScreen={setFullScreen}
+            formatTime={formatTime}
+            duration={duration}
+            currentTime={currentTime}
+            volume={volume}
+            handleVolumeChange={handleVolumeChange}
+            isPlaying={isPlaying}
+            volumeOpen={volumeOpen}
+            setVolumeOpen={setVolumeOpen}
+            handleHeart={handleHeart}
+            collected={mainVideo.collected}
+            mirrored={mainVideo.mirrored}
+            liked={mainVideo.liked}
+            mirrorVideo={mirrorVideo}
+            collectVideo={collectVideo}
+            likeVideo={likeVideo}
+            likeLoading={likeLoading}
+            collectLoading={collectLoading}
+            mirrorLoading={mirrorLoading}
+            authStatus={authStatus}
+            profileId={profileId}
+            mainVideo={mainVideo}
+            likedArray={liked}
+            mirroredArray={mirrored}
+            videos={videos}
+            setIsPlaying={setIsPlaying}
+            progressRef={progressRef}
+            handleSeek={handleSeek}
+            dispatchVideos={dispatchVideos}
+            collectedArray={collected}
+            collectAmount={collectAmount}
+            mirrorAmount={mirrorAmount}
+            likeAmount={likeAmount}
+          />
+        )}
       </div>
     </div>
   );
