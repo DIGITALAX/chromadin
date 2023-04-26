@@ -63,6 +63,7 @@ const Drops: FunctionComponent<DropsProps> = ({
                         },
                         price: collection?.prices,
                         acceptedTokens: collection?.acceptedTokens,
+                        amount: collection?.amount,
                         // tokenIds: collection?.tokenIds,
                         // tokensSold: collection?.soldTokens,
                       })

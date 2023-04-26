@@ -43,7 +43,7 @@ const useDrop = () => {
         return;
       }
       const drops = await handleAllDrops();
-  
+
       const collections = await Promise.all(
         data?.data?.collectionMinteds.map(async (collection: Collection) => {
           const json = await fetchIPFSJSON(
@@ -115,6 +115,7 @@ const useDrop = () => {
           },
           price: collections[0].prices,
           acceptedTokens: collections[0].acceptedTokens,
+          amount: collections[0]?.amount,
           // tokenIds: collections[0].tokenIds,
           // tokensSold: collections[0].soldTokens,
         })
