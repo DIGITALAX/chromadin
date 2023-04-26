@@ -28,6 +28,8 @@ module.exports = {
         rojo: "#DD3950",
         leche: "#FFFFF2",
         cit: "#F7B500",
+        b1: "#6BD6FC",
+        b2: "#1696FC",
       },
       backgroundImage: {
         chroma:
@@ -39,6 +41,9 @@ module.exports = {
       height: {
         100: "27rem",
         128: "32rem",
+      },
+      width: {
+        200: "54rem",
       },
       zIndex: {
         1: "1",

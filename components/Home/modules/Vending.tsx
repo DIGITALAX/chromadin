@@ -18,7 +18,7 @@ const Vending: FunctionComponent<VendingProps> = ({
   );
   return (
     <div
-      className={`relative w-full h-[28.6rem]  gap-3 p-4 overflow-y-scroll ${
+      className={`relative w-full h-[28.6rem] gap-3 p-4 overflow-y-scroll ${
         !error
           ? "grid grid-cols-1 preG:grid-cols-2 sm:grid-cols-3 wrap:grid-cols-4"
           : "flex flex-col"
@@ -90,8 +90,8 @@ const Vending: FunctionComponent<VendingProps> = ({
                         },
                         price: collection?.prices,
                         acceptedTokens: collection?.acceptedTokens,
-                        // tokenIds: collection?.tokenIds,
-                        // tokensSold: collection?.soldTokens,
+                        tokenIds: collection?.tokenIds,
+                        tokensSold: collection?.soldTokens,
                       })
                     );
                     dispatch(setOptions("fulfillment"));

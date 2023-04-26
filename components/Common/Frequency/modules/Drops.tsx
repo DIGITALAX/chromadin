@@ -63,8 +63,8 @@ const Drops: FunctionComponent<DropsProps> = ({
                         },
                         price: collection?.prices,
                         acceptedTokens: collection?.acceptedTokens,
-                        // tokenIds: collection?.tokenIds,
-                        // tokensSold: collection?.soldTokens,
+                        tokenIds: collection?.tokenIds,
+                        tokensSold: collection?.soldTokens,
                       })
                     );
                     dispatch(setOptions("fulfillment"));

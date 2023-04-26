@@ -306,7 +306,7 @@ code::-webkit-scrollbar {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  -webkit-text-stroke: 1px #9806CF;
+  -webkit-text-stroke: 1px #9806cf;
   color: transparent;
 }
 
@@ -314,6 +314,14 @@ code::-webkit-scrollbar {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  -webkit-text-stroke: 1px #E81E7E;
+  -webkit-text-stroke: 1px #e81e7e;
+  color: transparent;
+}
+
+#percent2Back {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-text-stroke: 1px #96cb00;
   color: transparent;
 }

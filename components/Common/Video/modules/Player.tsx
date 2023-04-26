@@ -45,7 +45,7 @@ const Player: FunctionComponent<PlayerProps> = ({
           draggable={false}
         />
       )}
-      {videosLoading ? (
+      {videosLoading && viewer !== "sampler" ? (
         <div className="relative w-full h-full bg-offBlack flex flex-col items-center justify-center">
           <FetchMoreLoading size="6" />
         </div>

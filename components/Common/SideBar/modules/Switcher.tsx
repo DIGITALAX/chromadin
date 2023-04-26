@@ -50,16 +50,14 @@ const Switcher: FunctionComponent = (): JSX.Element => {
                   className="relative w-fit justify-center lg:w-full h-full grid grid-flow-row auto-rows-auto flex items-center"
                   key={index}
                   onClick={
-                    values[1] !== "wavs" && values[1] !== "sampler"
+                    values[1] !== "wavs"
                       ? () => router.push(`#${values[1]}`)
                       : () => {}
                   }
                 >
                   <div
                     className={`relative w-8 lg:w-12 h-8 lg:h-12 grid grid-flow-col auto-cols-auto justify-self-center items-center  ${
-                      values[1] !== "wavs" &&
-                      values[1] !== "sampler" &&
-                      "cursor-pointer active:scale-95"
+                      values[1] !== "wavs" && "cursor-pointer active:scale-95"
                     }`}
                   >
                     <Image

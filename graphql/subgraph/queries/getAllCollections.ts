@@ -11,6 +11,8 @@ const COLLECTIONS = `
       acceptedTokens
       name
       owner
+      tokenIds
+      soldTokens
     }
   }
 `;

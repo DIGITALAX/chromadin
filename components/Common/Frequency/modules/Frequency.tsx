@@ -75,7 +75,10 @@ const Frequency: FunctionComponent = (): JSX.Element => {
           collectionsLoading={collectionsLoading}
         />
       </div>
-      <div className="absolute w-80 h-full hidden md:flex bg-offBlack border-l border-white/70 right-0" id="staticLoad">
+      <div
+        className="absolute w-80 h-full hidden md:flex bg-offBlack border-l border-white/70 right-0"
+        id="staticLoad"
+      >
         <div className="relative w-full h-full justify-center flex">
           <video
             muted

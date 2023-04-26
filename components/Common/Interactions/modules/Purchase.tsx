@@ -4,20 +4,20 @@ import { FunctionComponent } from "react";
 import { PurchaseProps } from "../types/interactions.types";
 import { AiOutlineLoading } from "react-icons/ai";
 
-const Purchase: FunctionComponent = ({
-  // acceptedtokens,
-  // approved,
-  // currency,
-  // setCurrency,
-  // totalAmount,
-  // mainNFT,
-  // approveSpend,
-  // buyNFT,
-  // purchaseLoading,
+const Purchase: FunctionComponent<PurchaseProps> = ({
+  acceptedtokens,
+  approved,
+  currency,
+  setCurrency,
+  totalAmount,
+  mainNFT,
+  approveSpend,
+  buyNFT,
+  purchaseLoading,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col">
-      {/* {mainNFT && (
+      {mainNFT && (
         <div className="relative w-full h-full flex flex-col items-center justify-center pt-4">
           <div className="relative w-60 h-60 lg:w-2/3 lg:h-52 rounded-br-lg rounded-tl-lg border border-white">
             <Image
@@ -113,7 +113,7 @@ const Purchase: FunctionComponent = ({
             )}
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

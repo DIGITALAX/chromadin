@@ -59,12 +59,13 @@ export type FulfillmentProps = {
   setPosterAmount: (e: number) => void;
   totalAmount: number;
   acceptedtokens: string[];
-  // approved: boolean;
+  approved: boolean;
   mainNFT: MainNFT | undefined;
-  // approveSpend: () => Promise<void>;
-  // buyNFT: () => void;
-  // purchaseLoading: boolean;
-  collections: Collection[]
+  approveSpend: () => Promise<void>;
+  buyNFT: () => void;
+  purchaseLoading: boolean;
+  collections: Collection[];
+  dispatch: Dispatch<AnyAction>;
 };
 
 export type CollectorsProps = {

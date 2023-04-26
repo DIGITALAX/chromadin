@@ -1,23 +1,25 @@
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
 import { FunctionComponent } from "react";
-import { HistoryProps } from "../types/interactions.types";
+import { History, HistoryProps } from "../types/interactions.types";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import Link from "next/link";
 import moment from "moment";
 
-const History: FunctionComponent = (
-  {
-    // history,
-    // historyReducer,
-    // historyLoading,
-  }
-): JSX.Element => {
+const History: FunctionComponent<HistoryProps> = ({
+  history,
+  historyReducer,
+  historyLoading,
+}): JSX.Element => {
   return (
     <div
-      className={`relative w-full flex flex-col items-center justify-center bg-black border-t border-white h-full`}
+      className={`relative w-full flex flex-col items-center justify-center bg-black border-t border-white ${
+        history?.length === 0 && historyReducer?.length === 0
+          ? "h-full"
+          : "h-full xl:h-[45.8rem]"
+      }`}
     >
-      {/* {historyLoading ? (
+      {historyLoading ? (
         <div className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 preG:gap-4 lg:gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap opacity-30 animate-pulse">
           {Array.from({ length: 7 }).map((_: any, index: number) => {
             return (
@@ -52,19 +54,19 @@ const History: FunctionComponent = (
               </div>
             );
           })}
-        </div> */}
-      {/* ) : history?.length === 0 && historyReducer?.length === 0 ? ( */}
-      <div className="relative w-full h-full flex flex-col items-center justify-center font-earl text-moda text-center p-3">
-        Nothing to see here.
-        <br />
-        <br />
-        Looks like you haven’t made history, yet.
-        <br />
-        <br />
-        Let’s change that by picking up the remote and dialing in to some good
-        old channel surfing.
-      </div>
-      {/* ) : (
+        </div>
+      ) : history?.length === 0 && historyReducer?.length === 0 ? (
+        <div className="relative w-full h-full flex flex-col items-center justify-center font-earl text-moda text-center p-3">
+          Nothing to see here.
+          <br />
+          <br />
+          Looks like you haven’t made history, yet.
+          <br />
+          <br />
+          Let’s change that by picking up the remote and dialing in to some good
+          old channel surfing.
+        </div>
+      ) : (
         <div className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 preG:gap-4 lg:gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap">
           {(history?.length < 1 ? historyReducer : history)?.map(
             (value: History, index: number) => {
@@ -132,17 +134,17 @@ const History: FunctionComponent = (
             }
           )}
         </div>
-      )} */}
-      {/* {history?.length === 0 && historyReducer?.length === 0 && ( */}
-      <div className="relative w-full h-[29.4rem] flex">
-        <Image
-          src={`${INFURA_GATEWAY}/ipfs/QmPKeuGZU2QZQm8GVhp7X3WvhzELLnmL5VNCFitgzCP6od`}
-          layout="fill"
-          objectFit="cover"
-          draggable={false}
-        />
-      </div>
-      {/* )} */}
+      )}
+      {history?.length === 0 && historyReducer?.length === 0 && (
+        <div className="relative w-full h-[29.4rem] flex">
+          <Image
+            src={`${INFURA_GATEWAY}/ipfs/QmPKeuGZU2QZQm8GVhp7X3WvhzELLnmL5VNCFitgzCP6od`}
+            layout="fill"
+            objectFit="cover"
+            draggable={false}
+          />
+        </div>
+      )}
       <div className="relative bottom-0 w-full h-fit py-2 border-y border-white text-white font-arcade uppercase items-end justify-center flex">
         CHROMADIN HISTORY
       </div>

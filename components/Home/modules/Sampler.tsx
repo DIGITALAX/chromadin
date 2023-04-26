@@ -1,3 +1,7 @@
+import useBar from "@/components/Common/Sampler/hooks/useBar";
+import usePies from "@/components/Common/Sampler/hooks/usePies";
+import useRates from "@/components/Common/Sampler/hooks/useRates";
+import useStats from "@/components/Common/Sampler/hooks/useStats";
 import Graphs from "@/components/Common/Sampler/modules/Graphs";
 import Pies from "@/components/Common/Sampler/modules/Pies";
 import Rates from "@/components/Common/Sampler/modules/Rates";
@@ -8,32 +12,56 @@ import Image from "next/legacy/image";
 import { FunctionComponent } from "react";
 
 const Sampler: FunctionComponent = (): JSX.Element => {
+  const {
+    totalCollects,
+    totalMirrors,
+    totalPosts,
+    volumeCollectChange,
+    volumeProfileChange,
+  } = useBar();
+  const {
+    totalRevChange,
+    totalPostChange,
+    totalPost48,
+    totalPost24,
+    totalRev24,
+    totalRev48,
+  } = useRates();
+  const { topAccountsFollowed } = usePies();
+  const { statTitles } = useStats();
   return (
-    <div className="relative w-full h-full h-[15rem] galaxy:h-[20rem] preG:h-[25rem] sm:h-[35rem] mid:h-[54.8rem] gap-3 flex flex-col">
+    <div className="relative w-full h-full mid:h-[54.8rem] gap-3 flex">
       <div className="absolute w-full h-full bg-cover">
         <Image
-          src={`${INFURA_GATEWAY}/ipfs/QmWFcPeE9w9Rxz5A52SuEKGNRHNouxuXm8Q6TmJVhD6x8K`}
+          src={`${INFURA_GATEWAY}/ipfs/QmUpj8mFnHji5fiqShj5GiCEdE8Ab8jTZBWHrGBXVTRg9c`}
           layout="fill"
           alt="retrowavebg"
           objectFit="cover"
         />
       </div>
-      <div className="absolute w-full h-full flex">
-        <Image
-          src={`${INFURA_GATEWAY}/ipfs/QmfEUs3YALtRybYk7YSsy5RnjjH7QXGS2p37JZsHD64qPL`}
-          layout="fill"
+      <div className="relative max-w-full w-full h-full flex flex-col p-4 gap-6">
+        <TopBar
+          totalCollects={totalCollects}
+          totalMirrors={totalMirrors}
+          totalPosts={totalPosts}
+          volumeCollectChange={volumeCollectChange}
+          volumeProfileChange={volumeProfileChange}
         />
-      </div>
-      <div className="relative w-full h-full flex flex-col p-4 gap-6">
-        <TopBar />
         <div className="relative flex flex-row w-full h-full gap-3">
           <Graphs />
-          <div className="relative w-full h-full flex flex-col gap-3">
-            <Pies />
-            <Rates />
+          <div className="relative w-200 h-full flex flex-col gap-3">
+            <Pies topAccountsFollowed={topAccountsFollowed} />
+            <Rates
+              totalRev24={totalRev24}
+              totalRevChange={totalRevChange}
+              totalPost24={totalPost24}
+              totalPost48={totalPost48}
+              totalRev48={totalRev48}
+              totalPostChange={totalPostChange}
+            />
           </div>
         </div>
-        <Stats />
+        <Stats statTitles={statTitles} />
       </div>
     </div>
   );
