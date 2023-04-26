@@ -12,7 +12,7 @@ const TopBar: FunctionComponent<TopBarProps> = ({
   volumeProfileChange,
 }): JSX.Element => {
   return (
-    <div className="relative w-full h-24 flex flex-row bg-black/60 rounded-lg top-4 px-4 py-1.5">
+    <div className="relative w-full h-24 flex flex-row bg-black/60 rounded-lg px-4 py-1.5">
       <div className="relative w-fit h-full flex flex-row items-center justify-start gap-4">
         {Array.from([
           ["TOTAL MIRRORS", totalMirrors],

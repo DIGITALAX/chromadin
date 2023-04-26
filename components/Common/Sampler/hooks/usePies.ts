@@ -5,7 +5,12 @@ import { useSelector } from "react-redux";
 
 const usePies = () => {
   const viewer = useSelector((state: RootState) => state.app.viewReducer.value);
-  const [topAccountsFollowed, setTopAccountsFollowed] = useState<string[]>([]);
+  const [topAccountsFollowed, setTopAccountsFollowed] = useState<
+    {
+      handle: string;
+      percentage: string;
+    }[]
+  >([]);
 
   const getTopFollowedAcc = async () => {
     try {
@@ -35,7 +40,7 @@ const usePies = () => {
 
   useEffect(() => {
     if (viewer === "sampler") {
-      getTopFollowedAcc();
+      // getTopFollowedAcc();
     }
   }, []);
 

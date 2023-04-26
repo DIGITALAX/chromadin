@@ -22,10 +22,6 @@ const Sampler: FunctionComponent = (): JSX.Element => {
   const {
     totalRevChange,
     totalPostChange,
-    totalPost48,
-    totalPost24,
-    totalRev24,
-    totalRev48,
   } = useRates();
   const { topAccountsFollowed } = usePies();
   const { statTitles } = useStats();
@@ -39,7 +35,7 @@ const Sampler: FunctionComponent = (): JSX.Element => {
           objectFit="cover"
         />
       </div>
-      <div className="relative max-w-full w-full h-full flex flex-col p-4 gap-6">
+      <div className="relative w-full h-full flex flex-col p-4 gap-3">
         <TopBar
           totalCollects={totalCollects}
           totalMirrors={totalMirrors}
@@ -52,11 +48,7 @@ const Sampler: FunctionComponent = (): JSX.Element => {
           <div className="relative w-200 h-full flex flex-col gap-3">
             <Pies topAccountsFollowed={topAccountsFollowed} />
             <Rates
-              totalRev24={totalRev24}
               totalRevChange={totalRevChange}
-              totalPost24={totalPost24}
-              totalPost48={totalPost48}
-              totalRev48={totalRev48}
               totalPostChange={totalPostChange}
             />
           </div>

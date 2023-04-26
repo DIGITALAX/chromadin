@@ -12,3 +12,14 @@ export type PiesProps = {
     percentage: string;
   }[];
 };
+
+export type RatesProps = {
+  totalRev24: number;
+  totalRevChange: number;
+  totalRev48: number;
+  totalPostChange: number;
+};
+
+export type StatsProps = {
+  statTitles: any[][];
+};

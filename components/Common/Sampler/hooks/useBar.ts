@@ -59,30 +59,41 @@ const useBar = () => {
     );
   };
 
+  const getVolumeData = async () => {
+    try {
+      const now = Math.floor(Date.now() / 1000);
+      const prevFrom = now - 2 * 24 * 60 * 60;
+      const prevTo = now - 24 * 60 * 60;
+      const currFrom = now - 24 * 60 * 60;
+      const currTo = now;
+      const prevCollects = await getVolumes(prevFrom, prevTo);
+      const currentCollects = await getVolumes(currFrom, currTo);
+      setPreviousCollectVolume(
+        prevCollects?.collects ? prevCollects.collects : 0
+      );
+      setCurrentCollectVolume(
+        currentCollects?.collects ? currentCollects.collects : 0
+      );
+      setPreviousProfileVolume(
+        prevCollects?.profiles ? prevCollects.profiles : 0
+      );
+      setCurrentProfileVolume(
+        currentCollects?.profiles ? currentCollects.profiles : 0
+      );
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+
   useEffect(() => {
     if (viewer === "sampler") {
       getTotals();
+      if (!previousCollectVolume && !previousProfileVolume) {
+        getVolumeData();
+      }
       const interval = setInterval(async () => {
-        const now = Math.floor(Date.now() / 1000);
-        const prevFrom = now - 2 * 24 * 60 * 60;
-        const prevTo = now - 24 * 60 * 60;
-        const currFrom = now - 24 * 60 * 60;
-        const currTo = now;
-        const prevCollects = await getVolumes(prevFrom, prevTo);
-        const currentCollects = await getVolumes(currFrom, currTo);
-        setPreviousCollectVolume(
-          prevCollects?.collects ? prevCollects.collects : 0
-        );
-        setCurrentCollectVolume(
-          currentCollects?.collects ? currentCollects.collects : 0
-        );
-        setPreviousProfileVolume(
-          prevCollects?.profiles ? prevCollects.profiles : 0
-        );
-        setCurrentProfileVolume(
-          currentCollects?.profiles ? currentCollects.profiles : 0
-        );
-      }, 1000);
+        getVolumeData();
+      }, 10000);
       return () => clearInterval(interval);
     }
   }, [viewer]);

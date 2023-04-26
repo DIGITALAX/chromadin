@@ -10,12 +10,8 @@ import { useSelector } from "react-redux";
 
 const useRates = () => {
   const viewer = useSelector((state: RootState) => state.app.viewReducer.value);
-  const [totalRev24, setTotalRev24] = useState<number>(0);
-  const [totalRev48, setTotalRev48] = useState<number>(0);
   const [totalRevChange, setTotalRevChange] = useState<number>(0);
   const [totalPostChange, setTotalPostChange] = useState<number>(0);
-  const [totalPost24, setTotalPost24] = useState<number>(0);
-  const [totalPost48, setTotalPost48] = useState<number>(0);
 
   const getTotalRevenue = async () => {
     try {
@@ -40,19 +36,14 @@ const useRates = () => {
         const data48 = await res48.json();
         const dataPost24 = await post24.json();
         const dataPost48 = await post48.json();
-
-        setTotalRev24(data24.rows[0].total_amount);
-        setTotalRev48(data48.rows[0].total_amount);
         setTotalRevChange(
-          ((data48.rows[0].total_amount - data24.rows[0].total_amount) /
+          ((data24.rows[0].total_amount - data48.rows[0].total_amount) /
             data48.rows[0].total_amount) *
             100
         );
-        setTotalPost24(dataPost24.rows[0].count);
-        setTotalPost48(dataPost48.rows[0].count);
         setTotalPostChange(
-          ((dataPost48.rows[0].count - dataPost24.rows[0].count) /
-            dataPost48.rows[0].count) *
+          ((dataPost24.rows.length - dataPost48.rows.length) /
+            dataPost48.rows.length) *
             100
         );
       }
@@ -68,11 +59,7 @@ const useRates = () => {
   }, []);
 
   return {
-    totalRev24,
     totalRevChange,
-    totalPost24,
-    totalPost48,
-    totalRev48,
     totalPostChange,
   };
 };
