@@ -31,7 +31,10 @@ const Stats: FunctionComponent<StatsProps> = ({
                   {statsLoading
                     ? Array.from({ length: 10 }).map((_, index: number) => {
                         return (
-                          <div className="relative bg-black rounded-lg flex flex-row w-40 h-10 py-1.5 px-2 gap-3 items-center justify-center cursor-pointer">
+                          <div
+                            className="relative bg-black rounded-lg flex flex-row w-40 h-10 py-1.5 px-2 gap-3 items-center justify-center cursor-pointer"
+                            key={index}
+                          >
                             <FetchMoreLoading size="2" />
                           </div>
                         );
