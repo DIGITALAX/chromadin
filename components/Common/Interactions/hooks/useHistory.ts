@@ -64,7 +64,6 @@ const useHistory = (): useHistoryResults => {
         setHistory(history);
       }
     } catch (err: any) {
-      setHistoryLoading(false);
       console.error(err.message);
     }
     setHistoryLoading(false);

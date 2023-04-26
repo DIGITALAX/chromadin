@@ -108,7 +108,6 @@ const useChannels = (): UseChannelsResults => {
         })
       );
     } catch (err: any) {
-      setVideosLoading(false);
       console.error(err.message);
     }
     setVideosLoading(false);

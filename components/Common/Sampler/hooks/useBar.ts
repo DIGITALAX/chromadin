@@ -5,8 +5,9 @@ import {
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { UseBarResults } from "../types/sampler.types";
 
-const useBar = () => {
+const useBar = (): UseBarResults => {
   const viewer = useSelector((state: RootState) => state.app.viewReducer.value);
   const [totalCollects, setTotalCollects] = useState<number>(0);
   const [totalMirrors, setTotalMirrors] = useState<number>(0);
@@ -17,6 +18,7 @@ const useBar = () => {
   const [previousProfileVolume, setPreviousProfileVolume] = useState<number>(0);
   const [currentProfileVolume, setCurrentProfileVolume] = useState<number>(0);
   const [volumeProfileChange, setVolumeProfileChange] = useState<number>(0);
+  const [topBarLoading, setTopBarLoading] = useState<boolean>(false);
 
   const getTotals = async () => {
     try {
@@ -83,12 +85,14 @@ const useBar = () => {
     } catch (err: any) {
       console.error(err.message);
     }
+    setTopBarLoading(false);
   };
 
   useEffect(() => {
     if (viewer === "sampler") {
       getTotals();
       if (!previousCollectVolume && !previousProfileVolume) {
+        setTopBarLoading(true);
         getVolumeData();
       }
       const interval = setInterval(async () => {
@@ -113,6 +117,7 @@ const useBar = () => {
     totalPosts,
     volumeCollectChange,
     volumeProfileChange,
+    topBarLoading,
   };
 };
 

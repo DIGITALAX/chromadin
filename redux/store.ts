@@ -27,6 +27,9 @@ import canCommentReducer from "./reducers/canCommentSlice";
 import errorReducer from "./reducers/errorSlice";
 import successReducer from "./reducers/successSlice";
 import historyReducer from "./reducers/historySlice";
+import ratesReducer from "./reducers/ratesSlice";
+import statsReducer from "./reducers/statsSlice";
+import piesReducer from "./reducers/piesSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -56,6 +59,9 @@ const reducer = combineReducers({
   errorReducer,
   successReducer,
   historyReducer,
+  ratesReducer,
+  piesReducer,
+  statsReducer,
 });
 
 export const store = configureStore({

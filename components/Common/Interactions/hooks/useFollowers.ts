@@ -119,7 +119,6 @@ const useFollowers = () => {
     try {
       await callApprovalSign();
     } catch (err: any) {
-      setFollowLoading(false);
       console.error(err.message);
     }
     setFollowLoading(false);

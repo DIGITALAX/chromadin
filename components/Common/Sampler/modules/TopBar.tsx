@@ -3,6 +3,7 @@ import Image from "next/legacy/image";
 import { FunctionComponent } from "react";
 import { TopBarProps } from "../types/sampler.types";
 import numeral from "numeral";
+import FetchMoreLoading from "../../Loading/FetchMoreLoading";
 
 const TopBar: FunctionComponent<TopBarProps> = ({
   totalCollects,
@@ -10,6 +11,7 @@ const TopBar: FunctionComponent<TopBarProps> = ({
   totalPosts,
   volumeCollectChange,
   volumeProfileChange,
+  topBarLoading,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-24 flex flex-row bg-black/60 rounded-lg px-4 py-1.5">
@@ -66,26 +68,32 @@ const TopBar: FunctionComponent<TopBarProps> = ({
                 </div>
               </div>
               <div className="relative w-full h-full flex flex-row font-arcade items-center justify-center gap-2">
-                <div className="relative w-3 h-3 items-center justify-center flex">
-                  <Image
-                    src={`${INFURA_GATEWAY}/ipfs/${
-                      value[1] < 1
-                        ? "QmXfTo7frXU1aBh4ppnXSRk212xCbuBqApYRo78VFy4m13"
-                        : "QmU3865HsaPwgUzvkFNrqy9iP91yWxm3XaA9y6hmRsXkfA"
-                    }`}
-                    layout="fill"
-                    className="flex items-center justify-center"
-                  />
-                </div>
+                {!topBarLoading && (
+                  <div className="relative w-3 h-3 items-center justify-center flex">
+                    <Image
+                      src={`${INFURA_GATEWAY}/ipfs/${
+                        value[1] < 1
+                          ? "QmXfTo7frXU1aBh4ppnXSRk212xCbuBqApYRo78VFy4m13"
+                          : "QmU3865HsaPwgUzvkFNrqy9iP91yWxm3XaA9y6hmRsXkfA"
+                      }`}
+                      layout="fill"
+                      className="flex items-center justify-center"
+                    />
+                  </div>
+                )}
                 <div className="relative w-fit h-fit flex items-center justify-end ml-auto whitespace-nowrap">
                   <div
                     className="absolute w-full h-fit text-3xl -top-1"
                     id="percentBack"
                   >
-                    {value[1]?.toFixed(2)}%
+                    {!topBarLoading && `${value[1]?.toFixed(2)}%`}
                   </div>
                   <div className="relative w-full h-fit text-white text-3xl">
-                    {value[1]?.toFixed(2)}%
+                    {!topBarLoading ? (
+                      `${value[1]?.toFixed(2)}%`
+                    ) : (
+                      <FetchMoreLoading size="4" />
+                    )}
                   </div>
                 </div>
               </div>

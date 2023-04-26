@@ -579,7 +579,6 @@ const useControls = (): UseControlsResults => {
     try {
       await callApprovalSign();
     } catch (err: any) {
-      setApprovalLoading(false);
       console.error(err.message);
     }
     setApprovalLoading(false);

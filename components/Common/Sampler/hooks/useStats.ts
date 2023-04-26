@@ -7,12 +7,18 @@ import {
   TOP_50_POSTERS_ALL_TIME,
   UNIQUE_COLLECTS_24,
 } from "@/lib/bigquery/queries";
+import { setStatsRedux } from "@/redux/reducers/statsSlice";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { UseStatsResults } from "../types/sampler.types";
 
-const useStats = () => {
+const useStats = (): UseStatsResults => {
   const viewer = useSelector((state: RootState) => state.app.viewReducer.value);
+  const stats = useSelector((state: RootState) => state.app.statsReducer.value);
+  const [statsLoading, setStatsLoading] = useState<boolean>(false);
+
+  const dispatch = useDispatch();
   const [statTitles, setStatTitles] = useState<any[][]>([
     ["Top 50 Mirrorers All Time"],
     ["Top 50 Collectors All Time"],
@@ -24,6 +30,7 @@ const useStats = () => {
   ]);
 
   const getStats = async () => {
+    setStatsLoading(true);
     try {
       const collectTop = await fetch("/api/bigquery", {
         method: "POST",
@@ -79,20 +86,33 @@ const useStats = () => {
           ["Amount to Collect Ratio 72HRS", dataAmount72.rows],
           ["Highest Spend 72HRS", highest.rows],
         ]);
+        dispatch(
+          setStatsRedux([
+            ["Top 50 Mirrorers All Time", dataMirror.rows],
+            ["Top 50 Collectors All Time", dataCollect.rows],
+            ["Top 50 Posters All Time", dataPost.rows],
+            ["Unique Collectors 24HRS", dataUnique.rows],
+            ["Amount to Collect Ratio All Time", dataAmountAll.rows],
+            ["Amount to Collect Ratio 72HRS", dataAmount72.rows],
+            ["Highest Spend 72HRS", highest.rows],
+          ])
+        );
       }
     } catch (err: any) {
       console.error(err.message);
     }
+    setStatsLoading(false);
   };
 
   useEffect(() => {
-    if (viewer === "sampler") {
-      getStats();
+    if (viewer === "sampler" && stats.length === 0) {
+      // getStats();
     }
   }, [viewer]);
 
   return {
     statTitles,
+    statsLoading,
   };
 };
 

@@ -1,10 +1,15 @@
 import { TOP_FOLLOWED_ACCOUNTS_48 } from "@/lib/bigquery/queries";
+import { setPiesRedux } from "@/redux/reducers/piesSlice";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { UsePiesResults } from "../types/sampler.types";
 
-const usePies = () => {
+const usePies = (): UsePiesResults => {
   const viewer = useSelector((state: RootState) => state.app.viewReducer.value);
+  const pies = useSelector((state: RootState) => state.app.piesReducer.value);
+  const dispatch = useDispatch();
+  const [piesLoading, setPiesLoading] = useState<boolean>(false);
   const [topAccountsFollowed, setTopAccountsFollowed] = useState<
     {
       handle: string;
@@ -13,6 +18,7 @@ const usePies = () => {
   >([]);
 
   const getTopFollowedAcc = async () => {
+    setPiesLoading(true);
     try {
       const res = await fetch("/api/bigquery", {
         method: "POST",
@@ -32,19 +38,21 @@ const usePies = () => {
           };
         });
         setTopAccountsFollowed(topAccounts);
+        dispatch(setPiesRedux(topAccounts));
       }
     } catch (err: any) {
       console.error(err.message);
     }
+    setPiesLoading(false);
   };
 
   useEffect(() => {
-    if (viewer === "sampler") {
+    if (viewer === "sampler" && pies.length === 0) {
       // getTopFollowedAcc();
     }
   }, []);
 
-  return { topAccountsFollowed };
+  return { topAccountsFollowed, piesLoading };
 };
 
 export default usePies;

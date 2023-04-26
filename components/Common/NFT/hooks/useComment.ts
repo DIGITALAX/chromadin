@@ -333,7 +333,6 @@ const useComment = () => {
         }
       }
     } catch (err: any) {
-      setCommentLoading(false);
       console.error(err.message);
     }
     setCommentLoading(false);

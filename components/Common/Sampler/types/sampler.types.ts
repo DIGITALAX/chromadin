@@ -4,6 +4,7 @@ export type TopBarProps = {
   totalPosts: number;
   volumeCollectChange: number;
   volumeProfileChange: number;
+  topBarLoading: boolean;
 };
 
 export type PiesProps = {
@@ -11,15 +12,48 @@ export type PiesProps = {
     handle: string;
     percentage: string;
   }[];
+  piesRedux: {
+    handle: string;
+    percentage: string;
+  }[];
+  piesLoading: boolean;
+};
+
+export type UsePiesResults = {
+  topAccountsFollowed: {
+    handle: string;
+    percentage: string;
+  }[];
+  piesLoading: boolean;
 };
 
 export type RatesProps = {
-  totalRev24: number;
-  totalRevChange: number;
-  totalRev48: number;
-  totalPostChange: number;
+  totalChanges: number[];
+  ratesRedux: number[];
+  ratesLoading: boolean;
 };
 
 export type StatsProps = {
   statTitles: any[][];
+  statsRedux: any[][];
+  statsLoading: boolean;
+};
+
+export type UseRatesResults = {
+  ratesLoading: boolean;
+  totalChanges: number[];
+};
+
+export type UseStatsResults = {
+  statTitles: any[][];
+  statsLoading: boolean;
+};
+
+export type UseBarResults = {
+  totalCollects: number;
+  totalMirrors: number;
+  totalPosts: number;
+  volumeCollectChange: number;
+  volumeProfileChange: number;
+  topBarLoading: boolean;
 };

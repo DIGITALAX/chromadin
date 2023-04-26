@@ -123,7 +123,6 @@ const useDrop = () => {
       setCollections(collections);
     } catch (err: any) {
       setError(true);
-      setCollectionsLoading(false);
       console.error(err.message);
     }
     setCollectionsLoading(false);
