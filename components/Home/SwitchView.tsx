@@ -12,8 +12,8 @@ const SwitchView: FunctionComponent = (): JSX.Element => {
     case "collect":
       return <Vending dispatch={dispatch} />;
 
-    case "sampler":
-      return <Sampler />;
+    // case "sampler":
+    //   return <Sampler />;
 
     default:
       return <></>;

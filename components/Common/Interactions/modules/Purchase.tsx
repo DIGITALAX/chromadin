@@ -81,27 +81,30 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
       </div>
       <div className="relative w-full h-fit font-earl items-center justify-center flex text-sm pt-4">
         <div
-          className={`relative rounded-lg p-1.5 w-24 text-center border-white border text-white h-8 ${
-            mainNFT?.tokensSold &&
-            mainNFT?.tokenIds?.length! - mainNFT?.tokensSold?.length !== 0
-              ? "hover:bg-moda cursor-pointer bg-verde/60"
-              : "bg-verde/20"
+          className={`relative rounded-lg p-1.5 w-24 text-center border-white border text-white h-8 
+          ${
+            // mainNFT?.tokensSold &&
+            // mainNFT?.tokenIds?.length! - mainNFT?.tokensSold?.length !== 0
+            //   ?
+            "hover:bg-moda cursor-pointer bg-verde/60"
+            // : "bg-verde/20"
           }`}
-          onClick={
-            mainNFT?.tokensSold &&
-            mainNFT?.tokenIds?.length! - mainNFT?.tokensSold?.length === 0
-              ? () => {}
-              : !approved
-              ? () => approveSpend()
-              : () => buyNFT()
-          }
+          // onClick={
+          //   mainNFT?.tokensSold &&
+          //   mainNFT?.tokenIds?.length! - mainNFT?.tokensSold?.length === 0
+          //     ? () => {}
+          //     : !approved
+          //     ? () => approveSpend()
+          //     : () => buyNFT()
+          // }
         >
           <div
             className={`relative w-full h-full flex items-center justify-center ${
               purchaseLoading && "animate-spin"
             }`}
           >
-            {purchaseLoading ? (
+            COLLECT
+            {/* {purchaseLoading ? (
               <AiOutlineLoading size={10} color="white" />
             ) : mainNFT?.tokensSold &&
               mainNFT?.tokenIds?.length! - mainNFT?.tokensSold?.length === 0 ? (
@@ -110,7 +113,7 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
               "APPROVE"
             ) : (
               "COLLECT"
-            )}
+            )} */}
           </div>
         </div>
       </div>

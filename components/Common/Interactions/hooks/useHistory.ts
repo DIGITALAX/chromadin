@@ -69,14 +69,14 @@ const useHistory = (): useHistoryResults => {
     setHistoryLoading(false);
   };
 
-  useEffect(() => {
-    if (
-      options === "history" &&
-      (historyReducer.length < 1 || indexModal === "Purchase Successful")
-    ) {
-      getUserHistory();
-    }
-  }, [options, indexModal]);
+  // useEffect(() => {
+  //   if (
+  //     options === "history" &&
+  //     (historyReducer.length < 1 || indexModal === "Purchase Successful")
+  //   ) {
+  //     getUserHistory();
+  //   }
+  // }, [options, indexModal]);
 
   return { history, historyLoading };
 };

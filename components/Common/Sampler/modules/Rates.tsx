@@ -9,7 +9,6 @@ const Rates: FunctionComponent<RatesProps> = ({
   ratesRedux,
   ratesLoading,
 }): JSX.Element => {
-  console.log({ ratesLoading });
   return (
     <div className="relative w-full h-2/3 flex bg-black/60 rounded-lg flex-row gap-3 font-arcade p-2">
       {Array.from([

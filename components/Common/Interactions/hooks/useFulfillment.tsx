@@ -188,15 +188,15 @@ const useFulfillment = () => {
   };
 
   const getTokenId = (): void => {
-    if (!mainNFT?.tokensSold || mainNFT?.tokensSold.length == 0) {
-      setTokenId(mainNFT?.tokenIds[0]);
-    } else {
-      for (let i = 0; i < mainNFT?.tokenIds.length; i++) {
-        if (!mainNFT?.tokensSold.includes(mainNFT?.tokenIds[i])) {
-          setTokenId(mainNFT?.tokenIds[i]);
-        }
-      }
-    }
+    // if (!mainNFT?.tokensSold || mainNFT?.tokensSold.length == 0) {
+    //   setTokenId(mainNFT?.tokenIds[0]);
+    // } else {
+    //   for (let i = 0; i < mainNFT?.tokenIds.length; i++) {
+    //     if (!mainNFT?.tokensSold.includes(mainNFT?.tokenIds[i])) {
+    //       setTokenId(mainNFT?.tokenIds[i]);
+    //     }
+    //   }
+    // }
   };
 
   const approveSpend = async () => {

@@ -115,8 +115,8 @@ const useDrop = () => {
           },
           price: collections[0].prices,
           acceptedTokens: collections[0].acceptedTokens,
-          tokenIds: collections[0].tokenIds,
-          tokensSold: collections[0].soldTokens,
+          // tokenIds: collections[0].tokenIds,
+          // tokensSold: collections[0].soldTokens,
         })
       );
       dispatch(setCollectionsRedux(collections));

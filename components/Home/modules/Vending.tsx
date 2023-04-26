@@ -90,8 +90,9 @@ const Vending: FunctionComponent<VendingProps> = ({
                         },
                         price: collection?.prices,
                         acceptedTokens: collection?.acceptedTokens,
-                        tokenIds: collection?.tokenIds,
-                        tokensSold: collection?.soldTokens,
+                        amount: collection?.amount,
+                        // tokenIds: collection?.tokenIds,
+                        // tokensSold: collection?.soldTokens,
                       })
                     );
                     dispatch(setOptions("fulfillment"));

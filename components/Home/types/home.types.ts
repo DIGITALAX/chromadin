@@ -29,8 +29,8 @@ export interface Collection {
   profile: Profile | undefined;
   prices: string[];
   acceptedTokens: string[];
-  tokenIds: string[];
-  soldTokens: string[] | null;
+  // tokenIds: string[];
+  // soldTokens: string[] | null;
 }
 
 export interface Drop {
