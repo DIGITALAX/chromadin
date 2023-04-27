@@ -57,6 +57,7 @@ module.exports = {
         mid: "950px",
         tablet: "1260px",
         wrap: "1360px",
+        alto: "1950px",
       },
     },
   },
