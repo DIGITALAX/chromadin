@@ -29,9 +29,7 @@ const Sampler: FunctionComponent = (): JSX.Element => {
   const stats = useSelector((state: RootState) => state.app.statsReducer.value);
   const pies = useSelector((state: RootState) => state.app.piesReducer.value);
   return (
-    <div
-      className="relative w-full alto:w-full h-full mid:h-[54.8rem] gap-3 flex"
-    >
+    <div className="relative w-full alto:w-full h-full mid:h-[57.2rem] xl:h-[54.8rem] gap-3 flex">
       <div className="absolute w-full h-full bg-cover">
         <Image
           src={`${INFURA_GATEWAY}/ipfs/QmUpj8mFnHji5fiqShj5GiCEdE8Ab8jTZBWHrGBXVTRg9c`}
@@ -40,7 +38,7 @@ const Sampler: FunctionComponent = (): JSX.Element => {
           objectFit="cover"
         />
       </div>
-      <div className="relative w-full h-full flex flex-col p-4 gap-3"       id="sampler">
+      <div className="relative flex flex-col p-4 gap-3" id="sampler">
         <TopBar
           totalCollects={totalCollects}
           totalMirrors={totalMirrors}
