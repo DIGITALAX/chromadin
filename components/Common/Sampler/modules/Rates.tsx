@@ -10,15 +10,15 @@ const Rates: FunctionComponent<RatesProps> = ({
   ratesLoading,
 }): JSX.Element => {
   return (
-    <div className="relative w-full h-2/3 flex bg-black/60 rounded-lg flex-row gap-3 font-arcade p-2">
+    <div className="relative w-full h-2/3 flex bg-black/60 rounded-lg flex-col preG:flex-row gap-3 font-arcade p-2">
       {Array.from([
         [
           (totalChanges.length < 1 ? ratesRedux : totalChanges)[0],
-          "24 HR POST REVENUE CHANGE",
+          "Δ 48 HR PUB REVENUE",
         ],
         [
-          (totalChanges.length < 1 ? ratesRedux : totalChanges)[0],
-          "48 HR POST AMOUNT CHANGE",
+          (totalChanges.length < 1 ? ratesRedux : totalChanges)[1],
+          "Δ 48 HR PUB AMOUNT",
         ],
       ]).map((value: any[], index: number) => {
         return (
@@ -27,7 +27,7 @@ const Rates: FunctionComponent<RatesProps> = ({
             key={index}
           >
             <div className="relative w-fit h-fit flex items-center justify-center">
-              <div className="absolute w-full h-fit -top-1" id="amountBack">
+              <div className="absolute w-full h-fit -top-1" id={"amountBack"}>
                 {value[1]}
               </div>
               <div className="relative w-full h-fit text-white">{value[1]}</div>

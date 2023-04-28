@@ -22,9 +22,10 @@ const Sampler: FunctionComponent = (): JSX.Element => {
     volumeProfileChange,
     topBarLoading,
   } = useBar();
-  const { totalChanges, ratesLoading } = useRates();
-  const { topAccountsFollowed, piesLoading } = usePies();
-  const { statTitles, statsLoading } = useStats();
+  // const { totalChanges, ratesLoading } = useRates();
+  // const { topAccountsFollowed, piesLoading } = usePies();
+  const { statTitles, statsLoading, topAccountsFollowed, totalChanges } =
+    useStats();
   const rates = useSelector((state: RootState) => state.app.ratesReducer.value);
   const stats = useSelector((state: RootState) => state.app.statsReducer.value);
   const pies = useSelector((state: RootState) => state.app.piesReducer.value);
@@ -47,18 +48,18 @@ const Sampler: FunctionComponent = (): JSX.Element => {
           volumeProfileChange={volumeProfileChange}
           topBarLoading={topBarLoading}
         />
-        <div className="relative flex flex-row w-full h-full gap-3">
+        <div className="relative flex flex-row w-full h-fit mid:h-full gap-3 xl:flex-nowrap flex-wrap xl:overflow-y-visible overflow-y-scroll">
           <Graphs />
-          <div className="relative w-200 h-full flex flex-col gap-3">
+          <div className="relative w-full xl:w-200 mid:h-fit xl:h-full flex flex-col gap-3">
             <Pies
               topAccountsFollowed={topAccountsFollowed}
               piesRedux={pies}
-              piesLoading={piesLoading}
+              piesLoading={statsLoading}
             />
             <Rates
               totalChanges={totalChanges}
               ratesRedux={rates}
-              ratesLoading={ratesLoading}
+              ratesLoading={statsLoading}
             />
           </div>
         </div>

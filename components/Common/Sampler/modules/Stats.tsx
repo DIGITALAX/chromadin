@@ -11,7 +11,7 @@ const Stats: FunctionComponent<StatsProps> = ({
   statsLoading,
 }): JSX.Element => {
   return (
-    <div className="w-full h-full relative flex flex-row gap-3 overflow-x-scroll">
+    <div className="w-full h-96 xl:h-full relative flex flex-row gap-3 overflow-x-scroll">
       {(statTitles.length < 1 ? statsRedux : statTitles)
         ?.map((innerArr) => innerArr[0])
         ?.map((statValue: string, indexOne: number) => {
@@ -26,12 +26,12 @@ const Stats: FunctionComponent<StatsProps> = ({
               <div className="relative w-full h-fit text-white font-arcade text-xs flex items-center justify-start pb-2">
                 {statValue}
               </div>
-              <div className="relative w-60 h-40 gap-2 grid grid-flow-row auto-rows-auto overflow-y-scroll p-4">
+              <div className="relative w-60 h-full gap-2 grid grid-flow-row auto-rows-auto overflow-y-scroll p-4">
                 {statsLoading
                   ? Array.from({ length: 10 }).map((_, index: number) => {
                       return (
                         <div
-                          className="relative bg-black rounded-lg flex flex-row w-40 h-10 py-1.5 px-2 gap-3 items-center justify-center cursor-pointer"
+                          className="relative bg-black rounded-lg flex flex-row w-full h-10 py-1.5 px-2 gap-3 items-center justify-center cursor-pointer"
                           key={index}
                         >
                           <FetchMoreLoading size="2" />
@@ -44,7 +44,7 @@ const Stats: FunctionComponent<StatsProps> = ({
                         return (
                           <Link
                             key={indexTwo}
-                            className="relative bg-black rounded-lg flex flex-row w-40 h-full py-1.5 px-2 gap-3 items-center justify-center cursor-pointer"
+                            className="relative bg-black rounded-lg flex flex-row w-full h-full py-1.5 px-2 gap-3 items-center justify-center cursor-pointer"
                             target="_blank"
                             rel="noreferrer"
                             href={

@@ -47,6 +47,11 @@ export type UseRatesResults = {
 export type UseStatsResults = {
   statTitles: any[][];
   statsLoading: boolean;
+  totalChanges: number[];
+  topAccountsFollowed: {
+    handle: string;
+    percentage: string;
+  }[];
 };
 
 export type UseBarResults = {

@@ -2,13 +2,13 @@ import getAllCollections from "@/graphql/subgraph/queries/getAllCollections";
 import getAllDrops from "@/graphql/subgraph/queries/getAllDrops";
 import { useEffect, useState } from "react";
 import { Collection } from "../types/home.types";
-import { INFURA_GATEWAY } from "@/lib/constants";
 import getDefaultProfile from "@/graphql/lens/queries/getDefaultProfile";
 import { setMainNFT } from "@/redux/reducers/mainNFTSlice";
 import { useDispatch, useSelector } from "react-redux";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import { RootState } from "@/redux/store";
 import { setCollectionsRedux } from "@/redux/reducers/collectionsSlice";
+import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
 
 const useDrop = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
@@ -18,12 +18,6 @@ const useDrop = () => {
   const collectionsDispatched = useSelector(
     (state: RootState) => state.app.collectionsReducer.value
   );
-
-  const fetchIPFSJSON = async (uri: string): Promise<any> => {
-    const response = await fetch(`${INFURA_GATEWAY}/ipfs/${uri}`);
-    const json = await response.json();
-    return json;
-  };
 
   const handleAllCollections = async (): Promise<void> => {
     setCollectionsLoading(true);

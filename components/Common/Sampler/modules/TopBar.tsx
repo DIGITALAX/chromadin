@@ -14,16 +14,16 @@ const TopBar: FunctionComponent<TopBarProps> = ({
   topBarLoading,
 }): JSX.Element => {
   return (
-    <div className="relative w-full h-24 flex flex-row bg-black/60 rounded-lg px-4 py-1.5">
-      <div className="relative w-fit h-full flex flex-row items-center justify-start gap-4">
+    <div className="relative w-full h-fit mid:h-24 flex flex-col mid:flex-row bg-black/60 rounded-lg px-4 py-1.5 gap-4 mid:gap-0">
+      <div className="relative w-full mid:w-fit h-full flex flex-row items-center justify-center mid:justify-start gap-4 preG:flex-nowrap flex-wrap">
         {Array.from([
           ["TOTAL MIRRORS", totalMirrors],
           ["TOTAL COLLECTS", totalCollects],
-          ["TOTAL POSTS", totalPosts],
+          ["TOTAL PUBS", totalPosts],
         ]).map((value: any[], index: number) => {
           return (
             <div
-              className="relative w-full h-full flex items-center justify-center flex-col font-arcade"
+              className="relative w-fit mid:w-full h-fit preG:h-full flex items-center justify-center flex-col font-arcade mid:text-left text-center"
               key={index}
             >
               <div className="relative w-full h-fit flex items-center justify-center whitespace-nowrap">
@@ -49,17 +49,17 @@ const TopBar: FunctionComponent<TopBarProps> = ({
           );
         })}
       </div>
-      <div className="relative w-fit h-full flex flex-row items-center justify-end gap-10 ml-auto">
+      <div className="relative w-full mid:w-fit h-full flex flex-row items-center justify-center mid:justify-end gap-4 mid:gap-10 ml-auto preG:flex-nowrap flex-wrap">
         {Array.from([
-          ["24hr Collect Volume Change", volumeCollectChange],
-          ["24hr Profile Volume Change", volumeProfileChange],
+          ["Δ 24hr Collect Volume", volumeCollectChange],
+          ["Δ 24hr Profile Volume", volumeProfileChange],
         ]).map((value: any[], index: number) => {
           return (
             <div
               key={index}
-              className="relative w-full h-full flex flex-col items-center justify-center"
+              className="relative mid:w-full h-fit preG:h-full flex flex-col items-center justify-center"
             >
-              <div className="relative w-2/3 h-fit flex items-center justify-end ml-auto text-xxs text-right font-arcade">
+              <div className="relative w-2/3 h-fit flex items-center justify-end text-xxs text-center mid:text-right font-arcade whitespace-nowrap word-break">
                 <div className="absolute w-full h-fit -top-px" id="volumeBack">
                   {value[0]}
                 </div>
