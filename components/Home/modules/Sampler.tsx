@@ -45,6 +45,7 @@ const Sampler: FunctionComponent = (): JSX.Element => {
           layout="fill"
           alt="retrowavebg"
           objectFit="cover"
+          priority
         />
       </div>
       <div className="relative flex flex-col p-4 gap-3" id="sampler">
