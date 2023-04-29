@@ -24,9 +24,16 @@ const Pies: FunctionComponent<PiesProps> = ({
           const numBars =
             Math.ceil(percentage / 5) > 15 ? 15 : Math.ceil(percentage / 5);
           return (
-            <div
+            <Link
               className="relative w-20 h-fit flex flex-col font-earl text-white items-center justify-center place-self-center"
               key={index}
+              target="_blank"
+              rel="noreferrer"
+              href={`https://lenster.xyz/u/${
+                (topAccountsFollowed.length < 1
+                  ? piesRedux
+                  : topAccountsFollowed)[index]?.handle?.split(".lens")[0]
+              }`}
             >
               <Image
                 src={`${INFURA_GATEWAY}/ipfs/QmcPJ3gLHsRAdpR4X33PqFLTfjNZ3WxChzuW83txg6KENt`}
@@ -52,16 +59,7 @@ const Pies: FunctionComponent<PiesProps> = ({
                 }
                 %
               </div>
-              <Link
-                className="relative w-fit h-fit flex items-center justify-center text-center text-xs cursor-pointer"
-                target="_blank"
-                rel="noreferrer"
-                href={`https://lenster.xyz/u/${
-                  (topAccountsFollowed.length < 1
-                    ? piesRedux
-                    : topAccountsFollowed)[index]?.handle?.split(".lens")[0]
-                }`}
-              >
+              <div className="relative w-fit h-fit flex items-center justify-center text-center text-xs cursor-pointer">
                 @
                 {(topAccountsFollowed.length < 1
                   ? piesRedux
@@ -72,8 +70,8 @@ const Pies: FunctionComponent<PiesProps> = ({
                   : (topAccountsFollowed.length < 1
                       ? piesRedux
                       : topAccountsFollowed)[index]?.handle?.split(".lens")[0]}
-              </Link>
-            </div>
+              </div>
+            </Link>
           );
         })}
       </div>
