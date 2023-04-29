@@ -105,6 +105,7 @@ const Graphs: FunctionComponent<GraphsProps> = ({
                                           item?.label?.pfp?.split("ipfs/")[1]
                                         }`
                                   }
+                                  alt="pfp"
                                 />
                               )}
                             </div>
