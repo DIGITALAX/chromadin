@@ -1,6 +1,4 @@
 import useBar from "@/components/Common/Sampler/hooks/useBar";
-import usePies from "@/components/Common/Sampler/hooks/usePies";
-import useRates from "@/components/Common/Sampler/hooks/useRates";
 import useStats from "@/components/Common/Sampler/hooks/useStats";
 import Graphs from "@/components/Common/Sampler/modules/Graphs";
 import Pies from "@/components/Common/Sampler/modules/Pies";
@@ -24,11 +22,21 @@ const Sampler: FunctionComponent = (): JSX.Element => {
   } = useBar();
   // const { totalChanges, ratesLoading } = useRates();
   // const { topAccountsFollowed, piesLoading } = usePies();
-  const { statTitles, statsLoading, topAccountsFollowed, totalChanges } =
-    useStats();
+  const {
+    statTitles,
+    statsLoading,
+    topAccountsFollowed,
+    totalChanges,
+    graphData,
+    setCanvas,
+    canvas,
+  } = useStats();
   const rates = useSelector((state: RootState) => state.app.ratesReducer.value);
   const stats = useSelector((state: RootState) => state.app.statsReducer.value);
   const pies = useSelector((state: RootState) => state.app.piesReducer.value);
+  const graphs = useSelector(
+    (state: RootState) => state.app.graphReducer.value
+  );
   return (
     <div className="relative w-full alto:w-full h-full mid:h-[57.2rem] xl:h-[54.8rem] gap-3 flex">
       <div className="absolute w-full h-full bg-cover">
@@ -49,7 +57,13 @@ const Sampler: FunctionComponent = (): JSX.Element => {
           topBarLoading={topBarLoading}
         />
         <div className="relative flex flex-row w-full h-fit mid:h-full gap-3 xl:flex-nowrap flex-wrap xl:overflow-y-visible overflow-y-scroll">
-          <Graphs />
+          <Graphs
+            graphData={graphData}
+            graphLoading={statsLoading}
+            canvas={canvas}
+            setCanvas={setCanvas}
+            graphsRedux={graphs}
+          />
           <div className="relative w-full xl:w-200 mid:h-fit xl:h-full flex flex-col gap-3">
             <Pies
               topAccountsFollowed={topAccountsFollowed}

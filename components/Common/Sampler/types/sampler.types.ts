@@ -52,6 +52,9 @@ export type UseStatsResults = {
     handle: string;
     percentage: string;
   }[];
+  graphData: any[];
+  setCanvas: (e: string) => void;
+  canvas: string;
 };
 
 export type UseBarResults = {
@@ -61,4 +64,12 @@ export type UseBarResults = {
   volumeCollectChange: number;
   volumeProfileChange: number;
   topBarLoading: boolean;
+};
+
+export type GraphsProps = {
+  graphLoading: boolean;
+  graphData: any[];
+  setCanvas: (e: string) => void;
+  canvas: string;
+  graphsRedux: any[]
 };

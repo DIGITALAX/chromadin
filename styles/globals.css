@@ -346,6 +346,22 @@ code::-webkit-scrollbar {
   );
   border-width: 2px;
   border-image-slice: 1;
+  width: 100%;
+  transition: height 0.5s ease-out;
+}
+
+@media (max-width: 640px) {
+  #borderGraph {
+    background: linear-gradient(
+      to bottom,
+      #2abdf6,
+      #078fd6,
+      #06a9cf,
+      #0ac7ab,
+      #1dc2da,
+      #2abcf6
+    );
+  }
 }
 
 @media (min-width: 1024px) and (max-width: 1950px) {
@@ -370,4 +386,25 @@ code::-webkit-scrollbar {
   #sampler {
     width: 100%;
   }
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 1;
+  background-color: black;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 8px;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  font-family: "Earls Revenge";
+  display: flex;
+  align-items: center;
+}
+
+.pfp {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }

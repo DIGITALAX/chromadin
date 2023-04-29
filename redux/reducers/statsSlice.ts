@@ -1,4 +1,3 @@
-import { Collection } from "@/components/Home/types/home.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface StatsState {

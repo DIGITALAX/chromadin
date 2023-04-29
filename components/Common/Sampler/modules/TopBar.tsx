@@ -78,6 +78,7 @@ const TopBar: FunctionComponent<TopBarProps> = ({
                       }`}
                       layout="fill"
                       className="flex items-center justify-center"
+                      draggable={false}
                     />
                   </div>
                 )}

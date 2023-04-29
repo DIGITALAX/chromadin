@@ -136,3 +136,52 @@ ORDER BY
   total_amount DESC
 LIMIT 50
 `;
+
+export const HASHTAGS_TOP = `SELECT hashtag, COUNT(*) as count
+FROM lens-public-data.polygon.public_hashtag
+GROUP BY hashtag
+ORDER BY count DESC
+LIMIT 16`;
+
+export const INTERESTS_TOP = `SELECT interest, COUNT(*) as count
+FROM lens-public-data.polygon.public_profile_interest_record
+GROUP BY interest
+ORDER BY count DESC
+LIMIT 16
+`;
+
+export const MUSIC = `SELECT d.amount, p.post_id, s.total_amount_of_collects, CAST(d.amount AS BIGNUMERIC) * s.total_amount_of_collects AS total_amount, pr.handle, pr.profile_picture_s3_url
+FROM lens-public-data.polygon.public_profile_post p
+JOIN lens-public-data.polygon.public_publication_collect_module_details d
+ON p.post_id = d.publication_id
+JOIN lens-public-data.polygon.public_publication_stats s
+ON p.post_id = s.publication_id
+JOIN lens-public-data.polygon.public_profile pr
+ON p.profile_id = pr.profile_id
+WHERE p.main_content_focus LIKE '%AUDIO%' AND CAST(d.amount AS BIGNUMERIC) > 0
+ORDER BY total_amount DESC
+LIMIT 16`;
+
+export const ART = `SELECT d.amount, p.post_id, s.total_amount_of_collects, CAST(d.amount AS BIGNUMERIC) * s.total_amount_of_collects AS total_amount, pr.handle, pr.profile_picture_s3_url
+FROM lens-public-data.polygon.public_profile_post p
+JOIN lens-public-data.polygon.public_publication_collect_module_details d
+ON p.post_id = d.publication_id
+JOIN lens-public-data.polygon.public_publication_stats s
+ON p.post_id = s.publication_id
+JOIN lens-public-data.polygon.public_profile pr
+ON p.profile_id = pr.profile_id
+WHERE p.main_content_focus LIKE '%IMAGE%' AND CAST(d.amount AS BIGNUMERIC) > 0
+ORDER BY total_amount DESC
+LIMIT 16`;
+
+export const VIDEO = `SELECT d.amount, p.post_id, s.total_amount_of_collects, CAST(d.amount AS BIGNUMERIC) * s.total_amount_of_collects AS total_amount, pr.handle, pr.profile_picture_s3_url
+FROM lens-public-data.polygon.public_profile_post p
+JOIN lens-public-data.polygon.public_publication_collect_module_details d
+ON p.post_id = d.publication_id
+JOIN lens-public-data.polygon.public_publication_stats s
+ON p.post_id = s.publication_id
+JOIN lens-public-data.polygon.public_profile pr
+ON p.profile_id = pr.profile_id
+WHERE p.main_content_focus LIKE '%VIDEO%' AND CAST(d.amount AS BIGNUMERIC) > 0
+ORDER BY total_amount DESC
+LIMIT 16`;

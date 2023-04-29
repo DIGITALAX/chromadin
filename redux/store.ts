@@ -30,6 +30,7 @@ import historyReducer from "./reducers/historySlice";
 import ratesReducer from "./reducers/ratesSlice";
 import statsReducer from "./reducers/statsSlice";
 import piesReducer from "./reducers/piesSlice";
+import graphReducer from "./reducers/graphSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -62,6 +63,7 @@ const reducer = combineReducers({
   ratesReducer,
   piesReducer,
   statsReducer,
+  graphReducer
 });
 
 export const store = configureStore({

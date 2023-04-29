@@ -15,6 +15,7 @@ const MAPPINGS = `
       _highestSpend
       _amountToCollect72
       _amountToCollect
+      _graph
     }
   }
 `;

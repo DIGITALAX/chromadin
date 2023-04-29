@@ -49,6 +49,7 @@ const Rates: FunctionComponent<RatesProps> = ({
                     }`}
                     layout="fill"
                     className="flex items-center justify-center"
+                    draggable={false}
                   />
                 </div>
                 <div className="relative w-fit h-fit flex items-center justify-center whitespace-nowrap">
