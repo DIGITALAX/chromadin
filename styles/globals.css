@@ -310,6 +310,14 @@ code::-webkit-scrollbar {
   color: transparent;
 }
 
+#graphBack {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-text-stroke: 1px #2abdf6;
+  color: transparent;
+}
+
 #percentBack {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -324,6 +332,20 @@ code::-webkit-scrollbar {
   background-clip: text;
   -webkit-text-stroke: 1px #96cb00;
   color: transparent;
+}
+
+#borderGraph {
+  border-image: linear-gradient(
+    to bottom,
+    #2abdf6,
+    #078fd6,
+    #06a9cf,
+    #0ac7ab,
+    #1dc2da,
+    #2abcf6
+  );
+  border-width: 2px;
+  border-image-slice: 1;
 }
 
 @media (min-width: 1024px) and (max-width: 1950px) {

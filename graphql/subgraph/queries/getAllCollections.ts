@@ -1,4 +1,4 @@
-import { FetchResult, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { graphClient } from "@/lib/subgraph/client";
 
 const COLLECTIONS = `

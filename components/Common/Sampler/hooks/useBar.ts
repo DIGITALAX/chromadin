@@ -79,6 +79,7 @@ const useBar = (): UseBarResults => {
       setPreviousProfileVolume(
         prevCollects?.profiles ? prevCollects.profiles : 0
       );
+
       setCurrentProfileVolume(
         currentCollects?.profiles ? currentCollects.profiles : 0
       );
