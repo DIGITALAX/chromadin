@@ -14,6 +14,7 @@ const Switcher: FunctionComponent = (): JSX.Element => {
         loop
         playsInline
         preload="auto"
+        poster={`${INFURA_GATEWAY}/ipfs/QmdAo2VbLNBcso528sGYBKLWdfN7FDBZWqakphLGxXTppU`}
         className="absolute w-full h-full object-cover"
       >
         <source src={"/videos/glitch.mp4"} type="video/mp4" />

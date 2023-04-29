@@ -407,4 +407,5 @@ code::-webkit-scrollbar {
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  background: linear-gradient(to right, #fc9cf3, #b9d9ff, #0091ff, #fd99dc);
 }

@@ -57,7 +57,7 @@ const Graphs: FunctionComponent<GraphsProps> = ({
               draggable={false}
             />
           </div>
-          <div className="relative w-full h-full flex flex-row gap-1 sm:gap-3 justify-start items-end sm:overflow-x-visible overflow-x-scroll">
+          <div className="relative w-full h-full flex flex-row gap-3 justify-start items-end sm:overflow-x-visible overflow-x-scroll">
             {graphLoading
               ? Array.from({ length: 16 }).map((_, index: number) => {
                   return (
@@ -85,61 +85,101 @@ const Graphs: FunctionComponent<GraphsProps> = ({
                       100;
 
                     return (
-                      <div
-                        onClick={
-                          canvas !== "interests" && canvas !== "hashtags"
-                            ? () =>
-                                window.open(
-                                  `https://lenster.xyz/posts/${item.post_id}`,
-                                  "_blank"
-                                )
-                            : () => {}
-                        }
-                        key={index}
-                        id="borderGraph"
-                        className="relative cursor-cell"
-                        style={{ height: `${percentage}%` }}
-                        onMouseOver={(e) => {
-                          const tooltip = document.createElement("div");
-                          if (canvas !== "interests" && canvas !== "hashtags") {
-                            const img = document.createElement("img");
-                            img.src = item.label.pfp.includes("ipfs://")
-                              ? `${INFURA_GATEWAY}/ipfs/${
-                                  item.label.pfp?.split("ipfs://")[1]
-                                }`
-                              : `${INFURA_GATEWAY}/ipfs/${
-                                  item.label.pfp?.split("ipfs/")[1]
-                                }`;
-                            img.classList.add("pfp");
-                            tooltip.appendChild(img);
+                      <div className="relative w-full h-full flex flex-col justify-end items-end">
+                        <div className="relative w-fit h-fit text-xxs text-white font-arcade flex flex-col sm:hidden">
+                          {canvas !== "interests" && canvas !== "hashtags" && (
+                            <div
+                              className="relative w-4 h-4 rounded-full"
+                              id="crt"
+                            >
+                              {item?.label?.pfp && (
+                                <Image
+                                  className="rounded-full w-full h-full flex"
+                                  layout="fill"
+                                  src={
+                                    item?.label?.pfp?.includes("ipfs://")
+                                      ? `${INFURA_GATEWAY}/ipfs/${
+                                          item?.label?.pfp?.split("ipfs://")[1]
+                                        }`
+                                      : `${INFURA_GATEWAY}/ipfs/${
+                                          item?.label?.pfp?.split("ipfs/")[1]
+                                        }`
+                                  }
+                                />
+                              )}
+                            </div>
+                          )}
+                          {canvas === "interests"
+                            ? item.label
+                                .replace(/_{2,}/g, " ")
+                                .replace(/_/g, " ")
+                            : canvas === "hashtags"
+                            ? `#${item.label
+                                .replace(/_{2,}/g, " ")
+                                .replace(/_/g, " ")}`
+                            : `@${item.label.handle.split(".lens")[0]}`}
+                        </div>
+                        <div
+                          onClick={
+                            canvas !== "interests" && canvas !== "hashtags"
+                              ? () =>
+                                  window.open(
+                                    `https://lenster.xyz/posts/${item.post_id}`,
+                                    "_blank"
+                                  )
+                              : () => {}
                           }
-                          const label = document.createElement("span");
-                          label.innerText =
-                            canvas === "interests"
-                              ? item.label
-                                  .replace(/_{2,}/g, " ")
-                                  .replace(/_/g, " ")
-                              : canvas === "hashtags"
-                              ? `#${item.label
-                                  .replace(/_{2,}/g, " ")
-                                  .replace(/_/g, " ")}`
-                              : `@${item.label.handle.split(".lens")[0]}`;
-                          label.style.marginLeft = "4px";
-                          tooltip.appendChild(label);
+                          key={index}
+                          id="borderGraph"
+                          className="relative cursor-cell"
+                          style={{ height: `${percentage}%` }}
+                          onMouseOver={(e) => {
+                            const tooltip = document.createElement("div");
+                            if (
+                              canvas !== "interests" &&
+                              canvas !== "hashtags"
+                            ) {
+                              const img = document.createElement("img");
+                              if (item?.label?.pfp) {
+                                img.src = item?.label?.pfp?.includes("ipfs://")
+                                  ? `${INFURA_GATEWAY}/ipfs/${
+                                      item?.label?.pfp?.split("ipfs://")[1]
+                                    }`
+                                  : `${INFURA_GATEWAY}/ipfs/${
+                                      item?.label?.pfp?.split("ipfs/")[1]
+                                    }`;
+                              }
+                              img.classList.add("pfp");
+                              tooltip.appendChild(img);
+                            }
+                            const label = document.createElement("span");
+                            label.innerText =
+                              canvas === "interests"
+                                ? item.label
+                                    .replace(/_{2,}/g, " ")
+                                    .replace(/_/g, " ")
+                                : canvas === "hashtags"
+                                ? `#${item.label
+                                    .replace(/_{2,}/g, " ")
+                                    .replace(/_/g, " ")}`
+                                : `@${item.label.handle.split(".lens")[0]}`;
+                            label.style.marginLeft = "4px";
+                            tooltip.appendChild(label);
 
-                          tooltip.classList.add("tooltip");
-                          tooltip.style.top = `${e.pageY}px`;
-                          tooltip.style.left = `${e.pageX}px`;
+                            tooltip.classList.add("tooltip");
+                            tooltip.style.top = `${e.pageY}px`;
+                            tooltip.style.left = `${e.pageX}px`;
 
-                          document.body.appendChild(tooltip);
-                        }}
-                        onMouseOut={() => {
-                          const tooltip = document.querySelector(".tooltip");
-                          if (tooltip) {
-                            document.body.removeChild(tooltip);
-                          }
-                        }}
-                      ></div>
+                            document.body.appendChild(tooltip);
+                          }}
+                          onMouseOut={() => {
+                            const tooltip = document.querySelector(".tooltip");
+                            if (tooltip) {
+                              document.body.removeChild(tooltip);
+                            }
+                          }}
+                        ></div>
+                      </div>
                     );
                   })}
           </div>

@@ -158,7 +158,7 @@ JOIN lens-public-data.polygon.public_publication_stats s
 ON p.post_id = s.publication_id
 JOIN lens-public-data.polygon.public_profile pr
 ON p.profile_id = pr.profile_id
-WHERE p.main_content_focus LIKE '%AUDIO%' AND CAST(d.amount AS BIGNUMERIC) > 0
+WHERE p.main_content_focus LIKE '%AUDIO%' AND CAST(d.amount AS BIGNUMERIC) > 0 AND p.is_related_to_post IS NULL
 ORDER BY total_amount DESC
 LIMIT 16`;
 
@@ -170,7 +170,7 @@ JOIN lens-public-data.polygon.public_publication_stats s
 ON p.post_id = s.publication_id
 JOIN lens-public-data.polygon.public_profile pr
 ON p.profile_id = pr.profile_id
-WHERE p.main_content_focus LIKE '%IMAGE%' AND CAST(d.amount AS BIGNUMERIC) > 0
+WHERE p.main_content_focus LIKE '%IMAGE%' AND CAST(d.amount AS BIGNUMERIC) > 0 AND p.is_related_to_post IS NULL
 ORDER BY total_amount DESC
 LIMIT 16`;
 
@@ -182,6 +182,6 @@ JOIN lens-public-data.polygon.public_publication_stats s
 ON p.post_id = s.publication_id
 JOIN lens-public-data.polygon.public_profile pr
 ON p.profile_id = pr.profile_id
-WHERE p.main_content_focus LIKE '%VIDEO%' AND CAST(d.amount AS BIGNUMERIC) > 0
+WHERE p.main_content_focus LIKE '%VIDEO%' AND CAST(d.amount AS BIGNUMERIC) > 0 AND p.is_related_to_post IS NULL
 ORDER BY total_amount DESC
 LIMIT 16`;
