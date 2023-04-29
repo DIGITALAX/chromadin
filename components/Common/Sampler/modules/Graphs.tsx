@@ -85,7 +85,10 @@ const Graphs: FunctionComponent<GraphsProps> = ({
                       100;
 
                     return (
-                      <div className="relative w-full h-full flex flex-col justify-end items-end">
+                      <div
+                        className="relative w-full h-full flex flex-col justify-end items-end"
+                        key={index}
+                      >
                         <div className="relative w-fit h-fit text-xxs text-white font-arcade flex flex-col sm:hidden">
                           {canvas !== "interests" && canvas !== "hashtags" && (
                             <div
@@ -130,7 +133,6 @@ const Graphs: FunctionComponent<GraphsProps> = ({
                                   )
                               : () => {}
                           }
-                          key={index}
                           id="borderGraph"
                           className="relative cursor-cell"
                           style={{ height: `${percentage}%` }}
