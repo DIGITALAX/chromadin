@@ -46,7 +46,11 @@ const Player: FunctionComponent<PlayerProps> = ({
         />
       )}
       {videosLoading && viewer !== "sampler" ? (
-        <div className="relative w-20 h-14 bg-offBlack flex flex-col items-center justify-center">
+        <div
+          className={`relative bg-offBlack flex flex-col items-center justify-center ${
+            viewer !== "collect" ? "w-full h-full" : "w-20 h-14"
+          }`}
+        >
           <FetchMoreLoading size="4" />
         </div>
       ) : (
