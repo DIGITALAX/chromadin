@@ -8,7 +8,6 @@ import Link from "next/link";
 const Account: FunctionComponent<AccountProps> = ({
   profile,
   isCreator,
-  router,
 }): JSX.Element => {
   const formattedURL = createProfilePicture(profile);
   return (

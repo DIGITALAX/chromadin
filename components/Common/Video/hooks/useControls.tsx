@@ -22,7 +22,6 @@ import checkDispatcher from "@/lib/helpers/checkDispatcher";
 import collect from "@/graphql/lens/mutations/collect";
 import useInteractions from "../../Interactions/hooks/useInteractions";
 import { setIndexModal } from "@/redux/reducers/indexModalSlice";
-import pollUntilIndexed from "@/lib/helpers/checkIndexed";
 import { ApprovedAllowanceAmount } from "@/components/Home/types/lens.types";
 import {
   getPublication,
@@ -35,6 +34,7 @@ import { setModal } from "@/redux/reducers/modalSlice";
 import ReactPlayer from "react-player";
 import { waitForTransaction } from "@wagmi/core";
 import { setReactId } from "@/redux/reducers/reactIdSlice";
+import pollUntilIndexed from "@/graphql/lens/queries/checkIndexed";
 
 const useControls = (): UseControlsResults => {
   const { commentors } = useInteractions();

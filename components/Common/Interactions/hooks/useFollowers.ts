@@ -27,10 +27,10 @@ import LensHubProxy from "./../../../../abis/LensHubProxy.json";
 import createFollowModule from "@/lib/helpers/createFollowModule";
 import { setLensProfile } from "@/redux/reducers/lensProfileSlice";
 import getDefaultProfile from "@/graphql/lens/queries/getDefaultProfile";
-import pollUntilIndexed from "@/lib/helpers/checkIndexed";
 import { setModal } from "@/redux/reducers/modalSlice";
 import { setFollowerOnly } from "@/redux/reducers/followerOnlySlice";
 import { waitForTransaction } from "@wagmi/core";
+import pollUntilIndexed from "@/graphql/lens/queries/checkIndexed";
 
 const useFollowers = () => {
   const dispatch = useDispatch();

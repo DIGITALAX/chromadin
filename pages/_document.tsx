@@ -8,7 +8,7 @@ export default function Document() {
         <meta name="og:title" content="Chromadin" />
         <meta
           name="og:description"
-          content="  There are whispers of new apps that can't be taken away from you. Stirrings of resistance decentralized in code. Where users own the network, direct messages are reliably private, and the channels we see the world through can be counted on to stay fully independent. Engagement and influence flow back to you. Like it was always meant to be."
+          content="There are whispers of new apps that can't be taken away from you. Stirrings of resistance decentralized in code. Where users own the network, direct messages are reliably private, and the channels we see the world through can be counted on to stay fully independent. Engagement and influence flow back to you. Like it was always meant to be."
         />
         <meta name="og:image" content="https://chromadin.xyz/card.png/" />
         <meta name="twitter:card" content="summary" />

@@ -31,7 +31,6 @@ export type CommentsProps = {
 export type AccountProps = {
   profile: Profile | undefined;
   isCreator: boolean;
-  router: NextRouter
 };
 
 export type IRLOptionsProps = {
