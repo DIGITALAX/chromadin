@@ -22,10 +22,11 @@ const SideBar: FunctionComponent<SideBarProps> = ({
   videosLoading,
   dispatchVideos,
   collected,
+  options
 }): JSX.Element => {
   return (
     <div className="relative w-full lg:w-80 h-fit lg:h-full flex flex-col">
-      <Switcher />
+      <Switcher options={options}/>
       <Tabs tab={tab} setTab={setTab} viewer={viewer} />
       {tab === 0 ? (
         <Channels
@@ -46,6 +47,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({
         handleLensSignIn={handleLensSignIn}
         authStatus={authStatus}
         profile={profile}
+        options={options}
       />
     </div>
   );

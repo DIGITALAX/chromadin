@@ -1,5 +1,6 @@
 import { AnyAction, Dispatch } from "redux";
 import { Profile } from "./lens.types";
+import { NextRouter } from "next/router";
 
 export type ViewProps = {
   viewer: string;
@@ -7,6 +8,7 @@ export type ViewProps = {
 
 export type VendingProps = {
   dispatch: Dispatch<AnyAction>;
+  router: NextRouter;
 };
 
 export interface Collection {

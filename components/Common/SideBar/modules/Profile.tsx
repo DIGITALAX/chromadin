@@ -6,7 +6,10 @@ import { useDispatch } from "react-redux";
 import { setOptions } from "@/redux/reducers/optionsSlice";
 import { useRouter } from "next/router";
 
-const Profile: FunctionComponent<ProfileProps> = ({ profile }): JSX.Element => {
+const Profile: FunctionComponent<ProfileProps> = ({
+  profile,
+  options,
+}): JSX.Element => {
   const picture = createProfilePicture(profile);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -14,10 +17,12 @@ const Profile: FunctionComponent<ProfileProps> = ({ profile }): JSX.Element => {
     <div
       className="relative w-full sm:w-40 lg:w-full h-12 font-geom text-white border-white border rounded-tl-lg rounded-br-lg flex flex-row px-2 cursor-pointer bg-lensLight/70 gap-4 items-center justify-center"
       onClick={() => {
-        if (router.asPath.includes("stream")) {
-          router.push("#collect");
+        if (
+          router.asPath.includes("stream") ||
+          router.asPath.includes("sampler")
+        ) {
+          router.push("#collect?=account");
         }
-        dispatch(setOptions("account"));
       }}
     >
       <div className="relative w-6 h-6 rounded-full" id="crt">

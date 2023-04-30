@@ -16,12 +16,45 @@ import { useEffect, useState } from "react";
 import generateChallenge from "@/graphql/lens/queries/generateChallenge";
 import getDefaultProfile from "@/graphql/lens/queries/getDefaultProfile";
 import { setNoHandle } from "@/redux/reducers/noHandleSlice";
+import { useContractRead } from "wagmi";
+import { CHROMADIN_ACCESS_CONTROLS } from "@/lib/constants";
+import { setIsCreator } from "@/redux/reducers/isCreatorSlice";
+import { useRouter } from "next/router";
 
 const useConnect = (): UseConnectResults => {
   const { openConnectModal } = useConnectModal();
   const dispatch = useDispatch();
   const { address, isConnected } = useAccount();
   const [connected, setConnected] = useState<boolean>(false);
+  const router = useRouter();
+
+  const { data } = useContractRead({
+    address: CHROMADIN_ACCESS_CONTROLS,
+    abi: [
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "_writer",
+            type: "address",
+          },
+        ],
+        name: "isWriter",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "",
+            type: "bool",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+    ],
+    functionName: "isWriter",
+    args: [address as `0x${string}`],
+    enabled: connected,
+  });
 
   const { signMessageAsync } = useSignMessage({
     onError() {
@@ -90,6 +123,12 @@ const useConnect = (): UseConnectResults => {
       handleRefreshProfile();
     }
   }, [isConnected]);
+
+  useEffect(() => {
+    if (data && router) {
+      dispatch(setIsCreator(data));
+    }
+  }, [data]);
 
   return { handleConnect, handleLensSignIn, handleRefreshProfile, connected };
 };

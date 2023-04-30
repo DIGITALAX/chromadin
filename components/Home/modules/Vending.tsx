@@ -11,6 +11,7 @@ import { setOptions } from "@/redux/reducers/optionsSlice";
 
 const Vending: FunctionComponent<VendingProps> = ({
   dispatch,
+  router
 }): JSX.Element => {
   const { collections, collectionsLoading, error } = useDrop();
   const dispatchCollections = useSelector(
@@ -95,7 +96,9 @@ const Vending: FunctionComponent<VendingProps> = ({
                         // tokensSold: collection?.soldTokens,
                       })
                     );
-                    dispatch(setOptions("fulfillment"));
+                    router.push(
+                      router.asPath.split("?=")[0] + "?=" + "fulfillment"
+                    );
                   }}
                 >
                   <Image

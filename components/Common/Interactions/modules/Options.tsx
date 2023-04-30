@@ -1,11 +1,13 @@
 import { INFURA_GATEWAY } from "@/lib/constants";
 import { setOptions } from "@/redux/reducers/optionsSlice";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
 import { useDispatch } from "react-redux";
 
 const Options: FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
+  const router = useRouter();
   return (
     <div className="relative w-full h-28 flex flex-row items-center gap-1 justify-center bg-black xl:py-0 py-4">
       {Array.from([
@@ -17,7 +19,9 @@ const Options: FunctionComponent = (): JSX.Element => {
           <div
             className="relative w-full h-full grid grid-flow-row auto-rows-auto flex items-center"
             key={index}
-            onClick={() => dispatch(setOptions(value[1]))}
+            onClick={() =>
+              router.push(router.asPath.split("?=")[0] + "?=" + value[1])
+            }
           >
             <div
               className={`relative w-12 h-12 grid grid-flow-col auto-cols-auto row-start-1 justify-self-center items-center flex cursor-pointer active:scale-95`}

@@ -6,9 +6,11 @@ import { RootState } from "@/redux/store";
 import Fulfillment from "./Fulfillment";
 import useFulfillment from "../hooks/useFulfillment";
 import useHistory from "../hooks/useHistory";
+import { useRouter } from "next/router";
 
 const Switch: FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const action = useSelector(
     (state: RootState) => state.app.optionsReducer.value
   );
@@ -26,6 +28,9 @@ const Switch: FunctionComponent = (): JSX.Element => {
   );
   const collections = useSelector(
     (state: RootState) => state.app.collectionsReducer.value
+  );
+  const isCreator = useSelector(
+    (state: RootState) => state.app.isCreatorReducer.value
   );
   const {
     currency,
@@ -49,7 +54,9 @@ const Switch: FunctionComponent = (): JSX.Element => {
   const { history, historyLoading } = useHistory();
   switch (action) {
     case "account":
-      return <Account profile={profile} />;
+      return (
+        <Account profile={profile} isCreator={isCreator} router={router} />
+      );
 
     case "fulfillment":
       return (

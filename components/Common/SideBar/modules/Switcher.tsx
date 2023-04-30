@@ -3,8 +3,11 @@ import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
 import MarqueeText from "react-fast-marquee";
+import { SwitcherProps } from "../types/sidebar.types";
 
-const Switcher: FunctionComponent = (): JSX.Element => {
+const Switcher: FunctionComponent<SwitcherProps> = ({
+  options,
+}): JSX.Element => {
   const router = useRouter();
   return (
     <div className="relative w-full h-fit flex-col flex-wrap">
@@ -52,7 +55,7 @@ const Switcher: FunctionComponent = (): JSX.Element => {
                   key={index}
                   onClick={
                     values[1] !== "wavs"
-                      ? () => router.push(`#${values[1]}`)
+                      ? () => router.push(`#${values[1]}` + "?=" + options)
                       : () => {}
                   }
                 >

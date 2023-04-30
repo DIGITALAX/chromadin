@@ -2,6 +2,7 @@ import { Profile, Publication } from "@/components/Home/types/lens.types";
 import { AnyAction, Dispatch } from "redux";
 import { MainNFT } from "../../NFT/types/nft.types";
 import { Collection } from "@/components/Home/types/home.types";
+import { NextRouter } from "next/router";
 
 export type InteractionProps = {
   viewer: string;
@@ -29,6 +30,8 @@ export type CommentsProps = {
 
 export type AccountProps = {
   profile: Profile | undefined;
+  isCreator: boolean;
+  router: NextRouter
 };
 
 export type IRLOptionsProps = {

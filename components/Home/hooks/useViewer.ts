@@ -1,3 +1,4 @@
+import { setOptions } from "@/redux/reducers/optionsSlice";
 import { setView } from "@/redux/reducers/viewSlice";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
@@ -11,7 +12,8 @@ const useViewer = () => {
 
   useEffect(() => {
     if (router.asPath.includes("#")) {
-      dispatch(setView(router.asPath.split("#")[1]));
+      dispatch(setView(router.asPath.split("#")[1].split("?=")[0]));
+      dispatch(setOptions(router.asPath.split("#")[1].split("?=")[1]));
     }
   }, [router.asPath]);
 

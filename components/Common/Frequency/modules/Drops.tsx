@@ -5,13 +5,13 @@ import { Collection } from "@/components/Home/types/home.types";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
-import { setOptions } from "@/redux/reducers/optionsSlice";
 
 const Drops: FunctionComponent<DropsProps> = ({
   collections,
   dispatch,
   dispatchCollections,
   collectionsLoading,
+  router
 }): JSX.Element => {
   return (
     <div className="relative w-[80%] h-full p-4 flex flex-row gap-4">
@@ -68,7 +68,7 @@ const Drops: FunctionComponent<DropsProps> = ({
                         // tokensSold: collection?.soldTokens,
                       })
                     );
-                    dispatch(setOptions("fulfillment"));
+                    router.push(router.asPath.split("?=")[0] + "?=" + "fulfillment")
                   }}
                 >
                   <div

@@ -26,9 +26,6 @@ const useFulfillment = () => {
   const mainNFT = useSelector(
     (state: RootState) => state.app.mainNFTReducer.value
   );
-  const productType = useSelector(
-    (state: RootState) => state.app.productTypeReducer.value
-  );
   const success = useSelector((state: RootState) => state.app.successReducer);
   const { address } = useAccount();
   const [approved, setApproved] = useState<boolean>(false);

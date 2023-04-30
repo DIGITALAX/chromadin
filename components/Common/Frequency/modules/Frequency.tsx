@@ -6,6 +6,7 @@ import useDrops from "../hooks/useDrops";
 import { useDispatch, useSelector } from "react-redux";
 import useDrop from "@/components/Home/hooks/useDrop";
 import { RootState } from "@/redux/store";
+import { useRouter } from "next/router";
 
 const Frequency: FunctionComponent = (): JSX.Element => {
   const {
@@ -18,6 +19,7 @@ const Frequency: FunctionComponent = (): JSX.Element => {
   } = useDrops();
   const { collections, collectionsLoading } = useDrop();
   const dispatch = useDispatch();
+  const router = useRouter();
   const dispatchCollections = useSelector(
     (state: RootState) => state.app.collectionsReducer.value
   );
@@ -73,6 +75,7 @@ const Frequency: FunctionComponent = (): JSX.Element => {
           dispatch={dispatch}
           dispatchCollections={dispatchCollections}
           collectionsLoading={collectionsLoading}
+          router={router}
         />
       </div>
       <div

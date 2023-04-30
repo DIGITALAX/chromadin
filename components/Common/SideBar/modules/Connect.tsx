@@ -9,7 +9,8 @@ const Connect: FunctionComponent<ConnectProps> = ({
   connected,
   handleLensSignIn,
   authStatus,
-  profile
+  profile,
+  options
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full py-8 lg:py-3 px-3 flex flex-col sm:flex-row lg:flex-col items-center gap-4">
@@ -19,6 +20,7 @@ const Connect: FunctionComponent<ConnectProps> = ({
         handleLensSignIn={handleLensSignIn}
         authStatus={authStatus}
         profile={profile}
+        options={options}
       />
       <div className="relative justify-center sm:justify-end w-full h-full flex flex-row gap-2">
         <div className="relative w-20 sm:w-14 lg:w-full lg:h-28 h-14 flex">

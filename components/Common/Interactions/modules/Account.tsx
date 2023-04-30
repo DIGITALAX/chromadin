@@ -3,11 +3,16 @@ import { AccountProps } from "../types/interactions.types";
 import Image from "next/legacy/image";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import { INFURA_GATEWAY } from "@/lib/constants";
+import Link from "next/link";
 
-const Account: FunctionComponent<AccountProps> = ({ profile }): JSX.Element => {
+const Account: FunctionComponent<AccountProps> = ({
+  profile,
+  isCreator,
+  router,
+}): JSX.Element => {
   const formattedURL = createProfilePicture(profile);
   return (
-    <div className="relative w-full h-full xl:h-[45.8rem] flex flex-col items-center justify-center bg-black border-t border-white">
+    <div className="relative w-full h-full xl:h-[45.8rem] flex flex-col items-start justify-center bg-black border-t border-white">
       <div className="absolute w-full h-full xl:h-[40vw] flex grow top-0">
         <Image
           src={`${INFURA_GATEWAY}/ipfs/QmUBMaicGmBVTqUr5QXaqEu1AkavAhprwpDXKbMiy74g8p`}
@@ -17,7 +22,11 @@ const Account: FunctionComponent<AccountProps> = ({ profile }): JSX.Element => {
         />
       </div>
       {profile ? (
-        <div className="relative w-full h-full flex flex-col p-2 gap-2">
+        <div
+          className={`relative w-full ${
+            isCreator ? "h-fit" : "h-full"
+          } flex flex-col p-2 gap-2 items-start justify-center`}
+        >
           <div className="relative w-full h-fit items-center justify-center py-3 flex">
             <div
               className="relative flex w-14 h-14 rounded-full items-center justify-center border border-moda"
@@ -61,8 +70,24 @@ const Account: FunctionComponent<AccountProps> = ({ profile }): JSX.Element => {
           ></textarea>
         </div>
       ) : (
-        <div className="relative w-full h-full flex flex-col items-center justify-center font-arcade text-moda text-sm p-3">
+        <div
+          className={`relative w-full ${
+            isCreator ? "h-fit p-5" : "h-full p-3"
+          } flex flex-col items-center justify-center font-arcade text-moda text-sm`}
+        >
           Connect to Lens to View Your Account
+        </div>
+      )}
+      {isCreator && (
+        <div className="relative w-full h-full flex flex-col items-center justify-center p-3">
+          <Link
+            className="relative w-fit h-fit py-2 px-3 rounded-br-lg  rounded-tl-lg bg-offBlack border-white border font-earl text-white text-sm word-break cursor-pointer flex items-center justify-center active:scale-95 hover:opacity-70"
+            target="_blank"
+            rel="noreferrer"
+            href={"https://www.dispatch.chromadin.xyz"}
+          >
+            Go To Creator Dashboard
+          </Link>
         </div>
       )}
     </div>
@@ -70,4 +95,3 @@ const Account: FunctionComponent<AccountProps> = ({ profile }): JSX.Element => {
 };
 
 export default Account;
-

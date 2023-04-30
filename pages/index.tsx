@@ -29,6 +29,9 @@ const Home: NextPage = (): JSX.Element => {
   const dispatchVideos = useSelector(
     (state: RootState) => state.app.channelsReducer.value
   );
+  const options = useSelector(
+    (state: RootState) => state.app.optionsReducer.value
+  );
   const dispatch = useDispatch();
   const { handleConnect, handleLensSignIn, connected } = useConnect();
   const { videos, liked, mirrored, tab, setTab, videosLoading, collected } =
@@ -41,7 +44,7 @@ const Home: NextPage = (): JSX.Element => {
       </Head>
       <div className="relative w-full h-full flex flex-row xl:flex-nowrap flex-wrap">
         <div className="relative w-full h-fit flex lg:hidden">
-          <Switcher />
+          <Switcher options={options} />
         </div>
         <div className="relative w-full h-full flex flex-row items-center">
           <div className="relative w-fit h-full hidden lg:flex">
@@ -61,6 +64,7 @@ const Home: NextPage = (): JSX.Element => {
               videosLoading={videosLoading}
               dispatchVideos={dispatchVideos}
               collected={collected}
+              options={options}
             />
           </div>
           <div className="relative w-full h-full flex flex-col gap-5 items-center justify-center">
@@ -75,6 +79,7 @@ const Home: NextPage = (): JSX.Element => {
             handleLensSignIn={handleLensSignIn}
             authStatus={authStatus}
             profile={profile}
+            options={options}
           />
           <Tabs tab={tab} setTab={setTab} viewer={viewer} />
           {tab === 0 ? (
