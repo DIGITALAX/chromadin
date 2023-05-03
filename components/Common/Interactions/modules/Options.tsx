@@ -20,7 +20,16 @@ const Options: FunctionComponent = (): JSX.Element => {
             className="relative w-full h-full grid grid-flow-row auto-rows-auto flex items-center"
             key={index}
             onClick={() =>
-              router.push(router.asPath.split("?=")[0] + "?=" + value[1])
+              !router.asPath.includes("?search=")
+                ? router.push(
+                    router.asPath.split("?option=")[0] + "?option=" + value[1]
+                  )
+                : router.push(
+                    router.asPath.split("?option=")[0] +
+                      "?option=" +
+                      value[1] +
+                      `?search=${router.asPath.split("?search=")[1]}`
+                  )
             }
           >
             <div

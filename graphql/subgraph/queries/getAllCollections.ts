@@ -11,6 +11,7 @@ const COLLECTIONS = `
       acceptedTokens
       name
       owner
+      blockTimestamp
     }
   }
 `;

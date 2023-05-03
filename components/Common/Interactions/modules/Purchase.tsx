@@ -2,7 +2,6 @@ import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
 import { FunctionComponent } from "react";
 import { PurchaseProps } from "../types/interactions.types";
-import { AiOutlineLoading } from "react-icons/ai";
 
 const Purchase: FunctionComponent<PurchaseProps> = ({
   acceptedtokens,
@@ -36,7 +35,7 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
             [
               "QmYYUQ8nGDnyuk8jQSung1WmTksvLEQBXjnCctdRrKtsNk",
               "MATIC",
-              "0x6199A505ec1707695Ce49b59A07A147f2d50f22D",
+              "0x0000000000000000000000000000000000001010",
             ],
             [
               "QmZRhUgjK6bJM8fC7uV145yf66q2e7vGeT7CLosw1SdMdN",

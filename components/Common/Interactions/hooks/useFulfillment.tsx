@@ -1,4 +1,7 @@
-import { CHROMADIN_MARKETPLACE_CONTRACT } from "@/lib/constants";
+import {
+  ACCEPTED_TOKENS,
+  CHROMADIN_MARKETPLACE_CONTRACT,
+} from "@/lib/constants";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,12 +19,6 @@ import { setSuccess } from "@/redux/reducers/successSlice";
 import { setError } from "@/redux/reducers/errorSlice";
 
 const useFulfillment = () => {
-  const acceptedTokens: string[][] = [
-    ["MATIC", "0x6199a505ec1707695ce49b59a07a147f2d50f22d"],
-    ["WETH", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"],
-    ["USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"],
-    ["MONA", "0x6968105460f67c3bf751be7c15f92f5286fd0ce5"],
-  ];
   const dispatch = useDispatch();
   const mainNFT = useSelector(
     (state: RootState) => state.app.mainNFTReducer.value
@@ -33,7 +30,7 @@ const useFulfillment = () => {
   const [selectSize, setSelectSize] = useState<number>(0);
   const [baseColor, setBaseColor] = useState<number>(0);
   const [currency, setCurrency] = useState<string>(
-    acceptedTokens.filter(
+    ACCEPTED_TOKENS.filter(
       (token) =>
         token[1]?.toLowerCase() === mainNFT?.acceptedTokens?.[0]?.toLowerCase()
     )?.[0]?.[0]
@@ -49,7 +46,7 @@ const useFulfillment = () => {
   );
 
   const { data } = useContractRead({
-    address: acceptedTokens.filter(
+    address: ACCEPTED_TOKENS.filter(
       (token) =>
         token[1].toLowerCase() === mainNFT?.acceptedTokens?.[0].toLowerCase()
     )?.[0]?.[1] as `0x${string}`,
@@ -85,7 +82,7 @@ const useFulfillment = () => {
   });
 
   const { config } = usePrepareContractWrite({
-    address: acceptedTokens.filter(
+    address: ACCEPTED_TOKENS.filter(
       (token) =>
         token[1].toLowerCase() === mainNFT?.acceptedTokens?.[0].toLowerCase()
     )?.[0]?.[1] as `0x${string}`,
@@ -128,7 +125,7 @@ const useFulfillment = () => {
     abi: ChromadinMarketplaceABI,
     args: [
       [tokenId],
-      acceptedTokens.filter(
+      ACCEPTED_TOKENS.filter(
         (token) =>
           token[1].toLowerCase() === mainNFT?.acceptedTokens?.[0].toLowerCase()
       )?.[0]?.[1] as `0x${string}`,
@@ -145,21 +142,21 @@ const useFulfillment = () => {
     if (
       mainNFT?.acceptedTokens.find(
         (token) =>
-          token === acceptedTokens.find((token) => token[0] === currency)?.[1]!
+          token === ACCEPTED_TOKENS.find((token) => token[0] === currency)?.[1]!
       )
     ) {
       number =
         Number(
           mainNFT?.price[
             mainNFT?.acceptedTokens.indexOf(
-              acceptedTokens.find((token) => token[0] === currency)?.[1]!
+              ACCEPTED_TOKENS.find((token) => token[0] === currency)?.[1]!
             )
           ]
         ) /
         10 ** 18;
     } else {
       setCurrency(
-        acceptedTokens.find(
+        ACCEPTED_TOKENS.find(
           (token) =>
             token[1]?.toLowerCase() ===
             mainNFT?.acceptedTokens[0]?.toLowerCase()
@@ -169,13 +166,11 @@ const useFulfillment = () => {
         Number(
           mainNFT?.price[
             mainNFT?.acceptedTokens.indexOf(
-              acceptedTokens
-                .find(
-                  (token) =>
-                    token[1].toLowerCase() ===
-                    mainNFT?.acceptedTokens[0].toLowerCase()
-                )?.[1]
-                ?.toLowerCase()!
+              ACCEPTED_TOKENS.find(
+                (token) =>
+                  token[1].toLowerCase() ===
+                  mainNFT?.acceptedTokens[0].toLowerCase()
+              )?.[1]?.toLowerCase()!
             )
           ]
         ) /

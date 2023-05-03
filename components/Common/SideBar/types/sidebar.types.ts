@@ -37,7 +37,6 @@ export type ConnectProps = {
   connected: boolean;
   authStatus: boolean;
   profile: Profile | undefined;
-  options: string;
 };
 
 export type AuthProps = {
@@ -46,7 +45,6 @@ export type AuthProps = {
   connected: boolean;
   authStatus: boolean;
   profile: Profile | undefined;
-  options: string;
 };
 
 export type WalletProps = {
@@ -57,7 +55,6 @@ export type WalletProps = {
 
 export type ProfileProps = {
   profile: Profile | undefined;
-  options: string;
 };
 
 export type TabProps = {

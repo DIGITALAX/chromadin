@@ -47,7 +47,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
               />
             </div>
             <div
-              className="relative w-full h-fit text-lg font-arcade flex justify-start break-word"
+              className="relative w-full h-fit text-lg font-arcade flex justify-start break-words"
               id={`record1`}
             >
               {video?.metadata?.content?.split("\n\n")[0]}

@@ -31,7 +31,7 @@ const CollectButton: FunctionComponent<CollectButtonProps> = ({
         row && `row-start-${row}`
       } grid grid-flow-row auto-rows-auto grid grid-flow-row auto-rows-auto pr-2 pb-2 gap-2 text-xs`}
     >
-      <div className="relative w-fit h-fit row-start-1 font-arcade text-white text-xs whitespace-pre-wrap break-word sm:whitespace-nowrap justify-self-start self-center text-left">
+      <div className="relative w-fit h-fit row-start-1 font-arcade text-white text-xs whitespace-pre-wrap break-words sm:whitespace-nowrap justify-self-start self-center text-left">
         {label}
       </div>
       <div

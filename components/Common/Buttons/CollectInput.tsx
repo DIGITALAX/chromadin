@@ -17,7 +17,7 @@ const CollectInput: FunctionComponent<CollectInputProps> = ({
     <div
       className={`relative w-fit h-fit grid grid-flow-row auto-rows-auto row-start-${row} col-start-${col} text-black font-arcade text-xs justify-self-start gap-2 pr-2 self-start`}
     >
-      <div className="relative w-fit h-fit row-start-1 font-arcade text-white text-xs whitespace-pre-wrap break-word sm:whitespace-nowrap justify-self-start self-center text-left">
+      <div className="relative w-fit h-fit row-start-1 font-arcade text-white text-xs whitespace-pre-wrap break-words sm:whitespace-nowrap justify-self-start self-center text-left">
         {label}
       </div>
       <input

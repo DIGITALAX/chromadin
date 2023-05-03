@@ -1,7 +1,6 @@
 import { MediaType, UploadedMedia } from "@/components/Home/types/home.types";
 import { getCommentData, setCommentData } from "@/lib/lens/utils";
 import { RootState } from "@/redux/store";
-import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import lodash from "lodash";
@@ -55,7 +54,7 @@ const useImageUpload = () => {
         return;
       }
       Array.from(((e as FormEvent).target as HTMLFormElement)?.files).map(
-        async (file: any, index: number) => {
+        async (_, index: number) => {
           try {
             const compressedImage = await compressImageFiles(
               (e as any).target.files[index] as File

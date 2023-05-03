@@ -11,7 +11,7 @@ const Drops: FunctionComponent<DropsProps> = ({
   dispatch,
   dispatchCollections,
   collectionsLoading,
-  router
+  router,
 }): JSX.Element => {
   return (
     <div className="relative w-[80%] h-full p-4 flex flex-row gap-4">
@@ -68,7 +68,18 @@ const Drops: FunctionComponent<DropsProps> = ({
                         // tokensSold: collection?.soldTokens,
                       })
                     );
-                    router.push(router.asPath.split("?=")[0] + "?=" + "fulfillment")
+                    !router.asPath.includes("?search=")
+                      ? router.push(
+                          router.asPath.split("?option=")[0] +
+                            "?option=" +
+                            "fulfillment"
+                        )
+                      : router.push(
+                          router.asPath.split("?option=")[0] +
+                            "?option=" +
+                            "fulfillment" +
+                            `?search=${router.asPath.split("?search=")[1]}`
+                        );
                   }}
                 >
                   <div

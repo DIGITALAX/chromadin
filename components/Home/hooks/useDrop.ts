@@ -9,6 +9,7 @@ import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import { RootState } from "@/redux/store";
 import { setCollectionsRedux } from "@/redux/reducers/collectionsSlice";
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
+import { setDropsRedux } from "@/redux/reducers/dropsSlice";
 
 const useDrop = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
@@ -37,9 +38,19 @@ const useDrop = () => {
         return;
       }
       const drops = await handleAllDrops();
+      dispatch(setDropsRedux(data?.data?.dropCreateds));
+
+      const validCollections = data?.data?.collectionMinteds.filter(
+        (collection: Collection) => {
+          const collectionDrops = drops.filter((drop: any) =>
+            drop.collectionIds.includes(collection.collectionId)
+          );
+          return collectionDrops.length > 0;
+        }
+      );
 
       const collections = await Promise.all(
-        data?.data?.collectionMinteds.map(async (collection: Collection) => {
+        validCollections.map(async (collection: Collection) => {
           const json = await fetchIPFSJSON(
             (collection.uri as any)
               ?.split("ipfs://")[1]

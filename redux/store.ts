@@ -32,6 +32,9 @@ import statsReducer from "./reducers/statsSlice";
 import piesReducer from "./reducers/piesSlice";
 import graphReducer from "./reducers/graphSlice";
 import isCreatorReducer from "./reducers/isCreatorSlice";
+import priceFilterReducer from "./reducers/priceFilterSlice";
+import dateFilterReducer from "./reducers/dateFilterSlice";
+import searchReducer from "./reducers/searchSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -66,6 +69,9 @@ const reducer = combineReducers({
   statsReducer,
   graphReducer,
   isCreatorReducer,
+  priceFilterReducer,
+  dateFilterReducer,
+  searchReducer,
 });
 
 export const store = configureStore({

@@ -12,6 +12,7 @@ module.exports = {
         geom: "Geometria",
         digi: "DS Digital",
         earl: "Earls Revenge",
+        dosis: "Dosis Regular",
       },
       colors: {
         verde: "#25EC68",

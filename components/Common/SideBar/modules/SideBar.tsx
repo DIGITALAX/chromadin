@@ -47,7 +47,6 @@ const SideBar: FunctionComponent<SideBarProps> = ({
         handleLensSignIn={handleLensSignIn}
         authStatus={authStatus}
         profile={profile}
-        options={options}
       />
     </div>
   );

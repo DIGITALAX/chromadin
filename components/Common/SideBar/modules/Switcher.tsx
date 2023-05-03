@@ -55,7 +55,18 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
                   key={index}
                   onClick={
                     values[1] !== "wavs"
-                      ? () => router.push(`#${values[1]}` + "?=" + options)
+                      ? () =>
+                          !router.asPath.includes("?search=")
+                            ? router.push(
+                                `#${values[1]}` + "?option=" + options
+                              )
+                            : router.push(
+                                `#${values[1]}` +
+                                  "?option=" +
+                                  options +
+                                  "?search=" +
+                                  router.asPath.split("?search=")[1]
+                              )
                       : () => {}
                   }
                 >

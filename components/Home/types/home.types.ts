@@ -31,6 +31,7 @@ export interface Collection {
   profile: Profile | undefined;
   prices: string[];
   acceptedTokens: string[];
+  timeStamp?: string;
   // tokenIds: string[];
   // soldTokens: string[] | null;
 }
@@ -40,6 +41,7 @@ export interface Drop {
   creator: string;
   collectionIds: string;
   blockTimestamp: string;
+  uri: string;
 }
 
 export enum MediaType {

@@ -2,16 +2,10 @@ import { FunctionComponent } from "react";
 import { ProfileProps } from "../types/sidebar.types";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import Image from "next/image";
-import { useDispatch } from "react-redux";
-import { setOptions } from "@/redux/reducers/optionsSlice";
 import { useRouter } from "next/router";
 
-const Profile: FunctionComponent<ProfileProps> = ({
-  profile,
-  options,
-}): JSX.Element => {
+const Profile: FunctionComponent<ProfileProps> = ({ profile }): JSX.Element => {
   const picture = createProfilePicture(profile);
-  const dispatch = useDispatch();
   const router = useRouter();
   return (
     <div
@@ -21,7 +15,12 @@ const Profile: FunctionComponent<ProfileProps> = ({
           router.asPath.includes("stream") ||
           router.asPath.includes("sampler")
         ) {
-          router.push("#collect?=account");
+          !router.asPath.includes("?search=")
+            ? router.push("#collect?option=account")
+            : router.push(
+                "#collect?option=account" +
+                  `?search=${router.asPath.split("?search=")[1]}`
+              );
         }
       }}
     >

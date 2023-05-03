@@ -26,6 +26,12 @@
   src: url("/fonts/EarlsRevenge.ttf");
 }
 
+@font-face {
+  font-family: "Dosis Regular";
+  font-weight: 400;
+  src: url("/fonts/DosisRegular.ttf");
+}
+
 html {
   background-color: black;
 }
@@ -408,4 +414,8 @@ code::-webkit-scrollbar {
   height: 10px;
   border-radius: 50%;
   background: linear-gradient(to right, #fc9cf3, #b9d9ff, #0091ff, #fd99dc);
+}
+
+#select {
+  background: conic-gradient(#3b3c4b, #313241, #050513, #131313, #444557);
 }
