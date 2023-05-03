@@ -79,7 +79,6 @@ const Home: NextPage = (): JSX.Element => {
             handleLensSignIn={handleLensSignIn}
             authStatus={authStatus}
             profile={profile}
-            options={options}
           />
           <Tabs tab={tab} setTab={setTab} viewer={viewer} />
           {tab === 0 ? (
