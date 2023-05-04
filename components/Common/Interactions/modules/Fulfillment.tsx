@@ -52,12 +52,11 @@ const Fulfillment: FunctionComponent<FulfillmentProps> = ({
             {mainNFT?.description}
           </div>
           <div className="relative w-full h-fit items-center justify-center text-ama font-earl text-base flex">
-            {/* {Number(mainNFT?.tokenIds?.length) -
+            {Number(mainNFT?.tokenIds?.length) -
               (mainNFT?.tokensSold?.length
                 ? mainNFT?.tokensSold?.length
                 : 0)}{" "}
-            / {Number(mainNFT?.tokenIds?.length)} */}
-            {`${mainNFT?.amount} / ${mainNFT?.amount}`}
+            / {Number(mainNFT?.tokenIds?.length)}
           </div>
           <Purchase
             acceptedtokens={acceptedtokens}

@@ -61,11 +61,11 @@ const Drops: FunctionComponent<DropsProps> = ({
                           media: profileImage,
                           name: collection?.profile?.handle,
                         },
-                        price: collection?.prices,
+                        price: collection?.basePrices,
                         acceptedTokens: collection?.acceptedTokens,
                         amount: collection?.amount,
-                        // tokenIds: collection?.tokenIds,
-                        // tokensSold: collection?.soldTokens,
+                        tokenIds: collection?.tokenIds,
+                        tokensSold: collection?.soldTokens,
                       })
                     );
                     !router.asPath.includes("?search=")

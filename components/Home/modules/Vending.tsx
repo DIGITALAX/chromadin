@@ -132,7 +132,7 @@ const Vending: FunctionComponent<VendingProps> = ({
                       matchingAddress!
                     );
                     const matchingPrice = parseFloat(
-                      collection.prices[matchingIndex]
+                      collection.basePrices[matchingIndex]
                     );
                     return { ...collection, matchingPrice };
                   }
@@ -205,11 +205,11 @@ const Vending: FunctionComponent<VendingProps> = ({
                                 ),
                                 name: collection?.profile?.handle,
                               },
-                              price: collection?.prices,
+                              price: collection?.basePrices,
                               acceptedTokens: collection?.acceptedTokens,
                               amount: collection?.amount,
-                              // tokenIds: collection?.tokenIds,
-                              // tokensSold: collection?.soldTokens,
+                              tokenIds: collection?.tokenIds,
+                              tokensSold: collection?.soldTokens,
                             })
                           );
                           !router.asPath.includes("?search=")

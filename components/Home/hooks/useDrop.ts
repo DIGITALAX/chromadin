@@ -93,6 +93,7 @@ const useDrop = () => {
           };
         })
       );
+
       const collectionDrops = drops
         .filter((drop: any) =>
           drop.collectionIds.includes(collections[0].collectionId)
@@ -118,11 +119,11 @@ const useDrop = () => {
             media: createProfilePicture(collections[0].profile, false),
             name: collections[0].profile?.handle,
           },
-          price: collections[0].prices,
+          price: collections[0].basePrices,
           acceptedTokens: collections[0].acceptedTokens,
           amount: collections[0]?.amount,
-          // tokenIds: collections[0].tokenIds,
-          // tokensSold: collections[0].soldTokens,
+          tokenIds: collections[0].tokenIds,
+          tokensSold: collections[0].soldTokens,
         })
       );
       dispatch(setCollectionsRedux(collections));

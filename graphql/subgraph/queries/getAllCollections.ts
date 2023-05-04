@@ -4,7 +4,7 @@ import { graphClient } from "@/lib/subgraph/client";
 const COLLECTIONS = `
   query {
     collectionMinteds {
-      prices
+      basePrices
       uri
       collectionId
       amount
@@ -12,6 +12,8 @@ const COLLECTIONS = `
       name
       owner
       blockTimestamp
+      tokenIds
+      soldTokens
     }
   }
 `;
