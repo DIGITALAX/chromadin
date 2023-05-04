@@ -34,8 +34,8 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
           {Array.from([
             [
               "QmYYUQ8nGDnyuk8jQSung1WmTksvLEQBXjnCctdRrKtsNk",
-              "MATIC",
-              "0x0000000000000000000000000000000000001010",
+              "WMATIC",
+              "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
             ],
             [
               "QmZRhUgjK6bJM8fC7uV145yf66q2e7vGeT7CLosw1SdMdN",

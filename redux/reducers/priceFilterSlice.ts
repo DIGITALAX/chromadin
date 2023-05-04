@@ -6,7 +6,7 @@ export interface PriceFilterState {
 }
 
 const initialPriceFilterState: PriceFilterState = {
-  values: ["ALL", "WETH", "MATIC", "MONA", "USDT"],
+  values: ["ALL", "WETH", "WMATIC", "MONA", "USDT"],
   selected: "ALL",
 };
 
