@@ -6,7 +6,7 @@ export interface DateFilterState {
 }
 
 const initialDateFilterState: DateFilterState = {
-  values: ["latest", "oldest"],
+  values: ["latest", "earliest"],
   selected: "latest",
 };
 

@@ -153,7 +153,7 @@ const Vending: FunctionComponent<VendingProps> = ({
                 })
                 .sortBy((collection: any) => {
                   if (priceFilter.selected === "ALL") {
-                    if (dateFilter.selected === "oldest") {
+                    if (dateFilter.selected === "earliest") {
                       return collection.blockTimestamp;
                     } else if (dateFilter.selected === "latest") {
                       return -collection.blockTimestamp;
