@@ -101,7 +101,8 @@ const useDrop = () => {
                 name: dropjson?.name,
                 image: dropjson?.image,
               },
-              contractType: index <= 29 ? "primary" : "secondary",
+              contractType:
+                index <= validCollections.length ? "primary" : "secondary",
             };
           }
         )

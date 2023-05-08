@@ -15,7 +15,7 @@ export const SAMPLER_CONTRACT: `0x${string}` =
   "0x948ed9CD14Ce2B60Cee4bca0BCe1a65B95BD34d2";
 export const CHROMADIN_ACCESS_CONTROLS: `0x${string}` =
   "0xa376FdE1e0033a2624d95E3D4345aAd32d5fE1cD";
-  export const CHROMADIN_MARKETPLACE_CONTRACT_NEW: `0x${string}` =
+export const CHROMADIN_MARKETPLACE_CONTRACT_NEW: `0x${string}` =
   "0x88fa5a97345ba5e827Cf32F437f46449C5D68754";
 
 export const LENS_HUB_PROXY_ADDRESS_MUMBAI: `0x${string}` =
