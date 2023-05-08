@@ -33,6 +33,7 @@ export const mainNFTSlice = createSlice({
         amount: string;
         tokenIds: string[];
         tokensSold: string[] | null;
+        contractType: string;
       }>
     ) => {
       state.value = action.payload;

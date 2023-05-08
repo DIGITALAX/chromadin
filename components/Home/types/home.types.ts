@@ -34,6 +34,7 @@ export interface Collection {
   timeStamp?: string;
   tokenIds: string[];
   soldTokens: string[] | null;
+  contractType: string;
 }
 
 export interface Drop {

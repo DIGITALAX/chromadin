@@ -49,49 +49,62 @@ const useDrop = () => {
         }
       );
 
-      const collections = await Promise.all(
-        validCollections.map(async (collection: Collection) => {
-          const json = await fetchIPFSJSON(
-            (collection.uri as any)
-              ?.split("ipfs://")[1]
-              .replace(/"/g, "")
-              .trim()
-          );
-          const collectionDrops = drops
-            .filter((drop: any) =>
+      const newValidCollections =
+        data?.data?.chromadinCollectionNewCollectionMinteds.filter(
+          (collection: Collection) => {
+            const collectionDrops = drops.filter((drop: any) =>
               drop.collectionIds.includes(collection.collectionId)
-            )
-            .sort((a: any, b: any) => b.dropId - a.dropId);
-          const dropjson = await fetchIPFSJSON(
-            collectionDrops[0]?.dropURI
-              ?.split("ipfs://")[1]
-              .replace(/"/g, "")
-              .trim()
-          );
-          let defaultProfile;
-          defaultProfile = await getDefaultProfile(collection.owner);
-          if (!defaultProfile?.data?.defaultProfile) {
-            defaultProfile = {
-              handle: "syntheticfutures.lens",
-              picture: {
-                original: {
-                  url: "ipfs://Qmd7PdjsVSfVs6j4uFbxZLsHmzkJw2DYQLxbmgX7aDWkb3",
-                },
-              },
-            };
-          } else {
-            defaultProfile = defaultProfile?.data?.defaultProfile;
+            );
+            return collectionDrops.length > 0;
           }
-          return {
-            ...collection,
-            uri: json,
-            profile: defaultProfile,
-            drop: {
-              name: dropjson?.name,
-              image: dropjson?.image,
-            },
-          };
-        })
+        );
+
+      const collections = await Promise.all(
+        [...validCollections, ...newValidCollections].map(
+          async (collection: Collection, index: number) => {
+            const json = await fetchIPFSJSON(
+              (collection.uri as any)
+                ?.split("ipfs://")[1]
+                .replace(/"/g, "")
+                .trim()
+            );
+            const collectionDrops = drops
+              .filter((drop: any) =>
+                drop.collectionIds.includes(collection.collectionId)
+              )
+              .sort((a: any, b: any) => b.dropId - a.dropId);
+            const dropjson = await fetchIPFSJSON(
+              collectionDrops[0]?.dropURI
+                ?.split("ipfs://")[1]
+                .replace(/"/g, "")
+                .trim()
+            );
+            let defaultProfile;
+            defaultProfile = await getDefaultProfile(collection.owner);
+            if (!defaultProfile?.data?.defaultProfile) {
+              defaultProfile = {
+                handle: "syntheticfutures.lens",
+                picture: {
+                  original: {
+                    url: "ipfs://Qmd7PdjsVSfVs6j4uFbxZLsHmzkJw2DYQLxbmgX7aDWkb3",
+                  },
+                },
+              };
+            } else {
+              defaultProfile = defaultProfile?.data?.defaultProfile;
+            }
+            return {
+              ...collection,
+              uri: json,
+              profile: defaultProfile,
+              drop: {
+                name: dropjson?.name,
+                image: dropjson?.image,
+              },
+              contractType: index <= 29 ? "primary" : "secondary",
+            };
+          }
+        )
       );
 
       const collectionDrops = drops
@@ -124,6 +137,7 @@ const useDrop = () => {
           amount: collections[0]?.amount,
           tokenIds: collections[0].tokenIds,
           tokensSold: collections[0].soldTokens,
+          contractType: collections[0].contractType,
         })
       );
       dispatch(setCollectionsRedux(collections));
@@ -138,7 +152,10 @@ const useDrop = () => {
   const handleAllDrops = async (): Promise<any> => {
     try {
       const data = await getAllDrops();
-      return data.data.dropCreateds;
+      return [
+        ...data.data.dropCreateds,
+        ...data.data.chromadinDropNewDropCreateds,
+      ];
     } catch (err: any) {
       console.error(err.message);
     }

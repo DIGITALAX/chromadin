@@ -210,6 +210,7 @@ const Vending: FunctionComponent<VendingProps> = ({
                               amount: collection?.amount,
                               tokenIds: collection?.tokenIds,
                               tokensSold: collection?.soldTokens,
+                              contractType: collection?.contractType,
                             })
                           );
                           !router.asPath.includes("?search=")

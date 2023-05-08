@@ -9,6 +9,12 @@ const DROPS = `
       creator
       collectionIds
     }
+    chromadinDropNewDropCreateds {
+      dropId
+      dropURI
+      creator
+      collectionIds
+    }
   }
 `;
 

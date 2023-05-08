@@ -14,6 +14,17 @@ const HISTORY = `
         transactionHash
         blockTimestamp
       }
+    chromadinMarketplaceNewTokensBoughts(where: $where orderBy: blockTimestamp
+      orderDirection: desc) {
+        uri
+        totalPrice
+        tokenIds
+        name
+        buyer
+        creator
+        transactionHash
+        blockTimestamp
+      }
   }
 `;
 

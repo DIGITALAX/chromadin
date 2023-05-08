@@ -83,7 +83,6 @@ const useControls = (): UseControlsResults => {
     (state: RootState) => state.app.approvalArgsReducer.args
   );
   const purchase = useSelector((state: RootState) => state.app.purchaseReducer);
-  const viewer = useSelector((state: RootState) => state.app.viewReducer.value);
 
   const { config, isSuccess } = usePrepareContractWrite({
     address: LENS_HUB_PROXY_ADDRESS_MATIC,
