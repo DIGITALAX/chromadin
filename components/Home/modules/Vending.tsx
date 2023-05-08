@@ -161,16 +161,16 @@ const Vending: FunctionComponent<VendingProps> = ({
                   }
                 })
                 .filter((collection: any) => {
-                  const searchValue = search.toLowerCase();
+                  const searchValue = search?.toLowerCase();
                   const nameMatches = collection.name
-                    .toLowerCase()
-                    .includes(searchValue);
+                    ?.toLowerCase()
+                    ?.includes(searchValue);
                   const dropNameMatches = collection.drop.name
-                    .toLowerCase()
-                    .includes(searchValue);
+                    ?.toLowerCase()
+                    ?.includes(searchValue);
                   const handleMatches = collection.profile.handle
-                    .toLowerCase()
-                    .includes(searchValue);
+                    ?.toLowerCase()
+                    ?.includes(searchValue);
                   return nameMatches || dropNameMatches || handleMatches;
                 })
                 .value()

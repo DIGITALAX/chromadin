@@ -31,33 +31,42 @@ const useDrop = () => {
       }
 
       if (
-        data?.data?.collectionMinteds?.length < 1 ||
-        !data?.data?.collectionMinteds
+        (data?.data?.collectionMinteds?.length < 1 ||
+          !data?.data?.collectionMinteds) &&
+        (data?.data?.chromadinCollectionNewCollectionMinteds?.length < 1 ||
+          !data?.data?.chromadinCollectionNewCollectionMinteds)
       ) {
         setCollectionsLoading(false);
         return;
       }
       const drops = await handleAllDrops();
-      dispatch(setDropsRedux(data?.data?.dropCreateds));
+      dispatch(
+        setDropsRedux([
+          ...drops?.data?.dropCreateds,
+          ...drops?.data?.chromadinDropNewDropCreateds,
+        ])
+      );
 
-      const validCollections = data?.data?.collectionMinteds.filter(
+      const validCollections = [...data?.data?.collectionMinteds].filter(
         (collection: Collection) => {
-          const collectionDrops = drops.filter((drop: any) =>
-            drop.collectionIds.includes(collection.collectionId)
+          const collectionDrops = [...drops?.data?.dropCreateds]?.filter(
+            (drop: any) =>
+              drop?.collectionIds?.includes(collection.collectionId)
           );
           return collectionDrops.length > 0;
         }
       );
 
-      const newValidCollections =
-        data?.data?.chromadinCollectionNewCollectionMinteds.filter(
-          (collection: Collection) => {
-            const collectionDrops = drops.filter((drop: any) =>
-              drop.collectionIds.includes(collection.collectionId)
-            );
-            return collectionDrops.length > 0;
-          }
+      const newValidCollections = [
+        ...data?.data?.chromadinCollectionNewCollectionMinteds,
+      ].filter((collection: Collection) => {
+        const collectionDrops = [
+          ...drops?.data?.chromadinDropNewDropCreateds,
+        ]?.filter((drop: any) =>
+          drop?.collectionIds?.includes(collection.collectionId)
         );
+        return collectionDrops.length > 0;
+      });
 
       const collections = await Promise.all(
         [...validCollections, ...newValidCollections].map(
@@ -68,17 +77,31 @@ const useDrop = () => {
                 .replace(/"/g, "")
                 .trim()
             );
-            const collectionDrops = drops
-              .filter((drop: any) =>
-                drop.collectionIds.includes(collection.collectionId)
+
+            let collectionDrops;
+
+            if (index < drops.data.dropCreateds?.length) {
+              collectionDrops = drops.data.dropCreateds;
+            } else {
+              collectionDrops = drops.data.chromadinDropNewDropCreateds;
+            }
+
+            collectionDrops = collectionDrops
+              ?.filter((drop: any) =>
+                drop.collectionIds?.includes(collection.collectionId)
               )
-              .sort((a: any, b: any) => b.dropId - a.dropId);
-            const dropjson = await fetchIPFSJSON(
-              collectionDrops[0]?.dropURI
-                ?.split("ipfs://")[1]
-                .replace(/"/g, "")
-                .trim()
-            );
+              ?.sort((a: any, b: any) => b.dropId - a.dropId);
+
+            let dropjson;
+            if (collectionDrops?.length > 0) {
+              dropjson = await fetchIPFSJSON(
+                collectionDrops[0]?.dropURI
+                  ?.split("ipfs://")[1]
+                  .replace(/"/g, "")
+                  .trim()
+              );
+            }
+
             let defaultProfile;
             defaultProfile = await getDefaultProfile(collection.owner);
             if (!defaultProfile?.data?.defaultProfile) {
@@ -102,14 +125,17 @@ const useDrop = () => {
                 image: dropjson?.image,
               },
               contractType:
-                index <= validCollections.length ? "primary" : "secondary",
+                index < validCollections.length ? "primary" : "secondary",
             };
           }
         )
       );
 
-      const collectionDrops = drops
-        .filter((drop: any) =>
+      const collectionDrops = [
+        ...drops?.data?.dropCreateds,
+        ...drops?.data?.chromadinDropNewDropCreateds,
+      ]
+        ?.filter((drop: any) =>
           drop.collectionIds.includes(collections[0].collectionId)
         )
         .sort((a: any, b: any) => b.dropId - a.dropId);
@@ -153,10 +179,7 @@ const useDrop = () => {
   const handleAllDrops = async (): Promise<any> => {
     try {
       const data = await getAllDrops();
-      return [
-        ...data.data.dropCreateds,
-        ...data.data.chromadinDropNewDropCreateds,
-      ];
+      return data;
     } catch (err: any) {
       console.error(err.message);
     }

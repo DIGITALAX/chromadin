@@ -35,6 +35,7 @@ import isCreatorReducer from "./reducers/isCreatorSlice";
 import priceFilterReducer from "./reducers/priceFilterSlice";
 import dateFilterReducer from "./reducers/dateFilterSlice";
 import searchReducer from "./reducers/searchSlice";
+import dropsReducer from "./reducers/dropsSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -72,6 +73,7 @@ const reducer = combineReducers({
   priceFilterReducer,
   dateFilterReducer,
   searchReducer,
+  dropsReducer
 });
 
 export const store = configureStore({
