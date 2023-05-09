@@ -30,9 +30,17 @@ const useHistory = (): useHistoryResults => {
       const res = await getBuyerHistory({
         buyer_contains: address,
       });
-      if (res.data.tokensBoughts.length > 0) {
+      if (
+        [
+          ...res.data.tokensBoughts,
+          ...res.data.chromadinMarketplaceNewTokensBoughts,
+        ].length > 0
+      ) {
         const history = await Promise.all(
-          res.data.tokensBoughts.map(async (history: History) => {
+          [
+            ...res.data.tokensBoughts,
+            ...res.data.chromadinMarketplaceNewTokensBoughts,
+          ].map(async (history: History) => {
             const json = await fetchIPFSJSON(
               (history.uri as any)
                 ?.split("ipfs://")[1]
@@ -70,12 +78,12 @@ const useHistory = (): useHistoryResults => {
   };
 
   useEffect(() => {
-    //   if (
-    //     options === "history" &&
-    //     (historyReducer.length < 1 || indexModal === "Purchase Successful")
-    //   ) {
-    //     getUserHistory();
-    //   }
+    if (
+      options === "history" &&
+      (historyReducer.length < 1 || indexModal === "Purchase Successful")
+    ) {
+      getUserHistory();
+    }
   }, [options, indexModal]);
 
   return { history, historyLoading };

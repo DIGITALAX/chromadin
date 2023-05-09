@@ -141,6 +141,7 @@ const useChannels = (): UseChannelsResults => {
         },
         lensProfile
       );
+  
       const hasMirroredArr = await checkIfMirrored(
         videos?.length > 0 ? videos : channelsDispatched,
         lensProfile

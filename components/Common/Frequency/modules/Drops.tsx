@@ -66,21 +66,34 @@ const Drops: FunctionComponent<DropsProps> = ({
                         amount: collection?.amount,
                         tokenIds: collection?.tokenIds,
                         tokensSold: collection?.soldTokens,
-                        contractType: collection?.contractType
+                        contractType: collection?.contractType,
                       })
                     );
-                    !router.asPath.includes("?search=")
-                      ? router.push(
-                          router.asPath.split("?option=")[0] +
-                            "?option=" +
-                            "fulfillment"
-                        )
-                      : router.push(
-                          router.asPath.split("?option=")[0] +
-                            "?option=" +
-                            "fulfillment" +
-                            `?search=${router.asPath.split("?search=")[1]}`
-                        );
+                    if (router.asPath.includes("#sampler")) {
+                      !router.asPath.includes("?search=")
+                        ? router.push(
+                            router.asPath.split("#sampler")[0] +
+                              "#collect?option=fulfillment"
+                          )
+                        : router.push(
+                            router.asPath.split("#sampler")[0] +
+                              "#collect?option=fulfillment" +
+                              `?search=${router.asPath.split("?search=")[1]}`
+                          );
+                    } else {
+                      !router.asPath.includes("?search=")
+                        ? router.push(
+                            router.asPath.split("?option=")[0] +
+                              "?option=" +
+                              "fulfillment"
+                          )
+                        : router.push(
+                            router.asPath.split("?option=")[0] +
+                              "?option=" +
+                              "fulfillment" +
+                              `?search=${router.asPath.split("?search=")[1]}`
+                          );
+                    }
                   }}
                 >
                   <div
