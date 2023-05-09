@@ -48,8 +48,7 @@ const useFulfillment = () => {
 
   const { data } = useContractRead({
     address: ACCEPTED_TOKENS.filter(
-      (token) =>
-        token[0].toLowerCase() === currency?.toLowerCase()
+      (token) => token[0].toLowerCase() === currency?.toLowerCase()
     )?.[0]?.[1] as `0x${string}`,
     abi: [
       {
@@ -89,8 +88,7 @@ const useFulfillment = () => {
 
   const { config } = usePrepareContractWrite({
     address: ACCEPTED_TOKENS.filter(
-      (token) =>
-        token[0].toLowerCase() === currency?.toLowerCase()
+      (token) => token[0].toLowerCase() === currency?.toLowerCase()
     )?.[0]?.[1] as `0x${string}`,
     abi: [
       {
@@ -130,15 +128,14 @@ const useFulfillment = () => {
 
   const { config: buyNFTConfig, error } = usePrepareContractWrite({
     address:
-    mainNFT?.contractType === "primary"
+      mainNFT?.contractType === "primary"
         ? CHROMADIN_MARKETPLACE_CONTRACT
         : CHROMADIN_MARKETPLACE_CONTRACT_NEW,
     abi: ChromadinMarketplaceABI,
     args: [
       [tokenId],
       ACCEPTED_TOKENS.filter(
-        (token) =>
-          token[0].toLowerCase() === currency?.toLowerCase()
+        (token) => token[0].toLowerCase() === currency?.toLowerCase()
       )?.[0]?.[1] as `0x${string}`,
     ],
     functionName: "buyTokens",
@@ -153,14 +150,19 @@ const useFulfillment = () => {
     if (
       mainNFT?.acceptedTokens.find(
         (token) =>
-          token === ACCEPTED_TOKENS.find((token) => token[0].toLowerCase() === currency?.toLowerCase())?.[1]!
+          token ===
+          ACCEPTED_TOKENS.find(
+            (token) => token[0].toLowerCase() === currency?.toLowerCase()
+          )?.[1]!
       )
     ) {
       number =
         Number(
           mainNFT?.price[
             mainNFT?.acceptedTokens.indexOf(
-              ACCEPTED_TOKENS.find((token) => token[0].toLowerCase() === currency?.toLowerCase())?.[1]!
+              ACCEPTED_TOKENS.find(
+                (token) => token[0].toLowerCase() === currency?.toLowerCase()
+              )?.[1]!
             )
           ]
         ) /
@@ -191,7 +193,6 @@ const useFulfillment = () => {
   };
 
   const getTokenId = (): void => {
-
     if (!mainNFT?.tokensSold || mainNFT?.tokensSold.length == 0) {
       setTokenId(mainNFT?.tokenIds[0]);
     } else {
