@@ -82,17 +82,25 @@ const Drops: FunctionComponent<DropsProps> = ({
                           );
                     } else {
                       !router.asPath.includes("?search=")
+                        ? router.asPath.includes("#")
+                          ? router.push(
+                              router.asPath.split("?option=")[0] +
+                                "?option=fulfillment"
+                            )
+                          : router.push(
+                              router.asPath.split("?option=")[0] +
+                                "#stream?option=fulfillment"
+                            )
+                        : router.asPath.includes("#")
                         ? router.push(
-                            router.asPath.split("?option=")[0] +
-                              "?option=" +
-                              "fulfillment"
-                          )
-                        : router.push(
                             router.asPath.split("?option=")[0] +
                               "?option=" +
                               "fulfillment" +
                               `?search=${router.asPath.split("?search=")[1]}`
-                          );
+                          )
+                        : router.asPath.split("?option=")[0] +
+                          "#stream?option=fulfillment" +
+                          `?search=${router.asPath.split("?search=")[1]}`;
                     }
                   }}
                 >
