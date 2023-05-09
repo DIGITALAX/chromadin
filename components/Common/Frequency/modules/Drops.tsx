@@ -94,8 +94,7 @@ const Drops: FunctionComponent<DropsProps> = ({
                         : router.asPath.includes("#")
                         ? router.push(
                             router.asPath.split("?option=")[0] +
-                              "?option=" +
-                              "fulfillment" +
+                              "?option=fulfillment" +
                               `?search=${router.asPath.split("?search=")[1]}`
                           )
                         : router.asPath.split("?option=")[0] +
