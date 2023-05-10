@@ -102,7 +102,6 @@ export interface MainNFT {
   amount: string;
   tokenIds: string[];
   tokensSold: string[] | null;
-  contractType: string;
 }
 
 export type DescriptionProps = {

@@ -89,9 +89,18 @@ const useFulfillment = () => {
       (token) => token[0].toLowerCase() === currency?.toLowerCase()
     )?.[0]?.[1] as `0x${string}`,
     abi: [
-      ACCEPTED_TOKENS.filter(
-        (token) => token[0].toLowerCase() === currency?.toLowerCase()
-      )?.[0]?.[1] === "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"
+      currency === "MONA"
+        ? {
+            inputs: [
+              { internalType: "address", name: "spender", type: "address" },
+              { internalType: "uint256", name: "tokens", type: "uint256" },
+            ],
+            name: "approve",
+            outputs: [{ internalType: "bool", name: "success", type: "bool" }],
+            stateMutability: "nonpayable",
+            type: "function",
+          }
+        : currency === "WMATIC"
         ? {
             constant: false,
             inputs: [
@@ -164,16 +173,15 @@ const useFulfillment = () => {
           )?.[1]!
       )
     ) {
-      number =
-        Number(
-          mainNFT?.price[
-            mainNFT?.acceptedTokens.indexOf(
-              ACCEPTED_TOKENS.find(
-                (token) => token[0].toLowerCase() === currency?.toLowerCase()
-              )?.[1]!
-            )
-          ]
-        ) / (currency === "USDT" ? 10 ** 6 : 10 ** 18);
+      number = Number(
+        mainNFT?.price[
+          mainNFT?.acceptedTokens.indexOf(
+            ACCEPTED_TOKENS.find(
+              (token) => token[0].toLowerCase() === currency?.toLowerCase()
+            )?.[1]!
+          )
+        ]
+      );
     } else {
       setCurrency(
         ACCEPTED_TOKENS.find(
@@ -182,20 +190,23 @@ const useFulfillment = () => {
             mainNFT?.acceptedTokens[0]?.toLowerCase()
         )?.[0]!
       );
-      number =
-        Number(
-          mainNFT?.price[
-            mainNFT?.acceptedTokens.indexOf(
-              ACCEPTED_TOKENS.find(
-                (token) =>
-                  token[1].toLowerCase() ===
-                  mainNFT?.acceptedTokens[0].toLowerCase()
-              )?.[1]?.toLowerCase()!
-            )
-          ]
-        ) / (currency === "USDT" ? 10 ** 6 : 10 ** 18);
+      number = Number(
+        mainNFT?.price[
+          mainNFT?.acceptedTokens.indexOf(
+            ACCEPTED_TOKENS.find(
+              (token) =>
+                token[1].toLowerCase() ===
+                mainNFT?.acceptedTokens[0].toLowerCase()
+            )?.[1]?.toLowerCase()!
+          )
+        ]
+      );
     }
-    setTotalAmount(number);
+    setTotalAmount(
+      currency === "USDT"
+        ? Number((number / 10 ** 6).toFixed(2))
+        : Number((number / 10 ** 18).toFixed(2))
+    );
   };
 
   const getTokenId = (): void => {

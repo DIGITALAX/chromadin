@@ -31,16 +31,10 @@ const useHistory = (): useHistoryResults => {
         buyer_contains: address,
       });
       if (
-        [
-          ...res.data.tokensBoughts,
-          ...res.data.chromadinMarketplaceNewTokensBoughts,
-        ].length > 0
+       res.data.tokensBoughts.length > 0
       ) {
         const history = await Promise.all(
-          [
-            ...res.data.tokensBoughts,
-            ...res.data.chromadinMarketplaceNewTokensBoughts,
-          ].map(async (history: History) => {
+         res.data.tokensBoughts.map(async (history: History) => {
             const json = await fetchIPFSJSON(
               (history.uri as any)
                 ?.split("ipfs://")[1]
