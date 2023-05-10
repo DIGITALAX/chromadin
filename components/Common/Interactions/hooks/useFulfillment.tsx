@@ -145,8 +145,6 @@ const useFulfillment = () => {
     enabled: Boolean(!Number.isNaN(totalAmount)),
   });
 
-  console.log({ config });
-
   const { config: buyNFTConfig } = usePrepareContractWrite({
     address:
       mainNFT?.contractType === "primary"
@@ -211,8 +209,6 @@ const useFulfillment = () => {
     setTotalAmount(number);
   };
 
-  console.log(mainNFT)
-
   const getTokenId = (): void => {
     if (!mainNFT?.tokensSold || mainNFT?.tokensSold.length == 0) {
       setTokenId(mainNFT?.tokenIds[0]);
@@ -226,7 +222,6 @@ const useFulfillment = () => {
   };
 
   const approveSpend = async () => {
-    console.log("here");
     setPurchaseLoading(true);
     try {
       const tx = await writeAsync?.();
