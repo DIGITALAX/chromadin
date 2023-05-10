@@ -22,7 +22,7 @@ const useHistory = (): useHistoryResults => {
   const indexModal = useSelector(
     (state: RootState) => state.app.indexModalReducer.message
   );
-  const allcollections = useSelector(
+  const allCollections = useSelector(
     (state: RootState) => state.app.collectionsReducer.value
   );
 
@@ -66,7 +66,7 @@ const useHistory = (): useHistoryResults => {
         const newHistory: History[] = [];
         history.forEach((tokenBought) => {
           const tokenId = tokenBought.tokenIds[0];
-          const matchingObject = allcollections.find((collection) => {
+          const matchingObject = allCollections.find((collection) => {
             return collection.tokenIds.includes(tokenId);
           });
           if (matchingObject) {

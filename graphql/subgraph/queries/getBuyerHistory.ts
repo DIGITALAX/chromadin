@@ -2,7 +2,7 @@ import { FetchResult, gql } from "@apollo/client";
 import { graphClient } from "@/lib/subgraph/client";
 
 const HISTORY = `
-  query {
+  query($where: String!) {
     tokensBoughts(where: $where orderBy: blockTimestamp
       orderDirection: desc) {
         uri
