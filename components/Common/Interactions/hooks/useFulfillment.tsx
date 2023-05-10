@@ -1,7 +1,6 @@
 import {
   ACCEPTED_TOKENS,
   CHROMADIN_MARKETPLACE_CONTRACT,
-  CHROMADIN_MARKETPLACE_CONTRACT_NEW,
 } from "@/lib/constants";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
@@ -81,12 +80,7 @@ const useFulfillment = () => {
       },
     ],
     functionName: "allowance",
-    args: [
-      address as `0x${string}`,
-      mainNFT?.contractType === "primary"
-        ? CHROMADIN_MARKETPLACE_CONTRACT
-        : CHROMADIN_MARKETPLACE_CONTRACT_NEW,
-    ],
+    args: [address as `0x${string}`, CHROMADIN_MARKETPLACE_CONTRACT],
     // enabled: Boolean(address) || Boolean(approved),
   });
 
@@ -137,19 +131,14 @@ const useFulfillment = () => {
     ],
     functionName: "approve",
     args: [
-      mainNFT?.contractType === "primary"
-        ? CHROMADIN_MARKETPLACE_CONTRACT
-        : CHROMADIN_MARKETPLACE_CONTRACT_NEW,
+      CHROMADIN_MARKETPLACE_CONTRACT,
       ethers.utils.parseEther(totalAmount.toString()),
     ],
     enabled: Boolean(!Number.isNaN(totalAmount)),
   });
 
   const { config: buyNFTConfig } = usePrepareContractWrite({
-    address:
-      mainNFT?.contractType === "primary"
-        ? CHROMADIN_MARKETPLACE_CONTRACT
-        : CHROMADIN_MARKETPLACE_CONTRACT_NEW,
+    address: CHROMADIN_MARKETPLACE_CONTRACT,
     abi: ChromadinMarketplaceABI,
     args: [
       [Number(tokenId)],
