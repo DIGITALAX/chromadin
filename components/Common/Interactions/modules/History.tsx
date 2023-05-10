@@ -20,7 +20,7 @@ const History: FunctionComponent<HistoryProps> = ({
       }`}
     >
       {historyLoading ? (
-        <div className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 preG:gap-4 lg:gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap opacity-30 animate-pulse">
+        <div className="relative w-full h-60 flex flex-col overflow-y-scroll gap-8 preG:gap-4 lg:gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap opacity-30 animate-pulse">
           {Array.from({ length: 7 }).map((_: any, index: number) => {
             return (
               <div
