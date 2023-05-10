@@ -71,7 +71,7 @@ const History: FunctionComponent<HistoryProps> = ({
           {(history?.length < 1 ? historyReducer : history)?.map(
             (value: History, index: number) => {
               const pfp = createProfilePicture(value.profile);
-              console.log(value)
+
               return (
                 <Link
                   key={index}
