@@ -42,7 +42,11 @@ const useFulfillment = () => {
   const [posterAmount, setPosterAmount] = useState<number>(0);
   const [totalAmount, setTotalAmount] = useState<number>(
     !Number.isNaN(mainNFT?.price?.[0]) && isFinite(Number(mainNFT?.price?.[0]))
-      ? Number(mainNFT?.price?.[0]) / 10 ** 18
+      ? Number(mainNFT?.price?.[0]) /
+          (mainNFT?.acceptedTokens?.[0] ===
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+            ? 10 ** 6
+            : 10 ** 18)
       : 0
   );
 
@@ -91,30 +95,45 @@ const useFulfillment = () => {
       (token) => token[0].toLowerCase() === currency?.toLowerCase()
     )?.[0]?.[1] as `0x${string}`,
     abi: [
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "spender",
-            type: "address",
+      ACCEPTED_TOKENS.filter(
+        (token) => token[0].toLowerCase() === currency?.toLowerCase()
+      )?.[0]?.[1] === "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"
+        ? {
+            constant: false,
+            inputs: [
+              { name: "guy", type: "address" },
+              { name: "wad", type: "uint256" },
+            ],
+            name: "approve",
+            outputs: [{ name: "", type: "bool" }],
+            payable: false,
+            stateMutability: "nonpayable",
+            type: "function",
+          }
+        : {
+            inputs: [
+              {
+                internalType: "address",
+                name: "spender",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+            ],
+            name: "approve",
+            outputs: [
+              {
+                internalType: "bool",
+                name: "",
+                type: "bool",
+              },
+            ],
+            stateMutability: "nonpayable",
+            type: "function",
           },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-        ],
-        name: "approve",
-        outputs: [
-          {
-            internalType: "bool",
-            name: "",
-            type: "bool",
-          },
-        ],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
     ],
     functionName: "approve",
     args: [
@@ -126,14 +145,16 @@ const useFulfillment = () => {
     enabled: Boolean(!Number.isNaN(totalAmount)),
   });
 
-  const { config: buyNFTConfig, error } = usePrepareContractWrite({
+  console.log({ config });
+
+  const { config: buyNFTConfig } = usePrepareContractWrite({
     address:
       mainNFT?.contractType === "primary"
         ? CHROMADIN_MARKETPLACE_CONTRACT
         : CHROMADIN_MARKETPLACE_CONTRACT_NEW,
     abi: ChromadinMarketplaceABI,
     args: [
-      [tokenId],
+      [Number(tokenId)],
       ACCEPTED_TOKENS.filter(
         (token) => token[0].toLowerCase() === currency?.toLowerCase()
       )?.[0]?.[1] as `0x${string}`,
@@ -165,8 +186,7 @@ const useFulfillment = () => {
               )?.[1]!
             )
           ]
-        ) /
-        10 ** 18;
+        ) / (currency === "USDT" ? 10 ** 6 : 10 ** 18);
     } else {
       setCurrency(
         ACCEPTED_TOKENS.find(
@@ -186,11 +206,12 @@ const useFulfillment = () => {
               )?.[1]?.toLowerCase()!
             )
           ]
-        ) /
-        10 ** 18;
+        ) / (currency === "USDT" ? 10 ** 6 : 10 ** 18);
     }
     setTotalAmount(number);
   };
+
+  console.log(mainNFT)
 
   const getTokenId = (): void => {
     if (!mainNFT?.tokensSold || mainNFT?.tokensSold.length == 0) {
@@ -205,6 +226,7 @@ const useFulfillment = () => {
   };
 
   const approveSpend = async () => {
+    console.log("here");
     setPurchaseLoading(true);
     try {
       const tx = await writeAsync?.();
@@ -270,7 +292,11 @@ const useFulfillment = () => {
 
   useEffect(() => {
     if (address) {
-      if (Number(data?.toBigInt()?.toString()) / 10 ** 18 >= totalAmount) {
+      if (
+        Number(data?.toBigInt()?.toString()) /
+          (currency === "USDT" ? 10 ** 6 : 10 ** 18) >=
+        totalAmount
+      ) {
         setApproved(true);
       } else {
         setApproved(false);

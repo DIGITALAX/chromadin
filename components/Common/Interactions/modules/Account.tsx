@@ -83,7 +83,7 @@ const Account: FunctionComponent<AccountProps> = ({
             className="relative w-fit h-fit py-2 px-3 rounded-br-lg  rounded-tl-lg bg-offBlack border-white border font-earl text-white text-sm word-break cursor-pointer flex items-center justify-center active:scale-95 hover:opacity-70"
             target="_blank"
             rel="noreferrer"
-            href={"https://www.dispatch.chromadin.xyz"}
+            href={"https://dispatch.chromadin.xyz"}
           >
             Go To Creator Dashboard
           </Link>
