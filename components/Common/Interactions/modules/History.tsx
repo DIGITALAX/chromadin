@@ -67,20 +67,21 @@ const History: FunctionComponent<HistoryProps> = ({
           old channel surfing.
         </div>
       ) : (
-        <div className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 preG:gap-4 lg:gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap">
+        <div className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 preG:gap-4 lg:gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap items-start">
           {(history?.length < 1 ? historyReducer : history)?.map(
             (value: History, index: number) => {
               const pfp = createProfilePicture(value.profile);
+              console.log(value)
               return (
                 <Link
                   key={index}
-                  className="relative w-full preG:w-fit lg:w-full h-full preG:h-fit lg:h-full flex flex-row gap-3 cursor-pointer items-center justify-center"
+                  className="relative w-full preG:w-fit lg:w-full h-fit flex flex-row gap-3 cursor-pointer items-start justify-center"
                   target={"_blank"}
                   rel={"noreferrer"}
                   href={`https://polygonscan.com/tx/${value.transactionHash}`}
                 >
                   <div
-                    className="flex relative w-36 h-24 rounded-tl-lg rounded-br-lg"
+                    className="flex relative w-36 h-full rounded-tl-lg rounded-br-lg items-center justify-center"
                     id="staticLoad"
                   >
                     <Image
@@ -123,7 +124,12 @@ const History: FunctionComponent<HistoryProps> = ({
                       {value.transactionHash.slice(0, 14) + "..."}
                     </div>
                     <div className="relative text-white font-arcade flex items-center justify-start text-sm w-fit h-fit">
-                      ${Number(value.totalPrice) / 10 ** 18}
+                      $
+                      {Number(value.totalPrice) /
+                        (value.type ===
+                        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+                          ? 10 ** 6
+                          : 10 ** 18)}
                     </div>
                     <div className="relative text-verde font-arcade flex items-center justify-start text-xs w-fit h-fit">
                       {moment(Number(value.blockTimestamp), "X").format("lll")}

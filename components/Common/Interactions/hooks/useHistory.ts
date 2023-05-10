@@ -22,6 +22,9 @@ const useHistory = (): useHistoryResults => {
   const indexModal = useSelector(
     (state: RootState) => state.app.indexModalReducer.message
   );
+  const allcollections = useSelector(
+    (state: RootState) => state.app.collectionsReducer.value
+  );
 
   const getUserHistory = async () => {
     if (!address) return;
@@ -30,11 +33,9 @@ const useHistory = (): useHistoryResults => {
       const res = await getBuyerHistory({
         buyer_contains: address,
       });
-      if (
-       res.data.tokensBoughts.length > 0
-      ) {
+      if (res.data.tokensBoughts.length > 0) {
         const history = await Promise.all(
-         res.data.tokensBoughts.map(async (history: History) => {
+          res.data.tokensBoughts.map(async (history: History) => {
             const json = await fetchIPFSJSON(
               (history.uri as any)
                 ?.split("ipfs://")[1]
@@ -62,8 +63,26 @@ const useHistory = (): useHistoryResults => {
             };
           })
         );
-        dispatch(setHistoryRedux(history));
-        setHistory(history);
+        const newHistory: History[] = [];
+        history.forEach((tokenBought) => {
+          const tokenId = tokenBought.tokenIds[0];
+          const matchingObject = allcollections.find((collection) => {
+            return collection.tokenIds.includes(tokenId);
+          });
+          if (matchingObject) {
+            const index = matchingObject.basePrices.findIndex((value) => {
+              return value === tokenBought.totalPrice;
+            });
+            if (index !== -1) {
+              newHistory.push({
+                ...tokenBought,
+                type: matchingObject.acceptedTokens[index],
+              });
+            }
+          }
+        });
+        dispatch(setHistoryRedux(newHistory));
+        setHistory(newHistory);
       }
     } catch (err: any) {
       console.error(err.message);
@@ -78,7 +97,7 @@ const useHistory = (): useHistoryResults => {
     ) {
       getUserHistory();
     }
-  }, [options, indexModal]);
+  }, [options, indexModal, history]);
 
   return { history, historyLoading };
 };

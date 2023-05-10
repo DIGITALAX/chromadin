@@ -210,7 +210,6 @@ const Vending: FunctionComponent<VendingProps> = ({
                               amount: collection?.amount,
                               tokenIds: collection?.tokenIds,
                               tokensSold: collection?.soldTokens,
-                              
                             })
                           );
                           !router.asPath.includes("?search=")
@@ -246,7 +245,10 @@ const Vending: FunctionComponent<VendingProps> = ({
                           {collection?.name}
                         </div>
                         <div className="relative w-full h-fit text-ama justify-end flex">
-                          {collection?.amount}
+                          {Number(collection?.tokenIds?.length) -
+                            (collection?.soldTokens?.length
+                              ? collection?.soldTokens?.length
+                              : 0)}
                         </div>
                       </div>
                       <Link

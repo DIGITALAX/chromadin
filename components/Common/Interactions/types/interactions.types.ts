@@ -116,6 +116,7 @@ export interface History {
   profile: any;
   transactionHash: string;
   blockTimestamp: string;
+  type: string;
 }
 
 export type useHistoryResults = {
