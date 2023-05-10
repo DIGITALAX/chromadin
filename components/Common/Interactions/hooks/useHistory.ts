@@ -30,7 +30,7 @@ const useHistory = (): useHistoryResults => {
     if (!address) return;
     setHistoryLoading(true);
     try {
-      const res = await getBuyerHistory(address);
+      const res = await getBuyerHistory();
       if (res.data.tokensBoughts.length > 0) {
         const history = await Promise.all(
           res.data.tokensBoughts.map(async (history: History) => {
