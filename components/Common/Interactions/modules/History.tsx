@@ -11,7 +11,6 @@ const History: FunctionComponent<HistoryProps> = ({
   historyReducer,
   historyLoading,
 }): JSX.Element => {
-  console.log({ history, historyReducer });
   return (
     <div
       className={`relative w-full flex flex-col items-center justify-center bg-black border-t border-white ${
