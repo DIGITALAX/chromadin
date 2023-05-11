@@ -27,7 +27,6 @@ const useHistory = (): useHistoryResults => {
   );
 
   const getUserHistory = async () => {
-    if (!address) return;
     setHistoryLoading(true);
     try {
       const res = await getBuyerHistory();
