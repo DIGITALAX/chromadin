@@ -86,14 +86,14 @@ const Comments: FunctionComponent<CommentsProps> = ({
         ) : (
           <div className="relative w-full h-full grid grid-flow-row auto-rows-auto gap-5">
             <InfiniteScroll
-              className={`relative row-start-1 w-full h-full`}
+              className={`relative row-start-1 w-full h-full overflow-y-scroll`}
               hasMore={hasMoreComments}
               height={"27.7rem"}
               loader={<FetchMoreLoading size="3" />}
               dataLength={commentors?.length}
               next={getMorePostComments}
             >
-              <div className="relative w-full h-fit grid grid-flow-row auto-rows-auto gap-3 overflow-y-scroll">
+              <div className="relative w-full h-fit grid grid-flow-row auto-rows-auto gap-3">
                 {commentors?.map((comment: any, index: number) => {
                   const profileImage = createProfilePicture(comment, true);
                   return (

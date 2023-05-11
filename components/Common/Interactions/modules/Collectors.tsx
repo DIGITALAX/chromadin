@@ -29,7 +29,7 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
             loader={<FetchMoreLoading size="3" />}
             dataLength={collectors?.length}
             next={getMorePostCollects}
-            className={`relative row-start-1 w-full h-full`}
+            className={`relative row-start-1 w-full h-full overflow-y-scroll`}
           >
             <div className="relative w-full h-fit flex flex-col gap-3 px-4 pt-4">
               {collectors?.map((collector: any, index: number) => {

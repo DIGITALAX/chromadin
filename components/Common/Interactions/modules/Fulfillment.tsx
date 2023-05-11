@@ -55,8 +55,16 @@ const Fulfillment: FunctionComponent<FulfillmentProps> = ({
             {Number(mainNFT?.tokenIds?.length) -
               (mainNFT?.tokensSold?.length
                 ? mainNFT?.tokensSold?.length
-                : 0)}{" "}
-            / {Number(mainNFT?.tokenIds?.length)}
+                : 0) ===
+            0
+              ? "SOLD OUT"
+              : `${
+                  Number(mainNFT?.tokenIds?.length) -
+                  (mainNFT?.tokensSold?.length
+                    ? mainNFT?.tokensSold?.length
+                    : 0)
+                } /
+                  ${Number(mainNFT?.tokenIds?.length)}`}
           </div>
           <Purchase
             acceptedtokens={acceptedtokens}
