@@ -20,8 +20,6 @@ const Sampler: FunctionComponent = (): JSX.Element => {
     volumeProfileChange,
     topBarLoading,
   } = useBar();
-  // const { totalChanges, ratesLoading } = useRates();
-  // const { topAccountsFollowed, piesLoading } = usePies();
   const {
     statTitles,
     statsLoading,
