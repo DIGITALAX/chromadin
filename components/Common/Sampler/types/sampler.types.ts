@@ -40,5 +40,20 @@ export type GraphsProps = {
   graphData: any[];
   setCanvas: (e: string) => void;
   canvas: string;
-  graphsRedux: any[]
+  graphsRedux: any[];
+};
+
+export type PiesProps = {
+  topAccountsFollowed: {
+    handle: string;
+    percentage: string;
+  }[];
+  piesRedux: any[];
+  piesLoading: boolean;
+};
+
+export type RatesProps = {
+  totalChanges: number[];
+  ratesRedux: any[];
+  ratesLoading: boolean;
 };
