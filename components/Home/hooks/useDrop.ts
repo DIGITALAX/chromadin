@@ -31,17 +31,14 @@ const useDrop = () => {
       }
 
       if (
-        (data?.data?.collectionMinteds?.length < 1 ||
-          !data?.data?.collectionMinteds) 
+        data?.data?.collectionMinteds?.length < 1 ||
+        !data?.data?.collectionMinteds
       ) {
         setCollectionsLoading(false);
         return;
       }
       const drops = await handleAllDrops();
-      dispatch(
-        setDropsRedux(
-          drops?.data?.dropCreateds)
-      );
+      dispatch(setDropsRedux(drops?.data?.dropCreateds));
 
       const validCollections = [...data?.data?.collectionMinteds].filter(
         (collection: Collection) => {
@@ -54,59 +51,43 @@ const useDrop = () => {
       );
 
       const collections = await Promise.all(
-        validCollections.map(
-          async (collection: Collection, index: number) => {
-            const json = await fetchIPFSJSON(
-              (collection.uri as any)
+        validCollections.map(async (collection: Collection, index: number) => {
+          const json = await fetchIPFSJSON(
+            (collection.uri as any)
+              ?.split("ipfs://")[1]
+              .replace(/"/g, "")
+              .trim()
+          );
+
+          let collectionDrops;
+
+          collectionDrops = drops.data.dropCreateds
+            ?.filter((drop: any) =>
+              drop.collectionIds?.includes(collection.collectionId)
+            )
+            ?.sort((a: any, b: any) => b.dropId - a.dropId);
+
+          let dropjson;
+          if (collectionDrops?.length > 0) {
+            dropjson = await fetchIPFSJSON(
+              collectionDrops[0]?.dropURI
                 ?.split("ipfs://")[1]
                 .replace(/"/g, "")
                 .trim()
             );
-
-            let collectionDrops;
-            
-
-            collectionDrops = drops.data.dropCreateds
-              ?.filter((drop: any) =>
-                drop.collectionIds?.includes(collection.collectionId)
-              )
-              ?.sort((a: any, b: any) => b.dropId - a.dropId);
-
-            let dropjson;
-            if (collectionDrops?.length > 0) {
-              dropjson = await fetchIPFSJSON(
-                collectionDrops[0]?.dropURI
-                  ?.split("ipfs://")[1]
-                  .replace(/"/g, "")
-                  .trim()
-              );
-            }
-
-            let defaultProfile;
-            defaultProfile = await getDefaultProfile(collection.owner);
-            if (!defaultProfile?.data?.defaultProfile) {
-              defaultProfile = {
-                handle: "syntheticfutures.lens",
-                picture: {
-                  original: {
-                    url: "ipfs://Qmd7PdjsVSfVs6j4uFbxZLsHmzkJw2DYQLxbmgX7aDWkb3",
-                  },
-                },
-              };
-            } else {
-              defaultProfile = defaultProfile?.data?.defaultProfile;
-            }
-            return {
-              ...collection,
-              uri: json,
-              profile: defaultProfile,
-              drop: {
-                name: dropjson?.name,
-                image: dropjson?.image,
-              },
-            };
           }
-        )
+          const defaultProfile = await getDefaultProfile(collection.owner);
+
+          return {
+            ...collection,
+            uri: json,
+            profile: defaultProfile?.data?.defaultProfile,
+            drop: {
+              name: dropjson?.name,
+              image: dropjson?.image,
+            },
+          };
+        })
       );
 
       const collectionDrops = drops?.data?.dropCreateds
@@ -139,7 +120,6 @@ const useDrop = () => {
           amount: collections[0]?.amount,
           tokenIds: collections[0].tokenIds,
           tokensSold: collections[0].soldTokens,
-        
         })
       );
       dispatch(setCollectionsRedux(collections));
