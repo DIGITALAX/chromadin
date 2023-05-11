@@ -9,7 +9,6 @@ import createProfilePicture from "@/lib/helpers/createProfilePicture";
 const Drops: FunctionComponent<DropsProps> = ({
   collections,
   dispatch,
-  dispatchCollections,
   collectionsLoading,
   router,
 }): JSX.Element => {
@@ -39,103 +38,101 @@ const Drops: FunctionComponent<DropsProps> = ({
               </div>
             );
           })
-        : (collections?.length < 0 ? dispatchCollections : collections)?.map(
-            (collection: Collection, index: number) => {
-              const profileImage = createProfilePicture(
-                collection?.profile,
-                false
-              );
-              return (
-                <div
-                  className="relative w-60 h-40 flex flex-col items-center shrink-0 cursor-pointer"
-                  key={index}
-                  onClick={() => {
-                    dispatch(
-                      setMainNFT({
-                        name: collection?.name,
-                        media: collection?.uri?.image?.split("ipfs://")[1],
-                        description: collection?.uri?.description,
-                        type: collection?.uri?.type,
-                        drop: collection?.drop,
-                        creator: {
-                          media: profileImage,
-                          name: collection?.profile?.handle,
-                        },
-                        price: collection?.basePrices,
-                        acceptedTokens: collection?.acceptedTokens,
-                        amount: collection?.amount,
-                        tokenIds: collection?.tokenIds,
-                        tokensSold: collection?.soldTokens,
-                      })
-                    );
-                    if (router.asPath.includes("#sampler")) {
-                      !router.asPath.includes("?search=")
-                        ? router.push(
-                            router.asPath.split("#sampler")[0] +
-                              "#collect?option=fulfillment"
-                          )
-                        : router.push(
-                            router.asPath.split("#sampler")[0] +
-                              "#collect?option=fulfillment" +
-                              `?search=${router.asPath.split("?search=")[1]}`
-                          );
-                    } else {
-                      !router.asPath.includes("?search=")
-                        ? router.asPath.includes("#")
-                          ? router.push(
-                              router.asPath.split("?option=")[0] +
-                                "?option=fulfillment"
-                            )
-                          : router.push(
-                              router.asPath.split("?option=")[0] +
-                                "#stream?option=fulfillment"
-                            )
-                        : router.asPath.includes("#")
+        : collections?.map((collection: Collection, index: number) => {
+            const profileImage = createProfilePicture(
+              collection?.profile,
+              false
+            );
+            return (
+              <div
+                className="relative w-60 h-40 flex flex-col items-center shrink-0 cursor-pointer"
+                key={index}
+                onClick={() => {
+                  dispatch(
+                    setMainNFT({
+                      name: collection?.name,
+                      media: collection?.uri?.image?.split("ipfs://")[1],
+                      description: collection?.uri?.description,
+                      type: collection?.uri?.type,
+                      drop: collection?.drop,
+                      creator: {
+                        media: profileImage,
+                        name: collection?.profile?.handle,
+                      },
+                      price: collection?.basePrices,
+                      acceptedTokens: collection?.acceptedTokens,
+                      amount: collection?.amount,
+                      tokenIds: collection?.tokenIds,
+                      tokensSold: collection?.soldTokens,
+                    })
+                  );
+                  if (router.asPath.includes("#sampler")) {
+                    !router.asPath.includes("?search=")
+                      ? router.push(
+                          router.asPath.split("#sampler")[0] +
+                            "#collect?option=fulfillment"
+                        )
+                      : router.push(
+                          router.asPath.split("#sampler")[0] +
+                            "#collect?option=fulfillment" +
+                            `?search=${router.asPath.split("?search=")[1]}`
+                        );
+                  } else {
+                    !router.asPath.includes("?search=")
+                      ? router.asPath.includes("#")
                         ? router.push(
                             router.asPath.split("?option=")[0] +
-                              "?option=fulfillment" +
-                              `?search=${router.asPath.split("?search=")[1]}`
+                              "?option=fulfillment"
                           )
-                        : router.asPath.split("?option=")[0] +
-                          "#stream?option=fulfillment" +
-                          `?search=${router.asPath.split("?search=")[1]}`;
-                    }
-                  }}
+                        : router.push(
+                            router.asPath.split("?option=")[0] +
+                              "#stream?option=fulfillment"
+                          )
+                      : router.asPath.includes("#")
+                      ? router.push(
+                          router.asPath.split("?option=")[0] +
+                            "?option=fulfillment" +
+                            `?search=${router.asPath.split("?search=")[1]}`
+                        )
+                      : router.asPath.split("?option=")[0] +
+                        "#stream?option=fulfillment" +
+                        `?search=${router.asPath.split("?search=")[1]}`;
+                  }
+                }}
+              >
+                <div
+                  className="relative w-full h-full border-white border"
+                  id="staticLoad"
                 >
-                  <div
-                    className="relative w-full h-full border-white border"
-                    id="staticLoad"
-                  >
-                    <Image
-                      src={`${INFURA_GATEWAY}/ipfs/${
-                        collection.uri.image.split("ipfs://")[1]
-                      }`}
-                      layout="fill"
-                      objectFit="cover"
-                      objectPosition="top"
-                      className="w-full h-full"
-                      draggable={false}
-                    />
+                  <Image
+                    src={`${INFURA_GATEWAY}/ipfs/${
+                      collection.uri.image.split("ipfs://")[1]
+                    }`}
+                    layout="fill"
+                    objectFit="cover"
+                    objectPosition="top"
+                    className="w-full h-full"
+                    draggable={false}
+                  />
+                </div>
+                <div className="relative w-full h-fit flex flex-row items-center gap-2">
+                  <div className="rounded-full bg-verde h-2 w-2"></div>
+                  <div className="relative w-fit h-fit font-geom text-xs text-verde whitespace-nowrap">
+                    {collection?.drop?.name?.length > 15
+                      ? collection?.drop?.name.slice(0, 15) + "..."
+                      : collection?.drop?.name}
                   </div>
-                  <div className="relative w-full h-fit flex flex-row items-center gap-2">
-                    <div className="rounded-full bg-verde h-2 w-2"></div>
-                    <div className="relative w-fit h-fit font-geom text-xs text-verde whitespace-nowrap">
-                      {collection?.drop?.name?.length > 15
-                        ? collection?.drop?.name.slice(0, 15) + "..."
-                        : collection?.drop?.name}
-                    </div>
-                    <div className="relative w-fit h-fit font-geom text-xs text-white whitespace-nowrap">
-                      {" "}
-                      —{" "}
-                      {collection?.name?.length > 7
-                        ? collection?.name.slice(0, 7) + "..."
-                        : collection?.name}
-                    </div>
+                  <div className="relative w-fit h-fit font-geom text-xs text-white whitespace-nowrap">
+                    {" "}
+                    —{" "}
+                    {collection?.name?.length > 7
+                      ? collection?.name.slice(0, 7) + "..."
+                      : collection?.name}
                   </div>
                 </div>
-              );
-            }
-          )}
+              </div>
+            );
+          })}
     </div>
   );
 };

@@ -21,8 +21,8 @@ const History: FunctionComponent<HistoryProps> = ({
       }`}
     >
       {historyLoading ? (
-        <div className="relative w-full h-60 flex flex-col overflow-y-scroll gap-8 preG:gap-4 lg:gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap opacity-30 animate-pulse">
-          {Array.from({ length: 7 }).map((_: any, index: number) => {
+        <div className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 preG:gap-4 lg:gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap opacity-30 animate-pulse">
+          {Array.from({ length: 4 }).map((_: any, index: number) => {
             return (
               <div
                 key={index}
@@ -151,19 +151,22 @@ const History: FunctionComponent<HistoryProps> = ({
           )}
         </div>
       )}
-      {history?.length === 0 && historyReducer?.length === 0 && (
-        <div className="relative w-full h-[29.4rem] flex">
-          <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmPKeuGZU2QZQm8GVhp7X3WvhzELLnmL5VNCFitgzCP6od`}
-            layout="fill"
-            objectFit="cover"
-            draggable={false}
-          />
-        </div>
+      {!historyLoading && (
+        <>
+          <div className="relative w-full h-full flex">
+            <Image
+              src={`${INFURA_GATEWAY}/ipfs/QmPKeuGZU2QZQm8GVhp7X3WvhzELLnmL5VNCFitgzCP6od`}
+              layout="fill"
+              objectFit="cover"
+              draggable={false}
+              priority
+            />
+          </div>
+          <div className="relative bottom-0 w-full h-fit py-2 border-y border-white text-white font-arcade uppercase items-end justify-center flex">
+            CHROMADIN HISTORY
+          </div>
+        </>
       )}
-      <div className="relative bottom-0 w-full h-fit py-2 border-y border-white text-white font-arcade uppercase items-end justify-center flex">
-        CHROMADIN HISTORY
-      </div>
     </div>
   );
 };

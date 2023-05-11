@@ -6,7 +6,6 @@ import { AnyAction, Dispatch } from "redux";
 export type DropsProps = {
   collections: Collection[];
   dispatch: Dispatch<AnyAction>;
-  dispatchCollections: Collection[];
   collectionsLoading: boolean;
   router: NextRouter
 };

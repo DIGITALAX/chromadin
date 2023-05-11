@@ -66,14 +66,13 @@ const Frequency: FunctionComponent = (): JSX.Element => {
               ? [
                   ...collections?.slice(currentIndex),
                   ...collections?.slice(0, currentIndex),
-                ]
+                ]?.reverse()
               : [
                   ...dispatchCollections!?.slice(currentIndex),
                   ...dispatchCollections!?.slice(0, currentIndex),
-                ]
+                ]?.reverse()
           }
           dispatch={dispatch}
-          dispatchCollections={dispatchCollections}
           collectionsLoading={collectionsLoading}
           router={router}
         />
