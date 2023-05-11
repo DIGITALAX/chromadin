@@ -5,10 +5,12 @@ import { useDispatch } from "react-redux";
 import { setAuthStatus } from "@/redux/reducers/authStatusSlice";
 import { setLensProfile } from "@/redux/reducers/lensProfileSlice";
 import {
+  getAddress,
   getAuthenticationToken,
   isAuthExpired,
   refreshAuth,
   removeAuthenticationToken,
+  setAddress,
   setAuthenticationToken,
 } from "@/lib/lens/utils";
 import authenticate from "@/graphql/lens/mutations/authenticate";
@@ -78,6 +80,7 @@ const useConnect = (): UseConnectResults => {
       );
       if (accessTokens) {
         setAuthenticationToken({ token: accessTokens.data.authenticate });
+        setAddress(address as string);
         const profile = await getDefaultProfile(address);
         if (profile?.data?.defaultProfile) {
           dispatch(setLensProfile(profile?.data?.defaultProfile));
@@ -108,19 +111,29 @@ const useConnect = (): UseConnectResults => {
 
   useEffect(() => {
     setConnected(isConnected);
-    const token = getAuthenticationToken();
-    if (isConnected && !token) {
+    const newAddress = getAddress();
+    if (
+      (newAddress && newAddress.replace(/^"|"$/g, "") === address) ||
+      (!newAddress && address)
+    ) {
+      const token = getAuthenticationToken();
+      setAddress(address as string);
+      if (isConnected && !token) {
+        dispatch(setLensProfile(undefined));
+        removeAuthenticationToken();
+      } else if (isConnected && token) {
+        if (isAuthExpired(token?.exp)) {
+          const refreshedAccessToken = refreshAuth();
+          if (!refreshedAccessToken) {
+            dispatch(setLensProfile(undefined));
+            removeAuthenticationToken();
+          }
+        }
+        handleRefreshProfile();
+      }
+    } else if (isConnected && address !== newAddress) {
       dispatch(setLensProfile(undefined));
       removeAuthenticationToken();
-    } else if (isConnected && token) {
-      if (isAuthExpired(token?.exp)) {
-        const refreshedAccessToken = refreshAuth();
-        if (!refreshedAccessToken) {
-          dispatch(setLensProfile(undefined));
-          removeAuthenticationToken();
-        }
-      }
-      handleRefreshProfile();
     }
   }, [isConnected]);
 

@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.11",
-    "@google-cloud/bigquery": "^6.2.0",
     "@rainbow-me/rainbowkit": "^0.12.6",
     "@reduxjs/toolkit": "^1.9.3",
     "@types/node": "18.15.11",
