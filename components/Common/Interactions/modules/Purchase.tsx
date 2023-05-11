@@ -19,7 +19,10 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
     <div className="relative w-full h-fit flex flex-col">
       {mainNFT && (
         <div className="relative w-full h-full flex flex-col items-center justify-center pt-4">
-          <div className="relative w-60 h-60 lg:w-2/3 lg:h-52 rounded-br-lg rounded-tl-lg border border-white">
+          <div
+            className="relative w-60 h-60 lg:w-2/3 lg:h-52 rounded-br-lg rounded-tl-lg border border-white"
+            id="staticLoad"
+          >
             <Image
               src={`${INFURA_GATEWAY}/ipfs/${mainNFT.media}`}
               className="rounded-br-lg rounded-tl-lg w-full h-full"
