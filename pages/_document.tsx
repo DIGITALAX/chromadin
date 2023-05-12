@@ -70,7 +70,7 @@ export default function Document() {
         />
         <link
           rel="preload"
-          href="/fonts/EconomicaB.ttf"
+          href="/fonts/EconomicaBold.ttf"
           as="font"
           crossOrigin="anonymous"
           type="font/ttf"

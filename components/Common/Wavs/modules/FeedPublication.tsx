@@ -36,7 +36,6 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
   setMirrorLoader,
   openComment,
 }): JSX.Element => {
-  console.log({ publication });
   return (
     <div
       className={`relative w-full ${

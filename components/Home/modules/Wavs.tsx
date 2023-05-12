@@ -143,7 +143,6 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     handleRemoveImage,
     mappedFeaturedFiles,
   } = useImageUpload();
-  console.log({commentors})
   return (
     <div className="relative w-full h-full mid:h-[50.2rem] xl:h-[47.8rem] gap-3 flex items-start justify-center pt-10 overflow-y-scroll">
       <AllPosts
