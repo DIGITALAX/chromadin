@@ -46,6 +46,9 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const scrollPos = useSelector(
     (state: RootState) => state.app.scrollPosReducer.value
   );
+  const individualAmounts = useSelector(
+    (state: RootState) => state.app.individualFeedCountReducer
+  );
 
   const { handleLensSignIn, handleConnect } = useConnect();
   const {
@@ -254,6 +257,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         scrollRef={scrollRef}
         setScrollPos={setScrollPos}
         scrollPos={scrollPos}
+        individualAmounts={individualAmounts}
       />
     </div>
   );

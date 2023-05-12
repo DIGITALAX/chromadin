@@ -96,7 +96,8 @@ const Individual: FunctionComponent<IndividualProps> = ({
   collectOpen,
   mappedFeaturedFiles,
   canComment,
-  postImagesDispatched
+  postImagesDispatched,
+  individualAmounts,
 }): JSX.Element => {
   return (
     <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
@@ -120,9 +121,9 @@ const Individual: FunctionComponent<IndividualProps> = ({
           <FeedPublication
             dispatch={dispatch}
             publication={mainPost}
-            hasMirrored={postAmounts?.hasMirrored[feedType.index]}
-            hasReacted={postAmounts?.hasLiked[feedType.index]}
-            hasCollected={postAmounts?.hasCollected[feedType.index]}
+            hasMirrored={individualAmounts?.hasMirrored}
+            hasReacted={individualAmounts?.hasLiked}
+            hasCollected={individualAmounts?.hasCollected}
             followerOnly={followerOnlyMain}
             collectPost={collectPost}
             mirrorPost={mirrorPost}
@@ -132,10 +133,10 @@ const Individual: FunctionComponent<IndividualProps> = ({
             mirrorLoading={mirrorPostLoading[0]}
             reactLoading={reactPostLoading[0]}
             collectLoading={collectPostLoading[0]}
-            reactAmount={postAmounts?.like[feedType.index]}
-            mirrorAmount={postAmounts?.mirror[feedType.index]}
-            collectAmount={postAmounts?.collect[feedType.index]}
-            commentAmount={postAmounts?.comment[feedType.index]}
+            reactAmount={individualAmounts?.like}
+            mirrorAmount={individualAmounts?.mirror}
+            collectAmount={individualAmounts?.collect}
+            commentAmount={individualAmounts?.comment}
             feedType={feedType.value}
             setCollectLoader={setCollectPostLoading}
             setMirrorLoader={setMirrorPostLoading}

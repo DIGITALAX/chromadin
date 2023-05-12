@@ -108,6 +108,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   scrollRef,
   setScrollPos,
   scrollPos,
+  individualAmounts
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
@@ -204,6 +205,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
             currencyDropDown={currencyDropDown}
             postImagesDispatched={postImagesDispatched}
             feedType={feedType}
+            individualAmounts={individualAmounts}
           />
         ) : postsLoading ? (
           <div className="relative w-full h-full flex flex-col gap-4 overflow-y-scroll">

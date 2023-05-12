@@ -8,6 +8,7 @@ import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import checkPostReactions from "@/lib/helpers/checkPostReactions";
 import { setCommentFeedCount } from "@/redux/reducers/commentFeedCountSlice";
 import { setFeedsRedux } from "@/redux/reducers/feedSlice";
+import { setIndividualFeedCount } from "@/redux/reducers/individualFeedCountReducer";
 import { setPaginated } from "@/redux/reducers/paginatedSlice";
 import { setReactionFeedCount } from "@/redux/reducers/reactionFeedCountSlice";
 import { setScrollPosRedux } from "@/redux/reducers/scrollPosSlice";
@@ -47,6 +48,9 @@ const useAllPosts = () => {
   );
   const paginated = useSelector(
     (state: RootState) => state.app.paginatedReducer.value
+  );
+  const individual = useSelector(
+    (state: RootState) => state.app.individualFeedCountReducer
   );
   const scrollRef = useRef<InfiniteScroll>(null);
   const dispatch = useDispatch();
@@ -263,7 +267,23 @@ const useAllPosts = () => {
   const refetchInteractions = () => {
     try {
       const index = feedDispatch?.findIndex((feed) => feed.id === feedId.value);
+      console.log(index);
       if (index > 0) {
+        dispatch(
+          setIndividualFeedCount({
+            actionLike:
+              feedId.type === 0 ? individual.like + 1 : individual.like,
+            actionMirror:
+              feedId.type === 1 ? individual.mirror + 1 : individual.mirror,
+            actionCollect:
+              feedId.type === 2 ? individual.collect + 1 : individual.collect,
+            actionComment:
+              feedId.type === 3 ? individual.comment + 1 : individual.comment,
+            actionHasLiked: feedId.type === 0 ? true : individual.hasLiked,
+            actionHasMirrored: feedId.type === 1 ? true : individual.mirror,
+            actionHasCollected: feedId.type === 2 ? true : individual.collect,
+          })
+        );
         dispatch(
           setReactionFeedCount({
             actionLike:
@@ -311,6 +331,22 @@ const useAllPosts = () => {
                       number === index ? true : obj
                   )
                 : reactionFeedCount.collect,
+          })
+        );
+      } else {
+        dispatch(
+          setIndividualFeedCount({
+            actionLike:
+              feedId.type === 0 ? individual.like + 1 : individual.like,
+            actionMirror:
+              feedId.type === 1 ? individual.mirror + 1 : individual.mirror,
+            actionCollect:
+              feedId.type === 2 ? individual.collect + 1 : individual.collect,
+            actionComment:
+              feedId.type === 3 ? individual.comment + 1 : individual.comment,
+            actionHasLiked: feedId.type === 0 ? true : individual.hasLiked,
+            actionHasMirrored: feedId.type === 1 ? true : individual.mirror,
+            actionHasCollected: feedId.type === 2 ? true : individual.collect,
           })
         );
       }

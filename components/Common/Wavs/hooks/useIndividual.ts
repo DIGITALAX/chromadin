@@ -17,6 +17,7 @@ import { setCanComment } from "@/redux/reducers/canCommentSlice";
 import { setCommentsRedux } from "@/redux/reducers/commentSlice";
 import { setCommentFeedCount } from "@/redux/reducers/commentFeedCountSlice";
 import { useRouter } from "next/router";
+import { setIndividualFeedCount } from "@/redux/reducers/individualFeedCountReducer";
 
 const useIndividual = () => {
   const dispatch = useDispatch();
@@ -103,9 +104,10 @@ const useIndividual = () => {
             : false
         )
       );
+      let hasMirroredArr, hasReactedArr;
       if (lensProfile) {
-        const hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
-        const hasReactedArr = await checkPostReactions(
+        hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
+        hasReactedArr = await checkPostReactions(
           {
             commentsOf: feedType,
             limit: 10,
@@ -114,29 +116,29 @@ const useIndividual = () => {
           },
           lensProfile
         );
-        const hasCollectedArr = sortedArr.map(
-          (obj: Publication) => obj.hasCollectedByMe
-        );
-        dispatch(
-          setCommentFeedCount({
-            actionLike: sortedArr.map(
-              (obj: Publication) => obj.stats.totalUpvotes
-            ),
-            actionMirror: sortedArr.map(
-              (obj: Publication) => obj.stats.totalAmountOfMirrors
-            ),
-            actionCollect: sortedArr.map(
-              (obj: Publication) => obj.stats.totalAmountOfCollects
-            ),
-            actionComment: sortedArr.map(
-              (obj: Publication) => obj.stats.totalAmountOfComments
-            ),
-            actionHasLiked: hasReactedArr,
-            actionHasMirrored: hasMirroredArr,
-            actionHasCollected: hasCollectedArr,
-          })
-        );
       }
+      const hasCollectedArr = sortedArr.map(
+        (obj: Publication) => obj.hasCollectedByMe
+      );
+      dispatch(
+        setCommentFeedCount({
+          actionLike: sortedArr.map(
+            (obj: Publication) => obj.stats.totalUpvotes
+          ),
+          actionMirror: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfMirrors
+          ),
+          actionCollect: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfCollects
+          ),
+          actionComment: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfComments
+          ),
+          actionHasLiked: hasReactedArr ? hasReactedArr : [],
+          actionHasMirrored: hasMirroredArr ? hasMirroredArr : [],
+          actionHasCollected: hasCollectedArr,
+        })
+      );
     } catch (err: any) {
       console.error(err.message);
     }
@@ -286,6 +288,7 @@ const useIndividual = () => {
         });
         pubData = data;
       }
+
       setMainPost(pubData?.publication);
       setFollowerOnly(
         pubData?.publication.__typename === "Mirror"
@@ -298,30 +301,31 @@ const useIndividual = () => {
           ? true
           : false
       );
+      let hasMirroredArr, hasReactedArr;
       if (lensProfile) {
-        const hasMirroredArr = await checkIfMirrored(
+        hasMirroredArr = await checkIfMirrored(
           [pubData?.publication],
           lensProfile
         );
-        const hasReactedArr = await checkPostReactions(
+        hasReactedArr = await checkPostReactions(
           {
             publicationId: feedType,
           },
           lensProfile,
           true
         );
-        dispatch(
-          setCommentFeedCount({
-            actionLike: [pubData?.publication.stats.totalUpvotes],
-            actionMirror: [pubData?.publication.stats.totalAmountOfMirrors],
-            actionCollect: [pubData?.publication.stats.totalAmountOfCollects],
-            actionComment: [pubData?.publication.stats.totalAmountOfComments],
-            actionHasLiked: hasReactedArr,
-            actionHasMirrored: hasMirroredArr,
-            actionHasCollected: [pubData?.publication.hasCollectedByMe],
-          })
-        );
       }
+      dispatch(
+        setIndividualFeedCount({
+          actionLike: pubData?.publication.stats.totalUpvotes,
+          actionMirror: pubData?.publication.stats.totalAmountOfMirrors,
+          actionCollect: pubData?.publication.stats.totalAmountOfCollects,
+          actionComment: pubData?.publication.stats.totalAmountOfComments,
+          actionHasLiked: hasReactedArr ? hasReactedArr?.[0] : false,
+          actionHasMirrored: hasMirroredArr ? hasMirroredArr?.[0] : false,
+          actionHasCollected: pubData?.publication.hasCollectedByMe,
+        })
+      );
     } catch (err: any) {
       console.error(err.message);
     }

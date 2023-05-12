@@ -4,6 +4,7 @@ import {
   Publication,
 } from "@/components/Home/types/lens.types";
 import { CommentFeedCountState } from "@/redux/reducers/commentFeedCountSlice";
+import { IndividualFeedCountState } from "@/redux/reducers/individualFeedCountReducer";
 import { ReactionFeedCountState } from "@/redux/reducers/reactionFeedCountSlice";
 import { NextRouter } from "next/router";
 import { FormEvent, KeyboardEvent, Ref } from "react";
@@ -280,6 +281,7 @@ export type AllPostsProps = {
   scrollRef: Ref<InfiniteScroll>;
   setScrollPos: (e: MouseEvent) => void;
   scrollPos: number;
+  individualAmounts: IndividualFeedCountState;
 };
 
 export interface ApprovalArgs {
@@ -447,6 +449,7 @@ export type IndividualProps = {
   profileId: string;
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
+  individualAmounts: IndividualFeedCountState;
 };
 
 export type CommentsProps = {

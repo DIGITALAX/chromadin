@@ -106,7 +106,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
       ) : (
         <InfiniteScroll
           height={"20rem"}
-          loader={<FetchMoreLoading size="6" />}
+          loader={""}
           hasMore={hasMoreComments}
           next={fetchMoreComments}
           dataLength={commentors?.length}
@@ -125,22 +125,22 @@ const Comments: FunctionComponent<CommentsProps> = ({
                   <FeedPublication
                     dispatch={dispatch}
                     publication={comment}
-                    hasMirrored={commentAmounts.hasMirrored[index]}
-                    hasReacted={commentAmounts.hasLiked?.[index]}
-                    hasCollected={commentAmounts.hasCollected[index]}
-                    followerOnly={followerOnly[index]}
+                    hasMirrored={commentAmounts?.hasMirrored?.[index]}
+                    hasReacted={commentAmounts?.hasLiked?.[index]}
+                    hasCollected={commentAmounts?.hasCollected?.[index]}
+                    followerOnly={followerOnly?.[index]}
                     collectPost={collectPost}
                     mirrorPost={mirrorPost}
                     reactPost={reactPost}
                     address={address}
                     index={index}
-                    mirrorLoading={mirrorLoading[index]}
-                    reactLoading={reactLoading[index]}
-                    collectLoading={collectLoading[index]}
-                    reactAmount={commentAmounts.like[index]}
-                    mirrorAmount={commentAmounts.mirror[index]}
-                    collectAmount={commentAmounts.collect[index]}
-                    commentAmount={commentAmounts.comment[index]}
+                    mirrorLoading={mirrorLoading?.[index]}
+                    reactLoading={reactLoading?.[index]}
+                    collectLoading={collectLoading?.[index]}
+                    reactAmount={commentAmounts?.like?.[index]}
+                    mirrorAmount={commentAmounts?.mirror?.[index]}
+                    collectAmount={commentAmounts?.collect?.[index]}
+                    commentAmount={commentAmounts?.comment?.[index]}
                     feedType={feedType}
                     setCollectLoader={setCollectLoader}
                     setMirrorLoader={setMirrorLoader}
