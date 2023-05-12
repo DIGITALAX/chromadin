@@ -1,4 +1,4 @@
-import { apolloClient } from "@/lib/lens/client";
+import { apolloClient, authClient } from "@/lib/lens/client";
 import { gql } from "@apollo/client";
 
 const FEED_TIMELINE = `query Publications($request: PublicationsQueryRequest!) {
@@ -352,7 +352,7 @@ fragment ReferenceModuleFields on ReferenceModule {
 
 `;
 
-export const feedTimeline = (request: any) => {
+export const feedTimelineAuth = (request: any) => {
   return apolloClient.query({
     query: gql(FEED_TIMELINE),
     variables: {
@@ -361,4 +361,13 @@ export const feedTimeline = (request: any) => {
     fetchPolicy: "network-only",
   });
 };
-export default feedTimeline;
+
+export const feedTimeline = (request: any) => {
+  return authClient.query({
+    query: gql(FEED_TIMELINE),
+    variables: {
+      request: request,
+    },
+    fetchPolicy: "network-only",
+  });
+};

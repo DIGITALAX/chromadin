@@ -1,5 +1,8 @@
 import { Publication } from "@/components/Home/types/lens.types";
-import feedTimeline from "@/graphql/lens/queries/feedTimeline";
+import {
+  feedTimeline,
+  feedTimelineAuth,
+} from "@/graphql/lens/queries/feedTimeline";
 import { LENS_CREATORS } from "@/lib/constants";
 import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import checkPostReactions from "@/lib/helpers/checkPostReactions";
@@ -47,11 +50,22 @@ const useAllPosts = () => {
   const getTimeline = async () => {
     setPostsLoading(true);
     try {
-      const data = await feedTimeline({
-        profileIds: LENS_CREATORS,
-        publicationTypes: ["POST", "COMMENT", "MIRROR"],
-        limit: 20,
-      });
+      let data;
+
+      if (lensProfile) {
+        data = await feedTimelineAuth({
+          profileIds: LENS_CREATORS,
+          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          limit: 20,
+        });
+      } else {
+        data = await feedTimeline({
+          profileIds: LENS_CREATORS,
+          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          limit: 20,
+        });
+      }
+
       if (!data || !data?.data || !data?.data?.publications) {
         setPostsLoading(false);
         return;
@@ -67,15 +81,18 @@ const useAllPosts = () => {
         setHasMore(true);
       }
       setPaginated(data?.data?.publications?.pageInfo);
-      const hasReactedArr = await checkPostReactions(
-        {
-          profileIds: LENS_CREATORS,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 20,
-        },
-        lensProfile
-      );
-      const hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
+      let hasReactedArr, hasMirroredArr;
+      if (lensProfile) {
+        hasReactedArr = await checkPostReactions(
+          {
+            profileIds: LENS_CREATORS,
+            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            limit: 20,
+          },
+          lensProfile
+        );
+        hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
+      }
       const hasCollectedArr = sortedArr.map((obj: Publication) =>
         obj.__typename === "Mirror"
           ? obj.mirrorOf.hasCollectedByMe
@@ -116,9 +133,9 @@ const useAllPosts = () => {
               ? obj.mirrorOf.stats.totalAmountOfComments
               : obj.stats.totalAmountOfComments
           ),
-          actionHasLiked: hasReactedArr,
-          actionHasMirrored: hasMirroredArr,
-          actionHasCollected: hasCollectedArr,
+          actionHasLiked: hasReactedArr ?? [],
+          actionHasMirrored: hasMirroredArr ?? [],
+          actionHasCollected: hasCollectedArr ?? [],
         })
       );
     } catch (err: any) {
@@ -134,12 +151,23 @@ const useAllPosts = () => {
         setHasMore(false);
         return;
       }
-      const data = await feedTimeline({
-        profileIds: LENS_CREATORS,
-        publicationTypes: ["POST", "COMMENT", "MIRROR"],
-        limit: 20,
-        cursor: paginated?.next,
-      });
+      let data;
+
+      if (lensProfile) {
+        data = await feedTimelineAuth({
+          profileIds: LENS_CREATORS,
+          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          limit: 20,
+          cursor: paginated?.next,
+        });
+      } else {
+        data = await feedTimeline({
+          profileIds: LENS_CREATORS,
+          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          limit: 20,
+          cursor: paginated?.next,
+        });
+      }
 
       const arr: any[] = [...data?.data?.publications?.items];
       const sortedArr = arr.sort(
@@ -147,22 +175,25 @@ const useAllPosts = () => {
       );
       if (sortedArr?.length < 20) {
         setHasMore(false);
-      }
-      {
+      } else {
         setHasMore(true);
       }
       dispatch(setFeedsRedux([...feedDispatch, ...sortedArr]));
       setPaginated(data?.data?.publications?.pageInfo);
-      const hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
-      const hasReactedArr = await checkPostReactions(
-        {
-          profileIds: LENS_CREATORS,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 20,
-          cursor: paginated?.next,
-        },
-        lensProfile
-      );
+      let hasMirroredArr, hasReactedArr;
+      if (lensProfile) {
+        hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
+        hasReactedArr = await checkPostReactions(
+          {
+            profileIds: LENS_CREATORS,
+            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            limit: 20,
+            cursor: paginated?.next,
+          },
+          lensProfile
+        );
+      }
+
       const hasCollectedArr = sortedArr.map((obj: Publication) =>
         obj.__typename === "Mirror"
           ? obj.mirrorOf.hasCollectedByMe
@@ -202,14 +233,17 @@ const useAllPosts = () => {
                 : obj.stats.totalAmountOfComments
             ),
           ],
-          actionHasLiked: [...reactionFeedCount.hasLiked, ...hasReactedArr],
+          actionHasLiked: [
+            ...reactionFeedCount.hasLiked,
+            ...(hasReactedArr ?? []),
+          ],
           actionHasMirrored: [
             ...reactionFeedCount.hasMirrored,
-            ...hasMirroredArr,
+            ...(hasMirroredArr ?? []),
           ],
           actionHasCollected: [
             ...reactionFeedCount.hasCollected,
-            ...hasCollectedArr,
+            ...(hasCollectedArr ?? []),
           ],
         })
       );
