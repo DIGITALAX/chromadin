@@ -202,7 +202,6 @@ const useAllPosts = () => {
           ? obj.mirrorOf.hasCollectedByMe
           : obj.hasCollectedByMe
       );
-      console.log("reacting", reactionFeedCount)
       dispatch(
         setReactionFeedCount({
           actionLike: [

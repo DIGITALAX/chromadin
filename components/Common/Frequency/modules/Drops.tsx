@@ -77,6 +77,17 @@ const Drops: FunctionComponent<DropsProps> = ({
                             "#collect?option=fulfillment" +
                             `?search=${router.asPath.split("?search=")[1]}`
                         );
+                  } else if (router.asPath.includes("#wavs")) {
+                    !router.asPath.includes("?search=")
+                      ? router.push(
+                          router.asPath.split("#wavs")[0] +
+                            "#collect?option=fulfillment"
+                        )
+                      : router.push(
+                          router.asPath.split("#wavs")[0] +
+                            "#collect?option=fulfillment" +
+                            `?search=${router.asPath.split("?search=")[1]}`
+                        );
                   } else {
                     !router.asPath.includes("?search=")
                       ? router.asPath.includes("#")
