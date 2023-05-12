@@ -483,3 +483,7 @@ input[type="range"]::-moz-range-thumb {
   overflow-y: scroll;
   white-space: pre-wrap;
 }
+
+.infinite-scroll-component__outerdiv {
+  width: 100%;
+}
