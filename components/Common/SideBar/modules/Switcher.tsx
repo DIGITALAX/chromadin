@@ -98,7 +98,12 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
         </div>
       </div>
       <div className="relative w-full h-full border-white border">
-        <MarqueeText gradient={false} speed={70} direction={"right"}>
+        <MarqueeText
+          gradient={false}
+          speed={70}
+          direction={"right"}
+          className="z-0"
+        >
           <div className="relative w-full h-fit text-white font-arcade font-digiB uppercase text-xxs lg:text-base py-px lg:py-2">
             There are whispers of new apps that can&apos;t be taken away from
             you. Stirrings of resistance decentralized in code. Where users own
