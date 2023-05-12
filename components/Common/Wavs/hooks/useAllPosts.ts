@@ -8,6 +8,7 @@ import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import checkPostReactions from "@/lib/helpers/checkPostReactions";
 import { setCommentFeedCount } from "@/redux/reducers/commentFeedCountSlice";
 import { setFeedsRedux } from "@/redux/reducers/feedSlice";
+import { setPaginated } from "@/redux/reducers/paginatedSlice";
 import { setReactionFeedCount } from "@/redux/reducers/reactionFeedCountSlice";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
@@ -41,8 +42,10 @@ const useAllPosts = () => {
   const comments = useSelector(
     (state: RootState) => state.app.commentReducer.value
   );
+  const paginated = useSelector(
+    (state: RootState) => state.app.paginatedReducer.value
+  );
   const dispatch = useDispatch();
-  const [paginated, setPaginated] = useState<any>();
   const [followerOnly, setFollowerOnly] = useState<boolean[]>([]);
   const [postsLoading, setPostsLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -56,13 +59,13 @@ const useAllPosts = () => {
         data = await feedTimelineAuth({
           profileIds: LENS_CREATORS,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 20,
+          limit: 10,
         });
       } else {
         data = await feedTimeline({
           profileIds: LENS_CREATORS,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 20,
+          limit: 10,
         });
       }
 
@@ -75,19 +78,19 @@ const useAllPosts = () => {
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
 
-      if (sortedArr?.length < 20) {
+      if (sortedArr?.length < 10) {
         setHasMore(false);
       } else {
         setHasMore(true);
       }
-      setPaginated(data?.data?.publications?.pageInfo);
+      dispatch(setPaginated(data?.data?.publications?.pageInfo));
       let hasReactedArr, hasMirroredArr;
       if (lensProfile) {
         hasReactedArr = await checkPostReactions(
           {
             profileIds: LENS_CREATORS,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
-            limit: 20,
+            limit: 10,
           },
           lensProfile
         );
@@ -157,14 +160,14 @@ const useAllPosts = () => {
         data = await feedTimelineAuth({
           profileIds: LENS_CREATORS,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 20,
+          limit: 10,
           cursor: paginated?.next,
         });
       } else {
         data = await feedTimeline({
           profileIds: LENS_CREATORS,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 20,
+          limit: 10,
           cursor: paginated?.next,
         });
       }
@@ -173,13 +176,13 @@ const useAllPosts = () => {
       const sortedArr = arr.sort(
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
-      if (sortedArr?.length < 20) {
+      if (sortedArr?.length < 10) {
         setHasMore(false);
       } else {
         setHasMore(true);
       }
       dispatch(setFeedsRedux([...feedDispatch, ...sortedArr]));
-      setPaginated(data?.data?.publications?.pageInfo);
+      dispatch(setPaginated(data?.data?.publications?.pageInfo));
       let hasMirroredArr, hasReactedArr;
       if (lensProfile) {
         hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
@@ -187,7 +190,7 @@ const useAllPosts = () => {
           {
             profileIds: LENS_CREATORS,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
-            limit: 20,
+            limit: 10,
             cursor: paginated?.next,
           },
           lensProfile
@@ -199,6 +202,7 @@ const useAllPosts = () => {
           ? obj.mirrorOf.hasCollectedByMe
           : obj.hasCollectedByMe
       );
+      console.log("reacting", reactionFeedCount)
       dispatch(
         setReactionFeedCount({
           actionLike: [

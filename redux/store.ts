@@ -45,6 +45,7 @@ import imageFeedViewerReducer from "./reducers/imageFeedViewerSlice";
 import feedReactIdReducer from "./reducers/feedReactIdSlice";
 import feedReducer from "./reducers/feedSlice";
 import commentReducer from "./reducers/commentSlice";
+import paginatedReducer from "./reducers/paginatedSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -92,6 +93,7 @@ const reducer = combineReducers({
   feedReactIdReducer,
   feedReducer,
   commentReducer,
+  paginatedReducer,
 });
 
 export const store = configureStore({
