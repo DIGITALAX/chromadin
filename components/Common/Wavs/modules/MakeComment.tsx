@@ -255,7 +255,7 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
             <div className="relative w-full h-full border border-white p-px rounded-md grid grid-flow-col auto-cols-auto">
               <textarea
                 id="post2"
-                onScroll={(e: any) => syncScroll(e, "highlighted-content")}
+                onScroll={(e: any) => syncScroll(e, "highlighted-content2")}
                 onInput={(e: FormEvent) => {
                   handleCommentDescription(e);
                   syncScroll(e, "highlighted-content2");

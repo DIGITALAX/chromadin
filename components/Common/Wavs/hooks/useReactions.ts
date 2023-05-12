@@ -96,6 +96,9 @@ const useReactions = () => {
     inputIndex?: number,
     mirrorId?: string
   ): Promise<void> => {
+    if (!profileId || !authStatus) {
+      return;
+    }
     let index: number;
     if (inputIndex === undefined || inputIndex === null) {
       index = feedDispatch?.findIndex(
@@ -165,6 +168,9 @@ const useReactions = () => {
     inputIndex?: number,
     mirrorId?: string
   ): Promise<void> => {
+    if (!profileId || !authStatus) {
+      return;
+    }
     let index: number;
     if (inputIndex === undefined || inputIndex === null) {
       index = feedDispatch.findIndex(
@@ -343,6 +349,9 @@ const useReactions = () => {
     inputIndex?: number,
     mirrorId?: string
   ): Promise<void> => {
+    if (!profileId || !authStatus) {
+      return;
+    }
     let index: number;
     if (inputIndex === undefined || inputIndex === null) {
       index = feedDispatch.findIndex(

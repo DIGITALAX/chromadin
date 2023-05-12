@@ -235,6 +235,9 @@ const useComment = () => {
   };
 
   const commentPost = async (id: string): Promise<void> => {
+    if (!profileId) {
+      return;
+    }
     if (
       (!commentDescription ||
         commentDescription === "" ||
