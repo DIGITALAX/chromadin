@@ -5,7 +5,7 @@ export interface PaginatedState {
 }
 
 const initialPaginatedState: PaginatedState = {
-  value: "history",
+  value: {},
 };
 
 export const paginatedSlice = createSlice({
