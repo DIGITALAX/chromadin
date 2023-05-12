@@ -25,7 +25,6 @@ const Comments: FunctionComponent<CommentsProps> = ({
   setCollectLoader,
   setMirrorLoader,
   setReactLoader,
-  authStatus,
   profileId,
   commentPost,
   handleLensSignIn,
@@ -169,7 +168,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
                       handleLensSignIn={handleLensSignIn}
                       handleConnect={handleConnect}
                       handleRemoveImage={handleRemoveImage}
-                      authStatus={authStatus}
+                      address={address}
                       profileId={profileId}
                       videoLoading={videoLoading}
                       uploadImages={uploadImages}

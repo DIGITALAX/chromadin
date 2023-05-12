@@ -270,7 +270,6 @@ export type AllPostsProps = {
   setTimeLimitDropDown: (e: boolean) => void;
   collectNotif: string;
   canComment: boolean;
-  authStatus: boolean;
   profileId: string;
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
@@ -445,7 +444,6 @@ export type IndividualProps = {
   setTimeLimitDropDown: (e: boolean) => void;
   collectNotif: string;
   canComment: boolean;
-  authStatus: boolean;
   profileId: string;
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
@@ -485,7 +483,6 @@ export type CommentsProps = {
   setReactLoader: (e: boolean[]) => void;
   setMirrorLoader: (e: boolean[]) => void;
   setCollectLoader: (e: boolean[]) => void;
-  authStatus: boolean;
   profileId: string;
   commentPost: (id: string) => Promise<void>;
   handleLensSignIn: () => Promise<void>;
@@ -617,7 +614,7 @@ export type ImageUploadsProps = {
 };
 
 export type MakeCommentProps = {
-  authStatus: boolean;
+  address: `0x${string}` | undefined;
   profileId: string;
   commentPost: (id: string) => Promise<void>;
   handleLensSignIn: () => Promise<void>;

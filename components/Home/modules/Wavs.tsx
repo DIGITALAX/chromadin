@@ -28,9 +28,6 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const commentOpen = useSelector(
     (state: RootState) => state.app.openCommentReducer.value
   );
-  const authStatus = useSelector(
-    (state: RootState) => state.app.authStatusReducer.value
-  );
   const canComment = useSelector(
     (state: RootState) => state.app.canCommentReducer.value
   );
@@ -212,7 +209,6 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         handleLensSignIn={handleLensSignIn}
         handleConnect={handleConnect}
         handleRemoveImage={handleRemoveImage}
-        authStatus={authStatus}
         profileId={profileId}
         videoLoading={videoLoading}
         uploadImages={uploadImage}

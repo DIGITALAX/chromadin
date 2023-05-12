@@ -12,6 +12,7 @@ import { setPaginated } from "@/redux/reducers/paginatedSlice";
 import { setReactionFeedCount } from "@/redux/reducers/reactionFeedCountSlice";
 import { setScrollPosRedux } from "@/redux/reducers/scrollPosSlice";
 import { RootState } from "@/redux/store";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,6 +50,7 @@ const useAllPosts = () => {
   );
   const scrollRef = useRef<InfiniteScroll>(null);
   const dispatch = useDispatch();
+  const router = useRouter();
   const [followerOnly, setFollowerOnly] = useState<boolean[]>([]);
   const [postsLoading, setPostsLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -374,11 +376,13 @@ const useAllPosts = () => {
   };
 
   useEffect(() => {
-    if (indexer.message === "Successfully Indexed") {
-      refetchInteractions();
+    if (router.asPath?.includes("#wavs")) {
+      if (indexer.message === "Successfully Indexed") {
+        refetchInteractions();
 
-      if (feedType !== "") {
-        refetchComments();
+        if (feedType !== "") {
+          refetchComments();
+        }
       }
     }
   }, [indexer.message]);

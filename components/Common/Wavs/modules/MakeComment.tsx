@@ -12,7 +12,6 @@ import CollectButton from "../../Buttons/CollectButton";
 import CollectInput from "../../Buttons/CollectInput";
 
 const MakeComment: FunctionComponent<MakeCommentProps> = ({
-  authStatus,
   profileId,
   commentPost,
   handleLensSignIn,
@@ -76,8 +75,8 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
   handleKeyDownDelete,
   commentId,
   canComment,
+  address,
 }): JSX.Element => {
-  
   return (
     <div className="relative w-full h-60 flex flex-col ">
       <div className="relative w-full h-full rounded-br-2xl rounded-tr-2xl border-2 border-black bg-gradient-to-r from-offBlack via-gray-600 to-black p-4 flex flex-col gap-3">
@@ -355,9 +354,9 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
                   commentLoading && "animate-spin"
                 }`}
                 onClick={
-                  !authStatus && !profileId
+                  !profileId && !address
                     ? () => handleConnect()
-                    : authStatus && !profileId
+                    : address && !profileId
                     ? () => handleLensSignIn()
                     : commentLoading
                     ? () => {}
@@ -372,9 +371,9 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
                     : () => commentPost(commentId)
                 }
               >
-                {!authStatus && !profileId ? (
+                {!address && !profileId ? (
                   "CONNECT"
-                ) : authStatus && !profileId ? (
+                ) : address && !profileId ? (
                   "SIGN IN"
                 ) : commentLoading ? (
                   <AiOutlineLoading size={10} color="white" />

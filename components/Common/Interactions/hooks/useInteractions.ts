@@ -9,6 +9,7 @@ import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import checkPostReactions from "@/lib/helpers/checkPostReactions";
 import { setCanComment } from "@/redux/reducers/canCommentSlice";
 import { RootState } from "@/redux/store";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -24,6 +25,7 @@ const useInteractions = () => {
   const [hasMoreCollects, setHasMoreCollects] = useState<boolean>(true);
   const [hasMoreComments, setHasMoreComments] = useState<boolean>(true);
   const dispatch = useDispatch();
+  const router = useRouter();
   const profileId = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
@@ -222,7 +224,10 @@ const useInteractions = () => {
   }, [mainVideo.id, profileId, commentId]);
 
   useEffect(() => {
-    if (index.message === "Successfully Indexed") {
+    if (
+      index.message === "Successfully Indexed" &&
+      router.asPath?.includes("#stream")
+    ) {
       getPostComments();
       getPostCollects();
     }

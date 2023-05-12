@@ -220,7 +220,9 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                         actionIndex: index,
                       })
                     )
-                : publication?.collectModule?.type !== "FreeCollectModule"
+                : publication?.collectModule?.type !== "FreeCollectModule" &&
+                  publication?.collectModule?.__typename !==
+                    "FreeCollectModuleSettings"
                 ? () =>
                     dispatch(
                       setPurchase({

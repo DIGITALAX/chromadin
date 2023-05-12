@@ -16,9 +16,11 @@ import canCommentPub from "@/graphql/lens/queries/canComment";
 import { setCanComment } from "@/redux/reducers/canCommentSlice";
 import { setCommentsRedux } from "@/redux/reducers/commentSlice";
 import { setCommentFeedCount } from "@/redux/reducers/commentFeedCountSlice";
+import { useRouter } from "next/router";
 
 const useIndividual = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const lensProfile = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
@@ -335,7 +337,7 @@ const useIndividual = () => {
   }, [feedType]);
 
   useEffect(() => {
-    if (feedType !== "") {
+    if (feedType !== "" && router.asPath?.includes("#wavs")) {
       if (index.message === "Successfully Indexed") {
         getPostComments();
       }

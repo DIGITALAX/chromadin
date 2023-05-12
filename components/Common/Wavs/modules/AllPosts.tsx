@@ -95,7 +95,6 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   handleLensSignIn,
   handleConnect,
   handleRemoveImage,
-  authStatus,
   videoLoading,
   profileId,
   uploadImages,
@@ -162,7 +161,6 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
             handleLensSignIn={handleLensSignIn}
             handleConnect={handleConnect}
             handleRemoveImage={handleRemoveImage}
-            authStatus={authStatus}
             profileId={profileId}
             videoLoading={videoLoading}
             uploadImages={uploadImages}
@@ -286,7 +284,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
                         handleLensSignIn={handleLensSignIn}
                         handleConnect={handleConnect}
                         handleRemoveImage={handleRemoveImage}
-                        authStatus={authStatus}
+                        address={address}
                         profileId={profileId}
                         videoLoading={videoLoading}
                         uploadImages={uploadImages}

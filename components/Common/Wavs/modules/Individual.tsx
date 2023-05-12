@@ -88,7 +88,6 @@ const Individual: FunctionComponent<IndividualProps> = ({
   handleLensSignIn,
   handleConnect,
   handleRemoveImage,
-  authStatus,
   videoLoading,
   profileId,
   uploadImages,
@@ -166,7 +165,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
               handleLensSignIn={handleLensSignIn}
               handleConnect={handleConnect}
               handleRemoveImage={handleRemoveImage}
-              authStatus={authStatus}
+              address={address}
               profileId={profileId}
               videoLoading={videoLoading}
               uploadImages={uploadImages}
@@ -258,7 +257,6 @@ const Individual: FunctionComponent<IndividualProps> = ({
         handleLensSignIn={handleLensSignIn}
         handleConnect={handleConnect}
         handleRemoveImage={handleRemoveImage}
-        authStatus={authStatus}
         profileId={profileId}
         videoLoading={videoLoading}
         uploadImages={uploadImages}

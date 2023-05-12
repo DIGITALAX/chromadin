@@ -96,9 +96,7 @@ const useChannels = (): UseChannelsResults => {
       dispatch(
         setMainVideo({
           actionVideo: `${INFURA_GATEWAY}/ipfs/${
-            sortedArr[0]?.metadata?.media[0]?.original?.url?.split(
-              "ipfs://"
-            )[1]
+            sortedArr[0]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
           }`,
           actionCollected: sortedArr[0]?.hasCollectedByMe,
           actionLiked: hasReactedArr?.[0],
@@ -141,7 +139,7 @@ const useChannels = (): UseChannelsResults => {
         },
         lensProfile
       );
-  
+
       const hasMirroredArr = await checkIfMirrored(
         videos?.length > 0 ? videos : channelsDispatched,
         lensProfile
