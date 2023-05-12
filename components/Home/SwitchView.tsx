@@ -4,6 +4,7 @@ import Vending from "./modules/Vending";
 import { useDispatch } from "react-redux";
 import Sampler from "./modules/Sampler";
 import { useRouter } from "next/router";
+import Wavs from "./modules/Wavs";
 
 const SwitchView: FunctionComponent = (): JSX.Element => {
   const { viewer } = useViewer();
@@ -16,6 +17,9 @@ const SwitchView: FunctionComponent = (): JSX.Element => {
 
     case "sampler":
       return <Sampler />;
+
+    case "wavs":
+      return <Wavs />;
 
     default:
       return <></>;

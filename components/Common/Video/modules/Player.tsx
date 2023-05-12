@@ -29,7 +29,7 @@ const Player: FunctionComponent<PlayerProps> = ({
       className={`relative justify-center items-center flex ${
         viewer === "sampler"
           ? "w-0 h-0"
-          : viewer === "collect"
+          : viewer === "collect" || viewer === "wavs"
           ? "w-24 h-1/2"
           : "w-full h-[10rem] galaxy:h-[15rem] preG:h-[20rem] sm:h-[26rem] mid:h-[33rem]"
       }`}

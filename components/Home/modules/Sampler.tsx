@@ -36,7 +36,7 @@ const Sampler: FunctionComponent = (): JSX.Element => {
     (state: RootState) => state.app.graphReducer.value
   );
   return (
-    <div className="relative w-full alto:w-full h-full mid:h-[57.2rem] xl:h-[54.8rem] gap-3 flex">
+    <div className="relative w-full h-full mid:h-[57.2rem] xl:h-[54.8rem] gap-3 flex">
       <div className="absolute w-full h-full bg-cover">
         <Image
           src={`${INFURA_GATEWAY}/ipfs/QmUpj8mFnHji5fiqShj5GiCEdE8Ab8jTZBWHrGBXVTRg9c`}

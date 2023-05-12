@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IndexingModal from "./Indexer";
 import Collect from "./Collect";
 import Purchase from "./Purchase";
@@ -12,6 +12,7 @@ import Claim from "./Claim";
 import ImageLarge from "./ImageLarge";
 import Error from "./Error";
 import Success from "./Success";
+import ImageViewerModal from "./ImageViewer";
 
 const Modals = () => {
   const indexingModal = useSelector(
@@ -45,6 +46,9 @@ const Modals = () => {
   const imageViewer = useSelector(
     (state: RootState) => state.app.imageViewerReducer
   );
+  const imageFeedViewer = useSelector(
+    (state: RootState) => state.app.imageFeedViewerReducer
+  );
   const {
     profile,
     followProfile,
@@ -61,6 +65,7 @@ const Modals = () => {
   } = useControls();
   const { address } = useAccount();
   const { handleLensSignIn } = useConnect();
+  const dispatch = useDispatch();
   return (
     <>
       {purchaseModal?.open && (
@@ -93,6 +98,13 @@ const Modals = () => {
       {successModal.open && <Success media={successModal.media} />}
       {indexingModal?.value && (
         <IndexingModal message={indexingModal?.message} />
+      )}
+      {imageFeedViewer?.open && (
+        <ImageViewerModal
+          image={imageFeedViewer.image}
+          type={imageFeedViewer.type}
+          dispatch={dispatch}
+        />
       )}
     </>
   );

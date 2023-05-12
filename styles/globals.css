@@ -32,6 +32,20 @@
   src: url("/fonts/DosisRegular.ttf");
 }
 
+@font-face {
+  font-family: "Clash Display";
+  font-weight: 400;
+  src: url("/fonts/ClashDisplay.ttf");
+}
+
+@font-face {
+  font-family: "Economica B";
+  font-weight: 400;
+  src: url("/fonts/EconomicaBold.ttf");
+}
+
+
+
 html {
   background-color: black;
 }
@@ -209,7 +223,7 @@ input[type="range"]::-moz-range-thumb {
   text-shadow: 0px 0px 5px #0091ff;
 }
 
-code {
+#highlighted-content {
   font-family: "Arcade Classic";
   font-size: 1rem;
   line-height: 1.5rem;
@@ -217,7 +231,7 @@ code {
   scrollbar-width: none;
 }
 
-code::-webkit-scrollbar {
+#highlighted-content::-webkit-scrollbar {
   display: none;
 }
 
@@ -418,4 +432,47 @@ code::-webkit-scrollbar {
 
 #select {
   background: conic-gradient(#3b3c4b, #313241, #050513, #131313, #444557);
+}
+
+#username {
+  background: linear-gradient(
+    -86deg,
+    #000000,
+    #8dc6f9,
+    #7b7fe7,
+    #2a42fc,
+    #000000
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#sideProfile {
+  background: linear-gradient(to right, transparent, white, #44afd3);
+}
+
+#highlighted-content2 {
+  font-family: "Economica B";
+  font-size: 1rem;
+  line-height: 1.5rem;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+#highlighted-content2::-webkit-scrollbar {
+  display: none;
+}
+
+#post2 {
+  color: transparent;
+  background: transparent;
+  caret-color: white;
+}
+
+#post2 #highlighting2 * {
+  font-family: "Economica B";
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem;
+  overflow-y: scroll;
+  white-space: pre-wrap;
 }

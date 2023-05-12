@@ -69,7 +69,9 @@ const Home: NextPage = (): JSX.Element => {
           </div>
           <div className="relative w-full h-full flex flex-col gap-5 items-center justify-center">
             <View viewer={viewer} />
-            {viewer !== "sampler" && <NFT mainNFT={mainNFT} viewer={viewer} />}
+            {viewer !== "sampler" && viewer !== "wavs" && (
+              <NFT mainNFT={mainNFT} viewer={viewer} />
+            )}
           </div>
         </div>
         <div className="w-full h-fit flex flex-col lg:hidden">
@@ -95,7 +97,7 @@ const Home: NextPage = (): JSX.Element => {
             <Interactions viewer={viewer} />
           )}
         </div>
-        {viewer !== "sampler" && (
+        {viewer !== "sampler" && viewer !== "wavs" && (
           <div className="w-fit h-full hidden xl:flex">
             <Interactions viewer={viewer} />
           </div>

@@ -31,3 +31,13 @@ export const ACCEPTED_TOKENS: string[][] = [
   ["USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"],
   ["MONA", "0x6968105460f67c3bf751be7c15f92f5286fd0ce5"],
 ];
+
+export const LENS_CREATORS: string[] = [
+  "0x84ec",
+  "0x0197d6",
+  "0x016305",
+  "0x015ed3",
+  "0x01bbee",
+  "0x012a99",
+  "0x01c96b",
+];

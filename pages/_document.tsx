@@ -54,6 +54,27 @@ export default function Document() {
           crossOrigin="anonymous"
           type="font/ttf"
         />
+        <link
+          rel="preload"
+          href="/fonts/ClashDisplay.ttf"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/ttf"
+        />
+        <link
+          rel="preload"
+          href="/fonts/DosisRegular.ttf"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/ttf"
+        />
+        <link
+          rel="preload"
+          href="/fonts/EconomicaB.ttf"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/ttf"
+        />
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -80,6 +101,25 @@ export default function Document() {
                 font-weight: 400;
                 src: url("./fonts/EarlsRevenge.ttf");
               }
+
+              @font-face {
+                font-family: "Clash Display";
+                font-weight: 400;
+                src: url("./fonts/ClashDisplay.ttf");
+              }
+
+              @font-face {
+                font-family: "Dosis Regular";
+                font-weight: 400;
+                src: url("./fonts/DosisRegular.ttf");
+              }
+
+              @font-face {
+                font-family: "Economica B";
+                font-weight: 400;
+                src: url("./fonts/EconomicaBold.ttf");
+              }
+              
             `,
           }}
         ></style>

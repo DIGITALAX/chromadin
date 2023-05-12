@@ -1,22 +1,42 @@
-import hasReactedPost from "@/graphql/lens/queries/hasReacted";
+import {
+  hasReactedIndi,
+  hasReactedPost,
+} from "@/graphql/lens/queries/hasReacted";
 
 const checkPostReactions = async (
   publicationObject: any,
-  lensProfile: string | undefined
+  lensProfile: string | undefined,
+  indi?: boolean
 ): Promise<any> => {
   let hasReactedArr: any[] = [];
+  let hasReacted: any;
   try {
-    const hasReacted = await hasReactedPost(publicationObject, {
-      profileId: lensProfile,
-    });
-    for (let i = 0; i < hasReacted.data.publications.items.length; i++) {
-      if (hasReacted.data.publications.items[i].reaction === "UPVOTE") {
-        hasReactedArr.push(true);
-      } else {
-        hasReactedArr.push(false);
-      }
+    if (indi) {
+      const data = await hasReactedIndi(publicationObject, {
+        profileId: lensProfile,
+      });
+      hasReacted = data.data.publication;
+    } else {
+      const data = await hasReactedPost(publicationObject, {
+        profileId: lensProfile,
+      });
+      hasReacted = data.data.publications.items;
     }
-    return hasReactedArr;
+
+    if (hasReacted.length < 1) {
+      return [];
+    } else {
+      for (let i = 0; i < hasReacted.length; i++) {
+        if (hasReacted[i].reaction === "UPVOTE") {
+          hasReactedArr.push(true);
+        } else {
+          hasReactedArr.push(false);
+        }
+      }
+      return hasReactedArr.sort(
+        (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+      );
+    }
   } catch (err: any) {
     console.error(err.message);
   }

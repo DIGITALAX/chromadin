@@ -53,27 +53,20 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
                 <div
                   className="relative w-fit justify-center lg:w-full h-full grid grid-flow-row auto-rows-auto flex items-center"
                   key={index}
-                  onClick={
-                    values[1] !== "wavs"
-                      ? () =>
-                          !router.asPath.includes("?search=")
-                            ? router.push(
-                                `#${values[1]}` + "?option=" + options
-                              )
-                            : router.push(
-                                `#${values[1]}` +
-                                  "?option=" +
-                                  options +
-                                  "?search=" +
-                                  router.asPath.split("?search=")[1]
-                              )
-                      : () => {}
+                  onClick={() =>
+                    !router.asPath.includes("?search=")
+                      ? router.push(`#${values[1]}` + "?option=" + options)
+                      : router.push(
+                          `#${values[1]}` +
+                            "?option=" +
+                            options +
+                            "?search=" +
+                            router.asPath.split("?search=")[1]
+                        )
                   }
                 >
                   <div
-                    className={`relative w-8 lg:w-12 h-8 lg:h-12 grid grid-flow-col auto-cols-auto justify-self-center items-center  ${
-                      values[1] !== "wavs" && "cursor-pointer active:scale-95"
-                    }`}
+                    className={`relative w-8 lg:w-12 h-8 lg:h-12 grid grid-flow-col auto-cols-auto justify-self-center items-center  ${"cursor-pointer active:scale-95"}`}
                   >
                     <Image
                       src={`${INFURA_GATEWAY}/ipfs/QmPoXfm1VgBsE4eE3UZw6uGoFAVwShnz6zaEuXkHdryoc9`}

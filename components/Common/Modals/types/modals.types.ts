@@ -1,5 +1,6 @@
 import { Profile } from "@/components/Home/types/lens.types";
 import { PostCollectValuesState } from "@/redux/reducers/postCollectSlice";
+import { AnyAction, Dispatch } from "redux";
 
 export type IndexingModalProps = {
   message: string | undefined;
@@ -53,4 +54,10 @@ export type ImageLargeProps = {
 
 export type SuccessProps = {
   media: string;
+};
+
+export type ImageViewerProps = {
+  dispatch: Dispatch<AnyAction>;
+  image: string;
+  type: string;
 };

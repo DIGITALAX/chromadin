@@ -1,0 +1,311 @@
+import { FunctionComponent } from "react";
+import FeedPublication from "./FeedPublication";
+import Comments from "./Comments";
+import { setFeedType } from "@/redux/reducers/feedTypeSlice";
+import { AiFillFastBackward } from "react-icons/ai";
+import { IndividualProps } from "../types/wavs.types";
+import MakeComment from "./MakeComment";
+
+const Individual: FunctionComponent<IndividualProps> = ({
+  dispatch,
+  mainPost,
+  feedType,
+  address,
+  followerOnlyMain,
+  collectPost,
+  mirrorPost,
+  reactPost,
+  mainPostLoading,
+  commentAmounts,
+  commentors,
+  mirrorCommentLoading,
+  reactCommentLoading,
+  collectCommentLoading,
+  followerOnlyComments,
+  hasMoreComments,
+  fetchMoreComments,
+  commentsLoading,
+  collectPostLoading,
+  setCollectCommentLoading,
+  setCollectPostLoading,
+  setMirrorCommentLoading,
+  setMirrorPostLoading,
+  setReactCommentLoading,
+  setReactPostLoading,
+  mirrorPostLoading,
+  reactPostLoading,
+  postAmounts,
+  commentOpen,
+  commentPost,
+  commentDescription,
+  textElement,
+  handleCommentDescription,
+  commentLoading,
+  caretCoord,
+  mentionProfiles,
+  profilesOpen,
+  handleMentionClick,
+  handleGifSubmit,
+  handleGif,
+  results,
+  handleSetGif,
+  gifOpen,
+  setGifOpen,
+  handleKeyDownDelete,
+  collectNotif,
+  referral,
+  setCollectible,
+  collectibleDropDown,
+  setCollectibleDropDown,
+  collectible,
+  setAudienceDropDown,
+  audienceType,
+  audienceTypes,
+  chargeCollect,
+  limit,
+  limitedEdition,
+  audienceDropDown,
+  setAudienceType,
+  setTimeLimit,
+  timeLimit,
+  timeLimitDropDown,
+  setTimeLimitDropDown,
+  setLimitedEdition,
+  limitedDropDown,
+  setLimitedDropDown,
+  setReferral,
+  setLimit,
+  setChargeCollect,
+  setCurrencyDropDown,
+  chargeCollectDropDown,
+  setChargeCollectDropDown,
+  enabledCurrencies,
+  enabledCurrency,
+  currencyDropDown,
+  setEnabledCurrency,
+  value,
+  setValue,
+  handleLensSignIn,
+  handleConnect,
+  handleRemoveImage,
+  authStatus,
+  videoLoading,
+  profileId,
+  uploadImages,
+  uploadVideo,
+  imageLoading,
+  collectOpen,
+  mappedFeaturedFiles,
+  canComment,
+  postImagesDispatched
+}): JSX.Element => {
+  return (
+    <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
+      <div className="sticky z-1 w-full h-fit flex flex-col items-start justify-start mr-0">
+        <div
+          className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
+          onClick={() => {
+            dispatch(
+              setFeedType({
+                actionValue: "",
+                actionIndex: 0,
+              })
+            );
+          }}
+        >
+          <AiFillFastBackward color="white" size={20} />
+        </div>
+      </div>
+      {!mainPostLoading ? (
+        <div className="relative w-full h-fit gap-2 flex flex-col">
+          <FeedPublication
+            dispatch={dispatch}
+            publication={mainPost}
+            hasMirrored={postAmounts?.hasMirrored[feedType.index]}
+            hasReacted={postAmounts?.hasLiked[feedType.index]}
+            hasCollected={postAmounts?.hasCollected[feedType.index]}
+            followerOnly={followerOnlyMain}
+            collectPost={collectPost}
+            mirrorPost={mirrorPost}
+            reactPost={reactPost}
+            address={address as any}
+            index={0}
+            mirrorLoading={mirrorPostLoading[0]}
+            reactLoading={reactPostLoading[0]}
+            collectLoading={collectPostLoading[0]}
+            reactAmount={postAmounts?.like[feedType.index]}
+            mirrorAmount={postAmounts?.mirror[feedType.index]}
+            collectAmount={postAmounts?.collect[feedType.index]}
+            commentAmount={postAmounts?.comment[feedType.index]}
+            feedType={feedType.value}
+            setCollectLoader={setCollectPostLoading}
+            setMirrorLoader={setMirrorPostLoading}
+            setReactLoader={setReactPostLoading}
+            openComment={commentOpen}
+          />
+          {(mainPost?.__typename === "Mirror"
+            ? mainPost?.mirrorOf?.id
+            : mainPost?.id) === commentOpen && (
+            <MakeComment
+              commentPost={commentPost}
+              commentDescription={commentDescription}
+              textElement={textElement}
+              handleCommentDescription={handleCommentDescription}
+              commentLoading={commentLoading}
+              caretCoord={caretCoord}
+              mentionProfiles={mentionProfiles}
+              profilesOpen={profilesOpen}
+              handleMentionClick={handleMentionClick}
+              handleGifSubmit={handleGifSubmit}
+              handleGif={handleGif}
+              results={results}
+              handleSetGif={handleSetGif}
+              gifOpen={gifOpen}
+              setGifOpen={setGifOpen}
+              handleKeyDownDelete={handleKeyDownDelete}
+              handleLensSignIn={handleLensSignIn}
+              handleConnect={handleConnect}
+              handleRemoveImage={handleRemoveImage}
+              authStatus={authStatus}
+              profileId={profileId}
+              videoLoading={videoLoading}
+              uploadImages={uploadImages}
+              uploadVideo={uploadVideo}
+              imageLoading={imageLoading}
+              mappedFeaturedFiles={mappedFeaturedFiles}
+              collectOpen={collectOpen}
+              enabledCurrencies={enabledCurrencies}
+              audienceDropDown={audienceDropDown}
+              audienceType={audienceType}
+              setAudienceDropDown={setAudienceDropDown}
+              setAudienceType={setAudienceType}
+              value={value}
+              setChargeCollect={setChargeCollect}
+              setChargeCollectDropDown={setChargeCollectDropDown}
+              setCollectible={setCollectible}
+              setCollectibleDropDown={setCollectibleDropDown}
+              setCurrencyDropDown={setCurrencyDropDown}
+              setEnabledCurrency={setEnabledCurrency}
+              setLimit={setLimit}
+              setLimitedDropDown={setLimitedDropDown}
+              setLimitedEdition={setLimitedEdition}
+              setReferral={setReferral}
+              setTimeLimit={setTimeLimit}
+              setTimeLimitDropDown={setTimeLimitDropDown}
+              setValue={setValue}
+              enabledCurrency={enabledCurrency}
+              chargeCollect={chargeCollect}
+              chargeCollectDropDown={chargeCollectDropDown}
+              limit={limit}
+              limitedDropDown={limitedDropDown}
+              limitedEdition={limitedEdition}
+              timeLimit={timeLimit}
+              timeLimitDropDown={timeLimitDropDown}
+              audienceTypes={audienceTypes}
+              referral={referral}
+              canComment={canComment}
+              collectNotif={collectNotif}
+              collectible={collectible}
+              collectibleDropDown={collectibleDropDown}
+              commentId={commentOpen}
+              currencyDropDown={currencyDropDown}
+              dispatch={dispatch}
+              postImagesDispatched={postImagesDispatched}
+            />
+          )}
+        </div>
+      ) : (
+        <div
+          className="relative w-full h-60 rounded-md animate-pulse border border-white min-w-full opacity-70"
+          id="staticLoad"
+        ></div>
+      )}
+      <Comments
+        dispatch={dispatch}
+        commentors={commentors}
+        commentAmounts={commentAmounts}
+        collectPost={collectPost}
+        mirrorPost={mirrorPost}
+        reactPost={reactPost}
+        address={address as `0x${string}`}
+        mirrorLoading={mirrorCommentLoading}
+        reactLoading={reactCommentLoading}
+        collectLoading={collectCommentLoading}
+        feedType={feedType.value}
+        followerOnly={followerOnlyComments}
+        fetchMoreComments={fetchMoreComments}
+        hasMoreComments={hasMoreComments}
+        commentsLoading={commentsLoading}
+        setCollectLoader={setCollectCommentLoading}
+        setMirrorLoader={setMirrorCommentLoading}
+        setReactLoader={setReactCommentLoading}
+        commentPost={commentPost}
+        commentDescription={commentDescription}
+        textElement={textElement}
+        handleCommentDescription={handleCommentDescription}
+        commentLoading={commentLoading}
+        caretCoord={caretCoord}
+        mentionProfiles={mentionProfiles}
+        profilesOpen={profilesOpen}
+        handleMentionClick={handleMentionClick}
+        handleGifSubmit={handleGifSubmit}
+        handleGif={handleGif}
+        results={results}
+        handleSetGif={handleSetGif}
+        gifOpen={gifOpen}
+        setGifOpen={setGifOpen}
+        handleKeyDownDelete={handleKeyDownDelete}
+        handleLensSignIn={handleLensSignIn}
+        handleConnect={handleConnect}
+        handleRemoveImage={handleRemoveImage}
+        authStatus={authStatus}
+        profileId={profileId}
+        videoLoading={videoLoading}
+        uploadImages={uploadImages}
+        uploadVideo={uploadVideo}
+        imageLoading={imageLoading}
+        mappedFeaturedFiles={mappedFeaturedFiles}
+        collectOpen={collectOpen}
+        enabledCurrencies={enabledCurrencies}
+        audienceDropDown={audienceDropDown}
+        audienceType={audienceType}
+        setAudienceDropDown={setAudienceDropDown}
+        setAudienceType={setAudienceType}
+        value={value}
+        setChargeCollect={setChargeCollect}
+        setChargeCollectDropDown={setChargeCollectDropDown}
+        setCollectible={setCollectible}
+        setCollectibleDropDown={setCollectibleDropDown}
+        setCurrencyDropDown={setCurrencyDropDown}
+        setEnabledCurrency={setEnabledCurrency}
+        setLimit={setLimit}
+        setLimitedDropDown={setLimitedDropDown}
+        setLimitedEdition={setLimitedEdition}
+        setReferral={setReferral}
+        setTimeLimit={setTimeLimit}
+        setTimeLimitDropDown={setTimeLimitDropDown}
+        setValue={setValue}
+        enabledCurrency={enabledCurrency}
+        chargeCollect={chargeCollect}
+        chargeCollectDropDown={chargeCollectDropDown}
+        limit={limit}
+        limitedDropDown={limitedDropDown}
+        limitedEdition={limitedEdition}
+        timeLimit={timeLimit}
+        timeLimitDropDown={timeLimitDropDown}
+        audienceTypes={audienceTypes}
+        referral={referral}
+        canComment={canComment}
+        collectNotif={collectNotif}
+        collectible={collectible}
+        collectibleDropDown={collectibleDropDown}
+        commentId={commentOpen}
+        currencyDropDown={currencyDropDown}
+        openComment={commentOpen}
+        postImagesDispatched={postImagesDispatched}
+      />
+    </div>
+  );
+};
+
+export default Individual;

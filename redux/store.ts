@@ -36,6 +36,15 @@ import priceFilterReducer from "./reducers/priceFilterSlice";
 import dateFilterReducer from "./reducers/dateFilterSlice";
 import searchReducer from "./reducers/searchSlice";
 import dropsReducer from "./reducers/dropsSlice";
+import commentFeedCountReducer from "./reducers/commentFeedCountSlice";
+import reactionFeedCountReducer from "./reducers/reactionFeedCountSlice";
+import reactionStateReducer from "./reducers/reactionStateSlice";
+import openCommentReducer from "./reducers/openCommentSlice";
+import feedTypeReducer from "./reducers/feedTypeSlice";
+import imageFeedViewerReducer from "./reducers/imageFeedViewerSlice";
+import feedReactIdReducer from "./reducers/feedReactIdSlice";
+import feedReducer from "./reducers/feedSlice";
+import commentReducer from "./reducers/commentSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -73,7 +82,16 @@ const reducer = combineReducers({
   priceFilterReducer,
   dateFilterReducer,
   searchReducer,
-  dropsReducer
+  dropsReducer,
+  feedTypeReducer,
+  openCommentReducer,
+  reactionStateReducer,
+  commentFeedCountReducer,
+  reactionFeedCountReducer,
+  imageFeedViewerReducer,
+  feedReactIdReducer,
+  feedReducer,
+  commentReducer,
 });
 
 export const store = configureStore({

@@ -13,6 +13,8 @@ module.exports = {
         digi: "DS Digital",
         earl: "Earls Revenge",
         dosis: "Dosis Regular",
+        clash: "Clash Display",
+        economicaB: "Economica B",
       },
       colors: {
         verde: "#25EC68",
@@ -31,6 +33,8 @@ module.exports = {
         cit: "#F7B500",
         b1: "#6BD6FC",
         b2: "#1696FC",
+        shame: "#F6F5F0",
+        offWhite: "#F2F2F2",
       },
       backgroundImage: {
         chroma:

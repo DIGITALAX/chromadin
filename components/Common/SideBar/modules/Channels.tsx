@@ -26,7 +26,7 @@ const Channels: FunctionComponent<ChannelsProps> = ({
                 key={index}
               >
                 <div
-                  className="relative w-full h-44 lg:h-full"
+                  className="relative w-full h-32 lg:h-full"
                   id="staticLoad"
                 ></div>
                 <div className="relative w-full h-32 galaxy:h-full p-1">
@@ -66,7 +66,7 @@ const Channels: FunctionComponent<ChannelsProps> = ({
           (content: Publication, index: number) => {
             return (
               <div
-                className="relative w-full min-w-full h-fit lg:h-32 flex flex-col galaxy:flex-row hover:opacity-80 cursor-pointer border-b border-white"
+                className="relative w-full min-w-full h-fit galaxy:h-32 flex flex-col galaxy:flex-row hover:opacity-80 cursor-pointer border-b border-white"
                 key={index}
                 onClick={() =>
                   dispatch(
@@ -85,7 +85,7 @@ const Channels: FunctionComponent<ChannelsProps> = ({
                   )
                 }
               >
-                <div className="relative w-full h-44 lg:h-full">
+                <div className="relative w-full h-32">
                   <video
                     muted
                     playsInline
@@ -103,7 +103,7 @@ const Channels: FunctionComponent<ChannelsProps> = ({
                     />
                   </video>
                 </div>
-                <div className="relative w-full h-32 galaxy:h-full p-1">
+                <div className="relative w-full h-fit galaxy:h-32 p-1">
                   <div className="relative border border-white w-full h-full p-px rounded-lg">
                     <div className="relative p-2 w-full h-full border border-white flex flex-col items-center gap-2 rounded-lg">
                       <div className="relative w-full h-fit flex flex-row items-center lg:gap-0 gap-4">
