@@ -21,11 +21,6 @@ import { setIndexModal } from "@/redux/reducers/indexModalSlice";
 import { Profile } from "@/components/Home/types/lens.types";
 import { waitForTransaction } from "@wagmi/core";
 import getCommentHTML from "@/lib/helpers/commentHTML";
-import {
-  getCommentData,
-  removeCommentData,
-  setCommentData,
-} from "@/lib/lens/utils";
 import getCaretPos from "@/lib/helpers/getCaretPos";
 import { MediaType, UploadedMedia } from "../types/wavs.types";
 import { setPostImages } from "@/redux/reducers/postImageSlice";
@@ -44,9 +39,7 @@ const useComment = () => {
   const textElement = useRef<HTMLTextAreaElement>(null);
   const [mentionProfiles, setMentionProfiles] = useState<Profile[]>([]);
   const [results, setResults] = useState<any>([]);
-  const [gifs, setGifs] = useState<UploadedMedia[]>(
-    JSON.parse(getCommentData() || "{}").images || []
-  );
+  const [gifs, setGifs] = useState<UploadedMedia[]>([]);
   const [searchGif, setSearchGif] = useState<boolean>(false);
   const [commentHTML, setCommentHTML] = useState<string>("");
   const [contentURI, setContentURI] = useState<string>();
@@ -101,26 +94,12 @@ const useComment = () => {
           type: MediaType.Gif,
         },
       ]);
-      const postStorage = JSON.parse(getCommentData() || "{}");
-      setCommentData(
-        JSON.stringify({
-          ...postStorage,
-          images: [
-            ...(postImages as any),
-            {
-              cid: result,
-              type: MediaType.Gif,
-            },
-          ],
-        })
-      );
     }
   };
 
   const handleKeyDownDelete = (e: KeyboardEvent<Element>) => {
-    const highlightedContent = document.querySelector("#highlighted-content")!;
+    const highlightedContent = document.querySelector("#highlighted-content2")!;
     const selection = window.getSelection();
-    const postStorage = JSON.parse(getCommentData() || "{}");
     if (e.key === "Backspace" && selection?.toString() !== "") {
       const start = textElement.current!.selectionStart;
       const end = textElement.current!.selectionEnd;
@@ -129,12 +108,6 @@ const useComment = () => {
         setCommentDescription("");
         setCommentHTML("");
         // highlightedContent.innerHTML = "";
-        setCommentData(
-          JSON.stringify({
-            ...postStorage,
-            post: "",
-          })
-        );
       } else {
         const selectedText = selection!.toString();
         const selectedHtml = highlightedContent.innerHTML.substring(start, end);
@@ -155,12 +128,6 @@ const useComment = () => {
         setCommentDescription(newDescription);
         (e.currentTarget! as any).value = newDescription;
         // highlightedContent.innerHTML = newHTML;
-        setCommentData(
-          JSON.stringify({
-            ...postStorage,
-            post: newDescription,
-          })
-        );
       }
     } else if (
       e.key === "Backspace" &&
@@ -169,30 +136,17 @@ const useComment = () => {
     ) {
       (e.currentTarget! as any).value = "";
       // highlightedContent.innerHTML = "";
-      setCommentData(
-        JSON.stringify({
-          ...postStorage,
-          post: "",
-        })
-      );
       e.preventDefault();
     }
   };
 
   const handleCommentDescription = async (e: any): Promise<void> => {
-    let resultElement = document.querySelector("#highlighted-content");
+    let resultElement = document.querySelector("#highlighted-content2");
     const newValue = e.target.value.endsWith("\n")
       ? e.target.value + " "
       : e.target.value;
     setCommentHTML(getCommentHTML(e, resultElement as Element));
     setCommentDescription(newValue);
-    const postStorage = JSON.parse(getCommentData() || "{}");
-    setCommentData(
-      JSON.stringify({
-        ...postStorage,
-        post: e.target.value,
-      })
-    );
     if (
       e.target.value.split(" ")[e.target.value.split(" ")?.length - 1][0] ===
         "@" &&
@@ -225,7 +179,6 @@ const useComment = () => {
     setGifs([]);
     dispatch(setPostImages(undefined));
     // (document as any).querySelector("#highlighted-content").innerHTML = "";
-    removeCommentData();
     dispatch(
       setIndexModal({
         actionValue: true,
@@ -368,7 +321,7 @@ const useComment = () => {
 
   const handleMentionClick = (user: any) => {
     setProfilesOpen(false);
-    let resultElement = document.querySelector("#highlighted-content");
+    let resultElement = document.querySelector("#highlighted-content2");
     const newHTMLPost =
       commentHTML?.substring(0, commentHTML.lastIndexOf("@")) +
       `@${user?.handle}</span>`;
@@ -376,14 +329,6 @@ const useComment = () => {
       commentDescription?.substring(0, commentDescription.lastIndexOf("@")) +
       `@${user?.handle}`;
     setCommentDescription(newElementPost);
-
-    const postStorage = JSON.parse(getCommentData() || "{}");
-    setCommentData(
-      JSON.stringify({
-        ...postStorage,
-        post: newElementPost,
-      })
-    );
 
     // if (newHTMLPost) (resultElement as any).innerHTML = newHTMLPost;
     setCommentHTML(newHTMLPost);
@@ -396,33 +341,12 @@ const useComment = () => {
   }, [commentSuccess]);
 
   useEffect(() => {
-    const savedData = getCommentData();
-    if (savedData) {
-      setCommentDescription(JSON.parse(savedData).post);
-      let resultElement = document.querySelector("#highlighted-content");
-      if (
-        JSON.parse(savedData).post[JSON.parse(savedData).post?.length - 1] ==
-        "\n"
-      ) {
-        JSON.parse(savedData).post += " ";
-      }
-      setCommentHTML(
-        getCommentHTML(
-          JSON.parse(savedData).post,
-          resultElement as Element,
-          true
-        )
-      );
-    }
-  }, []);
-
-  useEffect(() => {
     dispatch(setPostImages(gifs));
   }, [gifs]);
 
   useEffect(() => {
-    if (document.querySelector("#highlighted-content")) {
-      document.querySelector("#highlighted-content")!.innerHTML =
+    if (document.querySelector("#highlighted-content2")) {
+      document.querySelector("#highlighted-content2")!.innerHTML =
         commentHTML.length === 0 ? "Have something to say?" : commentHTML;
     }
   }, [commentHTML, gifOpen, collectOpen]);

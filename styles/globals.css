@@ -32,7 +32,6 @@
   src: url("/fonts/EconomicaRegular.ttf");
 }
 
-
 @font-face {
   font-family: "Dosis Regular";
   font-weight: 400;
@@ -50,8 +49,6 @@
   font-weight: 400;
   src: url("/fonts/EconomicaBold.ttf");
 }
-
-
 
 html {
   background-color: black;
