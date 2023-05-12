@@ -15,6 +15,7 @@ module.exports = {
         dosis: "Dosis Regular",
         clash: "Clash Display",
         economicaB: "Economica B",
+        economica: "Economica R",
       },
       colors: {
         verde: "#25EC68",

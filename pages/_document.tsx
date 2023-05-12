@@ -75,6 +75,13 @@ export default function Document() {
           crossOrigin="anonymous"
           type="font/ttf"
         />
+         <link
+          rel="preload"
+          href="/fonts/EconomicaRegular.ttf"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/ttf"
+        />
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -119,6 +126,13 @@ export default function Document() {
                 font-weight: 400;
                 src: url("./fonts/EconomicaBold.ttf");
               }
+
+              @font-face {
+                font-family: "Economica R";
+                font-weight: 400;
+                src: url("./fonts/EconomicaRegular.ttf");
+              }
+              
               
             `,
           }}

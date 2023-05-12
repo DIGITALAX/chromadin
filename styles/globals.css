@@ -27,6 +27,13 @@
 }
 
 @font-face {
+  font-family: "Economica R";
+  font-weight: 400;
+  src: url("/fonts/EconomicaRegular.ttf");
+}
+
+
+@font-face {
   font-family: "Dosis Regular";
   font-weight: 400;
   src: url("/fonts/DosisRegular.ttf");

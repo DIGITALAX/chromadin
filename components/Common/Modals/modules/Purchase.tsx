@@ -33,7 +33,7 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
               setPurchase({
                 actionOpen: false,
                 actionId: "",
-                actionIndex: undefined
+                actionIndex: undefined,
               })
             )
           }

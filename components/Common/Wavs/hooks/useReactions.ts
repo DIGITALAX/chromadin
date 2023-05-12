@@ -639,8 +639,6 @@ const useReactions = () => {
     collectPost,
     mirrorPost,
     reactPost,
-    authStatus,
-    profileId,
     mirrorFeedLoading,
     reactFeedLoading,
     collectFeedLoading,

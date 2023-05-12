@@ -33,7 +33,7 @@ export type PurchaseProps = {
   address: `0x${string}` | undefined;
   collectModuleValues: PostCollectValuesState;
   lensProfile: string;
-  collectComment: (id?: string) => Promise<void>;
+  collectComment: (id?: any) => Promise<void>;
   collectLoading: boolean;
   approveCurrency: () => Promise<void>;
   handleLensSignIn: () => Promise<void>;
@@ -60,4 +60,13 @@ export type ImageViewerProps = {
   dispatch: Dispatch<AnyAction>;
   image: string;
   type: string;
+};
+
+export type WhoProps = {
+  accounts: any[];
+  fetchMore: () => Promise<void>;
+  loading: boolean;
+  dispatch: Dispatch<AnyAction>;
+  hasMore: boolean;
+  type: number;
 };
