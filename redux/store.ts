@@ -46,6 +46,7 @@ import feedReactIdReducer from "./reducers/feedReactIdSlice";
 import feedReducer from "./reducers/feedSlice";
 import commentReducer from "./reducers/commentSlice";
 import paginatedReducer from "./reducers/paginatedSlice";
+import scrollPosReducer from "./reducers/scrollPosSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -94,6 +95,7 @@ const reducer = combineReducers({
   feedReducer,
   commentReducer,
   paginatedReducer,
+  scrollPosReducer,
 });
 
 export const store = configureStore({

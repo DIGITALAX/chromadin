@@ -46,9 +46,19 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const commentors = useSelector(
     (state: RootState) => state.app.commentReducer.value
   );
-  
+  const scrollPos = useSelector(
+    (state: RootState) => state.app.scrollPosReducer.value
+  );
+
   const { handleLensSignIn, handleConnect } = useConnect();
-  const { followerOnly, postsLoading, hasMore, fetchMore } = useAllPosts();
+  const {
+    followerOnly,
+    postsLoading,
+    hasMore,
+    fetchMore,
+    scrollRef,
+    setScrollPos,
+  } = useAllPosts();
 
   const {
     reactPost,
@@ -245,6 +255,9 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         collectibleDropDown={collectibleDropDown}
         currencyDropDown={currencyDropDown}
         postImagesDispatched={postImagesDispatched}
+        scrollRef={scrollRef}
+        setScrollPos={setScrollPos}
+        scrollPos={scrollPos}
       />
     </div>
   );

@@ -10,8 +10,10 @@ import { setCommentFeedCount } from "@/redux/reducers/commentFeedCountSlice";
 import { setFeedsRedux } from "@/redux/reducers/feedSlice";
 import { setPaginated } from "@/redux/reducers/paginatedSlice";
 import { setReactionFeedCount } from "@/redux/reducers/reactionFeedCountSlice";
+import { setScrollPosRedux } from "@/redux/reducers/scrollPosSlice";
 import { RootState } from "@/redux/store";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 
 const useAllPosts = () => {
@@ -45,6 +47,7 @@ const useAllPosts = () => {
   const paginated = useSelector(
     (state: RootState) => state.app.paginatedReducer.value
   );
+  const scrollRef = useRef<InfiniteScroll>(null);
   const dispatch = useDispatch();
   const [followerOnly, setFollowerOnly] = useState<boolean[]>([]);
   const [postsLoading, setPostsLoading] = useState<boolean>(false);
@@ -366,6 +369,10 @@ const useAllPosts = () => {
     }
   };
 
+  const setScrollPos = (e: MouseEvent) => {
+    dispatch(setScrollPosRedux((e.target as HTMLDivElement)?.scrollTop));
+  };
+
   useEffect(() => {
     if (indexer.message === "Successfully Indexed") {
       refetchInteractions();
@@ -387,6 +394,8 @@ const useAllPosts = () => {
     postsLoading,
     fetchMore,
     hasMore,
+    scrollRef,
+    setScrollPos,
   };
 };
 

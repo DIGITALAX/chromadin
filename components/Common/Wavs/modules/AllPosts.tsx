@@ -1,6 +1,5 @@
 import { FunctionComponent } from "react";
 import { AllPostsProps } from "../types/wavs.types";
-import FetchMoreLoading from "../../Loading/FetchMoreLoading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FeedPublication from "./FeedPublication";
 import { Publication } from "@/components/Home/types/lens.types";
@@ -107,6 +106,9 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   canComment,
   postImagesDispatched,
   feedType,
+  scrollRef,
+  setScrollPos,
+  scrollPos,
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
@@ -228,6 +230,9 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
             style={{ color: "#131313", fontFamily: "Digi Reg" }}
             scrollThreshold={0.9}
             scrollableTarget={"scrollableDiv"}
+            ref={scrollRef}
+            onScroll={(e: MouseEvent) => setScrollPos(e)}
+            initialScrollY={feedType.value === "" ? scrollPos : 0}
           >
             <div className="w-full h-full relative flex flex-col gap-4 pb-3">
               {feedDispatch?.map((publication: Publication, index: number) => {

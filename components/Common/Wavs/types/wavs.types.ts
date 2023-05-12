@@ -5,9 +5,9 @@ import {
 } from "@/components/Home/types/lens.types";
 import { CommentFeedCountState } from "@/redux/reducers/commentFeedCountSlice";
 import { ReactionFeedCountState } from "@/redux/reducers/reactionFeedCountSlice";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { NextRouter } from "next/router";
 import { FormEvent, KeyboardEvent, Ref } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { AnyAction, Dispatch } from "redux";
 
 export enum MediaType {
@@ -278,6 +278,9 @@ export type AllPostsProps = {
     value: string;
     index: number;
   };
+  scrollRef: Ref<InfiniteScroll>;
+  setScrollPos: (e: MouseEvent) => void;
+  scrollPos: number;
 };
 
 export interface ApprovalArgs {
