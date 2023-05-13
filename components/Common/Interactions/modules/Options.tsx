@@ -21,8 +21,27 @@ const Options: FunctionComponent = (): JSX.Element => {
             key={index}
             onClick={() =>
               !router.asPath.includes("?search=")
+                ? router.asPath.includes("?profile=")
+                  ? router.push(
+                      router.asPath.split("?option=")[0] +
+                        "?option=" +
+                        value[1] +
+                        "?profile=" +
+                        router.asPath.split("?profile=")[1]
+                    )
+                  : router.push(
+                      router.asPath.split("?option=")[0] + "?option=" + value[1]
+                    )
+                : router.asPath.includes("?profile=")
                 ? router.push(
-                    router.asPath.split("?option=")[0] + "?option=" + value[1]
+                    router.asPath.split("?option=")[0] +
+                      "?option=" +
+                      value[1] +
+                      `?search=${
+                        router.asPath.split("?search=")[1].split("?profile=")[0]
+                      }` +
+                      "?profile=" +
+                      router.asPath.split("?profile=")[1]
                   )
                 : router.push(
                     router.asPath.split("?option=")[0] +

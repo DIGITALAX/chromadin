@@ -55,10 +55,30 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
                   key={index}
                   onClick={() =>
                     !router.asPath.includes("?search=")
+                      ? router.asPath.includes("?profile=")
+                        ? router.push(
+                            `#${values[1]}` +
+                              "?option=" +
+                              (options ? options : "history") +
+                              "?profile=" +
+                              router.asPath.split("?profile=")[1]
+                          )
+                        : router.push(
+                            `#${values[1]}` +
+                              "?option=" +
+                              (options ? options : "history")
+                          )
+                      : router.asPath.includes("?profile=")
                       ? router.push(
                           `#${values[1]}` +
                             "?option=" +
-                            (options ? options : "history")
+                            options +
+                            "?search=" +
+                            router.asPath
+                              .split("?search=")[1]
+                              .split("?profile=")[0] +
+                            "?profile=" +
+                            router.asPath.split("?profile=")[1]
                         )
                       : router.push(
                           `#${values[1]}` +

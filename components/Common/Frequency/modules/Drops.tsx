@@ -68,10 +68,16 @@ const Drops: FunctionComponent<DropsProps> = ({
                   );
                   if (router.asPath.includes("#sampler")) {
                     !router.asPath.includes("?search=")
-                      ? router.push(
-                          router.asPath.split("#sampler")[0] +
-                            "#collect?option=fulfillment"
-                        )
+                      ? router.asPath.includes("?profile=")
+                        ? router.push(
+                            router.asPath.split("#sampler")[0] +
+                              "#collect?option=fulfillment?profile=" +
+                              router.asPath.split("?profile=")[1]
+                          )
+                        : router.push(
+                            router.asPath.split("#sampler")[0] +
+                              "#collect?option=fulfillment"
+                          )
                       : router.push(
                           router.asPath.split("#sampler")[0] +
                             "#collect?option=fulfillment" +
@@ -79,10 +85,16 @@ const Drops: FunctionComponent<DropsProps> = ({
                         );
                   } else if (router.asPath.includes("#wavs")) {
                     !router.asPath.includes("?search=")
-                      ? router.push(
-                          router.asPath.split("#wavs")[0] +
-                            "#collect?option=fulfillment"
-                        )
+                      ? router.asPath.includes("?profile=")
+                        ? router.push(
+                            router.asPath.split("#wavs")[0] +
+                              "#collect?option=fulfillment?profile=" +
+                              router.asPath.split("?profile=")[1]
+                          )
+                        : router.push(
+                            router.asPath.split("#wavs")[0] +
+                              "#collect?option=fulfillment"
+                          )
                       : router.push(
                           router.asPath.split("#wavs")[0] +
                             "#collect?option=fulfillment" +
@@ -91,9 +103,21 @@ const Drops: FunctionComponent<DropsProps> = ({
                   } else {
                     !router.asPath.includes("?search=")
                       ? router.asPath.includes("#")
+                        ? router.asPath.includes("?profile=")
+                          ? router.push(
+                              router.asPath.split("?option=")[0] +
+                                "?option=fulfillment?profile=" +
+                                router.asPath.split("?profile=")[1]
+                            )
+                          : router.push(
+                              router.asPath.split("?option=")[0] +
+                                "?option=fulfillment"
+                            )
+                        : router.asPath.includes("?profile=")
                         ? router.push(
                             router.asPath.split("?option=")[0] +
-                              "?option=fulfillment"
+                              "#stream?option=fulfillment?profile=" +
+                              router.asPath.split("?profile=")[1]
                           )
                         : router.push(
                             router.asPath.split("?option=")[0] +

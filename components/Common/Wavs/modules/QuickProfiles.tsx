@@ -33,11 +33,6 @@ const QuickProfiles: FunctionComponent<QuickProfilesProps> = ({
                         actionId: profile?.id,
                       })
                     );
-                    router.push(
-                      router.asPath.split("?profile=")[0] +
-                        "?profile=" +
-                        profile?.handle.split(".lens")[0]
-                    );
                   }}
                 >
                   {profile?.image && (

@@ -213,15 +213,31 @@ const Vending: FunctionComponent<VendingProps> = ({
                             })
                           );
                           !router.asPath.includes("?search=")
+                            ? router.asPath.includes("?profile=")
+                              ? router.push(
+                                  router.asPath.split("?option=")[0] +
+                                    "?option=fufillment?profile=" +
+                                    router.asPath.split("?profile=")[1]
+                                )
+                              : router.push(
+                                  router.asPath.split("?option=")[0] +
+                                    "?option=fulfillment"
+                                )
+                            : router.asPath.includes("?profile=")
                             ? router.push(
                                 router.asPath.split("?option=")[0] +
-                                  "?option=" +
-                                  "fulfillment"
+                                  "?option=fulfillment" +
+                                  `?search=${
+                                    router.asPath
+                                      .split("?search=")[1]
+                                      .split("?profile")[0] +
+                                    "?profile=" +
+                                    router.asPath.split("?profile")[0]
+                                  }`
                               )
                             : router.push(
                                 router.asPath.split("?option=")[0] +
-                                  "?option=" +
-                                  "fulfillment" +
+                                  "?option=fulfillment" +
                                   `?search=${
                                     router.asPath.split("?search=")[1]
                                   }`

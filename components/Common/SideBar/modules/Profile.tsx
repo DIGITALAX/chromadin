@@ -16,7 +16,20 @@ const Profile: FunctionComponent<ProfileProps> = ({ profile }): JSX.Element => {
           router.asPath.includes("sampler")
         ) {
           !router.asPath.includes("?search=")
-            ? router.push("#collect?option=account")
+            ? router.asPath.includes("?profile=")
+              ? router.push(
+                  "#collect?option=account" +
+                    "?profile=" +
+                    router.asPath.split("?profile=")[1]
+                )
+              : router.push("#collect?option=account")
+            : router.asPath.includes("?profile=")
+            ? router.push(
+                "#collect?option=account" +
+                  `?search=${
+                    router.asPath.split("?search=")[1].split("?profile=")[0]
+                  }?profile=${router.asPath.split("?profile=")[1]}`
+              )
             : router.push(
                 "#collect?option=account" +
                   `?search=${router.asPath.split("?search=")[1]}`

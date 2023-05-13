@@ -1,4 +1,5 @@
 import { Publication } from "@/components/Home/types/lens.types";
+import getOneProfile from "@/graphql/lens/queries/getProfile";
 import {
   profilePublications,
   profilePublicationsAuth,
@@ -9,6 +10,7 @@ import { setProfileFeedCount } from "@/redux/reducers/profileFeedCountSlice";
 import { setProfileFeedRedux } from "@/redux/reducers/profileFeedSlice";
 import { setProfilePaginated } from "@/redux/reducers/profilePaginatedSlice";
 import { setProfileScrollPosRedux } from "@/redux/reducers/profileScrollPosSlice";
+import { setProfile } from "@/redux/reducers/profileSlice";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -28,9 +30,7 @@ const useProfileFeed = () => {
   const lensProfile = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
-  const profileId = useSelector(
-    (state: RootState) => state.app.profileReducer.id
-  );
+  const profileId = useSelector((state: RootState) => state.app.profileReducer);
   const profilePageData = useSelector(
     (state: RootState) => state.app.profilePaginatedReducer.value
   );
@@ -59,13 +59,13 @@ const useProfileFeed = () => {
     try {
       if (!lensProfile?.id) {
         data = await profilePublications({
-          profileId: profileId,
+          profileId: profileId?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
         });
       } else {
         data = await profilePublicationsAuth({
-          profileId: profileId,
+          profileId: profileId?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
         });
@@ -91,7 +91,7 @@ const useProfileFeed = () => {
       if (lensProfile) {
         hasReactedArr = await checkPostReactions(
           {
-            profileId: profileId,
+            profileId: profileId?.id,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
             limit: 10,
           },
@@ -161,14 +161,14 @@ const useProfileFeed = () => {
 
       if (!lensProfile) {
         data = await profilePublications({
-          profileId: profileId,
+          profileId: profileId?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
           cursor: profilePageData?.next,
         });
       } else {
         data = await profilePublicationsAuth({
-          profileId: profileId,
+          profileId: profileId?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
           cursor: profilePageData?.next,
@@ -188,7 +188,7 @@ const useProfileFeed = () => {
         hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
         hasReactedArr = await checkPostReactions(
           {
-            profileId: profileId,
+            profileId: profileId?.id,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
             limit: 10,
             cursor: profilePageData?.next,
@@ -262,10 +262,51 @@ const useProfileFeed = () => {
   };
 
   useEffect(() => {
-    if (router.asPath.includes("#wavs") && profileId !== "" && profileId) {
+    if (
+      router.asPath.includes("#wavs") &&
+      profileId.id !== "" &&
+      profileId?.id
+    ) {
       getProfile();
     }
-  }, [auth, profileId]);
+  }, [auth, profileId.id]);
+
+  useEffect(() => {
+    if (profileId.handle !== "" && profileId.handle) {
+      router.push(
+        router.asPath.split("?profile=")[0] +
+          "?profile=" +
+          profileId?.handle.split(".lens")[0]
+      );
+    } else {
+      router.push(router.asPath.split("?profile=")[0]);
+    }
+  }, [profileId.handle]);
+
+  const getSingleProfile = async () => {
+    try {
+      const prof = await getOneProfile({
+        handle: router.asPath.split("?profile=")[1] + ".lens",
+      });
+      dispatch(
+        setProfile({
+          actionHandle: prof?.data?.profile?.handle,
+          actionId: prof?.data?.profile?.id,
+        })
+      );
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      router.asPath.includes("#wavs") &&
+      router.asPath.includes("?profile=")
+    ) {
+      getSingleProfile();
+    }
+  }, []);
 
   return {
     hasMoreProfile,

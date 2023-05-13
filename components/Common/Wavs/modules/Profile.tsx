@@ -78,13 +78,6 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
                       : publication?.mirrorOf?.profile?.id,
                 })
               );
-              router.push(
-                router.asPath.split("?profile=")[0] +
-                  "?profile=" +
-                  (publication?.__typename !== "Mirror"
-                    ? publication?.profile?.handle.split(".lens")[0]
-                    : publication?.mirrorOf?.profile?.handle.split(".lens")[0])
-              );
             }}
           >
             {profileImage !== "" && (
