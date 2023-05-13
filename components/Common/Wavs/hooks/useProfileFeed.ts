@@ -312,6 +312,17 @@ const useProfileFeed = () => {
     }
   }, [profileId.handle]);
 
+  useEffect(() => {
+    if (
+      router.asPath.includes("#wavs") &&
+      router.asPath.includes("?profile=") &&
+      (!profileId?.id || profileId?.id === "") &&
+      (!profileId?.handle || profileId?.handle === "")
+    ) {
+      getSingleProfile();
+    }
+  }, []);
+
   return {
     hasMoreProfile,
     fetchMoreProfile,
