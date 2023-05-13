@@ -48,6 +48,10 @@ import commentReducer from "./reducers/commentSlice";
 import paginatedReducer from "./reducers/paginatedSlice";
 import scrollPosReducer from "./reducers/scrollPosSlice";
 import individualFeedCountReducer from "./reducers/individualFeedCountReducer";
+import fullScreenVideoReducer from "./reducers/fullScreenVideoSlice";
+import videoSyncReducer from "./reducers/videoSyncSlice";
+import seekSecondReducer from "./reducers/seekSecondSlice";
+import videoCountReducer from "./reducers/videoCountSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -98,6 +102,10 @@ const reducer = combineReducers({
   paginatedReducer,
   scrollPosReducer,
   individualFeedCountReducer,
+  fullScreenVideoReducer,
+  videoSyncReducer,
+  seekSecondReducer,
+  videoCountReducer
 });
 
 export const store = configureStore({

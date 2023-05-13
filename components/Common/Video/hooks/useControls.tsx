@@ -35,19 +35,19 @@ import ReactPlayer from "react-player";
 import { waitForTransaction } from "@wagmi/core";
 import { setReactId } from "@/redux/reducers/reactIdSlice";
 import pollUntilIndexed from "@/graphql/lens/queries/checkIndexed";
+import { setVideoSync } from "@/redux/reducers/videoSyncSlice";
+import { setSeek } from "@/redux/reducers/seekSecondSlice";
 
 const useControls = (): UseControlsResults => {
   const { commentors } = useInteractions();
   const streamRef = useRef<ReactPlayer>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const fullVideoRef = useRef<ReactPlayer>(null);
   const progressRef = useRef<HTMLDivElement>(null);
-  const [fullScreen, setFullScreen] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(1);
   const [volumeOpen, setVolumeOpen] = useState<boolean>(false);
-  const [heart, setHeart] = useState<boolean>(false);
   const [likeLoading, setLikeLoading] = useState<boolean>(false);
   const [collectLoading, setCollectLoading] = useState<boolean>(false);
   const [mirrorLoading, setMirrorLoading] = useState<boolean>(false);
@@ -70,9 +70,19 @@ const useControls = (): UseControlsResults => {
   const dispatcher = useSelector(
     (state: RootState) => state.app.dispatcherReducer.value
   );
+  const seek = useSelector(
+    (state: RootState) => state.app.seekSecondReducer.seek
+  );
   const profileId = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
+  const videoSync = useSelector(
+    (state: RootState) => state.app.videoSyncReducer
+  );
+  const fullScreenVideo = useSelector(
+    (state: RootState) => state.app.fullScreenVideoReducer
+  );
+
   const authStatus = useSelector(
     (state: RootState) => state.app.authStatusReducer.value
   );
@@ -105,9 +115,31 @@ const useControls = (): UseControlsResults => {
   const { writeAsync: collectWriteAsync } = useContractWrite(collectConfig);
 
   const handleHeart = () => {
-    setHeart(true);
+    dispatch(
+      setVideoSync({
+        actionHeart: true,
+        actionDuration: videoSync.duration,
+        actionCurrentTime: videoSync.currentTime,
+        actionIsPlaying: videoSync.isPlaying,
+        actionLikedArray: videoSync.likedArray,
+        actionMirroredArray: videoSync.mirroredArray,
+        actionCollectedArray: videoSync.collectedArray,
+        actionVideosLoading: videoSync.videosLoading,
+      })
+    );
     setTimeout(() => {
-      setHeart(false);
+      dispatch(
+        setVideoSync({
+          actionHeart: false,
+          actionDuration: videoSync.duration,
+          actionCurrentTime: videoSync.currentTime,
+          actionIsPlaying: videoSync.isPlaying,
+          actionLikedArray: videoSync.likedArray,
+          actionMirroredArray: videoSync.mirroredArray,
+          actionCollectedArray: videoSync.collectedArray,
+          actionVideosLoading: videoSync.videosLoading,
+        })
+      );
     }, 3000);
   };
 
@@ -122,15 +154,6 @@ const useControls = (): UseControlsResults => {
   const handleVolumeChange = (e: FormEvent) => {
     setVolume(parseFloat((e.target as HTMLFormElement).value));
   };
-
-  useEffect(() => {
-    if (fullScreen) {
-      if (!document?.fullscreenElement) {
-        wrapperRef?.current!?.requestFullscreen();
-        setFullScreen(false);
-      }
-    }
-  }, [fullScreen]);
 
   const likeVideo = async (id?: string): Promise<void> => {
     let index: any, react: any;
@@ -589,8 +612,48 @@ const useControls = (): UseControlsResults => {
     const progressRect = e.currentTarget.getBoundingClientRect();
     const seekPosition = (e.clientX - progressRect.left) / progressRect.width;
     // setCurrentTime(seekPosition * duration);
+    dispatch(setSeek(seekPosition));
     streamRef.current?.seekTo(seekPosition, "fraction");
   };
+
+  useEffect(() => {
+    if (seek !== 0) {
+      fullVideoRef?.current?.seekTo(seek, "fraction");
+    }
+  }, [seek]);
+
+  useEffect(() => {
+    if (fullScreenVideo.value) {
+      dispatch(
+        setVideoSync({
+          actionHeart: videoSync.heart,
+          actionDuration: videoSync.duration,
+          actionCurrentTime: videoSync.currentTime,
+          actionIsPlaying: false,
+          actionLikedArray: videoSync.likedArray,
+          actionMirroredArray: videoSync.mirroredArray,
+          actionCollectedArray: videoSync.collectedArray,
+          actionVideosLoading: videoSync.videosLoading,
+        })
+      );
+      streamRef?.current?.seekTo(videoSync.currentTime, "seconds");
+      fullVideoRef?.current?.seekTo(videoSync.currentTime, "seconds");
+      setTimeout(() => {
+        dispatch(
+          setVideoSync({
+            actionHeart: videoSync.heart,
+            actionDuration: videoSync.duration,
+            actionCurrentTime: videoSync.currentTime,
+            actionIsPlaying: true,
+            actionLikedArray: videoSync.likedArray,
+            actionMirroredArray: videoSync.mirroredArray,
+            actionCollectedArray: videoSync.collectedArray,
+            actionVideosLoading: videoSync.videosLoading,
+          })
+        );
+      }, 1000);
+    }
+  }, [fullScreenVideo.value]);
 
   useEffect(() => {
     if (purchase.open) {
@@ -600,17 +663,11 @@ const useControls = (): UseControlsResults => {
 
   return {
     streamRef,
-    setFullScreen,
-    fullScreen,
     formatTime,
-    duration,
-    currentTime,
     volume,
-    isPlaying,
     volumeOpen,
     setVolumeOpen,
     handleHeart,
-    heart,
     mirrorLoading,
     collectLoading,
     likeLoading,
@@ -626,13 +683,11 @@ const useControls = (): UseControlsResults => {
     approvalLoading,
     collectInfoLoading,
     approveCurrency,
-    setIsPlaying,
-    setCurrentTime,
-    setDuration,
     handleVolumeChange,
     wrapperRef,
     progressRef,
     handleSeek,
+    fullVideoRef,
   };
 };
 

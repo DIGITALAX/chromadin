@@ -4,24 +4,18 @@ import useControls from "../hooks/useControls";
 import { VideoProps } from "../types/controls.types";
 import Player from "./Player";
 import useChannels from "../../SideBar/hooks/useChannels";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
   const {
-    fullScreen,
-    setFullScreen,
     streamRef,
     formatTime,
-    duration,
-    currentTime,
     volume,
     handleVolumeChange,
-    isPlaying,
     volumeOpen,
     setVolumeOpen,
     handleHeart,
-    heart,
     mirrorVideo,
     collectVideo,
     likeVideo,
@@ -31,25 +25,20 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
     profileId,
     authStatus,
     mainVideo,
-    setIsPlaying,
-    setCurrentTime,
-    setDuration,
     wrapperRef,
     progressRef,
     handleSeek,
   } = useControls();
-  const {
-    videos,
-    mirrored,
-    liked,
-    videosLoading,
-    collected,
-    collectAmount,
-    mirrorAmount,
-    likeAmount,
-  } = useChannels();
+  const { videos } = useChannels();
+  const dispatch = useDispatch();
   const dispatchVideos = useSelector(
     (state: RootState) => state.app.channelsReducer.value
+  );
+  const videoSync = useSelector(
+    (state: RootState) => state.app.videoSyncReducer
+  );
+  const reactions = useSelector(
+    (state: RootState) => state.app.videoCountReducer
   );
   return (
     <div
@@ -70,31 +59,22 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
       >
         <Player
           viewer={viewer}
-          heart={heart}
           streamRef={streamRef}
           mainVideo={mainVideo}
-          isPlaying={isPlaying}
-          setCurrentTime={setCurrentTime}
-          setDuration={setDuration}
           videos={videos}
-          likedArray={liked}
-          mirroredArray={mirrored}
           volume={volume}
           wrapperRef={wrapperRef}
-          videosLoading={videosLoading}
           dispatchVideos={dispatchVideos}
-          collectedArray={collected}
+          fullScreen={false}
+          videoSync={videoSync}
+          muted={false}
+          dispatch={dispatch}
         />
         {viewer !== "sampler" && (
           <Controls
-            fullScreen={fullScreen}
-            setFullScreen={setFullScreen}
             formatTime={formatTime}
-            duration={duration}
-            currentTime={currentTime}
             volume={volume}
             handleVolumeChange={handleVolumeChange}
-            isPlaying={isPlaying}
             volumeOpen={volumeOpen}
             setVolumeOpen={setVolumeOpen}
             handleHeart={handleHeart}
@@ -110,17 +90,15 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
             authStatus={authStatus}
             profileId={profileId}
             mainVideo={mainVideo}
-            likedArray={liked}
-            mirroredArray={mirrored}
             videos={videos}
-            setIsPlaying={setIsPlaying}
             progressRef={progressRef}
             handleSeek={handleSeek}
             dispatchVideos={dispatchVideos}
-            collectedArray={collected}
-            collectAmount={collectAmount}
-            mirrorAmount={mirrorAmount}
-            likeAmount={likeAmount}
+            collectAmount={reactions.collect}
+            mirrorAmount={reactions.mirror}
+            likeAmount={reactions.like}
+            videoSync={videoSync}
+            dispatch={dispatch}
           />
         )}
       </div>

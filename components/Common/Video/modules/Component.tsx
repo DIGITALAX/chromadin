@@ -6,21 +6,19 @@ import lodash from "lodash";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import { ComponentProps } from "../types/controls.types";
 import ReactPlayer from "react-player/lazy";
+import { setVideoSync } from "@/redux/reducers/videoSyncSlice";
 
 const Component: FunctionComponent<ComponentProps> = ({
   streamRef,
   mainVideo,
   isPlaying,
   videos,
-  likedArray,
-  mirroredArray,
   volume,
-  setCurrentTime,
-  setDuration,
   dispatchVideos,
-  collectedArray,
+  muted,
+  videoSync,
+  dispatch
 }): JSX.Element => {
-  const dispatch = useDispatch();
   const currentIndex = lodash.findIndex(
     videos?.length > 0 ? videos : dispatchVideos,
     { id: mainVideo.id }
@@ -44,20 +42,20 @@ const Component: FunctionComponent<ComponentProps> = ({
             actionVideo: `${INFURA_GATEWAY}/ipfs/${
               (videos?.length > 0 ? videos : dispatchVideos)[
                 (currentIndex + 1) % videos?.length
-              ].metadata.media[0].original.url.split("ipfs://")[1]
+              ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
             }`,
             actionCollected:
-              collectedArray[
+              videoSync.collectedArray[
                 (currentIndex + 1) %
                   (videos?.length > 0 ? videos : dispatchVideos)?.length
               ],
             actionLiked:
-              likedArray[
+              videoSync.likedArray[
                 (currentIndex + 1) %
                   (videos?.length > 0 ? videos : dispatchVideos)?.length
               ],
             actionMirrored:
-              mirroredArray[
+              videoSync.mirroredArray[
                 (currentIndex + 1) %
                   (videos?.length > 0 ? videos : dispatchVideos)?.length
               ],
@@ -75,8 +73,37 @@ const Component: FunctionComponent<ComponentProps> = ({
         )
       }
       volume={volume}
-      onDuration={(duration) => setDuration(duration)}
-      onProgress={(progress) => setCurrentTime(progress.playedSeconds)}
+      onDuration={(duration) =>
+        !muted &&
+        dispatch(
+          setVideoSync({
+            actionHeart: videoSync.heart,
+            actionDuration: duration,
+            actionCurrentTime: videoSync.currentTime,
+            actionIsPlaying: videoSync.isPlaying,
+            actionLikedArray: videoSync.likedArray,
+            actionMirroredArray: videoSync.mirroredArray,
+            actionCollectedArray: videoSync.collectedArray,
+            actionVideosLoading: videoSync.videosLoading,
+          })
+        )
+      }
+      onProgress={(progress) =>
+        !muted &&
+        dispatch(
+          setVideoSync({
+            actionHeart: videoSync.heart,
+            actionDuration: videoSync.duration,
+            actionCurrentTime: progress.playedSeconds,
+            actionIsPlaying: videoSync.isPlaying,
+            actionLikedArray: videoSync.likedArray,
+            actionMirroredArray: videoSync.mirroredArray,
+            actionCollectedArray: videoSync.collectedArray,
+            actionVideosLoading: videoSync.videosLoading,
+          })
+        )
+      }
+      muted={muted}
     />
   );
 };

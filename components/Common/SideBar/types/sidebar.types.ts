@@ -1,27 +1,18 @@
 import { Profile, Publication } from "@/components/Home/types/lens.types";
+import { VideoSyncState } from "@/redux/reducers/videoSyncSlice";
 import { AnyAction, Dispatch } from "redux";
 
 export type ChannelsProps = {
   videos: Publication[];
   dispatch: Dispatch<AnyAction>;
-  liked: boolean[];
-  mirrored: boolean[];
-  videosLoading: boolean;
   dispatchVideos: Publication[];
-  collected: boolean[];
+  videoSync: VideoSyncState;
 };
 
 export type UseChannelsResults = {
   videos: Publication[];
-  liked: boolean[];
-  mirrored: boolean[];
-  collected: boolean[];
   tab: number;
   setTab: (e: number) => void;
-  videosLoading: boolean;
-  likeAmount: number[];
-  collectAmount: number[];
-  mirrorAmount: number[];
 };
 
 export type UseConnectResults = {
@@ -73,13 +64,10 @@ export type SideBarProps = {
   setTab: (e: number) => void;
   dispatch: Dispatch<AnyAction>;
   videos: Publication[];
-  liked: boolean[];
-  mirrored: boolean[];
   viewer: string;
-  videosLoading: boolean;
   dispatchVideos: Publication[];
-  collected: boolean[];
   options: string;
+  videoSync: VideoSyncState;
 };
 
 export type SwitcherProps = {

@@ -16,6 +16,8 @@ import json from "./../../../../public/videos/local.json";
 import { setChannelsRedux } from "@/redux/reducers/channelsSlice";
 import lodash from "lodash";
 import { setReactId } from "@/redux/reducers/reactIdSlice";
+import { setVideoSync } from "@/redux/reducers/videoSyncSlice";
+import { setVideoCount } from "@/redux/reducers/videoCountSlice";
 
 const useChannels = (): UseChannelsResults => {
   const authStatus = useSelector(
@@ -36,21 +38,31 @@ const useChannels = (): UseChannelsResults => {
   const reactId = useSelector(
     (state: RootState) => state.app.reactIdReducer.value
   );
+  const videoSync = useSelector(
+    (state: RootState) => state.app.videoSyncReducer
+  );
   const dispatch = useDispatch();
   const [videos, setVideos] = useState<Publication[]>([]);
-  const [liked, setLiked] = useState<boolean[]>([]);
-  const [collected, setCollected] = useState<boolean[]>([]);
-  const [mirrored, setMirrored] = useState<boolean[]>([]);
   const [tab, setTab] = useState<number>(0);
-  const [videosLoading, setVideosLoading] = useState<boolean>(false);
-  const [mirrorAmount, setMirrorAmount] = useState<number[]>([]);
-  const [likeAmount, setLikeAmount] = useState<number[]>([]);
-  const [collectAmount, setCollectAmount] = useState<number[]>([]);
 
   const getVideos = async (): Promise<void> => {
-    setVideosLoading(true);
+    dispatch(
+      setVideoSync({
+        actionHeart: videoSync.heart,
+        actionDuration: videoSync.duration,
+        actionCurrentTime: videoSync.currentTime,
+        actionIsPlaying: videoSync.isPlaying,
+        actionLikedArray: videoSync.likedArray,
+        actionMirroredArray: videoSync.mirroredArray,
+        actionCollectedArray: videoSync.collectedArray,
+        actionVideosLoading: true,
+      })
+    );
+    let data: ApolloQueryResult<any>,
+      hasReactedArr: any[] = [],
+      hasMirroredArr: any[] = [],
+      sortedArr: any[] = [];
     try {
-      let data: ApolloQueryResult<any>, hasReactedArr, hasMirroredArr;
       if (authStatus && lensProfile) {
         data = await profilePublicationsAuth({
           profileId: "0x01c6a9",
@@ -65,20 +77,23 @@ const useChannels = (): UseChannelsResults => {
         });
       }
       const arr: any[] = [...data?.data.publications?.items];
-      const sortedArr: any[] = arr.sort(
+      sortedArr = arr.sort(
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
       dispatch(setChannelsRedux(sortedArr));
       setVideos(sortedArr);
-      setCollected(sortedArr.map((obj: Publication) => obj.hasCollectedByMe));
-      setMirrorAmount(
-        sortedArr.map((obj: Publication) => obj.stats.totalAmountOfMirrors)
-      );
-      setCollectAmount(
-        sortedArr.map((obj: Publication) => obj.stats.totalAmountOfCollects)
-      );
-      setLikeAmount(
-        sortedArr.map((obj: Publication) => obj.stats.totalUpvotes)
+      dispatch(
+        setVideoCount({
+          actionLike: sortedArr.map(
+            (obj: Publication) => obj.stats.totalUpvotes
+          ),
+          actionMirror: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfMirrors
+          ),
+          actionCollect: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfCollects
+          ),
+        })
       );
       if (authStatus && lensProfile) {
         hasReactedArr = await checkPostReactions(
@@ -89,9 +104,7 @@ const useChannels = (): UseChannelsResults => {
           },
           lensProfile
         );
-        setLiked(hasReactedArr);
         hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
-        setMirrored(hasMirroredArr);
       }
       dispatch(
         setMainVideo({
@@ -108,7 +121,20 @@ const useChannels = (): UseChannelsResults => {
     } catch (err: any) {
       console.error(err.message);
     }
-    setVideosLoading(false);
+    dispatch(
+      setVideoSync({
+        actionHeart: videoSync.heart,
+        actionDuration: videoSync.duration,
+        actionCurrentTime: videoSync.currentTime,
+        actionIsPlaying: videoSync.isPlaying,
+        actionLikedArray: hasReactedArr?.length > 0 ? hasReactedArr : [],
+        actionMirroredArray: hasMirroredArr?.length > 0 ? hasMirroredArr : [],
+        actionCollectedArray: sortedArr?.map(
+          (obj: Publication) => obj?.hasCollectedByMe
+        ),
+        actionVideosLoading: false,
+      })
+    );
   };
 
   const refetchInteractions = async () => {
@@ -139,25 +165,37 @@ const useChannels = (): UseChannelsResults => {
         },
         lensProfile
       );
-
       const hasMirroredArr = await checkIfMirrored(
         videos?.length > 0 ? videos : channelsDispatched,
         lensProfile
       );
-      setLiked(hasReactedArr);
       const hasCollectedArr = sortedArr.map(
         (obj: Publication) => obj.hasCollectedByMe
       );
-      setCollected(hasCollectedArr);
-      setMirrored(hasMirroredArr);
-      setMirrorAmount(
-        sortedArr.map((obj: Publication) => obj.stats.totalAmountOfMirrors)
+      dispatch(
+        setVideoSync({
+          actionHeart: videoSync.heart,
+          actionDuration: videoSync.duration,
+          actionCurrentTime: videoSync.currentTime,
+          actionIsPlaying: videoSync.isPlaying,
+          actionLikedArray: hasReactedArr,
+          actionMirroredArray: hasMirroredArr,
+          actionCollectedArray: hasCollectedArr,
+          actionVideosLoading: videoSync.videosLoading,
+        })
       );
-      setCollectAmount(
-        sortedArr.map((obj: Publication) => obj.stats.totalAmountOfCollects)
-      );
-      setLikeAmount(
-        sortedArr.map((obj: Publication) => obj.stats.totalUpvotes)
+      dispatch(
+        setVideoCount({
+          actionLike: sortedArr.map(
+            (obj: Publication) => obj.stats.totalUpvotes
+          ),
+          actionMirror: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfMirrors
+          ),
+          actionCollect: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfCollects
+          ),
+        })
       );
       if (reactId === mainVideo.id) {
         const currentIndex = lodash.findIndex(
@@ -195,15 +233,8 @@ const useChannels = (): UseChannelsResults => {
 
   return {
     videos,
-    liked,
-    mirrored,
     tab,
     setTab,
-    videosLoading,
-    collected,
-    likeAmount,
-    collectAmount,
-    mirrorAmount,
   };
 };
 

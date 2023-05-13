@@ -7,16 +7,13 @@ import { useDispatch } from "react-redux";
 import { setMainVideo } from "@/redux/reducers/mainVideoSlice";
 import lodash from "lodash";
 import json from "./../../../../public/videos/local.json";
+import { setFullScreenVideo } from "@/redux/reducers/fullScreenVideoSlice";
+import { setVideoSync } from "@/redux/reducers/videoSyncSlice";
 
 const Controls: FunctionComponent<ControlsProps> = ({
-  fullScreen,
-  setFullScreen,
   formatTime,
-  duration,
-  currentTime,
   volume,
   handleVolumeChange,
-  isPlaying,
   volumeOpen,
   setVolumeOpen,
   handleHeart,
@@ -33,30 +30,26 @@ const Controls: FunctionComponent<ControlsProps> = ({
   collectLoading,
   videos,
   mainVideo,
-  likedArray,
-  mirroredArray,
-  setIsPlaying,
   progressRef,
   handleSeek,
   dispatchVideos,
-  collectedArray,
   collectAmount,
   mirrorAmount,
   likeAmount,
+  videoSync,
+  dispatch
 }): JSX.Element => {
-  const dispatch = useDispatch();
   const currentIndex = lodash.findIndex(
     videos?.length > 0 ? videos : dispatchVideos,
     { id: mainVideo.id }
   );
-
   return (
     <div className="relative h-fit flex flex-col md:flex-row w-full gap-3 items-center galaxy:px-2 justify-center">
       <div className="relative w-fit md:w-56 h-full flex justify-center items-center gap-3">
         <div className="relative flex flex-row w-full h-full items-center">
           <div
             className="relative w-4 h-4 cursor-pointer flex"
-            onClick={() => setFullScreen(!fullScreen)}
+            onClick={() => dispatch(setFullScreenVideo(true))}
           >
             <Image
               src={`${INFURA_GATEWAY}/ipfs/QmVpncAteeF7voaGu1ZV5qP63UpZW2xmiCWVftL1QnL5ja`}
@@ -68,8 +61,8 @@ const Controls: FunctionComponent<ControlsProps> = ({
           </div>
         </div>
         <div className="relative w-fit h-full flex items-center font-digi text-base text-white">
-          <span className="text-rosa">{formatTime(currentTime)}</span>/
-          <span className="text-light">{formatTime(duration)}</span>
+          <span className="text-rosa">{formatTime(videoSync.currentTime)}</span>
+          /<span className="text-light">{formatTime(videoSync.duration)}</span>
         </div>
       </div>
       <div className="relative w-full h-full flex flex-col items-center justify-center">
@@ -81,7 +74,7 @@ const Controls: FunctionComponent<ControlsProps> = ({
           <div
             className="absolute h-full bg-white/80 rounded-sm"
             style={{
-              width: `${(currentTime / duration) * 100}%`,
+              width: `${(videoSync.currentTime / videoSync.duration) * 100}%`,
             }}
           />
         </div>
@@ -201,10 +194,10 @@ const Controls: FunctionComponent<ControlsProps> = ({
                       ? (videos?.length > 0 ? videos : dispatchVideos).length -
                         1
                       : currentIndex - 1
-                  ].metadata.media[0].original.url.split("ipfs://")[1]
+                  ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
                 }`,
                 actionCollected:
-                  collectedArray[
+                  videoSync.collectedArray[
                     currentIndex ===
                     (videos?.length > 0 ? videos : dispatchVideos).length - 1
                       ? 0
@@ -214,7 +207,7 @@ const Controls: FunctionComponent<ControlsProps> = ({
                       : currentIndex - 1
                   ],
                 actionLiked:
-                  likedArray[
+                  videoSync.likedArray[
                     currentIndex ===
                     (videos?.length > 0 ? videos : dispatchVideos).length - 1
                       ? 0
@@ -224,7 +217,7 @@ const Controls: FunctionComponent<ControlsProps> = ({
                       : currentIndex - 1
                   ],
                 actionMirrored:
-                  mirroredArray[
+                  videoSync.mirroredArray[
                     currentIndex ===
                     (videos?.length > 0 ? videos : dispatchVideos).length - 1
                       ? 0
@@ -266,11 +259,24 @@ const Controls: FunctionComponent<ControlsProps> = ({
         </div>
         <div
           className="relative cursor-pointer"
-          onClick={() => setIsPlaying(!isPlaying)}
+          onClick={() =>
+            dispatch(
+              setVideoSync({
+                actionHeart: videoSync.heart,
+                actionDuration: videoSync.duration,
+                actionCurrentTime: videoSync.currentTime,
+                actionIsPlaying: videoSync.isPlaying ? false : true,
+                actionLikedArray: videoSync.likedArray,
+                actionMirroredArray: videoSync.mirroredArray,
+                actionCollectedArray: videoSync.collectedArray,
+                actionVideosLoading: videoSync.videosLoading,
+              })
+            )
+          }
         >
           <Image
             src={`${INFURA_GATEWAY}/ipfs/${
-              isPlaying
+              videoSync.isPlaying
                 ? "Qmbg8t4xoNywhtCexD5Ln5YWvcKMXGahfwyK6UHpR3nBip"
                 : "QmXw52mJFnzYXmoK8eExoHKv7YW9RBVEwSFtfvxXgy7sfp"
             }`}
@@ -289,20 +295,20 @@ const Controls: FunctionComponent<ControlsProps> = ({
                   (videos?.length > 0 ? videos : dispatchVideos)[
                     (currentIndex + 1) %
                       (videos?.length > 0 ? videos : dispatchVideos)?.length
-                  ].metadata.media[0].original.url.split("ipfs://")[1]
+                  ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
                 }`,
                 actionCollected:
-                  collectedArray[
+                  videoSync.collectedArray[
                     (currentIndex + 1) %
                       (videos?.length > 0 ? videos : dispatchVideos)?.length
                   ],
                 actionLiked:
-                  likedArray[
+                  videoSync.likedArray[
                     (currentIndex + 1) %
                       (videos?.length > 0 ? videos : dispatchVideos)?.length
                   ],
                 actionMirrored:
-                  mirroredArray[
+                  videoSync.mirroredArray[
                     (currentIndex + 1) %
                       (videos?.length > 0 ? videos : dispatchVideos)?.length
                   ],

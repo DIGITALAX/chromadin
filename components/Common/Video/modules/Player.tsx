@@ -8,26 +8,24 @@ import FetchMoreLoading from "../../Loading/FetchMoreLoading";
 const Component = dynamic(() => import("./Component"), { ssr: false });
 
 const Player: FunctionComponent<PlayerProps> = ({
-  viewer,
-  heart,
   streamRef,
   mainVideo,
-  videosLoading,
-  isPlaying,
   videos,
-  likedArray,
-  mirroredArray,
   volume,
-  setCurrentTime,
-  setDuration,
   wrapperRef,
   dispatchVideos,
-  collectedArray,
+  fullScreen,
+  muted,
+  videoSync,
+  dispatch,
+  viewer,
 }): JSX.Element => {
   return (
     <div
       className={`relative justify-center items-center flex ${
-        viewer === "sampler"
+        fullScreen
+          ? "w-full h-full"
+          : viewer === "sampler"
           ? "w-0 h-0"
           : viewer === "collect" || viewer === "wavs"
           ? "w-24 h-1/2"
@@ -36,7 +34,7 @@ const Player: FunctionComponent<PlayerProps> = ({
       key={mainVideo.local}
       ref={wrapperRef}
     >
-      {viewer !== "sampler" && heart && (
+      {viewer !== "sampler" && videoSync.heart && (
         <Image
           src={`${INFURA_GATEWAY}/ipfs/QmNPPsBttGAxvu6cX3gWT4cnFF8PMF9C55GgJUehGp3nCA`}
           layout="fill"
@@ -45,7 +43,7 @@ const Player: FunctionComponent<PlayerProps> = ({
           draggable={false}
         />
       )}
-      {videosLoading && viewer !== "sampler" ? (
+      {videoSync.videosLoading && viewer !== "sampler" ? (
         <div
           className={`relative bg-offBlack flex flex-col items-center justify-center ${
             viewer !== "collect" ? "w-full h-full" : "w-20 h-14"
@@ -57,15 +55,13 @@ const Player: FunctionComponent<PlayerProps> = ({
         <Component
           streamRef={streamRef}
           mainVideo={mainVideo}
-          isPlaying={isPlaying}
+          isPlaying={videoSync.isPlaying}
           videos={videos}
-          likedArray={likedArray}
-          mirroredArray={mirroredArray}
           volume={volume}
-          setCurrentTime={setCurrentTime}
-          setDuration={setDuration}
           dispatchVideos={dispatchVideos}
-          collectedArray={collectedArray}
+          muted={muted}
+          videoSync={videoSync}
+          dispatch={dispatch}
         />
       )}
     </div>

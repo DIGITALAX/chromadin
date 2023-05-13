@@ -484,3 +484,21 @@ input[type="range"]::-moz-range-thumb {
 .infinite-scroll-component__outerdiv {
   width: 100%;
 }
+
+#videoplayer {
+  background-image: url("https://thedial.infura-ipfs.io/ipfs/QmekpQQEtQBP1M71SohCHiDRQbV1Sc2bKveVvwEfzAJCPx");
+  background-color: black;
+  background-position: center;
+  background-size: cover;
+}
+
+#videoplayer:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.2);
+  filter: blur(5px);
+}

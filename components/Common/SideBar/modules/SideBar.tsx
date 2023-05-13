@@ -16,27 +16,21 @@ const SideBar: FunctionComponent<SideBarProps> = ({
   setTab,
   videos,
   dispatch,
-  liked,
-  mirrored,
   viewer,
-  videosLoading,
   dispatchVideos,
-  collected,
-  options
+  options,
+  videoSync
 }): JSX.Element => {
   return (
     <div className="relative w-full lg:w-80 h-fit lg:h-full flex flex-col">
-      <Switcher options={options}/>
+      <Switcher options={options} />
       <Tabs tab={tab} setTab={setTab} viewer={viewer} />
       {tab === 0 ? (
         <Channels
           videos={videos}
           dispatch={dispatch}
-          liked={liked}
-          mirrored={mirrored}
-          videosLoading={videosLoading}
           dispatchVideos={dispatchVideos}
-          collected={collected}
+          videoSync={videoSync}
         />
       ) : (
         <Interactions viewer={viewer} />

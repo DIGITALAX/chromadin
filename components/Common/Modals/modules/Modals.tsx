@@ -17,8 +17,11 @@ import Who from "./Who";
 import useWho from "../../Wavs/hooks/useWho";
 import useReactions from "../../Wavs/hooks/useReactions";
 import { useRouter } from "next/router";
+import FullScreenVideo from "./FullScreenVideo";
+import { useRef } from "react";
 
 const Modals = () => {
+  const videoRef = useRef<HTMLDivElement>(null);
   const indexingModal = useSelector(
     (state: RootState) => state.app.indexModalReducer
   );
@@ -30,6 +33,12 @@ const Modals = () => {
   );
   const successModal = useSelector(
     (state: RootState) => state.app.successReducer
+  );
+  const mainVideo = useSelector(
+    (state: RootState) => state.app.mainVideoReducer
+  );
+  const videoSync = useSelector(
+    (state: RootState) => state.app.videoSyncReducer
   );
   const errorModal = useSelector((state: RootState) => state.app.errorReducer);
   const lensProfile = useSelector(
@@ -56,6 +65,13 @@ const Modals = () => {
   const reaction = useSelector(
     (state: RootState) => state.app.reactionStateReducer
   );
+  const dispatchVideos = useSelector(
+    (state: RootState) => state.app.channelsReducer.value
+  );
+  const fullScreenVideo = useSelector(
+    (state: RootState) => state.app.fullScreenVideoReducer
+  );
+  const viewer = useSelector((state: RootState) => state.app.viewReducer.value);
   const {
     profile,
     followProfile,
@@ -69,6 +85,8 @@ const Modals = () => {
     collectCommentLoading,
     approveCurrency,
     collectVideo,
+    fullVideoRef,
+    wrapperRef,
   } = useControls();
   const {
     collectInfoLoading: purchaseInfoLoading,
@@ -97,6 +115,19 @@ const Modals = () => {
   } = useWho();
   return (
     <>
+      {fullScreenVideo.value && (
+        <FullScreenVideo
+          dispatch={dispatch}
+          mainVideo={mainVideo}
+          streamRef={fullVideoRef}
+          wrapperRef={wrapperRef}
+          videos={dispatchVideos}
+          dispatchVideos={dispatchVideos}
+          videoSync={videoSync}
+          videoRef={videoRef}
+          viewer={viewer}
+        />
+      )}
       {reaction.open && (
         <Who
           accounts={

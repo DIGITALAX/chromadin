@@ -9,15 +9,12 @@ import json from "./../../../../public/videos/local.json";
 const Channels: FunctionComponent<ChannelsProps> = ({
   videos,
   dispatch,
-  liked,
-  mirrored,
-  videosLoading,
+  videoSync,
   dispatchVideos,
-  collected,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-100 lg:h-128 flex flex-col overflow-y-scroll border border-white/80">
-      {videosLoading ? (
+      {videoSync.videosLoading ? (
         <>
           {Array.from({ length: 10 }).map((_: any, index: number) => {
             return (
@@ -76,9 +73,9 @@ const Channels: FunctionComponent<ChannelsProps> = ({
                           "ipfs://"
                         )[1]
                       }`,
-                      actionCollected: collected[index],
-                      actionLiked: liked[index],
-                      actionMirrored: mirrored[index],
+                      actionCollected: videoSync.collectedArray[index],
+                      actionLiked: videoSync.likedArray[index],
+                      actionMirrored: videoSync.mirroredArray[index],
                       actionId: content?.id,
                       actionLocal: `${json[index].link}`,
                     })

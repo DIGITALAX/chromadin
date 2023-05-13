@@ -32,10 +32,12 @@ const Home: NextPage = (): JSX.Element => {
   const options = useSelector(
     (state: RootState) => state.app.optionsReducer.value
   );
+  const videoSync = useSelector(
+    (state: RootState) => state.app.videoSyncReducer
+  );
   const dispatch = useDispatch();
   const { handleConnect, handleLensSignIn, connected } = useConnect();
-  const { videos, liked, mirrored, tab, setTab, videosLoading, collected } =
-    useChannels();
+  const { videos, tab, setTab } = useChannels();
   return (
     <div className="relative w-full h-full flex flex-col overflow-x-hidden selection:bg-ama selection:text-moda">
       <Head>
@@ -57,14 +59,11 @@ const Home: NextPage = (): JSX.Element => {
               tab={tab}
               setTab={setTab}
               videos={videos}
-              liked={liked}
-              mirrored={mirrored}
               viewer={viewer}
               dispatch={dispatch}
-              videosLoading={videosLoading}
               dispatchVideos={dispatchVideos}
-              collected={collected}
               options={options}
+              videoSync={videoSync}
             />
           </div>
           <div className="relative w-full h-full flex flex-col gap-5 items-center justify-center">
@@ -87,11 +86,8 @@ const Home: NextPage = (): JSX.Element => {
             <Channels
               videos={videos}
               dispatch={dispatch}
-              liked={liked}
-              mirrored={mirrored}
-              videosLoading={videosLoading}
               dispatchVideos={dispatchVideos}
-              collected={collected}
+              videoSync={videoSync}
             />
           ) : (
             <Interactions viewer={viewer} />
