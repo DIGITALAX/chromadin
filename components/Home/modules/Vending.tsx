@@ -14,6 +14,8 @@ import useViewer from "../hooks/useViewer";
 import { setPriceFilter } from "@/redux/reducers/priceFilterSlice";
 import { setDateFilter } from "@/redux/reducers/dateFilterSlice";
 import lodash from "lodash";
+import { setView } from "@/redux/reducers/viewSlice";
+import { setProfile } from "@/redux/reducers/profileSlice";
 
 const Vending: FunctionComponent<VendingProps> = ({
   dispatch,
@@ -267,13 +269,17 @@ const Vending: FunctionComponent<VendingProps> = ({
                               : 0)}
                         </div>
                       </div>
-                      <Link
-                        className="relative flex flex-row w-fit h-fit gap-3 items-center pt-3"
-                        href={`https://www.lenster.xyz/u/${
-                          collection?.profile?.handle?.split(".lens")[0]
-                        }`}
-                        target="_blank"
-                        rel="noreferrer"
+                      <div
+                        className="relative flex flex-row w-fit h-fit gap-3 items-center pt-3 cursor-pointer"
+                        onClick={() => {
+                          dispatch(setView("wavs"));
+                          dispatch(
+                            setProfile({
+                              actionHandle: collection?.profile?.handle,
+                              actionId: collection?.profile?.id,
+                            })
+                          );
+                        }}
                       >
                         <div
                           className="relative w-6 h-6 cursor-pointer border border-ama rounded-full"
@@ -292,7 +298,7 @@ const Vending: FunctionComponent<VendingProps> = ({
                         <div className="relative w-fit h-fit cursor-pointer text-ama font-arcade text-sm">
                           @{collection?.profile?.handle?.split(".lens")[0]}
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   );
                 })}

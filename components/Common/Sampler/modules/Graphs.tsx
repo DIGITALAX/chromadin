@@ -128,8 +128,9 @@ const Graphs: FunctionComponent<GraphsProps> = ({
                             canvas !== "interests" && canvas !== "hashtags"
                               ? () =>
                                   window.open(
-                                    `https://lenster.xyz/posts/${item.post_id}`,
-                                    "_blank"
+                                    `https://www.chromadin.xyz/#wavs?option=history?profile=${
+                                      item?.label?.handle?.split(".lens")[0]
+                                    }`
                                   )
                               : () => {}
                           }

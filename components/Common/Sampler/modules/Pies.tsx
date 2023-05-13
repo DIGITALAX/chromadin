@@ -2,7 +2,6 @@ import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/image";
 import { FunctionComponent } from "react";
 import { PiesProps } from "../types/sampler.types";
-import Link from "next/link";
 
 const Pies: FunctionComponent<PiesProps> = ({
   topAccountsFollowed,
@@ -24,16 +23,16 @@ const Pies: FunctionComponent<PiesProps> = ({
           const numBars =
             Math.ceil(percentage / 5) > 15 ? 15 : Math.ceil(percentage / 5);
           return (
-            <Link
-              className="relative w-20 h-fit flex flex-col font-earl text-white items-center justify-center place-self-center"
+            <div
+              className="relative w-20 h-fit flex flex-col font-earl text-white items-center justify-center place-self-center cursor-pointer"
               key={index}
-              target="_blank"
-              rel="noreferrer"
-              href={`https://lenster.xyz/u/${
-                (topAccountsFollowed.length < 1
-                  ? piesRedux
-                  : topAccountsFollowed)[index]?.handle?.split(".lens")[0]
-              }`}
+              onClick={() =>
+                window.open(
+                  `https://www.chromadin.xyz/#wavs?option=history?profile=${
+                    piesRedux[index]?.handle?.split(".lens")[0]
+                  }`
+                )
+              }
             >
               <Image
                 src={`${INFURA_GATEWAY}/ipfs/QmcPJ3gLHsRAdpR4X33PqFLTfjNZ3WxChzuW83txg6KENt`}
@@ -71,7 +70,7 @@ const Pies: FunctionComponent<PiesProps> = ({
                       ? piesRedux
                       : topAccountsFollowed)[index]?.handle?.split(".lens")[0]}
               </div>
-            </Link>
+            </div>
           );
         })}
       </div>

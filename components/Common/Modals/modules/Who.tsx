@@ -5,8 +5,8 @@ import { setReactionState } from "@/redux/reducers/reactionStateSlice";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import Image from "next/legacy/image";
 import { AiOutlineLoading } from "react-icons/ai";
-import Link from "next/link";
 import { WhoProps } from "../types/modals.types";
+import { setProfile } from "@/redux/reducers/profileSlice";
 
 const Who: FunctionComponent<WhoProps> = ({
   loading,
@@ -60,19 +60,25 @@ const Who: FunctionComponent<WhoProps> = ({
                           );
 
                           return (
-                            <Link
+                            <div
                               key={index}
-                              className="relative w-full h-fit p-2 drop-shadow-lg flex flex-row bg-gradient-to-r from-offBlack via-gray-600 to-black auto-cols-auto rounded-lg border border-black font-economica text-white"
-                              target="_blank"
-                              rel="noreferrer"
-                              href={`https://lenster.xyz/u/${
-                                (type === 0
-                                  ? reacter?.profile
-                                  : type === 1
-                                  ? reacter.defaultProfile
-                                  : reacter
-                                )?.handle?.split(".lens")[0]
-                              }`}
+                              className="relative w-full h-fit p-2 drop-shadow-lg flex flex-row bg-gradient-to-r from-offBlack via-gray-600 to-black auto-cols-auto rounded-lg border border-black font-economica text-white cursor-pointer"
+                              onClick={() => {
+                                dispatch(
+                                  setProfile({
+                                    actionHandle:
+                                      type === 0
+                                        ? reacter?.profile?.handle
+                                        : type === 1 &&
+                                          reacter?.defaultProfile?.handle,
+                                    actionId:
+                                      type === 0
+                                        ? reacter?.profile?.id
+                                        : type === 1 &&
+                                          reacter?.defaultProfile?.id,
+                                  })
+                                );
+                              }}
                             >
                               <div className="relative w-fit h-fit flex flex-row gap-6">
                                 <div
@@ -105,7 +111,7 @@ const Who: FunctionComponent<WhoProps> = ({
                                   }
                                 </div>
                               </div>
-                            </Link>
+                            </div>
                           );
                         })}
                       </InfiniteScroll>

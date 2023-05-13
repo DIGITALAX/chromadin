@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import { StatsProps } from "../types/sampler.types";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
-import Link from "next/link";
 import FetchMoreLoading from "../../Loading/FetchMoreLoading";
 
 const Stats: FunctionComponent<StatsProps> = ({
@@ -42,17 +41,17 @@ const Stats: FunctionComponent<StatsProps> = ({
                       ?.map((innerArr) => innerArr[1])
                       [indexOne]?.map((value: any, indexTwo: number) => {
                         return (
-                          <Link
+                          <div
                             key={indexTwo}
                             className="relative bg-black rounded-lg flex flex-row w-full h-full py-1.5 px-2 gap-3 items-center justify-center cursor-pointer"
-                            target="_blank"
-                            rel="noreferrer"
-                            href={
-                              indexOne === 4 || indexOne === 5
-                                ? `https://lenster.xyz/posts/${value?.publication_id}`
-                                : `https://lenster.xyz/u/${
-                                    value?.handle?.split(".lens")[0]
-                                  }`
+                            onClick={() =>
+                              window.open(
+                                indexOne === 4 || indexOne === 5
+                                  ? `https://lenster.xyz/posts/${value?.publication_id}`
+                                  : `https://www.chromadin.xyz/#wavs?option=history?profile=${
+                                      value?.handle?.split(".lens")[0]
+                                    }`
+                              )
                             }
                           >
                             {indexOne === 4 || indexOne === 5 ? (
@@ -143,7 +142,7 @@ const Stats: FunctionComponent<StatsProps> = ({
                                 </div>
                               </>
                             )}
-                          </Link>
+                          </div>
                         );
                       })}
               </div>

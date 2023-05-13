@@ -265,18 +265,20 @@ const useProfileFeed = () => {
     if (
       router.asPath.includes("#wavs") &&
       profileId.id !== "" &&
-      profileId?.id
+      profileId?.id &&
+      profileId.handle !== "" &&
+      profileId?.handle
     ) {
       getProfile();
     }
   }, [auth, profileId.id]);
 
   useEffect(() => {
-    if (profileId.handle !== "" && profileId.handle) {
+    if (profileId?.handle !== "" && profileId?.handle) {
       router.push(
-        router.asPath.split("?profile=")[0] +
+        router.asPath?.split("?profile=")[0] +
           "?profile=" +
-          profileId?.handle.split(".lens")[0]
+          profileId?.handle?.split(".lens")[0]
       );
     } else {
       router.push(router.asPath.split("?profile=")[0]);
@@ -302,11 +304,13 @@ const useProfileFeed = () => {
   useEffect(() => {
     if (
       router.asPath.includes("#wavs") &&
-      router.asPath.includes("?profile=")
+      router.asPath.includes("?profile=") &&
+      (!profileId?.id || profileId?.id === "") &&
+      (profileId?.handle || profileId?.handle !== "")
     ) {
       getSingleProfile();
     }
-  }, []);
+  }, [profileId.handle]);
 
   return {
     hasMoreProfile,
