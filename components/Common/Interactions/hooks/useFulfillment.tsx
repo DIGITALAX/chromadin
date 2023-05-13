@@ -33,7 +33,7 @@ const useFulfillment = () => {
     ACCEPTED_TOKENS.filter(
       (token) =>
         token[1]?.toLowerCase() === mainNFT?.acceptedTokens?.[0]?.toLowerCase()
-    )?.[0]?.[0]
+    )?.[0]?.[0] ?? "MONA"
   );
   const [purchaseLoading, setPurchaseLoading] = useState<boolean>(false);
   const [posterSize, setPosterSize] = useState<number>(0);
@@ -186,7 +186,7 @@ const useFulfillment = () => {
       setCurrency(
         ACCEPTED_TOKENS.find(
           (token) =>
-            token[0]?.toLowerCase() ===
+            token[1]?.toLowerCase() ===
             mainNFT?.acceptedTokens[0]?.toLowerCase()
         )?.[0]!
       );
@@ -241,6 +241,7 @@ const useFulfillment = () => {
   const buyNFT = async (): Promise<void> => {
     if (!tokenId) return;
     setPurchaseLoading(true);
+    setCurrency(currency);
     try {
       const tx = await buyNFTAsync?.();
       await waitForTransaction({
