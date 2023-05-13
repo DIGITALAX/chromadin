@@ -1,4 +1,5 @@
 import { setOptions } from "@/redux/reducers/optionsSlice";
+import { setProfile } from "@/redux/reducers/profileSlice";
 import { setSearch } from "@/redux/reducers/searchSlice";
 import { setView } from "@/redux/reducers/viewSlice";
 import { RootState } from "@/redux/store";
@@ -25,7 +26,14 @@ const useViewer = () => {
     if (router.asPath.includes("#")) {
       if (!router.asPath.includes("?search=")) {
         dispatch(setView(router.asPath.split("#")[1].split("?option=")[0]));
-        dispatch(setOptions(router.asPath.split("#")[1].split("?option=")[1]));
+        dispatch(
+          setOptions(
+            router.asPath
+              .split("#")[1]
+              .split("?option=")[1]
+              .split("?profile=")[0]
+          )
+        );
       } else {
         dispatch(setView(router.asPath.split("#")[1].split("?option=")[0]));
         dispatch(
@@ -37,7 +45,12 @@ const useViewer = () => {
           )
         );
         dispatch(
-          setSearch(router.asPath.split("?search=")[1].replaceAll("%20", " "))
+          setSearch(
+            router.asPath
+              .split("?search=")[1]
+              .split("?profile=")[0]
+              .replaceAll("%20", " ")
+          )
         );
       }
     }

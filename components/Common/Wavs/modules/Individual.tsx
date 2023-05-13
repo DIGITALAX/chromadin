@@ -34,7 +34,6 @@ const Individual: FunctionComponent<IndividualProps> = ({
   setReactPostLoading,
   mirrorPostLoading,
   reactPostLoading,
-  postAmounts,
   commentOpen,
   commentPost,
   commentDescription,
@@ -98,10 +97,11 @@ const Individual: FunctionComponent<IndividualProps> = ({
   canComment,
   postImagesDispatched,
   individualAmounts,
+  router,
 }): JSX.Element => {
   return (
     <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
-      <div className="sticky z-1 w-full h-fit flex flex-col items-start justify-start mr-0">
+      <div className="sticky z-0 w-full h-fit flex flex-col items-start justify-start mr-0">
         <div
           className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
           onClick={() => {
@@ -142,6 +142,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
             setMirrorLoader={setMirrorPostLoading}
             setReactLoader={setReactPostLoading}
             openComment={commentOpen}
+            router={router}
           />
           {(mainPost?.__typename === "Mirror"
             ? mainPost?.mirrorOf?.id
@@ -302,6 +303,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
         currencyDropDown={currencyDropDown}
         openComment={commentOpen}
         postImagesDispatched={postImagesDispatched}
+        router={router}
       />
     </div>
   );

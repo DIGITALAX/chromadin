@@ -6,6 +6,7 @@ import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Reactions from "./Reactions";
 import Link from "next/link";
+import { setProfile } from "@/redux/reducers/profileSlice";
 
 const Profile: FunctionComponent<ProfileSideBarProps> = ({
   publication,
@@ -30,7 +31,8 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
   setMirrorLoader,
   setCollectLoader,
   setReactLoader,
-  feedType
+  feedType,
+  router,
 }): JSX.Element => {
   const profileImage = createProfilePicture(publication, true);
   return (
@@ -60,16 +62,30 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
               className="rounded-full w-full h-full"
             />
           </div>
-          <Link
+          <div
             className={`absolute rounded-full flex bg-white w-8 h-full justify-self-center sm:right-6 col-start-1 cursor-pointer active:scale-95 hover:opacity-80`}
             id="crt"
-            target="_blank"
-            rel="noreferrer"
-            href={`https://lenster.xyz/u/${
-              publication?.__typename !== "Mirror"
-                ? publication?.profile?.handle.split(".lens")[0]
-                : publication?.mirrorOf?.profile?.handle.split(".lens")[0]
-            }`}
+            onClick={() => {
+              dispatch(
+                setProfile({
+                  actionHandle:
+                    publication?.__typename !== "Mirror"
+                      ? publication?.profile?.handle
+                      : publication?.mirrorOf?.profile?.handle,
+                  actionId:
+                    publication?.__typename !== "Mirror"
+                      ? publication?.profile?.id
+                      : publication?.mirrorOf?.profile?.id,
+                })
+              );
+              router.push(
+                router.asPath.split("?profile=")[0] +
+                  "?profile=" +
+                  (publication?.__typename !== "Mirror"
+                    ? publication?.profile?.handle.split(".lens")[0]
+                    : publication?.mirrorOf?.profile?.handle.split(".lens")[0])
+              );
+            }}
           >
             {profileImage !== "" && (
               <Image
@@ -81,7 +97,7 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
                 draggable={false}
               />
             )}
-          </Link>
+          </div>
         </div>
         <div className="relative w-full h-fit grid grid-flow-col auto-cols-auto">
           <div

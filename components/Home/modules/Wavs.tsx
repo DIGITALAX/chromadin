@@ -4,15 +4,18 @@ import useConnect from "@/components/Common/SideBar/hooks/useConnect";
 import useAllPosts from "@/components/Common/Wavs/hooks/useAllPosts";
 import useComment from "@/components/Common/Wavs/hooks/useComment";
 import useIndividual from "@/components/Common/Wavs/hooks/useIndividual";
+import useProfileFeed from "@/components/Common/Wavs/hooks/useProfileFeed";
 import useReactions from "@/components/Common/Wavs/hooks/useReactions";
-import AllPosts from "@/components/Common/Wavs/modules/AllPosts";
+import Feed from "@/components/Common/Wavs/modules/Feed";
 import { RootState } from "@/redux/store";
+import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 
 const Wavs: FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { address } = useAccount();
 
   const feedDispatch = useSelector(
@@ -40,14 +43,29 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const postImagesDispatched = useSelector(
     (state: RootState) => state.app.postImageReducer.value
   );
+  const profile = useSelector(
+    (state: RootState) => state.app.profileReducer.id
+  );
   const commentors = useSelector(
     (state: RootState) => state.app.commentReducer.value
   );
   const scrollPos = useSelector(
     (state: RootState) => state.app.scrollPosReducer.value
   );
+  const profileScroll = useSelector(
+    (state: RootState) => state.app.profileScrollPosReducer.value
+  );
   const individualAmounts = useSelector(
     (state: RootState) => state.app.individualFeedCountReducer
+  );
+  const profileAmounts = useSelector(
+    (state: RootState) => state.app.profileFeedCountReducer
+  );
+  const profileDispatch = useSelector(
+    (state: RootState) => state.app.profileFeedReducer.value
+  );
+  const quickProfiles = useSelector(
+    (state: RootState) => state.app.quickProfilesReducer.value
   );
 
   const { handleLensSignIn, handleConnect } = useConnect();
@@ -153,23 +171,38 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     handleRemoveImage,
     mappedFeaturedFiles,
   } = useImageUpload();
+
+  const {
+    hasMoreProfile,
+    fetchMoreProfile,
+    profileRef,
+    followerOnlyProfile,
+    setCollectProfileLoading,
+    setMirrorProfileLoading,
+    profileLoading,
+    mirrorProfileLoading,
+    collectProfileLoading,
+    reactProfileLoading,
+    setReactProfileLoading,
+    setProfileScroll,
+  } = useProfileFeed();
+
   return (
     <div className="relative w-full h-full mid:h-[50.2rem] xl:h-[47.8rem] gap-3 flex items-start justify-center pt-10 overflow-y-scroll">
-      <AllPosts
-        feedType={feedType}
+      <Feed
         dispatch={dispatch}
+        followerOnly={followerOnly}
         feedDispatch={feedDispatch}
         postsLoading={postsLoading}
-        followerOnly={followerOnly}
         hasMore={hasMore}
         fetchMore={fetchMore}
-        address={address!}
+        address={address}
         collectPost={collectPost}
-        reactPost={reactPost}
         mirrorPost={mirrorPost}
-        reactLoading={reactFeedLoading}
-        collectLoading={collectFeedLoading}
+        reactPost={reactPost}
         mirrorLoading={mirrorFeedLoading}
+        collectLoading={collectFeedLoading}
+        reactLoading={reactFeedLoading}
         reactionAmounts={reactionAmounts}
         mainPost={mainPost!}
         followerOnlyMain={followerOnlyMain}
@@ -192,6 +225,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         setCollectPostLoading={setCollectPostLoading}
         setMirrorPostLoading={setMirrorPostLoading}
         setReactPostLoading={setReactPostLoading}
+        commentOpen={commentOpen}
         commentPost={commentPost}
         commentDescription={commentDescription}
         textElement={textElement}
@@ -208,56 +242,74 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         gifOpen={gifOpen}
         setGifOpen={setGifOpen}
         handleKeyDownDelete={handleKeyDownDelete}
-        commentOpen={commentOpen}
+        collectNotif={collectNotif}
+        referral={referral}
+        setCollectible={setCollectible}
+        collectibleDropDown={collectibleDropDown}
+        collectible={collectible}
+        setAudienceDropDown={setAudienceDropDown}
+        audienceType={audienceType}
+        audienceTypes={audienceTypes}
+        chargeCollect={chargeCollect}
+        limit={limit}
+        limitedEdition={limitedEdition}
+        audienceDropDown={audienceDropDown}
+        setAudienceType={setAudienceType}
+        setTimeLimit={setTimeLimit}
+        timeLimit={timeLimit}
+        timeLimitDropDown={timeLimitDropDown}
+        setLimitedEdition={setLimitedEdition}
+        limitedDropDown={limitedDropDown}
+        setLimitedDropDown={setLimitedDropDown}
+        setReferral={setReferral}
+        setLimit={setLimit}
+        setChargeCollect={setChargeCollect}
+        setCurrencyDropDown={setCurrencyDropDown}
+        chargeCollectDropDown={chargeCollectDropDown}
+        setChargeCollectDropDown={setChargeCollectDropDown}
+        enabledCurrencies={enabledCurrencies}
+        enabledCurrency={enabledCurrency}
+        currencyDropDown={currencyDropDown}
+        setEnabledCurrency={setEnabledCurrency}
+        value={value}
+        setValue={setValue}
         handleLensSignIn={handleLensSignIn}
         handleConnect={handleConnect}
         handleRemoveImage={handleRemoveImage}
-        profileId={profileId}
         videoLoading={videoLoading}
+        profileId={profileId}
         uploadImages={uploadImage}
         uploadVideo={uploadVideo}
         imageLoading={imageLoading}
-        mappedFeaturedFiles={mappedFeaturedFiles}
         collectOpen={collectOpen}
-        enabledCurrencies={enabledCurrencies}
-        audienceDropDown={audienceDropDown}
-        audienceType={audienceType}
-        setAudienceDropDown={setAudienceDropDown}
-        setAudienceType={setAudienceType}
-        value={value}
-        setChargeCollect={setChargeCollect}
-        setChargeCollectDropDown={setChargeCollectDropDown}
-        setCollectible={setCollectible}
-        setCollectibleDropDown={setCollectibleDropDown}
-        setCurrencyDropDown={setCurrencyDropDown}
-        setEnabledCurrency={setEnabledCurrency}
-        setLimit={setLimit}
-        setLimitedDropDown={setLimitedDropDown}
-        setLimitedEdition={setLimitedEdition}
-        setReferral={setReferral}
-        setTimeLimit={setTimeLimit}
-        setTimeLimitDropDown={setTimeLimitDropDown}
-        setValue={setValue}
-        enabledCurrency={enabledCurrency}
-        chargeCollect={chargeCollect}
-        chargeCollectDropDown={chargeCollectDropDown}
-        limit={limit}
-        limitedDropDown={limitedDropDown}
-        limitedEdition={limitedEdition}
-        timeLimit={timeLimit}
-        timeLimitDropDown={timeLimitDropDown}
-        audienceTypes={audienceTypes}
-        referral={referral}
+        mappedFeaturedFiles={mappedFeaturedFiles}
         canComment={canComment}
-        collectNotif={collectNotif}
-        collectible={collectible}
-        collectibleDropDown={collectibleDropDown}
-        currencyDropDown={currencyDropDown}
         postImagesDispatched={postImagesDispatched}
+        feedType={feedType}
         scrollRef={scrollRef}
         setScrollPos={setScrollPos}
         scrollPos={scrollPos}
         individualAmounts={individualAmounts}
+        router={router}
+        setCollectibleDropDown={setCollectibleDropDown}
+        profile={profile}
+        setTimeLimitDropDown={setTimeLimitDropDown}
+        profileRef={profileRef}
+        hasMoreProfile={hasMoreProfile}
+        profileAmounts={profileAmounts}
+        profileDispatch={profileDispatch}
+        fetchMoreProfile={fetchMoreProfile}
+        followerOnlyProfile={followerOnlyProfile}
+        setCollectProfileLoading={setCollectProfileLoading}
+        setMirrorProfileLoading={setMirrorProfileLoading}
+        setReactProfileLoading={setReactProfileLoading}
+        profileLoading={profileLoading}
+        mirrorProfileLoading={mirrorProfileLoading}
+        collectProfileLoading={collectProfileLoading}
+        reactProfileLoading={reactProfileLoading}
+        setProfileScroll={setProfileScroll}
+        profileScroll={profileScroll}
+        quickProfiles={quickProfiles}
       />
     </div>
   );

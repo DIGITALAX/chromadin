@@ -1,6 +1,6 @@
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
-import { FunctionComponent, useRef } from "react";
+import { FunctionComponent } from "react";
 import { PlayerProps } from "../types/controls.types";
 import dynamic from "next/dynamic";
 import FetchMoreLoading from "../../Loading/FetchMoreLoading";

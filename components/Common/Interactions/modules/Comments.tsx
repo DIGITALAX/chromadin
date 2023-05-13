@@ -60,7 +60,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
       </div>
       <div className="relative w-full h-[15rem] xl:h-[27.7rem] border-white border bg-offBlack overflow-y-scroll">
         {commentId !== "" && (
-          <div className="sticky z-1 w-full h-10 flex flex-col items-center justify-start px-3 bg-offBlack">
+          <div className="sticky z-0 w-full h-10 flex flex-col items-center justify-start px-3 bg-offBlack">
             <div
               className="relative w-full h-full flex items-center cursor-pointer"
               onClick={() => {

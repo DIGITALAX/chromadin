@@ -3,7 +3,6 @@ import Image from "next/image";
 import { FormEvent, FunctionComponent } from "react";
 import { ControlsProps } from "../types/controls.types";
 import { AiOutlineLoading } from "react-icons/ai";
-import { useDispatch } from "react-redux";
 import { setMainVideo } from "@/redux/reducers/mainVideoSlice";
 import lodash from "lodash";
 import json from "./../../../../public/videos/local.json";

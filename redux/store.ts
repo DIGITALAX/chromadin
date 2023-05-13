@@ -52,6 +52,12 @@ import fullScreenVideoReducer from "./reducers/fullScreenVideoSlice";
 import videoSyncReducer from "./reducers/videoSyncSlice";
 import seekSecondReducer from "./reducers/seekSecondSlice";
 import videoCountReducer from "./reducers/videoCountSlice";
+import profileReducer from "./reducers/profileSlice";
+import profileFeedCountReducer from "./reducers/profileFeedCountSlice";
+import profileFeedReducer from "./reducers/profileFeedSlice";
+import profilePaginatedReducer from "./reducers/profilePaginatedSlice";
+import profileScrollPosReducer from "./reducers/profileScrollPosSlice";
+import quickProfilesReducer from "./reducers/quickProfilesSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -105,7 +111,13 @@ const reducer = combineReducers({
   fullScreenVideoReducer,
   videoSyncReducer,
   seekSecondReducer,
-  videoCountReducer
+  videoCountReducer,
+  profileReducer,
+  profileFeedCountReducer,
+  profileFeedReducer,
+  profilePaginatedReducer,
+  profileScrollPosReducer,
+  quickProfilesReducer,
 });
 
 export const store = configureStore({

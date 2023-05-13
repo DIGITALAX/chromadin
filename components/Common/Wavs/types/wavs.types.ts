@@ -5,6 +5,7 @@ import {
 } from "@/components/Home/types/lens.types";
 import { CommentFeedCountState } from "@/redux/reducers/commentFeedCountSlice";
 import { IndividualFeedCountState } from "@/redux/reducers/individualFeedCountReducer";
+import { ProfileFeedCountState } from "@/redux/reducers/profileFeedCountSlice";
 import { ReactionFeedCountState } from "@/redux/reducers/reactionFeedCountSlice";
 import { NextRouter } from "next/router";
 import { FormEvent, KeyboardEvent, Ref } from "react";
@@ -29,6 +30,7 @@ export interface PostImage {
 }
 
 export type FeedPublicationProps = {
+  router: NextRouter;
   publication: Publication;
   dispatch: Dispatch<AnyAction>;
   hasReacted?: boolean | undefined;
@@ -36,7 +38,7 @@ export type FeedPublicationProps = {
   hasCollected?: boolean | undefined;
   followerOnly: boolean;
   height?: string;
-  address: `0x${string}`;
+  address: `0x${string}` | undefined;
   collectPost: (
     id: string,
     loader?: (e: boolean[]) => void,
@@ -77,7 +79,7 @@ export type ProfileSideBarProps = {
   hasMirrored: boolean | undefined;
   hasReacted: boolean | undefined;
   index: number;
-  address: `0x${string}`;
+  address: `0x${string}` | undefined;
   collectPost: (
     id: string,
     loader?: (e: boolean[]) => void,
@@ -109,6 +111,7 @@ export type ProfileSideBarProps = {
   setMirrorLoader?: (e: boolean[]) => void;
   openComment: string;
   feedType: string;
+  router: NextRouter;
 };
 
 export type ReactionProps = {
@@ -124,7 +127,7 @@ export type ReactionProps = {
   hasCollected: boolean;
   followerOnly: boolean;
   publication: Publication;
-  address: `0x${string}`;
+  address: `0x${string}` | undefined;
   collectPost: (
     id: string,
     loader?: (e: boolean[]) => void,
@@ -158,14 +161,16 @@ export type ReactionProps = {
   feedType: string;
 };
 
-export type AllPostsProps = {
+export type FeedProps = {
+  profile: string;
+  router: NextRouter;
   dispatch: Dispatch<AnyAction>;
   followerOnly: boolean[];
   feedDispatch: Publication[];
   postsLoading: boolean;
   hasMore: boolean;
   fetchMore: () => Promise<void>;
-  address: `0x${string}`;
+  address: `0x${string}` | undefined;
   collectPost: (
     id: string,
     loader?: (e: boolean[]) => void,
@@ -282,6 +287,22 @@ export type AllPostsProps = {
   setScrollPos: (e: MouseEvent) => void;
   scrollPos: number;
   individualAmounts: IndividualFeedCountState;
+  fetchMoreProfile: () => Promise<void>;
+  hasMoreProfile: boolean;
+  followerOnlyProfile: boolean[];
+  profileRef: Ref<InfiniteScroll>;
+  profileDispatch: Publication[];
+  profileAmounts: ProfileFeedCountState;
+  profileLoading: boolean;
+  setCollectProfileLoading: (e: boolean[]) => void;
+  setMirrorProfileLoading: (e: boolean[]) => void;
+  setReactProfileLoading: (e: boolean[]) => void;
+  collectProfileLoading: boolean[];
+  mirrorProfileLoading: boolean[];
+  reactProfileLoading: boolean[];
+  setProfileScroll: (e: MouseEvent) => void;
+  profileScroll: number;
+  quickProfiles: QuickProfilesInterface[];
 };
 
 export interface ApprovalArgs {
@@ -317,7 +338,7 @@ export type PersonalTimelineProps = {
     inputIndex?: number,
     mirrorId?: string
   ) => Promise<void>;
-  address: `0x${string}`;
+  address: `0x${string}` | undefined;
   viewerOpen: boolean;
   router: NextRouter;
   mirrorLoading: boolean[];
@@ -338,6 +359,7 @@ export interface FollowArgs {
 }
 
 export type IndividualProps = {
+  router: NextRouter;
   dispatch: Dispatch<AnyAction>;
   mainPost: Publication;
   feedType: {
@@ -453,6 +475,7 @@ export type IndividualProps = {
 };
 
 export type CommentsProps = {
+  router: NextRouter;
   commentAmounts: CommentFeedCountState;
   commentors: Publication[];
   mirrorLoading: boolean[];
@@ -460,7 +483,7 @@ export type CommentsProps = {
   collectLoading: boolean[];
   feedType: string;
   dispatch: Dispatch<AnyAction>;
-  address: `0x${string}`;
+  address: `0x${string}` | undefined;
   followerOnly: boolean[];
   collectPost: (
     id: string,
@@ -742,3 +765,351 @@ export interface CollectValueType {
     followerOnly: boolean;
   };
 }
+
+export type ProfileFeedProps = {
+  router: NextRouter;
+  dispatch: Dispatch<AnyAction>;
+  followerOnly: boolean[];
+  profileDispatch: Publication[];
+  postsLoading: boolean;
+  hasMoreProfile: boolean;
+  fetchMoreProfile: () => Promise<void>;
+  address: `0x${string}` | undefined;
+  collectPost: (
+    id: string,
+    loader?: (e: boolean[]) => void,
+    inputIndex?: number,
+    mirrorId?: string
+  ) => Promise<void>;
+  mirrorPost: (
+    id: string,
+    loader?: (e: boolean[]) => void,
+    inputIndex?: number,
+    mirrorId?: string
+  ) => Promise<void>;
+  reactPost: (
+    id: string,
+    loader?: (e: boolean[]) => void,
+    inputIndex?: number,
+    mirrorId?: string
+  ) => Promise<void>;
+  mirrorLoading: boolean[];
+  reactLoading: boolean[];
+  collectLoading: boolean[];
+  profileAmounts: ProfileFeedCountState;
+  setCollectProfileLoading: (e: boolean[]) => void;
+  setMirrorProfileLoading: (e: boolean[]) => void;
+  setReactProfileLoading: (e: boolean[]) => void;
+  commentOpen: string;
+  commentPost: (id: string) => Promise<void>;
+  commentDescription: string;
+  handleCommentDescription: (e: FormEvent) => Promise<void>;
+  textElement: Ref<HTMLTextAreaElement>;
+  caretCoord: {
+    x: number;
+    y: number;
+  };
+  mentionProfiles: Profile[];
+  profilesOpen: boolean;
+  handleMentionClick: (user: any) => void;
+  commentLoading: boolean;
+  gifOpen: boolean;
+  handleKeyDownDelete: (e: KeyboardEvent<Element>) => void;
+  handleGifSubmit: () => Promise<void>;
+  handleGif: (e: FormEvent) => void;
+  results: any[];
+  handleSetGif: (result: any) => void;
+  setGifOpen: (e: boolean) => void;
+  videoLoading: boolean;
+  imageLoading: boolean;
+  uploadImages: (e: FormEvent) => Promise<void>;
+  uploadVideo: (e: FormEvent) => Promise<void>;
+  handleRemoveImage: (e: UploadedMedia) => void;
+  postImagesDispatched?: UploadedMedia[];
+  mappedFeaturedFiles: UploadedMedia[];
+  collectOpen: boolean;
+  enabledCurrencies: Erc20[];
+  audienceTypes: string[];
+  setAudienceType: (e: string) => void;
+  audienceType: string;
+  setEnabledCurrency: (e: string) => void;
+  enabledCurrency: string | undefined;
+  setChargeCollectDropDown: (e: boolean) => void;
+  setAudienceDropDown: (e: boolean) => void;
+  setCurrencyDropDown: (e: boolean) => void;
+  chargeCollectDropDown: boolean;
+  audienceDropDown: boolean;
+  currencyDropDown: boolean;
+  referral: number;
+  setReferral: (e: number) => void;
+  limit: number;
+  setLimit: (e: number) => void;
+  value: number;
+  setValue: (e: number) => void;
+  collectibleDropDown: boolean;
+  setCollectibleDropDown: (e: boolean) => void;
+  collectible: string;
+  setCollectible: (e: string) => void;
+  chargeCollect: string;
+  setChargeCollect: (e: string) => void;
+  limitedDropDown: boolean;
+  setLimitedDropDown: (e: boolean) => void;
+  limitedEdition: string;
+  setLimitedEdition: (e: string) => void;
+  setTimeLimit: (e: string) => void;
+  timeLimit: string;
+  timeLimitDropDown: boolean;
+  setTimeLimitDropDown: (e: boolean) => void;
+  collectNotif: string;
+  canComment: boolean;
+  profileId: string;
+  handleLensSignIn: () => Promise<void>;
+  handleConnect: () => void;
+  feedType: {
+    value: string;
+    index: number;
+  };
+  profileRef: Ref<InfiniteScroll>;
+  setScrollPos: (e: MouseEvent) => void;
+  scrollPos: number;
+};
+
+export type SwitchProps = {
+  router: NextRouter;
+  dispatch: Dispatch<AnyAction>;
+  followerOnly: boolean[];
+  feedDispatch: Publication[];
+  postsLoading: boolean;
+  hasMore: boolean;
+  fetchMore: () => Promise<void>;
+  address: `0x${string}` | undefined;
+  collectPost: (
+    id: string,
+    loader?: (e: boolean[]) => void,
+    inputIndex?: number,
+    mirrorId?: string
+  ) => Promise<void>;
+  mirrorPost: (
+    id: string,
+    loader?: (e: boolean[]) => void,
+    inputIndex?: number,
+    mirrorId?: string
+  ) => Promise<void>;
+  reactPost: (
+    id: string,
+    loader?: (e: boolean[]) => void,
+    inputIndex?: number,
+    mirrorId?: string
+  ) => Promise<void>;
+  mirrorLoading: boolean[];
+  reactLoading: boolean[];
+  collectLoading: boolean[];
+  reactionAmounts: ReactionFeedCountState;
+  commentOpen: string;
+  commentPost: (id: string) => Promise<void>;
+  commentDescription: string;
+  handleCommentDescription: (e: FormEvent) => Promise<void>;
+  textElement: Ref<HTMLTextAreaElement>;
+  caretCoord: {
+    x: number;
+    y: number;
+  };
+  mentionProfiles: Profile[];
+  profilesOpen: boolean;
+  handleMentionClick: (user: any) => void;
+  commentLoading: boolean;
+  gifOpen: boolean;
+  handleKeyDownDelete: (e: KeyboardEvent<Element>) => void;
+  handleGifSubmit: () => Promise<void>;
+  handleGif: (e: FormEvent) => void;
+  results: any[];
+  handleSetGif: (result: any) => void;
+  setGifOpen: (e: boolean) => void;
+  videoLoading: boolean;
+  imageLoading: boolean;
+  uploadImages: (e: FormEvent) => Promise<void>;
+  uploadVideo: (e: FormEvent) => Promise<void>;
+  handleRemoveImage: (e: UploadedMedia) => void;
+  postImagesDispatched?: UploadedMedia[];
+  mappedFeaturedFiles: UploadedMedia[];
+  collectOpen: boolean;
+  enabledCurrencies: Erc20[];
+  audienceTypes: string[];
+  setAudienceType: (e: string) => void;
+  audienceType: string;
+  setEnabledCurrency: (e: string) => void;
+  enabledCurrency: string | undefined;
+  setChargeCollectDropDown: (e: boolean) => void;
+  setAudienceDropDown: (e: boolean) => void;
+  setCurrencyDropDown: (e: boolean) => void;
+  chargeCollectDropDown: boolean;
+  audienceDropDown: boolean;
+  currencyDropDown: boolean;
+  referral: number;
+  setReferral: (e: number) => void;
+  limit: number;
+  setLimit: (e: number) => void;
+  value: number;
+  setValue: (e: number) => void;
+  collectibleDropDown: boolean;
+  setCollectibleDropDown: (e: boolean) => void;
+  collectible: string;
+  setCollectible: (e: string) => void;
+  chargeCollect: string;
+  setChargeCollect: (e: string) => void;
+  limitedDropDown: boolean;
+  setLimitedDropDown: (e: boolean) => void;
+  limitedEdition: string;
+  setLimitedEdition: (e: string) => void;
+  setTimeLimit: (e: string) => void;
+  timeLimit: string;
+  timeLimitDropDown: boolean;
+  setTimeLimitDropDown: (e: boolean) => void;
+  collectNotif: string;
+  canComment: boolean;
+  profileId: string;
+  handleLensSignIn: () => Promise<void>;
+  handleConnect: () => void;
+  feedType: {
+    value: string;
+    index: number;
+  };
+  scrollRef: Ref<InfiniteScroll>;
+  profileRef: Ref<InfiniteScroll>;
+  setScrollPos: (e: MouseEvent) => void;
+  scrollPos: number;
+  profile: string;
+  hasMoreProfile: boolean;
+  fetchMoreProfile: () => Promise<void>;
+  profileDispatch: Publication[];
+  followerOnlyProfile: boolean[];
+  profileAmounts: ProfileFeedCountState;
+  profileLoading: boolean;
+  setCollectProfileLoading: (e: boolean[]) => void;
+  setMirrorProfileLoading: (e: boolean[]) => void;
+  setReactProfileLoading: (e: boolean[]) => void;
+  collectProfileLoading: boolean[];
+  mirrorProfileLoading: boolean[];
+  reactProfileLoading: boolean[];
+  setProfileScroll: (e: MouseEvent) => void;
+  profileScroll: number;
+  quickProfiles: QuickProfilesInterface[];
+};
+
+export type AllPostsProps = {
+  router: NextRouter;
+  dispatch: Dispatch<AnyAction>;
+  followerOnly: boolean[];
+  feedDispatch: Publication[];
+  postsLoading: boolean;
+  hasMore: boolean;
+  fetchMore: () => Promise<void>;
+  address: `0x${string}` | undefined;
+  collectPost: (
+    id: string,
+    loader?: (e: boolean[]) => void,
+    inputIndex?: number,
+    mirrorId?: string
+  ) => Promise<void>;
+  mirrorPost: (
+    id: string,
+    loader?: (e: boolean[]) => void,
+    inputIndex?: number,
+    mirrorId?: string
+  ) => Promise<void>;
+  reactPost: (
+    id: string,
+    loader?: (e: boolean[]) => void,
+    inputIndex?: number,
+    mirrorId?: string
+  ) => Promise<void>;
+  mirrorLoading: boolean[];
+  reactLoading: boolean[];
+  collectLoading: boolean[];
+  reactionAmounts: ReactionFeedCountState;
+  commentOpen: string;
+  commentPost: (id: string) => Promise<void>;
+  commentDescription: string;
+  handleCommentDescription: (e: FormEvent) => Promise<void>;
+  textElement: Ref<HTMLTextAreaElement>;
+  caretCoord: {
+    x: number;
+    y: number;
+  };
+  mentionProfiles: Profile[];
+  profilesOpen: boolean;
+  handleMentionClick: (user: any) => void;
+  commentLoading: boolean;
+  gifOpen: boolean;
+  handleKeyDownDelete: (e: KeyboardEvent<Element>) => void;
+  handleGifSubmit: () => Promise<void>;
+  handleGif: (e: FormEvent) => void;
+  results: any[];
+  handleSetGif: (result: any) => void;
+  setGifOpen: (e: boolean) => void;
+  videoLoading: boolean;
+  imageLoading: boolean;
+  uploadImages: (e: FormEvent) => Promise<void>;
+  uploadVideo: (e: FormEvent) => Promise<void>;
+  handleRemoveImage: (e: UploadedMedia) => void;
+  postImagesDispatched?: UploadedMedia[];
+  mappedFeaturedFiles: UploadedMedia[];
+  collectOpen: boolean;
+  enabledCurrencies: Erc20[];
+  audienceTypes: string[];
+  setAudienceType: (e: string) => void;
+  audienceType: string;
+  setEnabledCurrency: (e: string) => void;
+  enabledCurrency: string | undefined;
+  setChargeCollectDropDown: (e: boolean) => void;
+  setAudienceDropDown: (e: boolean) => void;
+  setCurrencyDropDown: (e: boolean) => void;
+  chargeCollectDropDown: boolean;
+  audienceDropDown: boolean;
+  currencyDropDown: boolean;
+  referral: number;
+  setReferral: (e: number) => void;
+  limit: number;
+  setLimit: (e: number) => void;
+  value: number;
+  setValue: (e: number) => void;
+  collectibleDropDown: boolean;
+  setCollectibleDropDown: (e: boolean) => void;
+  collectible: string;
+  setCollectible: (e: string) => void;
+  chargeCollect: string;
+  setChargeCollect: (e: string) => void;
+  limitedDropDown: boolean;
+  setLimitedDropDown: (e: boolean) => void;
+  limitedEdition: string;
+  setLimitedEdition: (e: string) => void;
+  setTimeLimit: (e: string) => void;
+  timeLimit: string;
+  timeLimitDropDown: boolean;
+  setTimeLimitDropDown: (e: boolean) => void;
+  collectNotif: string;
+  canComment: boolean;
+  profileId: string;
+  handleLensSignIn: () => Promise<void>;
+  handleConnect: () => void;
+  feedType: {
+    value: string;
+    index: number;
+  };
+  scrollRef: Ref<InfiniteScroll>;
+  setScrollPos: (e: MouseEvent) => void;
+  scrollPos: number;
+  quickProfiles: QuickProfilesInterface[];
+};
+
+export interface QuickProfilesInterface {
+  handle: string;
+  id: string;
+  image: string;
+}
+
+export type QuickProfilesProps = {
+  quickProfiles: QuickProfilesInterface[];
+  dispatch: Dispatch<AnyAction>;
+  router: NextRouter;
+};

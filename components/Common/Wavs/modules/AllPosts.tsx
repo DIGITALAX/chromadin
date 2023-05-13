@@ -1,344 +1,223 @@
-import { FunctionComponent } from "react";
-import { AllPostsProps } from "../types/wavs.types";
-import InfiniteScroll from "react-infinite-scroll-component";
-import FeedPublication from "./FeedPublication";
 import { Publication } from "@/components/Home/types/lens.types";
-import Individual from "./Individual";
+import { FunctionComponent } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import MakeComment from "./MakeComment";
+import FeedPublication from "./FeedPublication";
+import { AllPostsProps } from "../types/wavs.types";
+import QuickProfiles from "./QuickProfiles";
 
 const AllPosts: FunctionComponent<AllPostsProps> = ({
-  dispatch,
-  followerOnly,
-  feedDispatch,
-  postsLoading,
   hasMore,
   fetchMore,
-  address,
+  feedDispatch,
+  setScrollPos,
+  scrollRef,
+  feedType,
+  scrollPos,
+  dispatch,
+  reactionAmounts,
+  reactPost,
   collectPost,
   mirrorPost,
-  reactPost,
-  mirrorLoading,
-  collectLoading,
-  reactLoading,
-  reactionAmounts,
-  mainPost,
-  followerOnlyMain,
-  mainPostLoading,
-  hasMoreComments,
-  getMorePostComments,
-  commentors,
-  commentsLoading,
-  reactCommentLoading,
-  mirrorCommentLoading,
-  collectCommentLoading,
-  followerOnlyComments,
-  commentAmounts,
-  collectPostLoading,
-  mirrorPostLoading,
-  reactPostLoading,
-  setMirrorCommentLoading,
-  setCollectCommentLoading,
-  setReactCommentLoading,
-  setCollectPostLoading,
-  setMirrorPostLoading,
-  setReactPostLoading,
-  commentOpen,
   commentPost,
+  followerOnly,
+  address,
+  router,
+  mirrorLoading,
+  reactLoading,
+  collectLoading,
+  commentOpen,
   commentDescription,
   textElement,
-  handleCommentDescription,
-  commentLoading,
+  profileId,
   caretCoord,
-  mentionProfiles,
-  profilesOpen,
-  handleMentionClick,
-  handleGifSubmit,
-  handleGif,
-  results,
-  handleSetGif,
-  gifOpen,
-  setGifOpen,
-  handleKeyDownDelete,
-  collectNotif,
-  referral,
-  setCollectible,
-  collectibleDropDown,
-  setCollectibleDropDown,
-  collectible,
-  setAudienceDropDown,
-  audienceType,
-  audienceTypes,
-  chargeCollect,
-  limit,
-  limitedEdition,
-  audienceDropDown,
-  setAudienceType,
-  setTimeLimit,
-  timeLimit,
-  timeLimitDropDown,
-  setTimeLimitDropDown,
-  setLimitedEdition,
-  limitedDropDown,
-  setLimitedDropDown,
-  setReferral,
-  setLimit,
-  setChargeCollect,
-  setCurrencyDropDown,
-  chargeCollectDropDown,
-  setChargeCollectDropDown,
-  enabledCurrencies,
-  enabledCurrency,
-  currencyDropDown,
-  setEnabledCurrency,
-  value,
-  setValue,
-  handleLensSignIn,
+  handleCommentDescription,
   handleConnect,
   handleRemoveImage,
-  videoLoading,
-  profileId,
+  commentLoading,
+  mentionProfiles,
+  profilesOpen,
+  gifOpen,
+  handleGifSubmit,
+  handleSetGif,
+  handleMentionClick,
+  results,
+  handleGif,
+  value,
   uploadImages,
   uploadVideo,
-  imageLoading,
-  collectOpen,
-  mappedFeaturedFiles,
+  setGifOpen,
+  handleKeyDownDelete,
+  videoLoading,
+  handleLensSignIn,
+  referral,
   canComment,
+  setLimit,
+  imageLoading,
+  mappedFeaturedFiles,
+  collectOpen,
+  enabledCurrencies,
+  audienceDropDown,
+  audienceType,
+  setAudienceDropDown,
+  limitedDropDown,
+  limit,
   postImagesDispatched,
-  feedType,
-  scrollRef,
-  setScrollPos,
-  scrollPos,
-  individualAmounts
+  setTimeLimit,
+  setReferral,
+  setAudienceType,
+  setCollectible,
+  setLimitedEdition,
+  setLimitedDropDown,
+  setCollectibleDropDown,
+  setCurrencyDropDown,
+  setEnabledCurrency,
+  timeLimit,
+  setTimeLimitDropDown,
+  timeLimitDropDown,
+  audienceTypes,
+  limitedEdition,
+  setValue,
+  chargeCollect,
+  enabledCurrency,
+  chargeCollectDropDown,
+  setChargeCollect,
+  setChargeCollectDropDown,
+  collectNotif,
+  collectible,
+  currencyDropDown,
+  collectibleDropDown,
+  quickProfiles,
 }): JSX.Element => {
   return (
-    <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
-      <div className="relative w-full h-full flex flex-col xl:flex-row items-start justify-center gap-8">
-        {feedType.value !== "" ? (
-          <Individual
+    <div className="relative w-full h-full flex flex-col items-start justify-start gap-4">
+      <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
+        <div className="max-w-full overflow-x-scroll">
+          <QuickProfiles
             dispatch={dispatch}
-            commentors={commentors}
-            fetchMoreComments={getMorePostComments}
-            commentsLoading={commentsLoading}
-            mainPost={mainPost!}
-            hasMoreComments={hasMoreComments}
-            mirrorPost={mirrorPost}
-            collectPost={collectPost}
-            reactPost={reactPost}
-            followerOnlyMain={followerOnlyMain}
-            reactCommentLoading={reactCommentLoading}
-            mirrorCommentLoading={mirrorCommentLoading}
-            collectCommentLoading={collectCommentLoading}
-            mainPostLoading={mainPostLoading}
-            address={address}
-            followerOnlyComments={followerOnlyComments}
-            commentAmounts={commentAmounts}
-            collectPostLoading={collectPostLoading}
-            mirrorPostLoading={mirrorPostLoading}
-            reactPostLoading={reactPostLoading}
-            setMirrorCommentLoading={setMirrorCommentLoading}
-            setCollectCommentLoading={setCollectCommentLoading}
-            setReactCommentLoading={setReactCommentLoading}
-            setCollectPostLoading={setCollectPostLoading}
-            setMirrorPostLoading={setMirrorPostLoading}
-            setReactPostLoading={setReactPostLoading}
-            postAmounts={reactionAmounts}
-            commentPost={commentPost}
-            commentDescription={commentDescription}
-            textElement={textElement}
-            handleCommentDescription={handleCommentDescription}
-            commentLoading={commentLoading}
-            caretCoord={caretCoord}
-            mentionProfiles={mentionProfiles}
-            profilesOpen={profilesOpen}
-            handleMentionClick={handleMentionClick}
-            handleGifSubmit={handleGifSubmit}
-            handleGif={handleGif}
-            results={results}
-            handleSetGif={handleSetGif}
-            gifOpen={gifOpen}
-            setGifOpen={setGifOpen}
-            handleKeyDownDelete={handleKeyDownDelete}
-            commentOpen={commentOpen}
-            handleLensSignIn={handleLensSignIn}
-            handleConnect={handleConnect}
-            handleRemoveImage={handleRemoveImage}
-            profileId={profileId}
-            videoLoading={videoLoading}
-            uploadImages={uploadImages}
-            uploadVideo={uploadVideo}
-            imageLoading={imageLoading}
-            mappedFeaturedFiles={mappedFeaturedFiles}
-            collectOpen={collectOpen}
-            enabledCurrencies={enabledCurrencies}
-            audienceDropDown={audienceDropDown}
-            audienceType={audienceType}
-            setAudienceDropDown={setAudienceDropDown}
-            setAudienceType={setAudienceType}
-            value={value}
-            setChargeCollect={setChargeCollect}
-            setChargeCollectDropDown={setChargeCollectDropDown}
-            setCollectible={setCollectible}
-            setCollectibleDropDown={setCollectibleDropDown}
-            setCurrencyDropDown={setCurrencyDropDown}
-            setEnabledCurrency={setEnabledCurrency}
-            setLimit={setLimit}
-            setLimitedDropDown={setLimitedDropDown}
-            setLimitedEdition={setLimitedEdition}
-            setReferral={setReferral}
-            setTimeLimit={setTimeLimit}
-            setTimeLimitDropDown={setTimeLimitDropDown}
-            setValue={setValue}
-            enabledCurrency={enabledCurrency}
-            chargeCollect={chargeCollect}
-            chargeCollectDropDown={chargeCollectDropDown}
-            limit={limit}
-            limitedDropDown={limitedDropDown}
-            limitedEdition={limitedEdition}
-            timeLimit={timeLimit}
-            timeLimitDropDown={timeLimitDropDown}
-            audienceTypes={audienceTypes}
-            referral={referral}
-            canComment={canComment}
-            collectNotif={collectNotif}
-            collectible={collectible}
-            collectibleDropDown={collectibleDropDown}
-            currencyDropDown={currencyDropDown}
-            postImagesDispatched={postImagesDispatched}
-            feedType={feedType}
-            individualAmounts={individualAmounts}
+            router={router}
+            quickProfiles={quickProfiles}
           />
-        ) : postsLoading ? (
-          <div className="relative w-full h-full flex flex-col gap-4 overflow-y-scroll">
-            {Array.from({ length: 3 }).map((_, index: number) => {
+        </div>
+        <InfiniteScroll
+          height={"40rem"}
+          loader={""}
+          hasMore={hasMore}
+          next={fetchMore}
+          dataLength={feedDispatch?.length}
+          className={`relative row-start-1 w-full ml-auto h-full max-w-full overflow-y-scroll`}
+          style={{ color: "#131313", fontFamily: "Digi Reg" }}
+          scrollThreshold={0.9}
+          scrollableTarget={"scrollableDiv"}
+          ref={scrollRef}
+          onScroll={(e: MouseEvent) => setScrollPos(e)}
+          initialScrollY={feedType.value === "" ? scrollPos : 0}
+        >
+          <div className="w-full h-full relative flex flex-col gap-4 pb-3">
+            {feedDispatch?.map((publication: Publication, index: number) => {
               return (
                 <div
+                  className="relative w-full h-fit gap-2 flex flex-col"
                   key={index}
-                  className="relative w-full h-48 rounded-md animate-pulse border border-white min-w-full opacity-70"
-                  id="staticLoad"
-                ></div>
+                >
+                  <FeedPublication
+                    dispatch={dispatch}
+                    publication={publication}
+                    hasMirrored={reactionAmounts.hasMirrored[index]}
+                    hasReacted={reactionAmounts.hasLiked?.[index]}
+                    hasCollected={reactionAmounts.hasCollected[index]}
+                    followerOnly={followerOnly[index]}
+                    collectPost={collectPost}
+                    mirrorPost={mirrorPost}
+                    reactPost={reactPost}
+                    address={address}
+                    index={index}
+                    mirrorLoading={mirrorLoading[index]}
+                    reactLoading={reactLoading[index]}
+                    collectLoading={collectLoading[index]}
+                    reactAmount={reactionAmounts.like[index]}
+                    mirrorAmount={reactionAmounts.mirror[index]}
+                    collectAmount={reactionAmounts.collect[index]}
+                    commentAmount={reactionAmounts.comment[index]}
+                    openComment={commentOpen}
+                    feedType={feedType.value}
+                    router={router}
+                  />
+                  {(publication?.__typename === "Mirror"
+                    ? publication?.mirrorOf?.id
+                    : publication?.id) === commentOpen && (
+                    <MakeComment
+                      commentPost={commentPost}
+                      commentDescription={commentDescription}
+                      textElement={textElement}
+                      handleCommentDescription={handleCommentDescription}
+                      commentLoading={commentLoading}
+                      caretCoord={caretCoord}
+                      mentionProfiles={mentionProfiles}
+                      profilesOpen={profilesOpen}
+                      handleMentionClick={handleMentionClick}
+                      handleGifSubmit={handleGifSubmit}
+                      handleGif={handleGif}
+                      results={results}
+                      handleSetGif={handleSetGif}
+                      gifOpen={gifOpen}
+                      setGifOpen={setGifOpen}
+                      handleKeyDownDelete={handleKeyDownDelete}
+                      handleLensSignIn={handleLensSignIn}
+                      handleConnect={handleConnect}
+                      handleRemoveImage={handleRemoveImage}
+                      address={address}
+                      profileId={profileId}
+                      videoLoading={videoLoading}
+                      uploadImages={uploadImages}
+                      uploadVideo={uploadVideo}
+                      imageLoading={imageLoading}
+                      mappedFeaturedFiles={mappedFeaturedFiles}
+                      collectOpen={collectOpen}
+                      enabledCurrencies={enabledCurrencies}
+                      audienceDropDown={audienceDropDown}
+                      audienceType={audienceType}
+                      setAudienceDropDown={setAudienceDropDown}
+                      setAudienceType={setAudienceType}
+                      value={value}
+                      setChargeCollect={setChargeCollect}
+                      setChargeCollectDropDown={setChargeCollectDropDown}
+                      setCollectible={setCollectible}
+                      setCollectibleDropDown={setCollectibleDropDown}
+                      setCurrencyDropDown={setCurrencyDropDown}
+                      setEnabledCurrency={setEnabledCurrency}
+                      setLimit={setLimit}
+                      setLimitedDropDown={setLimitedDropDown}
+                      setLimitedEdition={setLimitedEdition}
+                      setReferral={setReferral}
+                      setTimeLimit={setTimeLimit}
+                      setTimeLimitDropDown={setTimeLimitDropDown}
+                      setValue={setValue}
+                      enabledCurrency={enabledCurrency}
+                      chargeCollect={chargeCollect}
+                      chargeCollectDropDown={chargeCollectDropDown}
+                      limit={limit}
+                      limitedDropDown={limitedDropDown}
+                      limitedEdition={limitedEdition}
+                      timeLimit={timeLimit}
+                      timeLimitDropDown={timeLimitDropDown}
+                      audienceTypes={audienceTypes}
+                      referral={referral}
+                      canComment={canComment}
+                      collectNotif={collectNotif}
+                      collectible={collectible}
+                      collectibleDropDown={collectibleDropDown}
+                      commentId={commentOpen}
+                      currencyDropDown={currencyDropDown}
+                      dispatch={dispatch}
+                      postImagesDispatched={postImagesDispatched}
+                    />
+                  )}
+                </div>
               );
             })}
           </div>
-        ) : (
-          <InfiniteScroll
-            height={"40rem"}
-            loader={""}
-            hasMore={hasMore}
-            next={fetchMore}
-            dataLength={feedDispatch?.length}
-            className={`relative row-start-1 w-full ml-auto h-full max-w-full overflow-y-scroll`}
-            style={{ color: "#131313", fontFamily: "Digi Reg" }}
-            scrollThreshold={0.9}
-            scrollableTarget={"scrollableDiv"}
-            ref={scrollRef}
-            onScroll={(e: MouseEvent) => setScrollPos(e)}
-            initialScrollY={feedType.value === "" ? scrollPos : 0}
-          >
-            <div className="w-full h-full relative flex flex-col gap-4 pb-3">
-              {feedDispatch?.map((publication: Publication, index: number) => {
-                return (
-                  <div
-                    className="relative w-full h-fit gap-2 flex flex-col"
-                    key={index}
-                  >
-                    <FeedPublication
-                      dispatch={dispatch}
-                      publication={publication}
-                      hasMirrored={reactionAmounts.hasMirrored[index]}
-                      hasReacted={reactionAmounts.hasLiked?.[index]}
-                      hasCollected={reactionAmounts.hasCollected[index]}
-                      followerOnly={followerOnly[index]}
-                      collectPost={collectPost}
-                      mirrorPost={mirrorPost}
-                      reactPost={reactPost}
-                      address={address}
-                      index={index}
-                      mirrorLoading={mirrorLoading[index]}
-                      reactLoading={reactLoading[index]}
-                      collectLoading={collectLoading[index]}
-                      reactAmount={reactionAmounts.like[index]}
-                      mirrorAmount={reactionAmounts.mirror[index]}
-                      collectAmount={reactionAmounts.collect[index]}
-                      commentAmount={reactionAmounts.comment[index]}
-                      openComment={commentOpen}
-                      feedType={feedType.value}
-                    />
-                    {(publication?.__typename === "Mirror"
-                      ? publication?.mirrorOf?.id
-                      : publication?.id) === commentOpen && (
-                      <MakeComment
-                        commentPost={commentPost}
-                        commentDescription={commentDescription}
-                        textElement={textElement}
-                        handleCommentDescription={handleCommentDescription}
-                        commentLoading={commentLoading}
-                        caretCoord={caretCoord}
-                        mentionProfiles={mentionProfiles}
-                        profilesOpen={profilesOpen}
-                        handleMentionClick={handleMentionClick}
-                        handleGifSubmit={handleGifSubmit}
-                        handleGif={handleGif}
-                        results={results}
-                        handleSetGif={handleSetGif}
-                        gifOpen={gifOpen}
-                        setGifOpen={setGifOpen}
-                        handleKeyDownDelete={handleKeyDownDelete}
-                        handleLensSignIn={handleLensSignIn}
-                        handleConnect={handleConnect}
-                        handleRemoveImage={handleRemoveImage}
-                        address={address}
-                        profileId={profileId}
-                        videoLoading={videoLoading}
-                        uploadImages={uploadImages}
-                        uploadVideo={uploadVideo}
-                        imageLoading={imageLoading}
-                        mappedFeaturedFiles={mappedFeaturedFiles}
-                        collectOpen={collectOpen}
-                        enabledCurrencies={enabledCurrencies}
-                        audienceDropDown={audienceDropDown}
-                        audienceType={audienceType}
-                        setAudienceDropDown={setAudienceDropDown}
-                        setAudienceType={setAudienceType}
-                        value={value}
-                        setChargeCollect={setChargeCollect}
-                        setChargeCollectDropDown={setChargeCollectDropDown}
-                        setCollectible={setCollectible}
-                        setCollectibleDropDown={setCollectibleDropDown}
-                        setCurrencyDropDown={setCurrencyDropDown}
-                        setEnabledCurrency={setEnabledCurrency}
-                        setLimit={setLimit}
-                        setLimitedDropDown={setLimitedDropDown}
-                        setLimitedEdition={setLimitedEdition}
-                        setReferral={setReferral}
-                        setTimeLimit={setTimeLimit}
-                        setTimeLimitDropDown={setTimeLimitDropDown}
-                        setValue={setValue}
-                        enabledCurrency={enabledCurrency}
-                        chargeCollect={chargeCollect}
-                        chargeCollectDropDown={chargeCollectDropDown}
-                        limit={limit}
-                        limitedDropDown={limitedDropDown}
-                        limitedEdition={limitedEdition}
-                        timeLimit={timeLimit}
-                        timeLimitDropDown={timeLimitDropDown}
-                        audienceTypes={audienceTypes}
-                        referral={referral}
-                        canComment={canComment}
-                        collectNotif={collectNotif}
-                        collectible={collectible}
-                        collectibleDropDown={collectibleDropDown}
-                        commentId={commentOpen}
-                        currencyDropDown={currencyDropDown}
-                        dispatch={dispatch}
-                        postImagesDispatched={postImagesDispatched}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </InfiniteScroll>
-        )}
+        </InfiniteScroll>
       </div>
     </div>
   );

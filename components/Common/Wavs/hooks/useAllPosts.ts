@@ -3,6 +3,7 @@ import {
   feedTimeline,
   feedTimelineAuth,
 } from "@/graphql/lens/queries/feedTimeline";
+import getProfiles from "@/graphql/lens/queries/getProfiles";
 import { LENS_CREATORS } from "@/lib/constants";
 import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import checkPostReactions from "@/lib/helpers/checkPostReactions";
@@ -10,6 +11,8 @@ import { setCommentFeedCount } from "@/redux/reducers/commentFeedCountSlice";
 import { setFeedsRedux } from "@/redux/reducers/feedSlice";
 import { setIndividualFeedCount } from "@/redux/reducers/individualFeedCountReducer";
 import { setPaginated } from "@/redux/reducers/paginatedSlice";
+import { setProfileFeedCount } from "@/redux/reducers/profileFeedCountSlice";
+import { setQuickProfilesRedux } from "@/redux/reducers/quickProfilesSlice";
 import { setReactionFeedCount } from "@/redux/reducers/reactionFeedCountSlice";
 import { setScrollPosRedux } from "@/redux/reducers/scrollPosSlice";
 import { RootState } from "@/redux/store";
@@ -17,6 +20,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
+import { QuickProfilesInterface } from "../types/wavs.types";
 
 const useAllPosts = () => {
   const lensProfile = useSelector(
@@ -52,12 +56,39 @@ const useAllPosts = () => {
   const individual = useSelector(
     (state: RootState) => state.app.individualFeedCountReducer
   );
+  const profile = useSelector(
+    (state: RootState) => state.app.profileReducer.id
+  );
+  const profileFeedCount = useSelector(
+    (state: RootState) => state.app.profileFeedCountReducer
+  );
+
   const scrollRef = useRef<InfiniteScroll>(null);
   const dispatch = useDispatch();
   const router = useRouter();
-  const [followerOnly, setFollowerOnly] = useState<boolean[]>([]);
+  const [followerOnly, setFollowerOnly] = useState<boolean[]>(
+    Array.from({ length: feedDispatch.length }, () => false)
+  );
   const [postsLoading, setPostsLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
+
+  const getQuickProfiles = async () => {
+    try {
+      const profs = await getProfiles({ profileIds: LENS_CREATORS });
+      const quickProfiles: QuickProfilesInterface[] =
+        profs?.data?.profiles?.items?.map((prof: any) => {
+          return {
+            id: prof.id,
+            handle: prof.handle,
+            image: prof?.picture?.original?.url,
+          };
+        });
+
+      dispatch(setQuickProfilesRedux(quickProfiles));
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
 
   const getTimeline = async () => {
     setPostsLoading(true);
@@ -267,8 +298,7 @@ const useAllPosts = () => {
   const refetchInteractions = () => {
     try {
       const index = feedDispatch?.findIndex((feed) => feed.id === feedId.value);
-      console.log(index);
-      if (index > 0) {
+      if (index !== -1) {
         dispatch(
           setIndividualFeedCount({
             actionLike:
@@ -284,55 +314,112 @@ const useAllPosts = () => {
             actionHasCollected: feedId.type === 2 ? true : individual.collect,
           })
         );
-        dispatch(
-          setReactionFeedCount({
-            actionLike:
-              feedId.type === 0
-                ? reactionFeedCount.like.map((obj: number, number: number) =>
-                    number === index ? obj + 1 : obj
-                  )
-                : reactionFeedCount.like,
-            actionMirror:
-              feedId.type === 1
-                ? reactionFeedCount.mirror.map((obj: number, number: number) =>
-                    number === index ? obj + 1 : obj
-                  )
-                : reactionFeedCount.mirror,
-            actionCollect:
-              feedId.type === 2
-                ? reactionFeedCount.collect.map((obj: number, number: number) =>
-                    number === index ? obj + 1 : obj
-                  )
-                : reactionFeedCount.collect,
-            actionComment:
-              feedId.type === 3
-                ? reactionFeedCount.comment.map((obj: number, number: number) =>
-                    number === index ? obj + 1 : obj
-                  )
-                : reactionFeedCount.comment,
-            actionHasLiked:
-              feedId.type === 0
-                ? reactionFeedCount.hasLiked.map(
-                    (obj: boolean, number: number) =>
-                      number === index ? true : obj
-                  )
-                : reactionFeedCount.hasLiked,
-            actionHasMirrored:
-              feedId.type === 1
-                ? reactionFeedCount.hasMirrored.map(
-                    (obj: boolean, number: number) =>
-                      number === index ? true : obj
-                  )
-                : reactionFeedCount.mirror,
-            actionHasCollected:
-              feedId.type === 2
-                ? reactionFeedCount.hasCollected.map(
-                    (obj: boolean, number: number) =>
-                      number === index ? true : obj
-                  )
-                : reactionFeedCount.collect,
-          })
-        );
+        if (profile === "" || !profile) {
+          dispatch(
+            setReactionFeedCount({
+              actionLike:
+                feedId.type === 0
+                  ? reactionFeedCount.like.map((obj: number, number: number) =>
+                      number === index ? obj + 1 : obj
+                    )
+                  : reactionFeedCount.like,
+              actionMirror:
+                feedId.type === 1
+                  ? reactionFeedCount.mirror.map(
+                      (obj: number, number: number) =>
+                        number === index ? obj + 1 : obj
+                    )
+                  : reactionFeedCount.mirror,
+              actionCollect:
+                feedId.type === 2
+                  ? reactionFeedCount.collect.map(
+                      (obj: number, number: number) =>
+                        number === index ? obj + 1 : obj
+                    )
+                  : reactionFeedCount.collect,
+              actionComment:
+                feedId.type === 3
+                  ? reactionFeedCount.comment.map(
+                      (obj: number, number: number) =>
+                        number === index ? obj + 1 : obj
+                    )
+                  : reactionFeedCount.comment,
+              actionHasLiked:
+                feedId.type === 0
+                  ? reactionFeedCount.hasLiked.map(
+                      (obj: boolean, number: number) =>
+                        number === index ? true : obj
+                    )
+                  : reactionFeedCount.hasLiked,
+              actionHasMirrored:
+                feedId.type === 1
+                  ? reactionFeedCount.hasMirrored.map(
+                      (obj: boolean, number: number) =>
+                        number === index ? true : obj
+                    )
+                  : reactionFeedCount.mirror,
+              actionHasCollected:
+                feedId.type === 2
+                  ? reactionFeedCount.hasCollected.map(
+                      (obj: boolean, number: number) =>
+                        number === index ? true : obj
+                    )
+                  : reactionFeedCount.collect,
+            })
+          );
+        } else {
+          dispatch(
+            setProfileFeedCount({
+              actionLike:
+                feedId.type === 0
+                  ? profileFeedCount.like.map((obj: number, number: number) =>
+                      number === index ? obj + 1 : obj
+                    )
+                  : profileFeedCount.like,
+              actionMirror:
+                feedId.type === 1
+                  ? profileFeedCount.mirror.map((obj: number, number: number) =>
+                      number === index ? obj + 1 : obj
+                    )
+                  : profileFeedCount.mirror,
+              actionCollect:
+                feedId.type === 2
+                  ? profileFeedCount.collect.map(
+                      (obj: number, number: number) =>
+                        number === index ? obj + 1 : obj
+                    )
+                  : profileFeedCount.collect,
+              actionComment:
+                feedId.type === 3
+                  ? profileFeedCount.comment.map(
+                      (obj: number, number: number) =>
+                        number === index ? obj + 1 : obj
+                    )
+                  : profileFeedCount.comment,
+              actionHasLiked:
+                feedId.type === 0
+                  ? profileFeedCount.hasLiked.map(
+                      (obj: boolean, number: number) =>
+                        number === index ? true : obj
+                    )
+                  : profileFeedCount.hasLiked,
+              actionHasMirrored:
+                feedId.type === 1
+                  ? profileFeedCount.hasMirrored.map(
+                      (obj: boolean, number: number) =>
+                        number === index ? true : obj
+                    )
+                  : profileFeedCount.mirror,
+              actionHasCollected:
+                feedId.type === 2
+                  ? profileFeedCount.hasCollected.map(
+                      (obj: boolean, number: number) =>
+                        number === index ? true : obj
+                    )
+                  : profileFeedCount.collect,
+            })
+          );
+        }
       } else {
         dispatch(
           setIndividualFeedCount({
@@ -357,7 +444,7 @@ const useAllPosts = () => {
 
   const refetchComments = () => {
     const index = comments?.findIndex((comment) => comment.id === feedId.value);
-    if (index > 0) {
+    if (index !== -1) {
       dispatch(
         setCommentFeedCount({
           actionLike:
@@ -424,7 +511,11 @@ const useAllPosts = () => {
   }, [indexer.message]);
 
   useEffect(() => {
-    if (!feedDispatch || feedDispatch.length < 1) {
+    if (
+      (!feedDispatch || feedDispatch.length < 1) &&
+      router.asPath.includes("#wavs")
+    ) {
+      getQuickProfiles();
       getTimeline();
     }
   }, [auth]);

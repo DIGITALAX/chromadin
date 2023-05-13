@@ -1,7 +1,6 @@
 import { FunctionComponent } from "react";
 import json from "./../../../../public/videos/local.json";
 import { setMainVideo } from "@/redux/reducers/mainVideoSlice";
-import { useDispatch } from "react-redux";
 import lodash from "lodash";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import { ComponentProps } from "../types/controls.types";
