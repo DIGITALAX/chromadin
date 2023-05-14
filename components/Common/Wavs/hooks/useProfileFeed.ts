@@ -264,6 +264,7 @@ const useProfileFeed = () => {
   useEffect(() => {
     if (
       router.asPath.includes("#wavs") &&
+      router.asPath.includes("?profile=") &&
       profileId.id !== "" &&
       profileId?.id &&
       profileId.handle !== "" &&
@@ -272,11 +273,7 @@ const useProfileFeed = () => {
       getProfile();
     } else if (
       router.asPath.includes("#wavs") &&
-      !router.asPath.includes("?profile=") &&
-      profileId.id !== "" &&
-      profileId?.id &&
-      profileId.handle !== "" &&
-      profileId?.handle
+      !router.asPath.includes("?profile=")
     ) {
       dispatch(
         setProfile({
@@ -285,7 +282,8 @@ const useProfileFeed = () => {
         })
       );
     }
-  }, [auth, profileId.id]);
+  }, [auth, profileId.id, router.asPath]);
+
 
   const getSingleProfile = async () => {
     try {
