@@ -1,4 +1,4 @@
-import { apolloClient, authClient } from "@/lib/lens/client";
+import { apolloClient } from "@/lib/lens/client";
 import { ApolloQueryResult, gql } from "@apollo/client";
 
 const FOLLOWING = `
@@ -8,20 +8,6 @@ query Profile($request: SingleProfileQueryRequest!, $profileId: ProfileId) {
   }
 }
 `;
-
-export const getFollowing = async (
-  request: any,
-  profileId: any
-): Promise<ApolloQueryResult<any>> => {
-  return authClient.query({
-    query: gql(FOLLOWING),
-    variables: {
-      request,
-      profileId,
-    },
-    fetchPolicy: "no-cache",
-  });
-};
 
 export const getFollowingAuth = async (
   request: any,

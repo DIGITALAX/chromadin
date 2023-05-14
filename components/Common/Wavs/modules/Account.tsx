@@ -70,7 +70,10 @@ const Account: FunctionComponent<AccountProps> = ({
       </div>
       <div className="relative w-full h-fit flex sm:flex-nowrap flex-wrap flex-col items-start justify-center -top-10 px-4 gap-2">
         <div className="relative w-full h-fit flex flex-row items-center justify-start gap-2 sm:flex-nowrap flex-wrap">
-          <div className="relative w-20 h-20 rounded-full flex items-center justify-center">
+          <div
+            className="relative w-20 h-20 rounded-full flex items-center justify-center"
+            id="crt"
+          >
             {(profile?.picture as any)?.original?.url && (
               <Image
                 src={

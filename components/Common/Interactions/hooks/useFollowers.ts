@@ -38,7 +38,6 @@ import { setFollowerOnly } from "@/redux/reducers/followerOnlySlice";
 import { waitForTransaction } from "@wagmi/core";
 import pollUntilIndexed from "@/graphql/lens/queries/checkIndexed";
 import {
-  getFollowing,
   getFollowingAuth,
 } from "@/graphql/lens/queries/getFollowing";
 import createUnfollowTypedData from "@/graphql/lens/mutations/unfollow";

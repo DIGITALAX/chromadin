@@ -1,8 +1,5 @@
 import { Publication } from "@/components/Home/types/lens.types";
-import {
-  getFollowing,
-  getFollowingAuth,
-} from "@/graphql/lens/queries/getFollowing";
+import { getFollowingAuth } from "@/graphql/lens/queries/getFollowing";
 import {
   getOneProfileAuth,
   getOneProfile,
