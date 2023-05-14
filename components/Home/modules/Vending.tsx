@@ -7,14 +7,12 @@ import useDrop from "../hooks/useDrop";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import Link from "next/link";
 import SearchVending from "@/components/Common/Buttons/SearchVending";
 import FilterVending from "@/components/Common/Buttons/FilterVending";
 import useViewer from "../hooks/useViewer";
 import { setPriceFilter } from "@/redux/reducers/priceFilterSlice";
 import { setDateFilter } from "@/redux/reducers/dateFilterSlice";
 import lodash from "lodash";
-import { setView } from "@/redux/reducers/viewSlice";
 import { setProfile } from "@/redux/reducers/profileSlice";
 
 const Vending: FunctionComponent<VendingProps> = ({
@@ -272,7 +270,16 @@ const Vending: FunctionComponent<VendingProps> = ({
                       <div
                         className="relative flex flex-row w-fit h-fit gap-3 items-center pt-3 cursor-pointer"
                         onClick={() => {
-                          dispatch(setView("wavs"));
+                          router.push(
+                            router.asPath.includes("?search=")
+                              ? `https://www.chromadin.xyz/#wavs?option=history` +
+                                  router.asPath
+                                    .split("?search=")[1]
+                                    .split("?profile=")[0] +
+                                  "?profile=" +
+                                  collection.profile?.handle
+                              : `https://www.chromadin.xyz/#wavs?option=history?profile=${collection.profile?.handle}`
+                          );
                           dispatch(
                             setProfile({
                               actionHandle: collection?.profile?.handle,
