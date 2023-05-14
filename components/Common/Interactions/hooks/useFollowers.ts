@@ -90,15 +90,10 @@ const useFollowers = () => {
           { profileId: profileId },
           prof?.data?.profile?.id
         );
-      } else {
-        follow = await getFollowing(
-          { profileId: profileId },
-          prof?.data?.profile?.id
-        );
       }
       setProfile({
         ...prof?.data?.profile,
-        isFollowing: follow?.data?.profile?.isFollowing,
+        isFollowing: follow ? follow?.data?.profile?.isFollowing : false,
       });
     } catch (err: any) {
       console.error(err.message);
