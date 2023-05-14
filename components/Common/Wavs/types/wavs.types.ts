@@ -162,7 +162,7 @@ export type ReactionProps = {
 };
 
 export type FeedProps = {
-  profile: string;
+  profile: Profile | undefined;
   router: NextRouter;
   dispatch: Dispatch<AnyAction>;
   followerOnly: boolean[];
@@ -978,7 +978,7 @@ export type SwitchProps = {
   profileRef: Ref<InfiniteScroll>;
   setScrollPos: (e: MouseEvent) => void;
   scrollPos: number;
-  profile: string;
+  profile: Profile | undefined;
   hasMoreProfile: boolean;
   fetchMoreProfile: () => Promise<void>;
   profileDispatch: Publication[];

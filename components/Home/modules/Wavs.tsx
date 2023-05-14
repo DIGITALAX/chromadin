@@ -44,7 +44,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     (state: RootState) => state.app.postImageReducer.value
   );
   const profile = useSelector(
-    (state: RootState) => state.app.profileReducer.id
+    (state: RootState) => state.app.profileReducer.profile
   );
   const commentors = useSelector(
     (state: RootState) => state.app.commentReducer.value

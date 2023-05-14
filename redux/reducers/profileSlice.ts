@@ -1,25 +1,20 @@
+import { Profile } from "@/components/Home/types/lens.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ProfileState {
-  handle: string;
-  id: string;
+  profile: Profile | undefined;
 }
 
 const initialProfileState: ProfileState = {
-  handle: "",
-  id: "",
+  profile: undefined,
 };
 
 export const profileSlice = createSlice({
   name: "profile",
   initialState: initialProfileState,
   reducers: {
-    setProfile: (
-      state: ProfileState,
-      { payload: { actionHandle, actionId } }
-    ) => {
-      state.handle = actionHandle;
-      state.id = actionId;
+    setProfile: (state: ProfileState, action: PayloadAction<Profile | undefined>) => {
+      state.profile = action.payload;
     },
   },
 });

@@ -104,8 +104,9 @@ const Switch: FunctionComponent<SwitchProps> = ({
   quickProfiles
 }): JSX.Element => {
   let action: string;
+ 
   const decideStringAction = () => {
-    if (profile !== "" && profile) {
+    if (profile) {
       action = "profile";
     }
     return action;

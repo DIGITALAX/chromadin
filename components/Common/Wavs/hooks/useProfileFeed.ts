@@ -59,13 +59,13 @@ const useProfileFeed = () => {
     try {
       if (!lensProfile?.id) {
         data = await profilePublications({
-          profileId: profileId?.id,
+          profileId: profileId?.profile?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
         });
       } else {
         data = await profilePublicationsAuth({
-          profileId: profileId?.id,
+          profileId: profileId?.profile?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
         });
@@ -91,7 +91,7 @@ const useProfileFeed = () => {
       if (lensProfile) {
         hasReactedArr = await checkPostReactions(
           {
-            profileId: profileId?.id,
+            profileId: profileId?.profile?.id,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
             limit: 10,
           },
@@ -161,14 +161,14 @@ const useProfileFeed = () => {
 
       if (!lensProfile) {
         data = await profilePublications({
-          profileId: profileId?.id,
+          profileId: profileId?.profile?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
           cursor: profilePageData?.next,
         });
       } else {
         data = await profilePublicationsAuth({
-          profileId: profileId?.id,
+          profileId: profileId?.profile?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
           cursor: profilePageData?.next,
@@ -188,7 +188,7 @@ const useProfileFeed = () => {
         hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
         hasReactedArr = await checkPostReactions(
           {
-            profileId: profileId?.id,
+            profileId: profileId?.profile?.id,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
             limit: 10,
             cursor: profilePageData?.next,
@@ -265,37 +265,23 @@ const useProfileFeed = () => {
     if (
       router.asPath.includes("#wavs") &&
       router.asPath.includes("?profile=") &&
-      profileId.id !== "" &&
-      profileId?.id &&
-      profileId.handle !== "" &&
-      profileId?.handle
+      profileId?.profile
     ) {
       getProfile();
     } else if (
       router.asPath.includes("#wavs") &&
       !router.asPath.includes("?profile=")
     ) {
-      dispatch(
-        setProfile({
-          actionHandle: "",
-          actionId: "",
-        })
-      );
+      dispatch(setProfile(undefined));
     }
-  }, [auth, profileId.id, router.asPath]);
-
+  }, [auth, profileId.profile, router.asPath]);
 
   const getSingleProfile = async () => {
     try {
       const prof = await getOneProfile({
         handle: router.asPath.split("?profile=")[1] + ".lens",
       });
-      dispatch(
-        setProfile({
-          actionHandle: prof?.data?.profile?.handle,
-          actionId: prof?.data?.profile?.id,
-        })
-      );
+      dispatch(setProfile(prof?.data?.profile));
     } catch (err: any) {
       console.error(err.message);
     }
