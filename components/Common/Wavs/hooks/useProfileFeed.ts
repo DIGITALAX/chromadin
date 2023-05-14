@@ -297,17 +297,12 @@ const useProfileFeed = () => {
           { profileId: lensProfile },
           prof?.data?.profile?.id
         );
-      } else {
-        follow = await getFollowing(
-          { profileId: lensProfile },
-          prof?.data?.profile?.id
-        );
       }
 
       dispatch(
         setProfile({
           ...prof?.data?.profile,
-          isFollowing: follow?.data?.profile?.isFollowing,
+          isFollowing: follow ? follow?.data?.profile?.isFollowing : false,
         })
       );
     } catch (err: any) {

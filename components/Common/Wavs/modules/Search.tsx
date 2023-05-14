@@ -29,17 +29,17 @@ const Search: FunctionComponent<SearchProps> = ({
           height={"10rem"}
           loader={""}
           dataLength={profilesFound?.length}
-          className="absolute w-full overflow-y-scroll top-10 rounded-md border-white border-x border-b z-1 flex flex-col"
+          className="absolute w-full overflow-y-scroll top-10 rounded-md z-1 flex flex-col"
         >
           {profilesFound?.map((profile: Profile, index: number) => {
             const profileImage: string = createProfilePicture(profile);
             return (
               <div
                 key={index}
-                className={`relative w-full h-10 px-3 py-2 bg-black flex flex-row gap-3 cursor-pointer items-center justify-center hover:bg-offBlack border-b`}
+                className={`relative w-full h-10 px-3 py-2 bg-black flex flex-row border-x rounded-md gap-3 cursor-pointer items-center justify-center hover:bg-offBlack border-b`}
                 onClick={() => {
                   router.push(
-                    router.asPath +
+                    router.asPath?.split("?profile=")[0] +
                       `?profile=${profile.handle.split(".lens")[0]}`
                   );
                   setProfilesOpenSearch(false);
