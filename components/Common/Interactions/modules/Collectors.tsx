@@ -10,6 +10,7 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
   collectLoading,
   getMorePostCollects,
   hasMoreCollects,
+  router,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full bg-offBlack flex flex-col">
@@ -58,8 +59,26 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
                 }
                 return (
                   <div
-                    className="relative w-full h-fit flex flex-row gap-3"
+                    className="relative w-full h-fit flex flex-row gap-3 cursor-pointer"
                     key={index}
+                    onClick={() => {
+                      router.push(
+                        router.asPath.includes("?search=")
+                          ? `https://www.chromadin.xyz/#wavs?option=history?search=` +
+                              router.asPath
+                                .split("?search=")[1]
+                                .split("?profile=")[0] +
+                              "?profile=" +
+                              collector?.defaultProfile?.handle?.split(
+                                ".lens"
+                              )[0]
+                          : `https://www.chromadin.xyz/#wavs?option=history?profile=${
+                              collector?.defaultProfile?.handle?.split(
+                                ".lens"
+                              )[0]
+                            }`
+                      );
+                    }}
                   >
                     <div
                       className="relative w-6 h-6 border border-white"

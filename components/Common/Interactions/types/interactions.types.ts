@@ -26,6 +26,7 @@ export type CommentsProps = {
   authStatus: boolean;
   lensProfile: Profile | undefined;
   commentId: string;
+  router: NextRouter
 };
 
 export type AccountProps = {
@@ -75,6 +76,7 @@ export type CollectorsProps = {
   collectLoading: boolean;
   getMorePostCollects: () => Promise<void>;
   hasMoreCollects: boolean;
+  router: NextRouter;
 };
 
 export interface FollowArgs {

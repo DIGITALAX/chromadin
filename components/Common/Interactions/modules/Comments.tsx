@@ -31,6 +31,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
   lensProfile,
   authStatus,
   commentId,
+  router,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col bg-verde">
@@ -101,7 +102,21 @@ const Comments: FunctionComponent<CommentsProps> = ({
                       key={index}
                       className="relative w-full h-fit flex flex-row font-arcade text-sm items-start gap-3 p-3"
                     >
-                      <div className="relative w-fit h-full flex items-start justify-start">
+                      <div
+                        className="relative w-fit h-full flex items-start justify-start cursor-pointer"
+                        onClick={() => {
+                          router.push(
+                            router.asPath.includes("?search=")
+                              ? `https://www.chromadin.xyz/#wavs?option=history?search=` +
+                                  router.asPath
+                                    .split("?search=")[1]
+                                    .split("?profile=")[0] +
+                                  "?profile=" +
+                                  comment?.profile?.handle?.split(".lens")[0]
+                              : `https://www.chromadin.xyz/#wavs?option=history?profile=${comment?.profile?.handle?.split(".lens")[0]}`
+                          );
+                        }}
+                      >
                         <div
                           className="relative w-6 h-6 border border-white"
                           id="crt"
@@ -119,7 +134,21 @@ const Comments: FunctionComponent<CommentsProps> = ({
                         </div>
                       </div>
                       <div className="relative w-full h-full flex flex-col gap-2">
-                        <div className="relative w-full h-full text-ama justify-start flex">
+                        <div
+                          className="relative w-full h-full text-ama justify-start flex cursor-pointer"
+                          onClick={() => {
+                            router.push(
+                              router.asPath.includes("?search=")
+                                ? `https://www.chromadin.xyz/#wavs?option=history?search=` +
+                                    router.asPath
+                                      .split("?search=")[1]
+                                      .split("?profile=")[0] +
+                                    "?profile=" +
+                                    comment?.profile?.handle?.split(".lens")[0]
+                                : `https://www.chromadin.xyz/#wavs?option=history?profile=${comment?.profile?.handle?.split(".lens")[0]}`
+                            );
+                          }}
+                        >
                           @{comment?.profile?.handle?.split(".lens")[0]}
                         </div>
                         <div className="relative w-full h-full text-verde flex flex-col">

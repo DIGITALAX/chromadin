@@ -13,7 +13,6 @@ import useViewer from "../hooks/useViewer";
 import { setPriceFilter } from "@/redux/reducers/priceFilterSlice";
 import { setDateFilter } from "@/redux/reducers/dateFilterSlice";
 import lodash from "lodash";
-import { setProfile } from "@/redux/reducers/profileSlice";
 
 const Vending: FunctionComponent<VendingProps> = ({
   dispatch,
@@ -277,14 +276,10 @@ const Vending: FunctionComponent<VendingProps> = ({
                                     .split("?search=")[1]
                                     .split("?profile=")[0] +
                                   "?profile=" +
-                                  collection.profile?.handle
-                              : `https://www.chromadin.xyz/#wavs?option=history?profile=${collection.profile?.handle}`
-                          );
-                          dispatch(
-                            setProfile({
-                              actionHandle: collection?.profile?.handle,
-                              actionId: collection?.profile?.id,
-                            })
+                                  collection.profile?.handle?.split(".lens")[0]
+                              : `https://www.chromadin.xyz/#wavs?option=history?profile=${
+                                  collection.profile?.handle?.split(".lens")[0]
+                                }`
                           );
                         }}
                       >

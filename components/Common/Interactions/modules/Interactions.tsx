@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import Comments from "./Comments";
 import Collectors from "./Collectors";
 import { InteractionProps } from "../types/interactions.types";
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Switch from "./Switch";
 import Options from "./Options";
 import useControls from "../../Video/hooks/useControls";
+import { useRouter } from "next/router";
 
 const Interactions: FunctionComponent<InteractionProps> = ({
   viewer,
@@ -53,6 +54,7 @@ const Interactions: FunctionComponent<InteractionProps> = ({
     (state: RootState) => state.app.secondaryCommentReducer.value
   );
   const dispatch = useDispatch();
+  const router = useRouter();
   return (
     <div className="relative w-full lg:w-80 lg:shrink-0 xl:h-full flex-col border border-white h-100 lg:h-128 xl:min-h-[55rem] flex overflow-y-scroll">
       <div className="relative w-full h-full flex flex-col bg-verde">
@@ -93,6 +95,7 @@ const Interactions: FunctionComponent<InteractionProps> = ({
             lensProfile={lensProfile}
             authStatus={authStatus}
             commentId={commentId}
+            router={router}
           />
         ) : (
           <Options />
@@ -103,6 +106,7 @@ const Interactions: FunctionComponent<InteractionProps> = ({
             collectLoading={collectLoading}
             getMorePostCollects={getMorePostCollects}
             hasMoreCollects={hasMoreCollects}
+            router={router}
           />
         ) : (
           <Switch />
