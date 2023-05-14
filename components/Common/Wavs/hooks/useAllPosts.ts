@@ -62,6 +62,9 @@ const useAllPosts = () => {
   const profileFeedCount = useSelector(
     (state: RootState) => state.app.profileFeedCountReducer
   );
+  const profileDispatch = useSelector(
+    (state: RootState) => state.app.profileFeedReducer.value
+  );
 
   const scrollRef = useRef<InfiniteScroll>(null);
   const dispatch = useDispatch();
@@ -297,7 +300,9 @@ const useAllPosts = () => {
 
   const refetchInteractions = () => {
     try {
-      const index = feedDispatch?.findIndex((feed) => feed.id === feedId.value);
+      const index = (
+        profile?.id === "" || !profile?.id ? feedDispatch : profileDispatch
+      )?.findIndex((feed) => feed.id === feedId.value);
       if (index !== -1) {
         dispatch(
           setIndividualFeedCount({
@@ -444,6 +449,7 @@ const useAllPosts = () => {
 
   const refetchComments = () => {
     const index = comments?.findIndex((comment) => comment.id === feedId.value);
+
     if (index !== -1) {
       dispatch(
         setCommentFeedCount({

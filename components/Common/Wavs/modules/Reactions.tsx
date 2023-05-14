@@ -48,6 +48,7 @@ const Reactions: FunctionComponent<ReactionProps> = ({
   setMirrorLoader,
   openComment,
   feedType,
+  profileType,
 }): JSX.Element => {
   return (
     <div
@@ -65,7 +66,10 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                 ? publication?.id
                 : publication?.mirrorOf.id,
               setReactLoader,
-              feedType !== "" ? index : undefined,
+              feedType !== "" ||
+                (profileType !== "" && profileType !== undefined)
+                ? index
+                : undefined,
               publication?.__typename === "Mirror" ? publication?.id : undefined
             )
           }
@@ -158,7 +162,10 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                 ? publication?.id
                 : publication?.mirrorOf.id,
               setMirrorLoader,
-              feedType !== "" ? index : undefined,
+              feedType !== "" ||
+                (profileType !== "" && profileType !== undefined)
+                ? index
+                : undefined,
               publication?.__typename === "Mirror" ? publication?.id : undefined
             )
           }
@@ -237,7 +244,10 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                         ? publication?.id
                         : publication?.mirrorOf.id,
                       setCollectLoader,
-                      feedType !== "" ? index : undefined,
+                      feedType !== "" ||
+                        (profileType !== "" && profileType !== undefined)
+                        ? index
+                        : undefined,
                       publication?.__typename === "Mirror"
                         ? publication?.id
                         : undefined

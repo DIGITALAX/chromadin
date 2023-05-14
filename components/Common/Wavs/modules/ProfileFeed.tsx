@@ -93,6 +93,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   setReactProfileLoading,
   profile,
   profileCollections,
+  profileType
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4 max-w-full">
@@ -157,6 +158,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
                     setCollectLoader={setCollectProfileLoading}
                     setMirrorLoader={setMirrorProfileLoading}
                     setReactLoader={setReactProfileLoading}
+                    profileType={profileType}
                   />
                   {(publication?.__typename === "Mirror"
                     ? publication?.mirrorOf?.id

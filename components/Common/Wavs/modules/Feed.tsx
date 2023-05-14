@@ -132,6 +132,7 @@ const Feed: FunctionComponent<FeedProps> = ({
   hasMoreSearch,
   setProfilesFound,
   setProfilesOpenSearch,
+  profileType
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
@@ -230,6 +231,7 @@ const Feed: FunctionComponent<FeedProps> = ({
             feedType={feedType}
             individualAmounts={individualAmounts}
             router={router}
+            profileType={profileType}
           />
         ) : postsLoading || profileLoading ? (
           <div className="relative w-full h-full flex flex-col gap-4 overflow-y-scroll">
@@ -349,6 +351,7 @@ const Feed: FunctionComponent<FeedProps> = ({
             hasMoreSearch={hasMoreSearch}
             setProfilesOpenSearch={setProfilesOpenSearch}
             setProfilesFound={setProfilesFound}
+            profileType={profileType}
           />
         )}
       </div>

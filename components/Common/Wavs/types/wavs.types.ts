@@ -71,6 +71,7 @@ export type FeedPublicationProps = {
   setReactLoader?: (e: boolean[]) => void;
   setMirrorLoader?: (e: boolean[]) => void;
   openComment: string;
+  profileType: string;
 };
 
 export type ProfileSideBarProps = {
@@ -113,6 +114,7 @@ export type ProfileSideBarProps = {
   openComment: string;
   feedType: string;
   router: NextRouter;
+  profileType: string;
 };
 
 export type ReactionProps = {
@@ -160,6 +162,7 @@ export type ReactionProps = {
   setMirrorLoader?: (e: boolean[]) => void;
   openComment: string;
   feedType: string;
+  profileType: string;
 };
 
 export type FeedProps = {
@@ -193,6 +196,7 @@ export type FeedProps = {
   mirrorLoading: boolean[];
   reactLoading: boolean[];
   collectLoading: boolean[];
+  profileType: string;
   reactionAmounts: ReactionFeedCountState;
   mainPost: Publication;
   followerOnlyMain: boolean;
@@ -375,6 +379,7 @@ export type IndividualProps = {
     value: string;
     index: number;
   };
+  profileType: string;
   address: `0x${string}` | undefined;
   followerOnlyMain: boolean;
   collectPost: (
@@ -584,6 +589,7 @@ export type CommentsProps = {
   commentId: string;
   canComment: boolean;
   openComment: string;
+  profileType: string;
 };
 
 export interface UploadedMedia {
@@ -804,6 +810,7 @@ export type ProfileFeedProps = {
   mirrorLoading: boolean[];
   reactLoading: boolean[];
   collectLoading: boolean[];
+  profileType: string;
   profileAmounts: ProfileFeedCountState;
   setCollectProfileLoading: (e: boolean[]) => void;
   setMirrorProfileLoading: (e: boolean[]) => void;
@@ -890,6 +897,7 @@ export type SwitchProps = {
   followerOnly: boolean[];
   feedDispatch: Publication[];
   hasMore: boolean;
+  profileType: string;
   fetchMore: () => Promise<void>;
   address: `0x${string}` | undefined;
   collectPost: (
@@ -1122,6 +1130,7 @@ export type AllPostsProps = {
   fetchMoreSearch: () => Promise<void>;
   setProfilesOpenSearch: (e: boolean) => void;
   setProfilesFound: (e: Profile[]) => void;
+  profileType: string;
 };
 
 export interface QuickProfilesInterface {

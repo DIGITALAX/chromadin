@@ -98,6 +98,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
   postImagesDispatched,
   individualAmounts,
   router,
+  profileType
 }): JSX.Element => {
   return (
     <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
@@ -143,6 +144,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
             setReactLoader={setReactPostLoading}
             openComment={commentOpen}
             router={router}
+            profileType={profileType}
           />
           {(mainPost?.__typename === "Mirror"
             ? mainPost?.mirrorOf?.id
@@ -304,6 +306,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
         openComment={commentOpen}
         postImagesDispatched={postImagesDispatched}
         router={router}
+        profileType={profileType}
       />
     </div>
   );

@@ -88,7 +88,8 @@ const Comments: FunctionComponent<CommentsProps> = ({
   commentId,
   canComment,
   openComment,
-  router
+  router,
+  profileType
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex min-w-full">
@@ -148,6 +149,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
                     setReactLoader={setReactLoader}
                     openComment={openComment}
                     router={router}
+                    profileType={profileType}
                   />
                   {comment?.id === commentId && (
                     <MakeComment

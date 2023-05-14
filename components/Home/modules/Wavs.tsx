@@ -71,6 +71,9 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const quickProfiles = useSelector(
     (state: RootState) => state.app.quickProfilesReducer.value
   );
+  const profileType = useSelector(
+    (state: RootState) => state.app.profileReducer.profile?.id
+  );
 
   const { handleLensSignIn, handleConnect } = useConnect();
   const {
@@ -332,6 +335,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         hasMoreSearch={hasMoreSearch}
         setProfilesOpenSearch={setProfilesOpenSearch}
         setProfilesFound={setProfilesFound}
+        profileType={profileType}
       />
     </div>
   );

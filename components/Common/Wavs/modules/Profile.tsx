@@ -31,6 +31,7 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
   setReactLoader,
   feedType,
   router,
+  profileType
 }): JSX.Element => {
   const profileImage = createProfilePicture(publication, true);
   return (
@@ -162,6 +163,7 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
             setMirrorLoader={setMirrorLoader}
             setCollectLoader={setCollectLoader}
             feedType={feedType}
+            profileType={profileType}
           />
         </div>
       </div>

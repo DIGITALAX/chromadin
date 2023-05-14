@@ -44,16 +44,16 @@ const useProfileFeed = () => {
 
   const [hasMoreProfile, setHasMoreProfile] = useState<boolean>(true);
   const [followerOnlyProfile, setFollowerOnlyProfile] = useState<boolean[]>(
-    Array.from({ length: profileDispatch.length }, () => false)
+    Array.from({ length: 10 }, () => false)
   );
   const [collectProfileLoading, setCollectProfileLoading] = useState<boolean[]>(
-    Array.from({ length: profileDispatch.length }, () => false)
+    Array.from({ length: 10 }, () => false)
   );
   const [mirrorProfileLoading, setMirrorProfileLoading] = useState<boolean[]>(
-    Array.from({ length: profileDispatch.length }, () => false)
+    Array.from({ length: 10 }, () => false)
   );
   const [reactProfileLoading, setReactProfileLoading] = useState<boolean[]>(
-    Array.from({ length: profileDispatch.length }, () => false)
+    Array.from({ length: 10 }, () => false)
   );
   const [profileLoading, setProfileLoading] = useState<boolean>(false);
 
