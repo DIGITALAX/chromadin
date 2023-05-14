@@ -5,8 +5,6 @@ import { ProfileSideBarProps } from "../types/wavs.types";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Reactions from "./Reactions";
-import Link from "next/link";
-import { setProfile } from "@/redux/reducers/profileSlice";
 
 const Profile: FunctionComponent<ProfileSideBarProps> = ({
   publication,
@@ -65,20 +63,16 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
           <div
             className={`absolute rounded-full flex bg-white w-8 h-full justify-self-center sm:right-6 col-start-1 cursor-pointer active:scale-95 hover:opacity-80`}
             id="crt"
-            onClick={() => {
-              dispatch(
-                setProfile({
-                  actionHandle:
+            onClick={() =>
+              router.push(
+                router.asPath.split("?profile=")[0] +
+                  `?profile=${
                     publication?.__typename !== "Mirror"
                       ? publication?.profile?.handle
-                      : publication?.mirrorOf?.profile?.handle,
-                  actionId:
-                    publication?.__typename !== "Mirror"
-                      ? publication?.profile?.id
-                      : publication?.mirrorOf?.profile?.id,
-                })
-              );
-            }}
+                      : publication?.mirrorOf?.profile?.handle
+                  }`
+              )
+            }
           >
             {profileImage !== "" && (
               <Image

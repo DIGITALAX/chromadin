@@ -2,6 +2,7 @@ import { Profile, Publication } from "@/components/Home/types/lens.types";
 import { MainVideoState } from "@/redux/reducers/mainVideoSlice";
 import { PostCollectValuesState } from "@/redux/reducers/postCollectSlice";
 import { VideoSyncState } from "@/redux/reducers/videoSyncSlice";
+import { NextRouter } from "next/router";
 import { Ref } from "react";
 import ReactPlayer from "react-player";
 import { AnyAction, Dispatch } from "redux";
@@ -73,6 +74,7 @@ export type WhoProps = {
   dispatch: Dispatch<AnyAction>;
   hasMore: boolean;
   type: number;
+  router: NextRouter
 };
 
 export type FullScreenVideoProps = {

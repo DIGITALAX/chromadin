@@ -98,14 +98,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
         <div className="sticky z-0 w-full h-fit flex flex-col items-start justify-start mr-0">
           <div
             className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
-            onClick={() => {
-              dispatch(
-                setProfile({
-                  actionHandle: "",
-                  actionId: "",
-                })
-              );
-            }}
+            onClick={() => router.push(router.asPath.split("?profile=")[0])}
           >
             <AiFillFastBackward color="white" size={20} />
           </div>

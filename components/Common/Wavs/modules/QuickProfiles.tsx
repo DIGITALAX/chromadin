@@ -26,14 +26,12 @@ const QuickProfiles: FunctionComponent<QuickProfilesProps> = ({
                   key={index}
                   className="relative rounded-full hover:opacity-70 cursor-pointer active:scale-95 h-10 w-10"
                   id="crt"
-                  onClick={() => {
-                    dispatch(
-                      setProfile({
-                        actionHandle: profile?.handle,
-                        actionId: profile?.id,
-                      })
-                    );
-                  }}
+                  onClick={() =>
+                    router.push(
+                      router.asPath.split("?profile=")[0] +
+                        `?profile=${profile?.handle}`
+                    )
+                  }
                 >
                   {profile?.image && (
                     <Image

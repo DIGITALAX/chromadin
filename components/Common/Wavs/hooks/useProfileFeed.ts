@@ -273,18 +273,6 @@ const useProfileFeed = () => {
     }
   }, [auth, profileId.id]);
 
-  useEffect(() => {
-    if (profileId?.handle !== "" && profileId?.handle) {
-      router.push(
-        router.asPath?.split("?profile=")[0] +
-          "?profile=" +
-          profileId?.handle?.split(".lens")[0]
-      );
-    } else {
-      router.push(router.asPath.split("?profile=")[0]);
-    }
-  }, [profileId.handle]);
-
   const getSingleProfile = async () => {
     try {
       const prof = await getOneProfile({
@@ -302,26 +290,10 @@ const useProfileFeed = () => {
   };
 
   useEffect(() => {
-    if (
-      router.asPath.includes("#wavs") &&
-      router.asPath.includes("?profile=") &&
-      (!profileId?.id || profileId?.id === "") &&
-      (profileId?.handle || profileId?.handle !== "")
-    ) {
+    if (router.asPath.includes("?profile=")) {
       getSingleProfile();
     }
-  }, [profileId.handle]);
-
-  useEffect(() => {
-    if (
-      router.asPath.includes("#wavs") &&
-      router.asPath.includes("?profile=") &&
-      (!profileId?.id || profileId?.id === "") &&
-      (!profileId?.handle || profileId?.handle === "")
-    ) {
-      getSingleProfile();
-    }
-  }, []);
+  }, [router.asPath]);
 
   return {
     hasMoreProfile,

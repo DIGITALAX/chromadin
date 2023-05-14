@@ -6,7 +6,6 @@ import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import Image from "next/legacy/image";
 import { AiOutlineLoading } from "react-icons/ai";
 import { WhoProps } from "../types/modals.types";
-import { setProfile } from "@/redux/reducers/profileSlice";
 
 const Who: FunctionComponent<WhoProps> = ({
   loading,
@@ -15,6 +14,7 @@ const Who: FunctionComponent<WhoProps> = ({
   dispatch,
   hasMore,
   type,
+  router
 }): JSX.Element => {
   return (
     <div className="inset-0 justify-center fixed z-20 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto">
@@ -63,22 +63,17 @@ const Who: FunctionComponent<WhoProps> = ({
                             <div
                               key={index}
                               className="relative w-full h-fit p-2 drop-shadow-lg flex flex-row bg-gradient-to-r from-offBlack via-gray-600 to-black auto-cols-auto rounded-lg border border-black font-economica text-white cursor-pointer"
-                              onClick={() => {
-                                dispatch(
-                                  setProfile({
-                                    actionHandle:
+                              onClick={() =>
+                                router.push(
+                                  router.asPath.split("?profile=")[0] +
+                                    `?profile=${
                                       type === 0
                                         ? reacter?.profile?.handle
                                         : type === 1 &&
-                                          reacter?.defaultProfile?.handle,
-                                    actionId:
-                                      type === 0
-                                        ? reacter?.profile?.id
-                                        : type === 1 &&
-                                          reacter?.defaultProfile?.id,
-                                  })
-                                );
-                              }}
+                                          reacter?.defaultProfile?.handle
+                                    }`
+                                )
+                              }
                             >
                               <div className="relative w-fit h-fit flex flex-row gap-6">
                                 <div

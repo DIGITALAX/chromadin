@@ -162,6 +162,7 @@ const Modals = () => {
           type={
             reaction.type === "heart" ? 0 : reaction.type === "collect" ? 1 : 2
           }
+          router={router}
         />
       )}
       {purchaseModal?.open && (
