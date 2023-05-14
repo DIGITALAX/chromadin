@@ -270,6 +270,20 @@ const useProfileFeed = () => {
       profileId?.handle
     ) {
       getProfile();
+    } else if (
+      router.asPath.includes("#wavs") &&
+      !router.asPath.includes("?profile=") &&
+      profileId.id !== "" &&
+      profileId?.id &&
+      profileId.handle !== "" &&
+      profileId?.handle
+    ) {
+      dispatch(
+        setProfile({
+          actionHandle: "",
+          actionId: "",
+        })
+      );
     }
   }, [auth, profileId.id]);
 

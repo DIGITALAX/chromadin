@@ -14,7 +14,7 @@ const Who: FunctionComponent<WhoProps> = ({
   dispatch,
   hasMore,
   type,
-  router
+  router,
 }): JSX.Element => {
   return (
     <div className="inset-0 justify-center fixed z-20 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto">
@@ -68,9 +68,13 @@ const Who: FunctionComponent<WhoProps> = ({
                                   router.asPath.split("?profile=")[0] +
                                     `?profile=${
                                       type === 0
-                                        ? reacter?.profile?.handle
+                                        ? reacter?.profile?.handle?.split(
+                                            ".lens"
+                                          )[0]
                                         : type === 1 &&
-                                          reacter?.defaultProfile?.handle
+                                          reacter?.defaultProfile?.handle?.split(
+                                            ".lens"
+                                          )[0]
                                     }`
                                 )
                               }

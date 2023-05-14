@@ -68,8 +68,8 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
                 router.asPath.split("?profile=")[0] +
                   `?profile=${
                     publication?.__typename !== "Mirror"
-                      ? publication?.profile?.handle
-                      : publication?.mirrorOf?.profile?.handle
+                      ? publication?.profile?.handle?.split(".lens")[0]
+                      : publication?.mirrorOf?.profile?.handle?.split(".lens")[0]
                   }`
               )
             }
