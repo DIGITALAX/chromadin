@@ -57,7 +57,7 @@ const useAllPosts = () => {
     (state: RootState) => state.app.individualFeedCountReducer
   );
   const profile = useSelector(
-    (state: RootState) => state.app.profileReducer.id
+    (state: RootState) => state.app.profileReducer.profile
   );
   const profileFeedCount = useSelector(
     (state: RootState) => state.app.profileFeedCountReducer
@@ -314,7 +314,7 @@ const useAllPosts = () => {
             actionHasCollected: feedId.type === 2 ? true : individual.collect,
           })
         );
-        if (profile === "" || !profile) {
+        if (profile?.id === "" || !profile?.id) {
           dispatch(
             setReactionFeedCount({
               actionLike:
