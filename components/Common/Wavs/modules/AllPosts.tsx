@@ -5,6 +5,7 @@ import MakeComment from "./MakeComment";
 import FeedPublication from "./FeedPublication";
 import { AllPostsProps } from "../types/wavs.types";
 import QuickProfiles from "./QuickProfiles";
+import Search from "./Search";
 
 const AllPosts: FunctionComponent<AllPostsProps> = ({
   hasMore,
@@ -88,14 +89,30 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   currencyDropDown,
   collectibleDropDown,
   quickProfiles,
+  searchProfiles,
+  profilesFound,
+  profilesOpenSearch,
+  fetchMoreSearch,
+  hasMoreSearch,
+  setProfilesFound,
+  setProfilesOpenSearch
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4">
       <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
-        <div className="max-w-full overflow-x-scroll">
-          <QuickProfiles
+        <div className="relative w-full h-fit flex flex-col sm:flex-row gap-3 sm:gap-10">
+          <div className="max-w-full overflow-x-scroll">
+            <QuickProfiles router={router} quickProfiles={quickProfiles} />
+          </div>
+          <Search
+            searchProfiles={searchProfiles}
+            profilesFound={profilesFound}
+            profilesOpenSearch={profilesOpenSearch}
             router={router}
-            quickProfiles={quickProfiles}
+            fetchMoreSearch={fetchMoreSearch}
+            hasMoreSearch={hasMoreSearch}
+            setProfilesOpenSearch={setProfilesOpenSearch}
+            setProfilesFound={setProfilesFound}
           />
         </div>
         <InfiniteScroll

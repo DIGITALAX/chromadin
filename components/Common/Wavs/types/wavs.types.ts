@@ -305,6 +305,13 @@ export type FeedProps = {
   profileScroll: number;
   quickProfiles: QuickProfilesInterface[];
   profileCollections: Collection[];
+  searchProfiles: (e: FormEvent) => Promise<void>;
+  profilesFound: Profile[];
+  profilesOpenSearch: boolean;
+  hasMoreSearch: boolean;
+  fetchMoreSearch: () => Promise<void>;
+  setProfilesOpenSearch: (e: boolean) => void;
+  setProfilesFound: (e: Profile[]) => void;
 };
 
 export interface ApprovalArgs {
@@ -996,6 +1003,13 @@ export type SwitchProps = {
   profileScroll: number;
   quickProfiles: QuickProfilesInterface[];
   profileCollections: Collection[];
+  searchProfiles: (e: FormEvent) => Promise<void>;
+  profilesFound: Profile[];
+  profilesOpenSearch: boolean;
+  fetchMoreSearch: () => Promise<void>;
+  hasMoreSearch: boolean;
+  setProfilesOpenSearch: (e: boolean) => void;
+  setProfilesFound: (e: Profile[]) => void;
 };
 
 export type AllPostsProps = {
@@ -1101,6 +1115,13 @@ export type AllPostsProps = {
   setScrollPos: (e: MouseEvent) => void;
   scrollPos: number;
   quickProfiles: QuickProfilesInterface[];
+  searchProfiles: (e: FormEvent) => Promise<void>;
+  profilesFound: Profile[];
+  profilesOpenSearch: boolean;
+  hasMoreSearch: boolean;
+  fetchMoreSearch: () => Promise<void>;
+  setProfilesOpenSearch: (e: boolean) => void;
+  setProfilesFound: (e: Profile[]) => void;
 };
 
 export interface QuickProfilesInterface {
@@ -1119,4 +1140,15 @@ export type AccountProps = {
   profileCollections: Collection[];
   router: NextRouter;
   dispatch: Dispatch<AnyAction>;
+};
+
+export type SearchProps = {
+  searchProfiles: (e: FormEvent) => Promise<void>;
+  profilesFound: Profile[];
+  profilesOpenSearch: boolean;
+  router: NextRouter;
+  hasMoreSearch: boolean;
+  fetchMoreSearch: () => Promise<void>;
+  setProfilesOpenSearch: (e: boolean) => void;
+  setProfilesFound: (e: Profile[]) => void;
 };

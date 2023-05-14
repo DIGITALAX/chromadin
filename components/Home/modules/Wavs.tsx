@@ -6,6 +6,7 @@ import useComment from "@/components/Common/Wavs/hooks/useComment";
 import useIndividual from "@/components/Common/Wavs/hooks/useIndividual";
 import useProfileFeed from "@/components/Common/Wavs/hooks/useProfileFeed";
 import useReactions from "@/components/Common/Wavs/hooks/useReactions";
+import useSearch from "@/components/Common/Wavs/hooks/useSearch";
 import Feed from "@/components/Common/Wavs/modules/Feed";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
@@ -190,6 +191,16 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     setProfileScroll,
   } = useProfileFeed();
 
+  const {
+    searchProfiles,
+    profilesFound,
+    profilesOpenSearch,
+    fetchMoreSearch,
+    hasMoreSearch,
+    setProfilesOpenSearch,
+    setProfilesFound,
+  } = useSearch();
+
   return (
     <div className="relative w-full h-full mid:h-[50.2rem] xl:h-[47.8rem] gap-3 flex items-start justify-center pt-10 overflow-y-scroll">
       <Feed
@@ -314,6 +325,13 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         profileScroll={profileScroll}
         quickProfiles={quickProfiles}
         profileCollections={profileCollections}
+        searchProfiles={searchProfiles}
+        profilesFound={profilesFound}
+        profilesOpenSearch={profilesOpenSearch}
+        fetchMoreSearch={fetchMoreSearch}
+        hasMoreSearch={hasMoreSearch}
+        setProfilesOpenSearch={setProfilesOpenSearch}
+        setProfilesFound={setProfilesFound}
       />
     </div>
   );

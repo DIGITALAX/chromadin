@@ -101,6 +101,13 @@ const Switch: FunctionComponent<SwitchProps> = ({
   setProfileScroll,
   quickProfiles,
   profileCollections,
+  searchProfiles,
+  profilesFound,
+  profilesOpenSearch,
+  fetchMoreSearch,
+  hasMoreSearch,
+  setProfilesOpenSearch,
+  setProfilesFound,
 }): JSX.Element => {
   let action: string;
 
@@ -287,6 +294,13 @@ const Switch: FunctionComponent<SwitchProps> = ({
           setScrollPos={setScrollPos}
           scrollPos={scrollPos}
           quickProfiles={quickProfiles}
+          searchProfiles={searchProfiles}
+          profilesFound={profilesFound}
+          profilesOpenSearch={profilesOpenSearch}
+          fetchMoreSearch={fetchMoreSearch}
+          hasMoreSearch={hasMoreSearch}
+          setProfilesOpenSearch={setProfilesOpenSearch}
+          setProfilesFound={setProfilesFound}
         />
       );
   }

@@ -125,6 +125,13 @@ const Feed: FunctionComponent<FeedProps> = ({
   profileScroll,
   quickProfiles,
   profileCollections,
+  searchProfiles,
+  profilesFound,
+  profilesOpenSearch,
+  fetchMoreSearch,
+  hasMoreSearch,
+  setProfilesFound,
+  setProfilesOpenSearch,
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
@@ -335,6 +342,13 @@ const Feed: FunctionComponent<FeedProps> = ({
             profileScroll={profileScroll}
             quickProfiles={quickProfiles}
             profileCollections={profileCollections}
+            searchProfiles={searchProfiles}
+            profilesFound={profilesFound}
+            profilesOpenSearch={profilesOpenSearch}
+            fetchMoreSearch={fetchMoreSearch}
+            hasMoreSearch={hasMoreSearch}
+            setProfilesOpenSearch={setProfilesOpenSearch}
+            setProfilesFound={setProfilesFound}
           />
         )}
       </div>
