@@ -94,7 +94,6 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
       <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
         <div className="max-w-full overflow-x-scroll">
           <QuickProfiles
-            dispatch={dispatch}
             router={router}
             quickProfiles={quickProfiles}
           />

@@ -18,6 +18,7 @@ const COLLECTIONS = `
   }
 `;
 
+
 const getAllCollections = async (): Promise<any> => {
   const queryPromise = graphClient.query({
     query: gql(COLLECTIONS),

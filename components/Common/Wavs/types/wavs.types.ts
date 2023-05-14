@@ -1,3 +1,4 @@
+import { Collection } from "@/components/Home/types/home.types";
 import {
   Erc20,
   Profile,
@@ -303,6 +304,7 @@ export type FeedProps = {
   setProfileScroll: (e: MouseEvent) => void;
   profileScroll: number;
   quickProfiles: QuickProfilesInterface[];
+  profileCollections: Collection[];
 };
 
 export interface ApprovalArgs {
@@ -771,7 +773,6 @@ export type ProfileFeedProps = {
   dispatch: Dispatch<AnyAction>;
   followerOnly: boolean[];
   profileDispatch: Publication[];
-  postsLoading: boolean;
   hasMoreProfile: boolean;
   fetchMoreProfile: () => Promise<void>;
   address: `0x${string}` | undefined;
@@ -872,6 +873,8 @@ export type ProfileFeedProps = {
   profileRef: Ref<InfiniteScroll>;
   setScrollPos: (e: MouseEvent) => void;
   scrollPos: number;
+  profile: Profile | undefined;
+  profileCollections: Collection[];
 };
 
 export type SwitchProps = {
@@ -879,7 +882,6 @@ export type SwitchProps = {
   dispatch: Dispatch<AnyAction>;
   followerOnly: boolean[];
   feedDispatch: Publication[];
-  postsLoading: boolean;
   hasMore: boolean;
   fetchMore: () => Promise<void>;
   address: `0x${string}` | undefined;
@@ -984,7 +986,6 @@ export type SwitchProps = {
   profileDispatch: Publication[];
   followerOnlyProfile: boolean[];
   profileAmounts: ProfileFeedCountState;
-  profileLoading: boolean;
   setCollectProfileLoading: (e: boolean[]) => void;
   setMirrorProfileLoading: (e: boolean[]) => void;
   setReactProfileLoading: (e: boolean[]) => void;
@@ -994,6 +995,7 @@ export type SwitchProps = {
   setProfileScroll: (e: MouseEvent) => void;
   profileScroll: number;
   quickProfiles: QuickProfilesInterface[];
+  profileCollections: Collection[];
 };
 
 export type AllPostsProps = {
@@ -1001,7 +1003,6 @@ export type AllPostsProps = {
   dispatch: Dispatch<AnyAction>;
   followerOnly: boolean[];
   feedDispatch: Publication[];
-  postsLoading: boolean;
   hasMore: boolean;
   fetchMore: () => Promise<void>;
   address: `0x${string}` | undefined;
@@ -1110,6 +1111,12 @@ export interface QuickProfilesInterface {
 
 export type QuickProfilesProps = {
   quickProfiles: QuickProfilesInterface[];
-  dispatch: Dispatch<AnyAction>;
   router: NextRouter;
+};
+
+export type AccountProps = {
+  profile: Profile | undefined;
+  profileCollections: Collection[];
+  router: NextRouter;
+  dispatch: Dispatch<AnyAction>;
 };

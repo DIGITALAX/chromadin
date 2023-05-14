@@ -36,6 +36,7 @@ module.exports = {
         b2: "#1696FC",
         shame: "#F6F5F0",
         offWhite: "#F2F2F2",
+        bird: "#81A8F8",
       },
       backgroundImage: {
         chroma:
@@ -55,6 +56,7 @@ module.exports = {
         200: "54rem",
       },
       zIndex: {
+        0.5: "0.5",
         1: "1",
         2: "2",
       },

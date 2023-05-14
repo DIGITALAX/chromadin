@@ -1,4 +1,5 @@
 import { Profile, Publication } from "@/components/Home/types/lens.types";
+import { FollowerOnlyState } from "@/redux/reducers/followerOnlySlice";
 import { MainVideoState } from "@/redux/reducers/mainVideoSlice";
 import { PostCollectValuesState } from "@/redux/reducers/postCollectSlice";
 import { VideoSyncState } from "@/redux/reducers/videoSyncSlice";
@@ -51,6 +52,9 @@ export type FollowerOnlyProps = {
   followLoading: boolean;
   approved: boolean;
   approveCurrency: () => Promise<void>;
+  dispatch: Dispatch<AnyAction>;
+  followDetails: FollowerOnlyState;
+  unfollowProfile: () => Promise<void>;
 };
 
 export type ImageLargeProps = {
@@ -74,7 +78,7 @@ export type WhoProps = {
   dispatch: Dispatch<AnyAction>;
   hasMore: boolean;
   type: number;
-  router: NextRouter
+  router: NextRouter;
 };
 
 export type FullScreenVideoProps = {

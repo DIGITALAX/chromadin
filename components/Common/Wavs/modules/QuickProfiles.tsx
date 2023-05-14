@@ -9,7 +9,6 @@ import { INFURA_GATEWAY } from "@/lib/constants";
 
 const QuickProfiles: FunctionComponent<QuickProfilesProps> = ({
   quickProfiles,
-  dispatch,
   router,
 }): JSX.Element => {
   return (

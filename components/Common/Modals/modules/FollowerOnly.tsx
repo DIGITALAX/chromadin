@@ -14,8 +14,10 @@ const FollowerOnly: FunctionComponent<FollowerOnlyProps> = ({
   followLoading,
   approved,
   approveCurrency,
+  dispatch,
+  followDetails,
+  unfollowProfile
 }): JSX.Element => {
-  const dispatch = useDispatch();
   const profileImage = createProfilePicture(profile);
   return (
     <div className="inset-0 justify-center fixed z-50 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto">
@@ -39,9 +41,11 @@ const FollowerOnly: FunctionComponent<FollowerOnlyProps> = ({
           <ImCross color="white" size={15} />
         </div>
         <div className="relative w-full h-fit flex flex-col p-3 items-center justify-center gap-3">
-          <div className="relative w-full h-fit flex items-center text-center text-white font-earl justify-center">
-            Only followers can Collect
-          </div>
+          {followDetails.id !== "" && (
+            <div className="relative w-full h-fit flex items-center text-center text-white font-earl justify-center">
+              Only followers can Collect
+            </div>
+          )}
           <div className="relative w-1/2 h-40 flex py-3">
             <Image
               src={`${INFURA_GATEWAY}/ipfs/QmYHETqQKeSQTFVegUemCfrZqSE3HyNxFwqVnx3Qbho86t`}
@@ -94,8 +98,10 @@ const FollowerOnly: FunctionComponent<FollowerOnlyProps> = ({
                     followLoading && "animate-spin"
                   }`}
                   onClick={
-                    profile?.followModule?.type === "FeeFollowModule" &&
-                    !approved
+                    profile?.isFollowing
+                      ? () => unfollowProfile()
+                      : profile?.followModule?.type === "FeeFollowModule" &&
+                        !approved
                       ? () => approveCurrency()
                       : () => followProfile()
                   }
@@ -105,6 +111,8 @@ const FollowerOnly: FunctionComponent<FollowerOnlyProps> = ({
                   ) : profile?.followModule?.type === "FeeFollowModule" &&
                     !approved ? (
                     "Approve"
+                  ) : profile?.isFollowing ? (
+                    "Unfollow Profile"
                   ) : (
                     "Follow Profile"
                   )}

@@ -3,16 +3,21 @@ import {
   Profile,
 } from "@/components/Home/types/lens.types";
 import broadcast from "@/graphql/lens/mutations/broadcast";
-import createFollowTypedData from "@/graphql/lens/queries/follow";
-import getOneProfile from "@/graphql/lens/queries/getProfile";
+import createFollowTypedData from "@/graphql/lens/mutations/follow";
+import {
+  getOneProfileAuth,
+  getOneProfile,
+} from "@/graphql/lens/queries/getProfile";
 import checkApproved from "@/lib/helpers/checkApproved";
 import handleIndexCheck from "@/lib/helpers/handleIndexCheck";
 import { setIndexModal } from "@/redux/reducers/indexModalSlice";
 import { RootState } from "@/redux/store";
+import FollowNFT from "./../../../../abis/FollowNFT.json";
 import { splitSignature } from "ethers/lib/utils.js";
 import { omit } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Contract, Signer } from "ethers";
 import {
   useAccount,
   useContractWrite,
@@ -20,6 +25,7 @@ import {
   usePrepareSendTransaction,
   useSendTransaction,
   useSignTypedData,
+  useSigner,
 } from "wagmi";
 import { FollowArgs } from "../types/interactions.types";
 import { LENS_HUB_PROXY_ADDRESS_MATIC } from "@/lib/constants";
@@ -31,10 +37,16 @@ import { setModal } from "@/redux/reducers/modalSlice";
 import { setFollowerOnly } from "@/redux/reducers/followerOnlySlice";
 import { waitForTransaction } from "@wagmi/core";
 import pollUntilIndexed from "@/graphql/lens/queries/checkIndexed";
+import {
+  getFollowing,
+  getFollowingAuth,
+} from "@/graphql/lens/queries/getFollowing";
+import createUnfollowTypedData from "@/graphql/lens/mutations/unfollow";
 
 const useFollowers = () => {
   const dispatch = useDispatch();
   const { address } = useAccount();
+  const { data: signer } = useSigner();
   const [profile, setProfile] = useState<Profile | undefined>();
   const [followLoading, setFollowLoading] = useState<boolean>(false);
   const [followArgs, setFollowArgs] = useState<any>();
@@ -62,10 +74,32 @@ const useFollowers = () => {
 
   const getProfile = async (): Promise<void> => {
     try {
-      const prof = await getOneProfile({
-        profileId: followerId?.followerId,
+      let prof, follow;
+      if (profileId) {
+        prof = await getOneProfileAuth({
+          profileId: followerId?.followerId,
+        });
+      } else {
+        prof = await getOneProfile({
+          profileId: followerId?.followerId,
+        });
+      }
+
+      if (profileId) {
+        follow = await getFollowingAuth(
+          { profileId: profileId },
+          prof?.data?.profile?.id
+        );
+      } else {
+        follow = await getFollowing(
+          { profileId: profileId },
+          prof?.data?.profile?.id
+        );
+      }
+      setProfile({
+        ...prof?.data?.profile,
+        isFollowing: follow?.data?.profile?.isFollowing,
       });
-      setProfile(prof?.data?.profile);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -125,6 +159,10 @@ const useFollowers = () => {
   };
 
   const followProfile = async (): Promise<void> => {
+    if (!profileId) {
+      return;
+    }
+
     setFollowLoading(true);
 
     const followModule = createFollowModule(
@@ -212,6 +250,80 @@ const useFollowers = () => {
     setFollowLoading(false);
   };
 
+  const unfollowProfile = async () => {
+    if (!profileId) {
+      return;
+    }
+
+    setFollowLoading(true);
+
+    try {
+      const response = await createUnfollowTypedData({
+        profile: profileId,
+      });
+
+      const typedData: any = response?.data.createUnfollowTypedData.typedData;
+
+      const signature: any = await signTypedDataAsync({
+        domain: omit(typedData?.domain, ["__typename"]),
+        types: omit(typedData?.types, ["__typename"]) as any,
+        value: omit(typedData?.value, ["__typename"]) as any,
+      });
+
+      const broadcastResult: any = await broadcast({
+        id: response?.data?.createUnfollowTypedData?.id,
+        signature,
+      });
+      if (broadcastResult?.data?.broadcast?.__typename !== "RelayerResult") {
+        const { v, r, s } = splitSignature(signature);
+        const sig = {
+          v,
+          r,
+          s,
+          deadline: typedData.value.deadline,
+        };
+
+        const unfollowNFTContract = new Contract(
+          typedData.domain.verifyingContract,
+          FollowNFT,
+          signer as Signer
+        );
+        const tx = await unfollowNFTContract.burnWithSig(
+          typedData.value.tokenId,
+          sig
+        );
+        dispatch(
+          setIndexModal({
+            actionValue: true,
+            actionMessage: "Indexing Interaction",
+          })
+        );
+        const res = await tx?.wait();
+        await handleIndexCheck(res?.transactionHash, dispatch, false);
+        await refetchProfile();
+      } else {
+        dispatch(
+          setIndexModal({
+            actionValue: true,
+            actionMessage: "Indexing Interaction",
+          })
+        );
+        setTimeout(async () => {
+          await handleIndexCheck(
+            broadcastResult?.data?.broadcast?.txHash,
+            dispatch,
+            false
+          );
+          await refetchProfile();
+        }, 7000);
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+
+    setFollowLoading(false);
+  };
+
   const refetchProfile = async (): Promise<void> => {
     try {
       const profile = await getDefaultProfile(address);
@@ -253,7 +365,14 @@ const useFollowers = () => {
     }
   }, [followerId.open]);
 
-  return { profile, followProfile, followLoading, approved, approveCurrency };
+  return {
+    profile,
+    followProfile,
+    followLoading,
+    approved,
+    approveCurrency,
+    unfollowProfile,
+  };
 };
 
 export default useFollowers;

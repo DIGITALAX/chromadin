@@ -87,12 +87,10 @@ const Switch: FunctionComponent<SwitchProps> = ({
   scrollRef,
   feedType,
   feedDispatch,
-  postsLoading,
   followerOnly,
   hasMore,
   fetchMore,
   reactionAmounts,
-  profileLoading,
   setCollectProfileLoading,
   setMirrorProfileLoading,
   setReactProfileLoading,
@@ -101,10 +99,11 @@ const Switch: FunctionComponent<SwitchProps> = ({
   reactProfileLoading,
   profileScroll,
   setProfileScroll,
-  quickProfiles
+  quickProfiles,
+  profileCollections,
 }): JSX.Element => {
   let action: string;
- 
+
   const decideStringAction = () => {
     if (profile) {
       action = "profile";
@@ -196,10 +195,11 @@ const Switch: FunctionComponent<SwitchProps> = ({
           currencyDropDown={currencyDropDown}
           postImagesDispatched={postImagesDispatched}
           profileRef={profileRef}
-          postsLoading={profileLoading}
+          profileCollections={profileCollections}
           setCollectProfileLoading={setCollectProfileLoading}
           setMirrorProfileLoading={setMirrorProfileLoading}
           setReactProfileLoading={setReactProfileLoading}
+          profile={profile}
         />
       );
 
@@ -210,7 +210,6 @@ const Switch: FunctionComponent<SwitchProps> = ({
           feedType={feedType}
           dispatch={dispatch}
           feedDispatch={feedDispatch}
-          postsLoading={postsLoading}
           followerOnly={followerOnly}
           hasMore={hasMore}
           fetchMore={fetchMore}

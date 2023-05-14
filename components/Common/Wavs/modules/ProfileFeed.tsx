@@ -1,11 +1,11 @@
 import { Publication } from "@/components/Home/types/lens.types";
-import { setProfile } from "@/redux/reducers/profileSlice";
 import { FunctionComponent } from "react";
 import { AiFillFastBackward } from "react-icons/ai";
 import InfiniteScroll from "react-infinite-scroll-component";
 import MakeComment from "./MakeComment";
 import FeedPublication from "./FeedPublication";
 import { ProfileFeedProps } from "../types/wavs.types";
+import Account from "./Account";
 
 const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   dispatch,
@@ -91,9 +91,11 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   setCollectProfileLoading,
   setMirrorProfileLoading,
   setReactProfileLoading,
+  profile,
+  profileCollections,
 }): JSX.Element => {
   return (
-    <div className="relative w-full h-full flex flex-col items-start justify-start gap-4">
+    <div className="relative w-full h-full flex flex-col items-start justify-start gap-4 max-w-full">
       <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
         <div className="sticky z-0 w-full h-fit flex flex-col items-start justify-start mr-0">
           <div
@@ -103,6 +105,12 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
             <AiFillFastBackward color="white" size={20} />
           </div>
         </div>
+        <Account
+          dispatch={dispatch}
+          profile={profile}
+          profileCollections={profileCollections}
+          router={router}
+        />
         <InfiniteScroll
           height={"40rem"}
           loader={""}

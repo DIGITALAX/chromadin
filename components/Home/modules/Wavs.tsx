@@ -55,6 +55,9 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const profileScroll = useSelector(
     (state: RootState) => state.app.profileScrollPosReducer.value
   );
+  const profileCollections = useSelector(
+    (state: RootState) => state.app.collectionsReducer.value
+  );
   const individualAmounts = useSelector(
     (state: RootState) => state.app.individualFeedCountReducer
   );
@@ -310,6 +313,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         setProfileScroll={setProfileScroll}
         profileScroll={profileScroll}
         quickProfiles={quickProfiles}
+        profileCollections={profileCollections}
       />
     </div>
   );

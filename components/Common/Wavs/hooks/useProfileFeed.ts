@@ -1,5 +1,12 @@
 import { Publication } from "@/components/Home/types/lens.types";
-import getOneProfile from "@/graphql/lens/queries/getProfile";
+import {
+  getFollowing,
+  getFollowingAuth,
+} from "@/graphql/lens/queries/getFollowing";
+import {
+  getOneProfileAuth,
+  getOneProfile,
+} from "@/graphql/lens/queries/getProfile";
 import {
   profilePublications,
   profilePublicationsAuth,
@@ -257,10 +264,6 @@ const useProfileFeed = () => {
     }
   };
 
-  const setProfileScroll = (e: MouseEvent) => {
-    dispatch(setProfileScrollPosRedux((e.target as HTMLDivElement)?.scrollTop));
-  };
-
   useEffect(() => {
     if (
       router.asPath.includes("#wavs") &&
@@ -277,21 +280,50 @@ const useProfileFeed = () => {
   }, [auth, profileId.profile, router.asPath]);
 
   const getSingleProfile = async () => {
+    let prof, follow;
     try {
-      const prof = await getOneProfile({
-        handle: router.asPath.split("?profile=")[1] + ".lens",
-      });
-      dispatch(setProfile(prof?.data?.profile));
+      if (lensProfile) {
+        prof = await getOneProfileAuth({
+          handle: router.asPath.split("?profile=")[1] + ".lens",
+        });
+      } else {
+        prof = await getOneProfile({
+          handle: router.asPath.split("?profile=")[1] + ".lens",
+        });
+      }
+
+      if (lensProfile) {
+        follow = await getFollowingAuth(
+          { profileId: lensProfile },
+          prof?.data?.profile?.id
+        );
+      } else {
+        follow = await getFollowing(
+          { profileId: lensProfile },
+          prof?.data?.profile?.id
+        );
+      }
+
+      dispatch(
+        setProfile({
+          ...prof?.data?.profile,
+          isFollowing: follow?.data?.profile?.isFollowing,
+        })
+      );
     } catch (err: any) {
       console.error(err.message);
     }
+  };
+
+  const setProfileScroll = (e: MouseEvent) => {
+    dispatch(setProfileScrollPosRedux((e.target as HTMLDivElement)?.scrollTop));
   };
 
   useEffect(() => {
     if (router.asPath.includes("?profile=")) {
       getSingleProfile();
     }
-  }, [router.asPath]);
+  }, [router.asPath, auth, lensProfile]);
 
   return {
     hasMoreProfile,

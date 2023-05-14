@@ -78,6 +78,7 @@ const Modals = () => {
     followLoading,
     approved,
     approveCurrency: approveFollowCurrency,
+    unfollowProfile
   } = useFollowers();
   const {
     collectInfoLoading: controlsCollectInfoLoading,
@@ -204,6 +205,9 @@ const Modals = () => {
           followLoading={followLoading}
           approved={approved}
           approveCurrency={approveFollowCurrency}
+          dispatch={dispatch}
+          followDetails={followersModal}
+          unfollowProfile={unfollowProfile}
         />
       )}
       {collectModal?.open && <Collect message={collectModal?.message} />}

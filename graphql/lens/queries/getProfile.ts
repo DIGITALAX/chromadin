@@ -1,4 +1,4 @@
-import { authClient } from "@/lib/lens/client";
+import { apolloClient, authClient } from "@/lib/lens/client";
 import { ApolloQueryResult, gql } from "@apollo/client";
 
 const PROFILE = `
@@ -7,6 +7,7 @@ query Profile($request: SingleProfileQueryRequest!) {
       id
       name
       bio
+      isFollowedByMe
       attributes {
         displayType
         traitType
@@ -86,7 +87,9 @@ query Profile($request: SingleProfileQueryRequest!) {
   }
 `;
 
-const getOneProfile = async (request: any): Promise<ApolloQueryResult<any>> => {
+export const getOneProfile = async (
+  request: any,
+): Promise<ApolloQueryResult<any>> => {
   return authClient.query({
     query: gql(PROFILE),
     variables: {
@@ -96,4 +99,14 @@ const getOneProfile = async (request: any): Promise<ApolloQueryResult<any>> => {
   });
 };
 
-export default getOneProfile;
+export const getOneProfileAuth = async (
+  request: any,
+): Promise<ApolloQueryResult<any>> => {
+  return apolloClient.query({
+    query: gql(PROFILE),
+    variables: {
+      request,
+    },
+    fetchPolicy: "no-cache",
+  });
+};
