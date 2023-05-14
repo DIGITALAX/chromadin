@@ -272,7 +272,7 @@ const Vending: FunctionComponent<VendingProps> = ({
                         onClick={() => {
                           router.push(
                             router.asPath.includes("?search=")
-                              ? `https://www.chromadin.xyz/#wavs?option=history` +
+                              ? `https://www.chromadin.xyz/#wavs?option=history?search=` +
                                   router.asPath
                                     .split("?search=")[1]
                                     .split("?profile=")[0] +
