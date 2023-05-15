@@ -239,18 +239,18 @@ const Account: FunctionComponent<AccountProps> = ({
                     className="relative rounded-md cursor-pointer active:scale-95 h-28 w-28 flex-shrink-0"
                     id="crt"
                     onClick={() =>
-                      router.asPath.includes("?profile=")
+                      router.asPath.includes("&profile=")
                         ? router.push(
-                            `#collect?option=fulfillment?search=${coll.name}?profile=` +
-                              router.asPath.split("?profile=")[1]
+                            `#collect?option=fulfillment&search=${coll.name}&profile=` +
+                              router.asPath.split("&profile=")[1]
                           )
-                        : router.asPath.includes("?post=")
+                        : router.asPath.includes("&post=")
                         ? router.push(
-                            `#collect?option=fulfillment?search=${coll.name}?post=` +
-                              router.asPath.split("?post=")[1]
+                            `#collect?option=fulfillment&search=${coll.name}&post=` +
+                              router.asPath.split("&post=")[1]
                           )
                         : router.push(
-                            `#collect?option=fulfillment?search=${coll.name}`
+                            `#collect?option=fulfillment&search=${coll.name}`
                           )
                     }
                   >

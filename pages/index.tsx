@@ -14,6 +14,9 @@ import useConnect from "@/components/Common/SideBar/hooks/useConnect";
 import Channels from "@/components/Common/SideBar/modules/Channels";
 import useChannels from "@/components/Common/SideBar/hooks/useChannels";
 import Tabs from "@/components/Common/SideBar/modules/Tabs";
+import { useEffect } from "react";
+import { setHistoryURLRedux } from "@/redux/reducers/historyURLSlice";
+import { useRouter } from "next/router";
 
 const Home: NextPage = (): JSX.Element => {
   const viewer = useSelector((state: RootState) => state.app.viewReducer.value);
@@ -36,8 +39,13 @@ const Home: NextPage = (): JSX.Element => {
     (state: RootState) => state.app.videoSyncReducer
   );
   const dispatch = useDispatch();
+  const router = useRouter();
   const { handleConnect, handleLensSignIn, connected } = useConnect();
   const { videos, tab, setTab } = useChannels();
+
+  useEffect(() => {
+    dispatch(setHistoryURLRedux(router.asPath));
+  }, []);
   return (
     <div className="relative w-full h-full flex flex-col overflow-x-hidden selection:bg-ama selection:text-moda">
       <Head>

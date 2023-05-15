@@ -58,6 +58,7 @@ import profileFeedReducer from "./reducers/profileFeedSlice";
 import profilePaginatedReducer from "./reducers/profilePaginatedSlice";
 import profileScrollPosReducer from "./reducers/profileScrollPosSlice";
 import quickProfilesReducer from "./reducers/quickProfilesSlice";
+import historyURLReducer from "./reducers/historyURLSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -118,6 +119,7 @@ const reducer = combineReducers({
   profilePaginatedReducer,
   profileScrollPosReducer,
   quickProfilesReducer,
+  historyURLReducer
 });
 
 export const store = configureStore({

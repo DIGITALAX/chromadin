@@ -264,13 +264,13 @@ const useProfileFeed = () => {
   useEffect(() => {
     if (
       router.asPath.includes("#wavs") &&
-      router.asPath.includes("?profile=") &&
+      router.asPath.includes("&profile=") &&
       profileId?.profile
     ) {
       getProfile();
     } else if (
       router.asPath.includes("#wavs") &&
-      !router.asPath.includes("?profile=")
+      !router.asPath.includes("&profile=")
     ) {
       dispatch(setProfile(undefined));
     }
@@ -282,16 +282,16 @@ const useProfileFeed = () => {
       if (lensProfile) {
         prof = await getOneProfileAuth({
           handle:
-            router.asPath.split("?profile=")[1] === "lensprotocol"
-              ? router.asPath.split("?profile=")[1]
-              : router.asPath.split("?profile=")[1] + ".lens",
+            router.asPath.split("&profile=")[1] === "lensprotocol"
+              ? router.asPath.split("&profile=")[1]
+              : router.asPath.split("&profile=")[1] + ".lens",
         });
       } else {
         prof = await getOneProfile({
           handle:
-            router.asPath.split("?profile=")[1] === "lensprotocol"
-              ? router.asPath.split("?profile=")[1]
-              : router.asPath.split("?profile=")[1] + ".lens",
+            router.asPath.split("&profile=")[1] === "lensprotocol"
+              ? router.asPath.split("&profile=")[1]
+              : router.asPath.split("&profile=")[1] + ".lens",
         });
       }
 
@@ -318,7 +318,10 @@ const useProfileFeed = () => {
   };
 
   useEffect(() => {
-    if (router.asPath.includes("?profile=")) {
+    if (
+      router.asPath.includes("&profile=") &&
+      router.asPath.includes("#wavs")
+    ) {
       getSingleProfile();
     }
   }, [router.asPath, auth, lensProfile]);

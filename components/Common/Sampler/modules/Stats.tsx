@@ -47,10 +47,10 @@ const Stats: FunctionComponent<StatsProps> = ({
                             onClick={() =>
                               window.open(
                                 indexOne === 4 || indexOne === 5
-                                  ? `https://www.chromadin.xyz/#wavs?option=history?post=${
+                                  ? `https://www.chromadin.xyz/#wavs?option=history&post=${
                                     value?.publication_id
                                   }`
-                                  : `https://www.chromadin.xyz/#wavs?option=history?profile=${
+                                  : `https://www.chromadin.xyz/#wavs?option=history&profile=${
                                       value?.handle?.split(".lens")[0]
                                     }`
                               )

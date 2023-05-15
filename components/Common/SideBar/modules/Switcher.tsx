@@ -53,61 +53,67 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
                 <div
                   className="relative w-fit justify-center lg:w-full h-full grid grid-flow-row auto-rows-auto flex items-center"
                   key={index}
-                  onClick={() =>
-                    !router.asPath.includes("?search=")
-                      ? router.asPath.includes("?profile=")
-                        ? router.push(
-                            `#${values[1]}` +
-                              "?option=" +
-                              (options ? options : "history") +
-                              "?profile=" +
-                              router.asPath.split("?profile=")[1]
-                          )
-                        : router.asPath.includes("?post=")
-                        ? router.push(
-                            `#${values[1]}` +
-                              "?option=" +
-                              (options ? options : "history") +
-                              "?post=" +
-                              router.asPath.split("?post=")[1]
-                          )
-                        : router.push(
-                            `#${values[1]}` +
-                              "?option=" +
-                              (options ? options : "history")
-                          )
-                      : router.asPath.includes("?profile=")
-                      ? router.push(
+                  onClick={() => {
+                    if (!router.asPath.includes("&search=")) {
+                      if (router.asPath.includes("&profile=")) {
+                        router.push(
+                          `#${values[1]}` +
+                            "?option=" +
+                            (options ? options : "history") +
+                            "&profile=" +
+                            router.asPath.split("&profile=")[1]
+                        );
+                      } else if (router.asPath.includes("&post=")) {
+                        router.push(
+                          `#${values[1]}` +
+                            "?option=" +
+                            (options ? options : "history") +
+                            "&post=" +
+                            router.asPath.split("&post=")[1]
+                        );
+                      } else {
+                        router.push(
+                          `#${values[1]}` +
+                            "?option=" +
+                            (options ? options : "history")
+                        );
+                      }
+                    } else {
+                      if (router.asPath.includes("&profile=")) {
+                        router.push(
                           `#${values[1]}` +
                             "?option=" +
                             options +
-                            "?search=" +
+                            "&search=" +
                             router.asPath
-                              .split("?search=")[1]
-                              .split("?profile=")[0] +
-                            "?profile=" +
-                            router.asPath.split("?profile=")[1]
-                        )
-                      : router.asPath.includes("?post=")
-                      ? router.push(
+                              .split("&search=")[1]
+                              .split("&profile=")[0] +
+                            "&profile=" +
+                            router.asPath.split("&profile=")[1]
+                        );
+                      } else if (router.asPath.includes("&post=")) {
+                        router.push(
                           `#${values[1]}` +
                             "?option=" +
                             options +
-                            "?search=" +
+                            "&search=" +
                             router.asPath
-                              .split("?search=")[1]
-                              .split("?post=")[0] +
-                            "?post=" +
-                            router.asPath.split("?post=")[1]
-                        )
-                      : router.push(
+                              .split("&search=")[1]
+                              .split("&post=")[0] +
+                            "&post=" +
+                            router.asPath.split("&post=")[1]
+                        );
+                      } else {
+                        router.push(
                           `#${values[1]}` +
                             "?option=" +
                             options +
-                            "?search=" +
-                            router.asPath.split("?search=")[1]
-                        )
-                  }
+                            "&search=" +
+                            router.asPath.split("&search=")[1]
+                        );
+                      }
+                    }
+                  }}
                 >
                   <div
                     className={`relative w-8 lg:w-12 h-8 lg:h-12 grid grid-flow-col auto-cols-auto justify-self-center items-center  ${"cursor-pointer active:scale-95"}`}

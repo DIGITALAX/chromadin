@@ -350,11 +350,15 @@ const useIndividual = () => {
   }, [index.message]);
 
   useEffect(() => {
-    if (router.asPath.includes("?post=")) {
-      dispatch(setFeedType(router.asPath.split("?post=")[1]));
-    } else {
+    if (router.asPath.includes("&post=") && router.asPath.includes("#wavs")) {
+      dispatch(setFeedType(router.asPath.split("&post=")[1]));
+    } else if (
+      router.asPath.includes("#wavs") &&
+      !router.asPath.includes("&post=")
+    ) {
       dispatch(setFeedType(""));
     }
+
   }, [router.asPath]);
 
   return {

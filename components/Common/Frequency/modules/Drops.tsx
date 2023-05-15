@@ -70,26 +70,26 @@ const Drops: FunctionComponent<DropsProps> = ({
                     router.asPath.includes("#sampler") ||
                     router.asPath.includes("#wavs")
                   ) {
-                    if (!router.asPath.includes("?search=")) {
-                      if (router.asPath.includes("?post=")) {
+                    if (!router.asPath.includes("&search=")) {
+                      if (router.asPath.includes("&post=")) {
                         router.push(
                           router.asPath.split(
                             router.asPath.includes("#wavs")
                               ? "#wavs"
                               : "#sampler"
                           )[0] +
-                            "#collect?option=fulfillment?post=" +
-                            router.asPath.split("?post=")[1]
+                            "#collect?option=fulfillment&post=" +
+                            router.asPath.split("&post=")[1]
                         );
-                      } else if (router.asPath.includes("?profile=")) {
+                      } else if (router.asPath.includes("&profile=")) {
                         router.push(
                           router.asPath.split(
                             router.asPath.includes("#wavs")
                               ? "#wavs"
                               : "#sampler"
                           )[0] +
-                            "#collect?option=fulfillment?profile=" +
-                            router.asPath.split("?profile=")[1]
+                            "#collect?option=fulfillment&profile=" +
+                            router.asPath.split("&profile=")[1]
                         );
                       } else {
                         router.push(
@@ -101,7 +101,7 @@ const Drops: FunctionComponent<DropsProps> = ({
                         );
                       }
                     } else {
-                      if (router.asPath.includes("?post=")) {
+                      if (router.asPath.includes("&post=")) {
                         router.push(
                           router.asPath.split(
                             router.asPath.includes("#wavs")
@@ -109,14 +109,15 @@ const Drops: FunctionComponent<DropsProps> = ({
                               : "#sampler"
                           )[0] +
                             "#collect?option=fulfillment" +
-                            `?search=${
+                            `&search=${
                               router.asPath
-                                .split("?search=")[1]
-                                ?.split("?post=")[0]
+                                .split("&search=")[1]
+                                ?.split("&post=")[0]
                             }` +
-                            router.asPath.split("?post=")[1]
+                            "&post=" +
+                            router.asPath.split("&post=")[1]
                         );
-                      } else if (router.asPath.includes("?profile=")) {
+                      } else if (router.asPath.includes("&profile=")) {
                         router.push(
                           router.asPath.split(
                             router.asPath.includes("#wavs")
@@ -124,12 +125,13 @@ const Drops: FunctionComponent<DropsProps> = ({
                               : "#sampler"
                           )[0] +
                             "#collect?option=fulfillment" +
-                            `?search=${
+                            `&search=${
                               router.asPath
-                                .split("?search=")[1]
-                                ?.split("?profile=")[0]
+                                .split("&search=")[1]
+                                ?.split("&profile=")[0]
                             }` +
-                            router.asPath.split("?profile=")[1]
+                            "&profile=" +
+                            router.asPath.split("&profile=")[1]
                         );
                       } else {
                         router.push(
@@ -139,24 +141,24 @@ const Drops: FunctionComponent<DropsProps> = ({
                               : "#sampler"
                           )[0] +
                             "#collect?option=fulfillment" +
-                            `?search=${router.asPath.split("?search=")[1]}`
+                            `&search=${router.asPath.split("&search=")[1]}`
                         );
                       }
                     }
                   } else {
-                    if (!router.asPath.includes("?search=")) {
+                    if (!router.asPath.includes("&search=")) {
                       if (router.asPath.includes("#")) {
-                        if (router.asPath.includes("?profile=")) {
+                        if (router.asPath.includes("&profile=")) {
                           router.push(
                             router.asPath.split("?option=")[0] +
-                              "?option=fulfillment?profile=" +
-                              router.asPath.split("?profile=")[1]
+                              "?option=fulfillment&profile=" +
+                              router.asPath.split("&profile=")[1]
                           );
-                        } else if (router.asPath.includes("?post=")) {
+                        } else if (router.asPath.includes("&post=")) {
                           router.push(
                             router.asPath.split("?option=")[0] +
-                              "?option=fulfillment?post=" +
-                              router.asPath.split("?post=")[1]
+                              "?option=fulfillment&post=" +
+                              router.asPath.split("&post=")[1]
                           );
                         } else {
                           router.push(
@@ -169,35 +171,37 @@ const Drops: FunctionComponent<DropsProps> = ({
                       }
                     } else {
                       if (router.asPath.includes("#")) {
-                        if (router.asPath.includes("?profile=")) {
+                        if (router.asPath.includes("&profile=")) {
                           router.push(
                             router.asPath.split("?option=")[0] +
-                              "?option=fulfillment?search=" +
+                              "?option=fulfillment&search=" +
                               router.asPath
-                                .split("?search=")[1]
-                                .split("?profile=")[0] +
-                              router.asPath.split("?profile=")[1]
+                                .split("&search=")[1]
+                                .split("&profile=")[0] +
+                              "&profile=" +
+                              router.asPath.split("&profile=")[1]
                           );
-                        } else if (router.asPath.includes("?post=")) {
+                        } else if (router.asPath.includes("&post=")) {
                           router.push(
                             router.asPath.split("?option=")[0] +
-                              "?option=fulfillment?search=" +
+                              "?option=fulfillment&search=" +
                               router.asPath
-                                .split("?search=")[1]
-                                .split("?post=")[0] +
-                              router.asPath.split("?post=")[1]
+                                .split("&search=")[1]
+                                .split("&post=")[0] +
+                              "&post=" +
+                              router.asPath.split("&post=")[1]
                           );
                         } else {
                           router.push(
                             router.asPath.split("?option=")[0] +
-                              "?option=fulfillment?search=" +
-                              router.asPath.split("?search=")[1]
+                              "?option=fulfillment&search=" +
+                              router.asPath.split("&search=")[1]
                           );
                         }
                       } else {
                         router.push(
-                          "#stream?option=fulfillment?search=" +
-                            router.asPath.split("?search=")[1]
+                          "#stream?option=fulfillment&search=" +
+                            router.asPath.split("&search=")[1]
                         );
                       }
                     }

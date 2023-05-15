@@ -135,22 +135,22 @@ const Reactions: FunctionComponent<ReactionProps> = ({
           onClick={() =>
             commentAmount > 0 &&
             router.push(
-              router.asPath.includes("?post=")
-                ? router.asPath.split("?post=")[0] +
-                    `?post=${
+              router.asPath.includes("&post=")
+                ? router.asPath.split("&post=")[0] +
+                    `&post=${
                       publication?.__typename !== "Mirror"
                         ? publication?.id
                         : publication?.mirrorOf.id
                     }`
-                : router.asPath.includes("?profile=")
-                ? router.asPath.split("?profile=")[0] +
-                  `?post=${
+                : router.asPath.includes("&profile=")
+                ? router.asPath.split("&profile=")[0] +
+                  `&post=${
                     publication?.__typename !== "Mirror"
                       ? publication?.id
                       : publication?.mirrorOf.id
                   }`
                 : router.asPath +
-                  `?post=${
+                  `&post=${
                     publication?.__typename !== "Mirror"
                       ? publication?.id
                       : publication?.mirrorOf.id

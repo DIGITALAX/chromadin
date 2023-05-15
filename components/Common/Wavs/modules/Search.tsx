@@ -40,7 +40,7 @@ const Search: FunctionComponent<SearchProps> = ({
                 onClick={() => {
                   router.push(
                     router.asPath +
-                      `?profile=${profile.handle.split(".lens")[0]}`
+                      `&profile=${profile.handle.split(".lens")[0]}`
                   );
                   setProfilesOpenSearch(false);
                   setProfilesFound([]);

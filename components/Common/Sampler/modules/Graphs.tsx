@@ -128,7 +128,7 @@ const Graphs: FunctionComponent<GraphsProps> = ({
                             canvas !== "interests" && canvas !== "hashtags"
                               ? () =>
                                   window.open(
-                                    `https://www.chromadin.xyz/#wavs?option=history?profile=${
+                                    `https://www.chromadin.xyz/#wavs?option=history&profile=${
                                       item?.label?.handle?.split(".lens")[0]
                                     }`
                                   )

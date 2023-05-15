@@ -4,6 +4,8 @@ import Comments from "./Comments";
 import { AiFillFastBackward } from "react-icons/ai";
 import { IndividualProps } from "../types/wavs.types";
 import MakeComment from "./MakeComment";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const Individual: FunctionComponent<IndividualProps> = ({
   dispatch,
@@ -99,19 +101,29 @@ const Individual: FunctionComponent<IndividualProps> = ({
   router,
   profileType,
 }): JSX.Element => {
+  const history = useSelector(
+    (state: RootState) => state.app.historyURLReducer.value
+  );
   return (
     <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
       <div className="sticky z-0 w-full h-fit flex flex-col items-start justify-start mr-0">
         <div
           className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
           onClick={() => {
-            const previousUrl = window.history.state?.as || document.referrer;
-            const hasWavs = previousUrl.includes("#wavs");
-            if (hasWavs) {
-              router.back();
-            } else {
-              router.push("#wavs?option=history");
-            }
+            history.includes("#wavs") &&
+            (history.includes("&profile=") || history.includes("&post="))
+              ? router.asPath.includes("&search=")
+                ? router.push(
+                    `#wavs?option=history&search=${
+                      router.asPath
+                        .split("?search")[1]
+                        .split(
+                          history.includes("&profile=") ? "&profile=" : "&post="
+                        )[0]
+                    }`
+                  )
+                : router.push("#wavs?option=history")
+              : router.back();
           }}
         >
           <AiFillFastBackward color="white" size={20} />

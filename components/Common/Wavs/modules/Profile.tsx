@@ -66,18 +66,18 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
             id="crt"
             onClick={() =>
               router.push(
-                router.asPath.includes("?post=")
-                  ? router.asPath.split("?post=")[0] +
-                      `?profile=${
+                router.asPath.includes("&post=")
+                  ? router.asPath.split("&post=")[0] +
+                      `&profile=${
                         publication?.__typename !== "Mirror"
                           ? publication?.profile?.handle?.split(".lens")[0]
                           : publication?.mirrorOf?.profile?.handle?.split(
                               ".lens"
                             )[0]
                       }`
-                  : router.asPath.includes("?profile=")
-                  ? router.asPath.split("?profile=")[0] +
-                    `?profile=${
+                  : router.asPath.includes("&profile=")
+                  ? router.asPath.split("&profile=")[0] +
+                    `&profile=${
                       publication?.__typename !== "Mirror"
                         ? publication?.profile?.handle?.split(".lens")[0]
                         : publication?.mirrorOf?.profile?.handle?.split(
@@ -85,7 +85,7 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
                           )[0]
                     }`
                   : router.asPath +
-                    `?profile=${
+                    `&profile=${
                       publication?.__typename !== "Mirror"
                         ? publication?.profile?.handle?.split(".lens")[0]
                         : publication?.mirrorOf?.profile?.handle?.split(

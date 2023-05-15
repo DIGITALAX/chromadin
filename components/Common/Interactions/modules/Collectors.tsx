@@ -63,16 +63,16 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
                     key={index}
                     onClick={() => {
                       router.push(
-                        router.asPath.includes("?search=")
-                          ? `https://www.chromadin.xyz/#wavs?option=history?search=` +
+                        router.asPath.includes("&search=")
+                          ? `https://www.chromadin.xyz/#wavs?option=history&search=` +
                               router.asPath
-                                .split("?search=")[1]
-                                .split("?profile=")[0] +
-                              "?profile=" +
+                                .split("&search=")[1]
+                                .split("&profile=")[0] +
+                              "&profile=" +
                               collector?.defaultProfile?.handle?.split(
                                 ".lens"
                               )[0]
-                          : `https://www.chromadin.xyz/#wavs?option=history?profile=${
+                          : `https://www.chromadin.xyz/#wavs?option=history&profile=${
                               collector?.defaultProfile?.handle?.split(
                                 ".lens"
                               )[0]
