@@ -113,8 +113,8 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
                   ? router.push(
                       `#wavs?option=history&search=${
                         router.asPath
-                          .split("?search")[1]
-                          .split(
+                          ?.split("&search=")[1]
+                          ?.split(
                             history.includes("&profile=")
                               ? "&profile="
                               : "&post="
