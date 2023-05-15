@@ -6,6 +6,8 @@ import MakeComment from "./MakeComment";
 import FeedPublication from "./FeedPublication";
 import { ProfileFeedProps } from "../types/wavs.types";
 import Account from "./Account";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   dispatch,
@@ -95,6 +97,9 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   profileCollections,
   profileType,
 }): JSX.Element => {
+  const history = useSelector(
+    (state: RootState) => state.app.historyURLReducer.value
+  );
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4 max-w-full">
       <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
@@ -102,14 +107,22 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           <div
             className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
             onClick={() => {
-              const previousUrl = window.history.state?.as || document.referrer;
-              const hasWavs = previousUrl.includes("#wavs");
-
-              if (hasWavs) {
-                router.back();
-              } else {
-                router.push("#wavs?option=history");
-              }
+              history.includes("#wavs") &&
+              (history.includes("&profile=") || history.includes("&post="))
+                ? router.asPath.includes("&search=")
+                  ? router.push(
+                      `#wavs?option=history&search=${
+                        router.asPath
+                          .split("?search")[1]
+                          .split(
+                            history.includes("&profile=")
+                              ? "&profile="
+                              : "&post="
+                          )[0]
+                      }`
+                    )
+                  : router.push("#wavs?option=history")
+                : router.back();
             }}
           >
             <AiFillFastBackward color="white" size={20} />
