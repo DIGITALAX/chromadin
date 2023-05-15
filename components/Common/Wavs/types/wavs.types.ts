@@ -649,7 +649,7 @@ export interface CollectValueType {
 }
 
 export type ImageUploadsProps = {
-  handleRemoveImage: (e: UploadedMedia) => void;
+  handleRemoveImage: (e: UploadedMedia, feed?: boolean) => void;
   commentLoading: boolean;
   postImagesDispatched?: UploadedMedia[];
 };

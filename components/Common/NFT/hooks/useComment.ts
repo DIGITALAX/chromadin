@@ -384,8 +384,9 @@ const useComment = () => {
 
   useEffect(() => {
     const savedData = getCommentData();
-    if (savedData) {
+    if (savedData && JSON.parse(savedData).post) {
       setCommentDescription(JSON.parse(savedData).post);
+
       let resultElement = document.querySelector("#highlighted-content");
       if (
         JSON.parse(savedData).post[JSON.parse(savedData).post?.length - 1] ==

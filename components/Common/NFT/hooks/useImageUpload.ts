@@ -10,11 +10,12 @@ import fileLimitAlert from "@/lib/helpers/fileLimitAlert";
 import videoLimitAlert from "@/lib/helpers/videoLimitAlert";
 
 const useImageUpload = () => {
+  const page = useSelector((state: RootState) => state.app.viewReducer.value);
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [videoLoading, setVideoLoading] = useState<boolean>(false);
   const [mappedFeaturedFiles, setMappedFeaturedFiles] = useState<
     UploadedMedia[]
-  >(JSON.parse(getCommentData() || "{}").images || []);
+  >(page !== "wavs" ? JSON.parse(getCommentData() || "{}").images || [] : []);
   const dispatch = useDispatch();
   const imagesUploaded = useSelector(
     (state: RootState) => state.app.postImageReducer.value
@@ -22,7 +23,8 @@ const useImageUpload = () => {
 
   const uploadImage = async (
     e: FormEvent | File,
-    canvas?: boolean
+    canvas?: boolean,
+    feed?: boolean
   ): Promise<void> => {
     if (!canvas) {
       if ((e as any)?.target?.files?.length < 1) {
@@ -77,13 +79,16 @@ const useImageUpload = () => {
               ) {
                 let newArr = [...(imagesUploaded as any), ...finalImages];
                 setMappedFeaturedFiles(newArr);
-                const postStorage = JSON.parse(getCommentData() || "{}");
-                setCommentData(
-                  JSON.stringify({
-                    ...postStorage,
-                    images: newArr,
-                  })
-                );
+                if (feed) {
+                  const postStorage = JSON.parse(getCommentData() || "{}");
+                  setCommentData(
+                    JSON.stringify({
+                      ...postStorage,
+                      images: newArr,
+                    })
+                  );
+                }
+
                 setImageLoading(false);
               }
             }
@@ -95,7 +100,7 @@ const useImageUpload = () => {
     }
   };
 
-  const uploadVideo = async (e: FormEvent) => {
+  const uploadVideo = async (e: FormEvent, feed?: boolean) => {
     try {
       if ((e as any).target.files.length < 1) {
         return;
@@ -114,32 +119,38 @@ const useImageUpload = () => {
         { cid: String(cid?.cid), type: MediaType.Video },
       ];
       setMappedFeaturedFiles(newArr);
-      const postStorage = JSON.parse(getCommentData() || "{}");
-      setCommentData(
-        JSON.stringify({
-          ...postStorage,
-          images: newArr,
-        })
-      );
+
+      if (feed) {
+        const postStorage = JSON.parse(getCommentData() || "{}");
+        setCommentData(
+          JSON.stringify({
+            ...postStorage,
+            images: newArr,
+          })
+        );
+      }
     } catch (err: any) {
       console.error(err.message);
     }
     setVideoLoading(false);
   };
 
-  const handleRemoveImage = (image: UploadedMedia): void => {
+  const handleRemoveImage = (image: UploadedMedia, feed?: boolean): void => {
     const cleanedArray = lodash.filter(
       imagesUploaded,
       (uploaded) => uploaded.cid !== image.cid
     );
     setMappedFeaturedFiles(cleanedArray);
-    const postStorage = JSON.parse(getCommentData() || "{}");
-    setCommentData(
-      JSON.stringify({
-        ...postStorage,
-        images: cleanedArray,
-      })
-    );
+
+    if (feed) {
+      const postStorage = JSON.parse(getCommentData() || "{}");
+      setCommentData(
+        JSON.stringify({
+          ...postStorage,
+          images: cleanedArray,
+        })
+      );
+    }
   };
 
   useEffect(() => {

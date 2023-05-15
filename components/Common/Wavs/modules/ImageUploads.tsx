@@ -53,7 +53,7 @@ const ImageUploads: FunctionComponent<ImageUploadsProps> = ({
                     !commentLoading && "cursor-pointer active:scale-95"
                   }`}
                   onClick={() => {
-                    !commentLoading ? handleRemoveImage(image) : {};
+                    !commentLoading ? handleRemoveImage(image, false) : {};
                   }}
                 >
                   <RiCloseCircleFill color="white" size={20} />

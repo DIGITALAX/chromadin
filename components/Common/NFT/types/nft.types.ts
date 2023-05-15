@@ -113,8 +113,12 @@ export type OptionsProps = {
   videoLoading: boolean;
   imageLoading: boolean;
   commentLoading: boolean;
-  uploadImage: (e: FormEvent) => Promise<void>;
-  uploadVideo: (e: FormEvent) => Promise<void>;
+  uploadImage: (
+    e: FormEvent,
+    canvas?: boolean,
+    feed?: boolean
+  ) => Promise<void>;
+  uploadVideo: (e: FormEvent, feed?: boolean) => Promise<void>;
   setGifOpen: (e: boolean) => void;
   gifOpen: boolean;
   collectOpen: boolean;
@@ -122,7 +126,7 @@ export type OptionsProps = {
 };
 
 export type ImageUploadsProps = {
-  handleRemoveImage: (e: UploadedMedia) => void;
+  handleRemoveImage: (e: UploadedMedia, feed?: boolean) => void;
   commentLoading: boolean;
   postImagesDispatched?: UploadedMedia[];
 };

@@ -49,7 +49,7 @@ const Options: FunctionComponent<OptionsProps> = ({
           postImages?.length === 4 && "opacity-20"
         }`}
         onChange={(e: FormEvent) => {
-          !commentLoading ? uploadImage(e) : {};
+          !commentLoading ? uploadImage(e, undefined, true) : {};
         }}
       >
         {!imageLoading ? (
@@ -88,7 +88,7 @@ const Options: FunctionComponent<OptionsProps> = ({
           postImages?.length === 4 && "opacity-20"
         }`}
         onChange={(e: FormEvent) => {
-          !commentLoading ? uploadVideo(e) : {};
+          !commentLoading ? uploadVideo(e, true) : {};
         }}
       >
         {!videoLoading ? (
