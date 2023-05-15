@@ -281,11 +281,17 @@ const useProfileFeed = () => {
     try {
       if (lensProfile) {
         prof = await getOneProfileAuth({
-          handle: router.asPath.split("?profile=")[1] + ".lens",
+          handle:
+            router.asPath.split("?profile=")[1] === "lensprotocol"
+              ? router.asPath.split("?profile=")[1]
+              : router.asPath.split("?profile=")[1] + ".lens",
         });
       } else {
         prof = await getOneProfile({
-          handle: router.asPath.split("?profile=")[1] + ".lens",
+          handle:
+            router.asPath.split("?profile=")[1] === "lensprotocol"
+              ? router.asPath.split("?profile=")[1]
+              : router.asPath.split("?profile=")[1] + ".lens",
         });
       }
 
