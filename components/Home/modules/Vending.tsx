@@ -286,36 +286,13 @@ const Vending: FunctionComponent<VendingProps> = ({
                       </div>
                       <div
                         className="relative flex flex-row w-fit h-fit gap-3 items-center pt-3 cursor-pointer"
-                        onClick={() => {
-                          router.push(
-                            router.asPath.includes("&search=")
-                              ? router.asPath.includes("&profile=")
-                                ? `https://www.chromadin.xyz/#wavs?option=history&search=` +
-                                  router.asPath
-                                    .split("&search=")[1]
-                                    .split("&profile=")[0] +
-                                  "&profile=" +
-                                  collection.profile?.handle?.split(".lens")[0]
-                                : router.asPath.includes("&post=")
-                                ? `https://www.chromadin.xyz/#wavs?option=history&search=` +
-                                  router.asPath
-                                    .split("&search=")[1]
-                                    .split("&post=")[0] +
-                                  "&profile=" +
-                                  collection.profile?.handle?.split(".lens")[0]
-                                : `https://www.chromadin.xyz/#wavs?option=history&search=${
-                                    router.asPath.split("&search=")[1]
-                                  }` +
-                                  `profile=${
-                                    collection.profile?.handle?.split(
-                                      ".lens"
-                                    )[0]
-                                  }`
-                              : `https://www.chromadin.xyz/#wavs?option=history&profile=${
-                                  collection.profile?.handle?.split(".lens")[0]
-                                }`
-                          );
-                        }}
+                        onClick={() =>
+                          window.open(
+                            `https://www.chromadin.xyz/#wavs?option=history&profile=${
+                              collection.profile?.handle?.split(".lens")[0]
+                            }`
+                          )
+                        }
                       >
                         <div
                           className="relative w-6 h-6 cursor-pointer border border-ama rounded-full"

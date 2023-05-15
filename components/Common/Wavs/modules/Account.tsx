@@ -239,19 +239,9 @@ const Account: FunctionComponent<AccountProps> = ({
                     className="relative rounded-md cursor-pointer active:scale-95 h-28 w-28 flex-shrink-0"
                     id="crt"
                     onClick={() =>
-                      router.asPath.includes("&profile=")
-                        ? router.push(
-                            `#collect?option=fulfillment&search=${coll.name}&profile=` +
-                              router.asPath.split("&profile=")[1]
-                          )
-                        : router.asPath.includes("&post=")
-                        ? router.push(
-                            `#collect?option=fulfillment&search=${coll.name}&post=` +
-                              router.asPath.split("&post=")[1]
-                          )
-                        : router.push(
-                            `#collect?option=fulfillment&search=${coll.name}`
-                          )
+                      window.open(
+                        `https://www.chromadin.xyz/#collect?option=fulfillment&search=${coll.name}`
+                      )
                     }
                   >
                     <Image
