@@ -218,6 +218,12 @@ const Vending: FunctionComponent<VendingProps> = ({
                                     "?option=fufillment?profile=" +
                                     router.asPath.split("?profile=")[1]
                                 )
+                              : router.asPath.includes("?post=")
+                              ? router.push(
+                                  router.asPath.split("?option=")[0] +
+                                    "?option=fufillment?post=" +
+                                    router.asPath.split("?post=")[1]
+                                )
                               : router.push(
                                   router.asPath.split("?option=")[0] +
                                     "?option=fulfillment"
@@ -232,6 +238,18 @@ const Vending: FunctionComponent<VendingProps> = ({
                                       .split("?profile")[0] +
                                     "?profile=" +
                                     router.asPath.split("?profile")[0]
+                                  }`
+                              )
+                            : router.asPath.includes("?post=")
+                            ? router.push(
+                                router.asPath.split("?option=")[0] +
+                                  "?option=fulfillment" +
+                                  `?search=${
+                                    router.asPath
+                                      .split("?search=")[1]
+                                      .split("?post")[0] +
+                                    "?post=" +
+                                    router.asPath.split("?post")[0]
                                   }`
                               )
                             : router.push(
@@ -271,12 +289,28 @@ const Vending: FunctionComponent<VendingProps> = ({
                         onClick={() => {
                           router.push(
                             router.asPath.includes("?search=")
-                              ? `https://www.chromadin.xyz/#wavs?option=history?search=` +
+                              ? router.asPath.includes("?profile=")
+                                ? `https://www.chromadin.xyz/#wavs?option=history?search=` +
                                   router.asPath
                                     .split("?search=")[1]
                                     .split("?profile=")[0] +
                                   "?profile=" +
                                   collection.profile?.handle?.split(".lens")[0]
+                                : router.asPath.includes("?post=")
+                                ? `https://www.chromadin.xyz/#wavs?option=history?search=` +
+                                  router.asPath
+                                    .split("?search=")[1]
+                                    .split("?post=")[0] +
+                                  "?profile=" +
+                                  collection.profile?.handle?.split(".lens")[0]
+                                : `https://www.chromadin.xyz/#wavs?option=history?search=${
+                                    router.asPath.split("?search=")[1]
+                                  }` +
+                                  `profile=${
+                                    collection.profile?.handle?.split(
+                                      ".lens"
+                                    )[0]
+                                  }`
                               : `https://www.chromadin.xyz/#wavs?option=history?profile=${
                                   collection.profile?.handle?.split(".lens")[0]
                                 }`

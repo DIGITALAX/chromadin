@@ -31,7 +31,7 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
   setReactLoader,
   feedType,
   router,
-  profileType
+  profileType,
 }): JSX.Element => {
   const profileImage = createProfilePicture(publication, true);
   return (
@@ -66,12 +66,32 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
             id="crt"
             onClick={() =>
               router.push(
-                router.asPath.split("?profile=")[0] +
-                  `?profile=${
-                    publication?.__typename !== "Mirror"
-                      ? publication?.profile?.handle?.split(".lens")[0]
-                      : publication?.mirrorOf?.profile?.handle?.split(".lens")[0]
-                  }`
+                router.asPath.includes("?post=")
+                  ? router.asPath.split("?post=")[0] +
+                      `?profile=${
+                        publication?.__typename !== "Mirror"
+                          ? publication?.profile?.handle?.split(".lens")[0]
+                          : publication?.mirrorOf?.profile?.handle?.split(
+                              ".lens"
+                            )[0]
+                      }`
+                  : router.asPath.includes("?profile=")
+                  ? router.asPath.split("?profile=")[0] +
+                    `?profile=${
+                      publication?.__typename !== "Mirror"
+                        ? publication?.profile?.handle?.split(".lens")[0]
+                        : publication?.mirrorOf?.profile?.handle?.split(
+                            ".lens"
+                          )[0]
+                    }`
+                  : router.asPath +
+                    `?profile=${
+                      publication?.__typename !== "Mirror"
+                        ? publication?.profile?.handle?.split(".lens")[0]
+                        : publication?.mirrorOf?.profile?.handle?.split(
+                            ".lens"
+                          )[0]
+                    }`
               )
             }
           >
@@ -164,6 +184,7 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
             setCollectLoader={setCollectLoader}
             feedType={feedType}
             profileType={profileType}
+            router={router}
           />
         </div>
       </div>

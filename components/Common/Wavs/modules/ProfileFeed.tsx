@@ -93,7 +93,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   setReactProfileLoading,
   profile,
   profileCollections,
-  profileType
+  profileType,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4 max-w-full">
@@ -101,7 +101,16 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
         <div className="sticky z-0 w-full h-fit flex flex-col items-start justify-start mr-0">
           <div
             className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
-            onClick={() => router.push(router.asPath.split("?profile=")[0])}
+            onClick={() => {
+              const previousUrl = window.history.state?.as || document.referrer;
+              const hasWavs = previousUrl.includes("#wavs");
+
+              if (hasWavs) {
+                router.back();
+              } else {
+                router.push("#wavs?option=history");
+              }
+            }}
           >
             <AiFillFastBackward color="white" size={20} />
           </div>
@@ -124,7 +133,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           scrollableTarget={"scrollableDiv"}
           ref={profileRef}
           onScroll={(e: MouseEvent) => setScrollPos(e)}
-          initialScrollY={feedType.value === "" ? scrollPos : 0}
+          initialScrollY={feedType === "" ? scrollPos : 0}
         >
           <div className="w-full h-full relative flex flex-col gap-4 pb-3">
             {profileDispatch?.map((publication: Publication, index: number) => {
@@ -153,7 +162,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
                     collectAmount={profileAmounts.collect[index]}
                     commentAmount={profileAmounts.comment[index]}
                     openComment={commentOpen}
-                    feedType={feedType.value}
+                    feedType={feedType}
                     router={router}
                     setCollectLoader={setCollectProfileLoading}
                     setMirrorLoader={setMirrorProfileLoading}

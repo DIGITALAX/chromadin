@@ -39,7 +39,7 @@ const Search: FunctionComponent<SearchProps> = ({
                 className={`relative w-full h-10 px-3 py-2 bg-black flex flex-row border-x rounded-md gap-3 cursor-pointer items-center justify-center hover:bg-offBlack border-b`}
                 onClick={() => {
                   router.push(
-                    router.asPath?.split("?profile=")[0] +
+                    router.asPath +
                       `?profile=${profile.handle.split(".lens")[0]}`
                   );
                   setProfilesOpenSearch(false);

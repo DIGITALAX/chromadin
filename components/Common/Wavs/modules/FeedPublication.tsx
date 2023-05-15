@@ -8,7 +8,6 @@ import { FeedPublicationProps } from "../types/wavs.types";
 import { setImageFeedViewer } from "@/redux/reducers/imageFeedViewerSlice";
 import descriptionRegex from "@/lib/helpers/descriptionRegex";
 import { FaRegCommentDots } from "react-icons/fa";
-import { setFeedType } from "@/redux/reducers/feedTypeSlice";
 
 const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
   publication,
@@ -84,11 +83,14 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
             }`}
             onClick={() =>
               publication?.__typename === "Comment" &&
-              dispatch(
-                setFeedType({
-                  actionValue: publication?.mainPost?.id,
-                  actionIndex: index,
-                })
+              router.push(
+                router.asPath.includes("?post=")
+                  ? router.asPath.split("?post=")[0] +
+                      `?post=${publication?.mainPost?.id}`
+                  : router.asPath.includes("?profile=")
+                  ? router.asPath.split("?profile=")[0] +
+                    `?post=${publication?.mainPost?.id}`
+                  : router.asPath + `?post=${publication?.mainPost?.id}`
               )
             }
           >
@@ -223,14 +225,27 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
             <div
               className={`relative w-fit h-full col-start-1 row-start-1 sm:col-start-2 sm:pt-0 pt-3 justify-self-end self-center grid grid-flow-col auto-cols-auto font-digi gap-1 cursor-pointer hover:opacity-70 active:scale-95 text-white`}
               onClick={() =>
-                dispatch(
-                  setFeedType({
-                    actionValue:
-                      publication?.__typename !== "Mirror"
-                        ? publication?.id
-                        : publication?.mirrorOf.id,
-                    actionIndex: index,
-                  })
+                router.push(
+                  router.asPath.includes("?post=")
+                    ? router.asPath.split("?post=")[0] +
+                        `?post=${
+                          publication?.__typename !== "Mirror"
+                            ? publication?.id
+                            : publication?.mirrorOf.id
+                        }`
+                    : router.asPath.includes("?profile=")
+                    ? router.asPath.split("?profile=")[0] +
+                      `?post=${
+                        publication?.__typename !== "Mirror"
+                          ? publication?.id
+                          : publication?.mirrorOf.id
+                      }`
+                    : router.asPath +
+                      `?post=${
+                        publication?.__typename !== "Mirror"
+                          ? publication?.id
+                          : publication?.mirrorOf.id
+                      }`
                 )
               }
             >

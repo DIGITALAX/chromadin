@@ -108,7 +108,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
   hasMoreSearch,
   setProfilesOpenSearch,
   setProfilesFound,
-  profileType
+  profileType,
 }): JSX.Element => {
   let action: string;
 

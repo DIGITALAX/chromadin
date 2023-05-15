@@ -128,7 +128,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
           scrollableTarget={"scrollableDiv"}
           ref={scrollRef}
           onScroll={(e: MouseEvent) => setScrollPos(e)}
-          initialScrollY={feedType.value === "" ? scrollPos : 0}
+          initialScrollY={feedType === "" ? scrollPos : 0}
         >
           <div className="w-full h-full relative flex flex-col gap-4 pb-3">
             {feedDispatch?.map((publication: Publication, index: number) => {
@@ -157,7 +157,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
                     collectAmount={reactionAmounts.collect[index]}
                     commentAmount={reactionAmounts.comment[index]}
                     openComment={commentOpen}
-                    feedType={feedType.value}
+                    feedType={feedType}
                     router={router}
                     profileType={profileType}
                   />

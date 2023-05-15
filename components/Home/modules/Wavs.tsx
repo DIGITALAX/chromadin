@@ -25,7 +25,9 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const reactionAmounts = useSelector(
     (state: RootState) => state.app.reactionFeedCountReducer
   );
-  const feedType = useSelector((state: RootState) => state.app.feedTypeReducer);
+  const feedType = useSelector(
+    (state: RootState) => state.app.feedTypeReducer.value
+  );
   const commentAmounts = useSelector(
     (state: RootState) => state.app.commentFeedCountReducer
   );

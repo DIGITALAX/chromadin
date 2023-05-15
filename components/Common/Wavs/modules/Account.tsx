@@ -231,6 +231,7 @@ const Account: FunctionComponent<AccountProps> = ({
           <div className="relative w-fit h-full overflow-x-scroll grid grid-flow-col auto-cols-auto gap-2">
             {profileCollections
               ?.filter((coll: Collection) => coll.profile?.id === profile?.id)
+              ?.reverse()
               ?.map((coll: Collection, index: number) => {
                 return (
                   <div
@@ -238,9 +239,19 @@ const Account: FunctionComponent<AccountProps> = ({
                     className="relative rounded-md cursor-pointer active:scale-95 h-28 w-28 flex-shrink-0"
                     id="crt"
                     onClick={() =>
-                      router.push(
-                        `#collect?option=fulfillment?search=${coll.name}`
-                      )
+                      router.asPath.includes("?profile=")
+                        ? router.push(
+                            `#collect?option=fulfillment?search=${coll.name}?profile=` +
+                              router.asPath.split("?profile=")[1]
+                          )
+                        : router.asPath.includes("?post=")
+                        ? router.push(
+                            `#collect?option=fulfillment?search=${coll.name}?post=` +
+                              router.asPath.split("?post=")[1]
+                          )
+                        : router.push(
+                            `#collect?option=fulfillment?search=${coll.name}`
+                          )
                     }
                   >
                     <Image

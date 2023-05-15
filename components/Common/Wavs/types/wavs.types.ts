@@ -163,6 +163,7 @@ export type ReactionProps = {
   openComment: string;
   feedType: string;
   profileType: string;
+  router: NextRouter;
 };
 
 export type FeedProps = {
@@ -284,10 +285,7 @@ export type FeedProps = {
   profileId: string;
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
-  feedType: {
-    value: string;
-    index: number;
-  };
+  feedType: string;
   scrollRef: Ref<InfiniteScroll>;
   setScrollPos: (e: MouseEvent) => void;
   scrollPos: number;
@@ -375,10 +373,7 @@ export type IndividualProps = {
   router: NextRouter;
   dispatch: Dispatch<AnyAction>;
   mainPost: Publication;
-  feedType: {
-    value: string;
-    index: number;
-  };
+  feedType: string;
   profileType: string;
   address: `0x${string}` | undefined;
   followerOnlyMain: boolean;
@@ -880,10 +875,7 @@ export type ProfileFeedProps = {
   profileId: string;
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
-  feedType: {
-    value: string;
-    index: number;
-  };
+  feedType: string;
   profileRef: Ref<InfiniteScroll>;
   setScrollPos: (e: MouseEvent) => void;
   scrollPos: number;
@@ -987,10 +979,7 @@ export type SwitchProps = {
   profileId: string;
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
-  feedType: {
-    value: string;
-    index: number;
-  };
+  feedType: string;
   scrollRef: Ref<InfiniteScroll>;
   profileRef: Ref<InfiniteScroll>;
   setScrollPos: (e: MouseEvent) => void;
@@ -1115,10 +1104,7 @@ export type AllPostsProps = {
   profileId: string;
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
-  feedType: {
-    value: string;
-    index: number;
-  };
+  feedType: string;
   scrollRef: Ref<InfiniteScroll>;
   setScrollPos: (e: MouseEvent) => void;
   scrollPos: number;

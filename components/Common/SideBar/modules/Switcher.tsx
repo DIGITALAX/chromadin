@@ -63,6 +63,14 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
                               "?profile=" +
                               router.asPath.split("?profile=")[1]
                           )
+                        : router.asPath.includes("?post=")
+                        ? router.push(
+                            `#${values[1]}` +
+                              "?option=" +
+                              (options ? options : "history") +
+                              "?post=" +
+                              router.asPath.split("?post=")[1]
+                          )
                         : router.push(
                             `#${values[1]}` +
                               "?option=" +
@@ -79,6 +87,18 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
                               .split("?profile=")[0] +
                             "?profile=" +
                             router.asPath.split("?profile=")[1]
+                        )
+                      : router.asPath.includes("?post=")
+                      ? router.push(
+                          `#${values[1]}` +
+                            "?option=" +
+                            options +
+                            "?search=" +
+                            router.asPath
+                              .split("?search=")[1]
+                              .split("?post=")[0] +
+                            "?post=" +
+                            router.asPath.split("?post=")[1]
                         )
                       : router.push(
                           `#${values[1]}` +

@@ -65,17 +65,41 @@ const Who: FunctionComponent<WhoProps> = ({
                               className="relative w-full h-fit p-2 drop-shadow-lg flex flex-row bg-gradient-to-r from-offBlack via-gray-600 to-black auto-cols-auto rounded-lg border border-black font-economica text-white cursor-pointer"
                               onClick={() =>
                                 router.push(
-                                  router.asPath.split("?profile=")[0] +
-                                    `?profile=${
-                                      type === 0
-                                        ? reacter?.profile?.handle?.split(
-                                            ".lens"
-                                          )[0]
-                                        : type === 1 &&
-                                          reacter?.defaultProfile?.handle?.split(
-                                            ".lens"
-                                          )[0]
-                                    }`
+                                  router.asPath.includes("?post=")
+                                    ? router.asPath.split("?post=")[0] +
+                                        `?profile=${
+                                          type === 0
+                                            ? reacter?.profile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                            : type === 1 &&
+                                              reacter?.defaultProfile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                        }`
+                                    : router.asPath.includes("?profile=")
+                                    ? router.asPath.split("?profile=")[0] +
+                                      `?profile=${
+                                        type === 0
+                                          ? reacter?.profile?.handle?.split(
+                                              ".lens"
+                                            )[0]
+                                          : type === 1 &&
+                                            reacter?.defaultProfile?.handle?.split(
+                                              ".lens"
+                                            )[0]
+                                      }`
+                                    : router.asPath +
+                                      `?profile=${
+                                        type === 0
+                                          ? reacter?.profile?.handle?.split(
+                                              ".lens"
+                                            )[0]
+                                          : type === 1 &&
+                                            reacter?.defaultProfile?.handle?.split(
+                                              ".lens"
+                                            )[0]
+                                      }`
                                 )
                               }
                             >

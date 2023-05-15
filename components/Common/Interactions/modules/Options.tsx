@@ -29,6 +29,14 @@ const Options: FunctionComponent = (): JSX.Element => {
                         "?profile=" +
                         router.asPath.split("?profile=")[1]
                     )
+                  : router.asPath.includes("?post=")
+                  ? router.push(
+                      router.asPath.split("?option=")[0] +
+                        "?option=" +
+                        value[1] +
+                        "?post=" +
+                        router.asPath.split("?post=")[1]
+                    )
                   : router.push(
                       router.asPath.split("?option=")[0] + "?option=" + value[1]
                     )
@@ -42,6 +50,17 @@ const Options: FunctionComponent = (): JSX.Element => {
                       }` +
                       "?profile=" +
                       router.asPath.split("?profile=")[1]
+                  )
+                : router.asPath.includes("?post=")
+                ? router.push(
+                    router.asPath.split("?option=")[0] +
+                      "?option=" +
+                      value[1] +
+                      `?search=${
+                        router.asPath.split("?search=")[1].split("?post=")[0]
+                      }` +
+                      "?post=" +
+                      router.asPath.split("?post=")[1]
                   )
                 : router.push(
                     router.asPath.split("?option=")[0] +

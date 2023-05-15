@@ -137,7 +137,7 @@ const Feed: FunctionComponent<FeedProps> = ({
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
       <div className="relative w-full h-full flex flex-col xl:flex-row items-start justify-center gap-8">
-        {feedType.value !== "" ? (
+        {feedType !== "" ? (
           <Individual
             dispatch={dispatch}
             commentors={commentors}

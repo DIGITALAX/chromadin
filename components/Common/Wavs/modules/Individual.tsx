@@ -1,7 +1,6 @@
 import { FunctionComponent } from "react";
 import FeedPublication from "./FeedPublication";
 import Comments from "./Comments";
-import { setFeedType } from "@/redux/reducers/feedTypeSlice";
 import { AiFillFastBackward } from "react-icons/ai";
 import { IndividualProps } from "../types/wavs.types";
 import MakeComment from "./MakeComment";
@@ -98,7 +97,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
   postImagesDispatched,
   individualAmounts,
   router,
-  profileType
+  profileType,
 }): JSX.Element => {
   return (
     <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
@@ -106,12 +105,13 @@ const Individual: FunctionComponent<IndividualProps> = ({
         <div
           className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
           onClick={() => {
-            dispatch(
-              setFeedType({
-                actionValue: "",
-                actionIndex: 0,
-              })
-            );
+            const previousUrl = window.history.state?.as || document.referrer;
+            const hasWavs = previousUrl.includes("#wavs");
+            if (hasWavs) {
+              router.back();
+            } else {
+              router.push("#wavs?option=history");
+            }
           }}
         >
           <AiFillFastBackward color="white" size={20} />
@@ -138,7 +138,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
             mirrorAmount={individualAmounts?.mirror}
             collectAmount={individualAmounts?.collect}
             commentAmount={individualAmounts?.comment}
-            feedType={feedType.value}
+            feedType={feedType}
             setCollectLoader={setCollectPostLoading}
             setMirrorLoader={setMirrorPostLoading}
             setReactLoader={setReactPostLoading}
@@ -234,7 +234,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
         mirrorLoading={mirrorCommentLoading}
         reactLoading={reactCommentLoading}
         collectLoading={collectCommentLoading}
-        feedType={feedType.value}
+        feedType={feedType}
         followerOnly={followerOnlyComments}
         fetchMoreComments={fetchMoreComments}
         hasMoreComments={hasMoreComments}

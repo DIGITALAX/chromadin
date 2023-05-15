@@ -66,72 +66,141 @@ const Drops: FunctionComponent<DropsProps> = ({
                       tokensSold: collection?.soldTokens,
                     })
                   );
-                  if (router.asPath.includes("#sampler")) {
-                    !router.asPath.includes("?search=")
-                      ? router.asPath.includes("?profile=")
-                        ? router.push(
-                            router.asPath.split("#sampler")[0] +
-                              "#collect?option=fulfillment?profile=" +
-                              router.asPath.split("?profile=")[1]
-                          )
-                        : router.push(
-                            router.asPath.split("#sampler")[0] +
-                              "#collect?option=fulfillment"
-                          )
-                      : router.push(
-                          router.asPath.split("#sampler")[0] +
+                  if (
+                    router.asPath.includes("#sampler") ||
+                    router.asPath.includes("#wavs")
+                  ) {
+                    if (!router.asPath.includes("?search=")) {
+                      if (router.asPath.includes("?post=")) {
+                        router.push(
+                          router.asPath.split(
+                            router.asPath.includes("#wavs")
+                              ? "#wavs"
+                              : "#sampler"
+                          )[0] +
+                            "#collect?option=fulfillment?post=" +
+                            router.asPath.split("?post=")[1]
+                        );
+                      } else if (router.asPath.includes("?profile=")) {
+                        router.push(
+                          router.asPath.split(
+                            router.asPath.includes("#wavs")
+                              ? "#wavs"
+                              : "#sampler"
+                          )[0] +
+                            "#collect?option=fulfillment?profile=" +
+                            router.asPath.split("?profile=")[1]
+                        );
+                      } else {
+                        router.push(
+                          router.asPath.split(
+                            router.asPath.includes("#wavs")
+                              ? "#wavs"
+                              : "#sampler"
+                          )[0] + "#collect?option=fulfillment"
+                        );
+                      }
+                    } else {
+                      if (router.asPath.includes("?post=")) {
+                        router.push(
+                          router.asPath.split(
+                            router.asPath.includes("#wavs")
+                              ? "#wavs"
+                              : "#sampler"
+                          )[0] +
+                            "#collect?option=fulfillment" +
+                            `?search=${
+                              router.asPath
+                                .split("?search=")[1]
+                                ?.split("?post=")[0]
+                            }` +
+                            router.asPath.split("?post=")[1]
+                        );
+                      } else if (router.asPath.includes("?profile=")) {
+                        router.push(
+                          router.asPath.split(
+                            router.asPath.includes("#wavs")
+                              ? "#wavs"
+                              : "#sampler"
+                          )[0] +
+                            "#collect?option=fulfillment" +
+                            `?search=${
+                              router.asPath
+                                .split("?search=")[1]
+                                ?.split("?profile=")[0]
+                            }` +
+                            router.asPath.split("?profile=")[1]
+                        );
+                      } else {
+                        router.push(
+                          router.asPath.split(
+                            router.asPath.includes("#wavs")
+                              ? "#wavs"
+                              : "#sampler"
+                          )[0] +
                             "#collect?option=fulfillment" +
                             `?search=${router.asPath.split("?search=")[1]}`
                         );
-                  } else if (router.asPath.includes("#wavs")) {
-                    !router.asPath.includes("?search=")
-                      ? router.asPath.includes("?profile=")
-                        ? router.push(
-                            router.asPath.split("#wavs")[0] +
-                              "#collect?option=fulfillment?profile=" +
-                              router.asPath.split("?profile=")[1]
-                          )
-                        : router.push(
-                            router.asPath.split("#wavs")[0] +
-                              "#collect?option=fulfillment"
-                          )
-                      : router.push(
-                          router.asPath.split("#wavs")[0] +
-                            "#collect?option=fulfillment" +
-                            `?search=${router.asPath.split("?search=")[1]}`
-                        );
+                      }
+                    }
                   } else {
-                    !router.asPath.includes("?search=")
-                      ? router.asPath.includes("#")
-                        ? router.asPath.includes("?profile=")
-                          ? router.push(
-                              router.asPath.split("?option=")[0] +
-                                "?option=fulfillment?profile=" +
-                                router.asPath.split("?profile=")[1]
-                            )
-                          : router.push(
-                              router.asPath.split("?option=")[0] +
-                                "?option=fulfillment"
-                            )
-                        : router.asPath.includes("?profile=")
-                        ? router.push(
+                    if (!router.asPath.includes("?search=")) {
+                      if (router.asPath.includes("#")) {
+                        if (router.asPath.includes("?profile=")) {
+                          router.push(
                             router.asPath.split("?option=")[0] +
-                              "#stream?option=fulfillment?profile=" +
+                              "?option=fulfillment?profile=" +
                               router.asPath.split("?profile=")[1]
-                          )
-                        : router.push(
+                          );
+                        } else if (router.asPath.includes("?post=")) {
+                          router.push(
                             router.asPath.split("?option=")[0] +
-                              "#stream?option=fulfillment"
-                          )
-                      : router.asPath.includes("#")
-                      ? router.push(
-                          router.asPath.split("?option=")[0] +
-                            "?option=fulfillment" +
-                            `?search=${router.asPath.split("?search=")[1]}`
-                        )
-                      : router.asPath.split("?option=")[0] +
-                        "#stream?option=fulfillment" +
-                        `?search=${router.asPath.split("?search=")[1]}`;
+                              "?option=fulfillment?post=" +
+                              router.asPath.split("?post=")[1]
+                          );
+                        } else {
+                          router.push(
+                            router.asPath.split("?option=")[0] +
+                              "?option=fulfillment"
+                          );
+                        }
+                      } else {
+                        router.push("#stream?option=fulfillment");
+                      }
+                    } else {
+                      if (router.asPath.includes("#")) {
+                        if (router.asPath.includes("?profile=")) {
+                          router.push(
+                            router.asPath.split("?option=")[0] +
+                              "?option=fulfillment?search=" +
+                              router.asPath
+                                .split("?search=")[1]
+                                .split("?profile=")[0] +
+                              router.asPath.split("?profile=")[1]
+                          );
+                        } else if (router.asPath.includes("?post=")) {
+                          router.push(
+                            router.asPath.split("?option=")[0] +
+                              "?option=fulfillment?search=" +
+                              router.asPath
+                                .split("?search=")[1]
+                                .split("?post=")[0] +
+                              router.asPath.split("?post=")[1]
+                          );
+                        } else {
+                          router.push(
+                            router.asPath.split("?option=")[0] +
+                              "?option=fulfillment?search=" +
+                              router.asPath.split("?search=")[1]
+                          );
+                        }
+                      } else {
+                        router.push(
+                          "#stream?option=fulfillment?search=" +
+                            router.asPath.split("?search=")[1]
+                        );
+                      }
+                    }
                   }
                 }}
               >

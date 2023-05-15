@@ -18,6 +18,7 @@ import { setCommentsRedux } from "@/redux/reducers/commentSlice";
 import { setCommentFeedCount } from "@/redux/reducers/commentFeedCountSlice";
 import { useRouter } from "next/router";
 import { setIndividualFeedCount } from "@/redux/reducers/individualFeedCountReducer";
+import { setFeedType } from "@/redux/reducers/feedTypeSlice";
 
 const useIndividual = () => {
   const dispatch = useDispatch();
@@ -347,6 +348,14 @@ const useIndividual = () => {
       }
     }
   }, [index.message]);
+
+  useEffect(() => {
+    if (router.asPath.includes("?post=")) {
+      dispatch(setFeedType(router.asPath.split("?post=")[1]));
+    } else {
+      dispatch(setFeedType(""));
+    }
+  }, [router.asPath]);
 
   return {
     getMorePostComments,

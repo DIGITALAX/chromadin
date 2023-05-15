@@ -17,7 +17,6 @@ import { setPurchase } from "@/redux/reducers/purchaseSlice";
 import handleHidePost from "@/lib/helpers/handleHidePost";
 import { setReactionState } from "@/redux/reducers/reactionStateSlice";
 import { setOpenComment } from "@/redux/reducers/openCommentSlice";
-import { setFeedType } from "@/redux/reducers/feedTypeSlice";
 
 const Reactions: FunctionComponent<ReactionProps> = ({
   textColor,
@@ -49,6 +48,7 @@ const Reactions: FunctionComponent<ReactionProps> = ({
   openComment,
   feedType,
   profileType,
+  router,
 }): JSX.Element => {
   return (
     <div
@@ -134,14 +134,27 @@ const Reactions: FunctionComponent<ReactionProps> = ({
           }`}
           onClick={() =>
             commentAmount > 0 &&
-            dispatch(
-              setFeedType({
-                actionValue:
-                  publication?.__typename !== "Mirror"
-                    ? publication?.id
-                    : publication?.mirrorOf.id,
-                actionIndex: index,
-              })
+            router.push(
+              router.asPath.includes("?post=")
+                ? router.asPath.split("?post=")[0] +
+                    `?post=${
+                      publication?.__typename !== "Mirror"
+                        ? publication?.id
+                        : publication?.mirrorOf.id
+                    }`
+                : router.asPath.includes("?profile=")
+                ? router.asPath.split("?profile=")[0] +
+                  `?post=${
+                    publication?.__typename !== "Mirror"
+                      ? publication?.id
+                      : publication?.mirrorOf.id
+                  }`
+                : router.asPath +
+                  `?post=${
+                    publication?.__typename !== "Mirror"
+                      ? publication?.id
+                      : publication?.mirrorOf.id
+                  }`
             )
           }
         >
