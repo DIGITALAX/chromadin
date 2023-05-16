@@ -8,6 +8,7 @@ import { ProfileFeedProps } from "../types/wavs.types";
 import Account from "./Account";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { BiHomeHeart } from "react-icons/bi";
 
 const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   dispatch,
@@ -103,7 +104,13 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4 max-w-full">
       <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
-        <div className="sticky z-0 w-full h-fit flex flex-col items-start justify-start mr-0">
+        <div className="sticky z-0 w-full h-fit flex flex-row items-start justify-start mr-0 gap-2">
+          <div
+            className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
+            onClick={() => router.push(router.asPath.split("&profile=")[0])}
+          >
+            <BiHomeHeart color="white" size={18} />
+          </div>
           <div
             className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
             onClick={() => {

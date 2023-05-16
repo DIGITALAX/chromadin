@@ -85,12 +85,21 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
               publication?.__typename === "Comment" &&
               router.push(
                 router.asPath.includes("&post=")
-                  ? router.asPath.split("&post=")[0] +
+                  ? router.asPath.includes("?option=")
+                    ? router.asPath.split("&post=")[0] +
                       `&post=${publication?.mainPost?.id}`
+                    : router.asPath.split("&post=")[0] +
+                      `?option=history&post=${publication?.mainPost?.id}`
                   : router.asPath.includes("&profile=")
-                  ? router.asPath.split("&profile=")[0] +
-                    `&post=${publication?.mainPost?.id}`
-                  : router.asPath + `&post=${publication?.mainPost?.id}`
+                  ? router.asPath.includes("?option=")
+                    ? router.asPath.split("&profile=")[0] +
+                      `&post=${publication?.mainPost?.id}`
+                    : router.asPath.split("&profile=")[0] +
+                      `?option=history&post=${publication?.mainPost?.id}`
+                  : router.asPath.includes("?option=")
+                  ? router.asPath + `&post=${publication?.mainPost?.id}`
+                  : router.asPath +
+                    `?option=history&post=${publication?.mainPost?.id}`
               )
             }
           >
@@ -227,21 +236,42 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
               onClick={() =>
                 router.push(
                   router.asPath.includes("&post=")
-                    ? router.asPath.split("&post=")[0] +
+                    ? router.asPath.includes("?option=")
+                      ? router.asPath.split("&post=")[0] +
                         `&post=${
                           publication?.__typename !== "Mirror"
                             ? publication?.id
                             : publication?.mirrorOf.id
                         }`
+                      : router.asPath.split("&post=")[0] +
+                        `?option=history&post=${
+                          publication?.__typename !== "Mirror"
+                            ? publication?.id
+                            : publication?.mirrorOf.id
+                        }`
                     : router.asPath.includes("&profile=")
-                    ? router.asPath.split("&profile=")[0] +
+                    ? router.asPath.includes("?option=")
+                      ? router.asPath.split("&profile=")[0] +
+                        `&post=${
+                          publication?.__typename !== "Mirror"
+                            ? publication?.id
+                            : publication?.mirrorOf.id
+                        }`
+                      : router.asPath.split("&profile=")[0] +
+                        `?option=history&post=${
+                          publication?.__typename !== "Mirror"
+                            ? publication?.id
+                            : publication?.mirrorOf.id
+                        }`
+                    : router.asPath.includes("?option=")
+                    ? router.asPath +
                       `&post=${
                         publication?.__typename !== "Mirror"
                           ? publication?.id
                           : publication?.mirrorOf.id
                       }`
                     : router.asPath +
-                      `&post=${
+                      `?option=history&post=${
                         publication?.__typename !== "Mirror"
                           ? publication?.id
                           : publication?.mirrorOf.id

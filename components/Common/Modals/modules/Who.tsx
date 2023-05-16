@@ -65,8 +65,97 @@ const Who: FunctionComponent<WhoProps> = ({
                               className="relative w-full h-fit p-2 drop-shadow-lg flex flex-row bg-gradient-to-r from-offBlack via-gray-600 to-black auto-cols-auto rounded-lg border border-black font-economica text-white cursor-pointer"
                               onClick={() =>
                                 router.push(
-                                  router.asPath.includes("&post=")
-                                    ? router.asPath.split("&post=")[0] +
+                                  !router.asPath.includes("&search")
+                                    ? router.asPath.includes("&post=")
+                                      ? router.asPath.includes("?option=")
+                                        ? router.asPath.split("&post=")[0] +
+                                          `&profile=${
+                                            type === 0
+                                              ? reacter?.profile?.handle?.split(
+                                                  ".lens"
+                                                )[0]
+                                              : type === 1 &&
+                                                reacter?.defaultProfile?.handle?.split(
+                                                  ".lens"
+                                                )[0]
+                                          }`
+                                        : router.asPath.split("&post=")[0] +
+                                          `?option=history&profile=${
+                                            type === 0
+                                              ? reacter?.profile?.handle?.split(
+                                                  ".lens"
+                                                )[0]
+                                              : type === 1 &&
+                                                reacter?.defaultProfile?.handle?.split(
+                                                  ".lens"
+                                                )[0]
+                                          }`
+                                      : router.asPath.includes("&profile=")
+                                      ? router.asPath.includes("?option=")
+                                        ? router.asPath.split("&profile=")[0] +
+                                          `&profile=${
+                                            type === 0
+                                              ? reacter?.profile?.handle?.split(
+                                                  ".lens"
+                                                )[0]
+                                              : type === 1 &&
+                                                reacter?.defaultProfile?.handle?.split(
+                                                  ".lens"
+                                                )[0]
+                                          }`
+                                        : router.asPath.split("&profile=")[0] +
+                                          `?option=history&profile=${
+                                            type === 0
+                                              ? reacter?.profile?.handle?.split(
+                                                  ".lens"
+                                                )[0]
+                                              : type === 1 &&
+                                                reacter?.defaultProfile?.handle?.split(
+                                                  ".lens"
+                                                )[0]
+                                          }`
+                                      : router.asPath.includes("?option=")
+                                      ? router.asPath +
+                                        `&profile=${
+                                          type === 0
+                                            ? reacter?.profile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                            : type === 1 &&
+                                              reacter?.defaultProfile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                        }`
+                                      : router.asPath +
+                                        `?option=history&profile=${
+                                          type === 0
+                                            ? reacter?.profile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                            : type === 1 &&
+                                              reacter?.defaultProfile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                        }`
+                                    : router.asPath.includes("&post=")
+                                    ? router.asPath.includes("?option=")
+                                      ? router.asPath.split("&post=")[0] +
+                                        `&profile=${
+                                          type === 0
+                                            ? reacter?.profile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                            : type === 1 &&
+                                              reacter?.defaultProfile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                        }`
+                                      : router.asPath.split("&search=")[0] +
+                                        `?option=history&search=${
+                                          router.asPath
+                                            .split("&search=")[1]
+                                            .split("&post=")[0]
+                                        }` +
                                         `&profile=${
                                           type === 0
                                             ? reacter?.profile?.handle?.split(
@@ -78,7 +167,36 @@ const Who: FunctionComponent<WhoProps> = ({
                                               )[0]
                                         }`
                                     : router.asPath.includes("&profile=")
-                                    ? router.asPath.split("&profile=")[0] +
+                                    ? router.asPath.includes("?option=")
+                                      ? router.asPath.split("&profile=")[0] +
+                                        `&profile=${
+                                          type === 0
+                                            ? reacter?.profile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                            : type === 1 &&
+                                              reacter?.defaultProfile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                        }`
+                                      : router.asPath.split("&search=")[0] +
+                                        `?option=history&search=${
+                                          router.asPath
+                                            .split("&search=")[1]
+                                            .split("&profile=")[0]
+                                        }` +
+                                        `&profile=${
+                                          type === 0
+                                            ? reacter?.profile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                            : type === 1 &&
+                                              reacter?.defaultProfile?.handle?.split(
+                                                ".lens"
+                                              )[0]
+                                        }`
+                                    : router.asPath.includes("?option=")
+                                    ? router.asPath +
                                       `&profile=${
                                         type === 0
                                           ? reacter?.profile?.handle?.split(
@@ -89,7 +207,13 @@ const Who: FunctionComponent<WhoProps> = ({
                                               ".lens"
                                             )[0]
                                       }`
-                                    : router.asPath +
+                                    : router.asPath
+                                        .split("&search=")[0]
+                                        .split("&search=")[0] +
+                                      "?option=history&search" +
+                                      router.asPath
+                                        .split("&search=")[0]
+                                        .split("&search=")[1] +
                                       `&profile=${
                                         type === 0
                                           ? reacter?.profile?.handle?.split(

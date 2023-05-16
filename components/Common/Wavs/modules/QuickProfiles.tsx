@@ -27,8 +27,19 @@ const QuickProfiles: FunctionComponent<QuickProfilesProps> = ({
                   id="crt"
                   onClick={() =>
                     router.push(
-                      router.asPath +
-                        `&profile=${profile?.handle?.split(".lens")[0]}`
+                      router.asPath.includes("?option=")
+                        ? router.asPath +
+                            `&profile=${profile?.handle?.split(".lens")[0]}`
+                        : router.asPath.includes("&search=")
+                        ? router.asPath.split("&search=")[0] +
+                          `?option=history&search=${
+                            router.asPath.split("&search=")[1]
+                          }` +
+                          `&profile=${profile?.handle?.split(".lens")[0]}`
+                        : router.asPath +
+                          `?option=history&profile=${
+                            profile?.handle?.split(".lens")[0]
+                          }`
                     )
                   }
                 >

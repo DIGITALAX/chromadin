@@ -22,48 +22,99 @@ const Options: FunctionComponent = (): JSX.Element => {
             onClick={() =>
               !router.asPath.includes("&search=")
                 ? router.asPath.includes("&profile=")
+                  ? router.asPath.includes("?option=")
+                    ? router.push(
+                        router.asPath.split("?option=")[0] +
+                          "?option=" +
+                          value[1] +
+                          "&profile=" +
+                          router.asPath.split("&profile=")[1]
+                      )
+                    : router.push(
+                        router.asPath.split("&profile=")[0] +
+                          "?option=" +
+                          value[1] +
+                          "&profile=" +
+                          router.asPath.split("&profile=")[1]
+                      )
+                  : router.asPath.includes("&post=")
+                  ? router.asPath.includes("?option=")
+                    ? router.push(
+                        router.asPath.split("?option=")[0] +
+                          "?option=" +
+                          value[1] +
+                          "&post=" +
+                          router.asPath.split("&post=")[1]
+                      )
+                    : router.push(
+                        router.asPath.split("&post=")[0] +
+                          "?option=" +
+                          value[1] +
+                          "&profile=" +
+                          router.asPath.split("&post=")[1]
+                      )
+                  : router.asPath.includes("?option=")
+                  ? router.push(
+                      router.asPath.split("?option=")[0] + "?option=" + value[1]
+                    )
+                  : router.push(router.asPath + "?option=" + value[1])
+                : router.asPath.includes("&profile=")
+                ? router.asPath.includes("?option=")
                   ? router.push(
                       router.asPath.split("?option=")[0] +
                         "?option=" +
                         value[1] +
+                        `&search=${
+                          router.asPath
+                            .split("&search=")[1]
+                            .split("&profile=")[0]
+                        }` +
                         "&profile=" +
                         router.asPath.split("&profile=")[1]
                     )
-                  : router.asPath.includes("&post=")
+                  : router.push(
+                      router.asPath.split("&search=")[0] +
+                        "?option=" +
+                        value[1] +
+                        `&search=${
+                          router.asPath
+                            .split("&search=")[1]
+                            .split("&profile=")[0]
+                        }` +
+                        "&profile=" +
+                        router.asPath.split("&profile=")[1]
+                    )
+                : router.asPath.includes("&post=")
+                ? router.asPath.includes("?option=")
                   ? router.push(
                       router.asPath.split("?option=")[0] +
                         "?option=" +
                         value[1] +
+                        `&search=${
+                          router.asPath.split("&search=")[1].split("&post=")[0]
+                        }` +
                         "&post=" +
                         router.asPath.split("&post=")[1]
                     )
                   : router.push(
-                      router.asPath.split("?option=")[0] + "?option=" + value[1]
+                      router.asPath.split("&search=")[0] +
+                        "?option=" +
+                        value[1] +
+                        `&search=${
+                          router.asPath.split("&search=")[1].split("&post=")[0]
+                        }` +
+                        "&post=" +
+                        router.asPath.split("&post=")[1]
                     )
-                : router.asPath.includes("&profile=")
+                : router.asPath.includes("?option=")
                 ? router.push(
                     router.asPath.split("?option=")[0] +
                       "?option=" +
                       value[1] +
-                      `&search=${
-                        router.asPath.split("&search=")[1].split("&profile=")[0]
-                      }` +
-                      "&profile=" +
-                      router.asPath.split("&profile=")[1]
-                  )
-                : router.asPath.includes("&post=")
-                ? router.push(
-                    router.asPath.split("?option=")[0] +
-                      "?option=" +
-                      value[1] +
-                      `&search=${
-                        router.asPath.split("&search=")[1].split("&post=")[0]
-                      }` +
-                      "&post=" +
-                      router.asPath.split("&post=")[1]
+                      `&search=${router.asPath.split("&search=")[1]}`
                   )
                 : router.push(
-                    router.asPath.split("?option=")[0] +
+                    router.asPath.split("&search=")[0] +
                       "?option=" +
                       value[1] +
                       `&search=${router.asPath.split("&search=")[1]}`

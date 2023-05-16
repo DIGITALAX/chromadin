@@ -39,8 +39,17 @@ const Search: FunctionComponent<SearchProps> = ({
                 className={`relative w-full h-10 px-3 py-2 bg-black flex flex-row border-x rounded-md gap-3 cursor-pointer items-center justify-center hover:bg-offBlack border-b`}
                 onClick={() => {
                   router.push(
-                    router.asPath +
-                      `&profile=${profile.handle.split(".lens")[0]}`
+                    router.asPath.includes("?option=")
+                      ? router.asPath +
+                          `&profile=${profile.handle.split(".lens")[0]}`
+                      : router.asPath.includes("&search=")
+                      ? router.asPath.split("&search=")[0] +
+                        "?option=history&search=" +
+                        router.asPath.split("&search=")[1] +
+                        `&profile=${profile.handle.split(".lens")[0]}`
+                      : router.asPath +
+                        "?option=history" +
+                        `&profile=${profile.handle.split(".lens")[0]}`
                   );
                   setProfilesOpenSearch(false);
                   setProfilesFound([]);

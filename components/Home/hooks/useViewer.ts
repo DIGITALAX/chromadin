@@ -17,46 +17,89 @@ const useViewer = () => {
   const handleSearch = (e: FormEvent) => {
     if (router.asPath.includes("&search=")) {
       router.asPath.includes("&profile=")
-        ? router.push(
-            router.asPath.split("&search=")[0] +
-              "&search=" +
-              (e.target as HTMLFormElement).value +
-              "&profile=" +
-              router.asPath.split("&profile=")[1]
-          )
+        ? router.asPath.includes("?option=")
+          ? router.push(
+              router.asPath.split("&search=")[0] +
+                "&search=" +
+                (e.target as HTMLFormElement).value +
+                "&profile=" +
+                router.asPath.split("&profile=")[1]
+            )
+          : router.push(
+              router.asPath.split("&search=")[0] +
+                "?option=history" +
+                "&search=" +
+                (e.target as HTMLFormElement).value +
+                "&profile=" +
+                router.asPath.split("&profile=")[1]
+            )
         : router.asPath.includes("&post=")
+        ? router.asPath.includes("?option=")
+          ? router.push(
+              router.asPath.split("&search=")[0] +
+                "&search=" +
+                (e.target as HTMLFormElement).value +
+                "&post=" +
+                router.asPath.split("&post=")[1]
+            )
+          : router.push(
+              router.asPath.split("&search=")[0] +
+                "?option=history&search=" +
+                (e.target as HTMLFormElement).value +
+                "&post=" +
+                router.asPath.split("&post=")[1]
+            )
+        : router.asPath.includes("?option=")
         ? router.push(
             router.asPath.split("&search=")[0] +
               "&search=" +
-              (e.target as HTMLFormElement).value +
-              "&post=" +
-              router.asPath.split("&post=")[1]
+              (e.target as HTMLFormElement).value
           )
         : router.push(
             router.asPath.split("&search=")[0] +
-              "&search=" +
+              "?option=history&search=" +
               (e.target as HTMLFormElement).value
           );
     } else {
       router.asPath.includes("&profile=")
-        ? router.push(
-            router.asPath.split("&profile=")[0] +
-              "&search=" +
-              (e.target as HTMLFormElement).value +
-              "&profile=" +
-              router.asPath.split("&profile=")[1]
-          )
+        ? router.asPath.includes("?option=")
+          ? router.push(
+              router.asPath.split("&profile=")[0] +
+                "&search=" +
+                (e.target as HTMLFormElement).value +
+                "&profile=" +
+                router.asPath.split("&profile=")[1]
+            )
+          : router.push(
+              router.asPath.split("&profile=")[0] +
+                "?option=history&search=" +
+                (e.target as HTMLFormElement).value +
+                "&profile=" +
+                router.asPath.split("&profile=")[1]
+            )
         : router.asPath.includes("&post=")
+        ? router.asPath.includes("?option=")
+          ? router.push(
+              router.asPath.split("&post=")[0] +
+                "&search=" +
+                (e.target as HTMLFormElement).value +
+                "&post=" +
+                router.asPath.split("&post=")[1]
+            )
+          : router.push(
+              router.asPath.split("&post=")[0] +
+                "?option=history&search=" +
+                (e.target as HTMLFormElement).value +
+                "&post=" +
+                router.asPath.split("&post=")[1]
+            )
+        : router.asPath.includes("?option=")
         ? router.push(
-            router.asPath.split("&post=")[0] +
-              "&search=" +
-              (e.target as HTMLFormElement).value +
-              "&post=" +
-              router.asPath.split("&post=")[1]
+            router.asPath + "&search=" + (e.target as HTMLFormElement).value
           )
         : router.push(
             router.asPath +
-              "&search=" +
+              "?option=history&search=" +
               (e.target as HTMLFormElement).value
           );
     }

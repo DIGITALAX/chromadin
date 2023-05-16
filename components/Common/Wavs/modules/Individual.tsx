@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import FeedPublication from "./FeedPublication";
 import Comments from "./Comments";
 import { AiFillFastBackward } from "react-icons/ai";
+import { BiHomeHeart } from "react-icons/bi";
 import { IndividualProps } from "../types/wavs.types";
 import MakeComment from "./MakeComment";
 import { useSelector } from "react-redux";
@@ -106,7 +107,13 @@ const Individual: FunctionComponent<IndividualProps> = ({
   );
   return (
     <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
-      <div className="sticky z-0 w-full h-fit flex flex-col items-start justify-start mr-0">
+      <div className="sticky z-0 w-full h-fit flex flex-row items-start justify-start mr-0 gap-2">
+        <div
+          className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
+          onClick={() => router.push(router.asPath.split("&post=")[0])}
+        >
+          <BiHomeHeart color="white" size={18} />
+        </div>
         <div
           className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
           onClick={() => {

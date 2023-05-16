@@ -62,7 +62,7 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
                     className="relative w-full h-fit flex flex-row gap-3 cursor-pointer"
                     key={index}
                     onClick={() => {
-                      router.push(
+                      window.open(
                         router.asPath.includes("&search=")
                           ? `https://www.chromadin.xyz/#wavs?option=history&search=` +
                               router.asPath
