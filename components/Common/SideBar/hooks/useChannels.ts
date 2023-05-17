@@ -41,9 +41,14 @@ const useChannels = (): UseChannelsResults => {
   const videoSync = useSelector(
     (state: RootState) => state.app.videoSyncReducer
   );
+  const videoCount = useSelector(
+    (state: RootState) => state.app.videoCountReducer
+  );
   const dispatch = useDispatch();
   const [videos, setVideos] = useState<Publication[]>([]);
   const [tab, setTab] = useState<number>(0);
+  const [paginated, setPaginated] = useState<any>();
+  const [hasMore, setHasMore] = useState<boolean>(true);
 
   const getVideos = async (): Promise<void> => {
     dispatch(
@@ -67,19 +72,25 @@ const useChannels = (): UseChannelsResults => {
         data = await profilePublicationsAuth({
           profileId: "0x01c6a9",
           publicationTypes: ["POST"],
-          limit: 31,
+          limit: 10,
         });
       } else {
         data = await profilePublications({
           profileId: "0x01c6a9",
           publicationTypes: ["POST"],
-          limit: 31,
+          limit: 10,
         });
       }
       const arr: any[] = [...data?.data.publications?.items];
       sortedArr = arr.sort(
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
+      if (sortedArr?.length < 10) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+      setPaginated(data?.data.publications?.pageInfo);
       dispatch(setChannelsRedux(sortedArr));
       setVideos(sortedArr);
       dispatch(
@@ -100,7 +111,7 @@ const useChannels = (): UseChannelsResults => {
           {
             profileId: "0x01c6a9",
             publicationTypes: ["POST"],
-            limit: 31,
+            limit: 10,
           },
           lensProfile
         );
@@ -137,6 +148,102 @@ const useChannels = (): UseChannelsResults => {
     );
   };
 
+  const fetchMoreVideos = async () => {
+    let data: ApolloQueryResult<any>,
+      hasReactedArr: any[] = [],
+      hasMirroredArr: any[] = [],
+      sortedArr: any[] = [];
+    if (!paginated?.next) {
+      setHasMore(false);
+      return;
+    }
+    try {
+      if (authStatus && lensProfile) {
+        data = await profilePublicationsAuth({
+          profileId: "0x01c6a9",
+          publicationTypes: ["POST"],
+          limit: 10,
+          cursor: paginated?.next,
+        });
+      } else {
+        data = await profilePublications({
+          profileId: "0x01c6a9",
+          publicationTypes: ["POST"],
+          limit: 10,
+          cursor: paginated?.next,
+        });
+      }
+      const arr: any[] = [...data?.data.publications?.items];
+      sortedArr = arr.sort(
+        (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+      );
+
+      if (sortedArr?.length < 10) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+      setPaginated(data?.data.publications?.pageInfo);
+      dispatch(setChannelsRedux([...channelsDispatched, ...sortedArr]));
+      setVideos([...channelsDispatched, ...sortedArr]);
+      dispatch(
+        setVideoCount({
+          actionLike: [
+            ...videoCount.like,
+            ...sortedArr.map((obj: Publication) => obj.stats.totalUpvotes),
+          ],
+          actionMirror: [
+            ...videoCount.mirror,
+            ...sortedArr.map(
+              (obj: Publication) => obj.stats.totalAmountOfMirrors
+            ),
+          ],
+          actionCollect: [
+            ...videoCount.collect,
+            ...sortedArr.map(
+              (obj: Publication) => obj.stats.totalAmountOfCollects
+            ),
+          ],
+        })
+      );
+      if (authStatus && lensProfile) {
+        hasReactedArr = await checkPostReactions(
+          {
+            profileId: "0x01c6a9",
+            publicationTypes: ["POST"],
+            limit: 10,
+            cursor: paginated?.next,
+          },
+          lensProfile
+        );
+        hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    dispatch(
+      setVideoSync({
+        actionHeart: videoSync.heart,
+        actionDuration: videoSync.duration,
+        actionCurrentTime: videoSync.currentTime,
+        actionIsPlaying: videoSync.isPlaying,
+        actionLikedArray: [
+          ...videoSync.likedArray,
+          ...(hasReactedArr?.length > 0 ? hasReactedArr : []),
+        ],
+        actionMirroredArray: [
+          ...videoSync.mirroredArray,
+          ...(hasMirroredArr?.length > 0 ? hasMirroredArr : []),
+        ],
+        actionCollectedArray: [
+          ...videoSync.collectedArray,
+          ...sortedArr?.map((obj: Publication) => obj?.hasCollectedByMe),
+        ],
+        actionVideosLoading: videoSync.videosLoading,
+      })
+    );
+  };
+
   const refetchInteractions = async () => {
     let data: ApolloQueryResult<any>;
     try {
@@ -144,13 +251,13 @@ const useChannels = (): UseChannelsResults => {
         data = await profilePublicationsAuth({
           profileId: "0x01c6a9",
           publicationTypes: ["POST"],
-          limit: 31,
+          limit: 10,
         });
       } else {
         data = await profilePublications({
           profileId: "0x01c6a9",
           publicationTypes: ["POST"],
-          limit: 31,
+          limit: 10,
         });
       }
       const arr: any[] = [...data?.data.publications?.items];
@@ -161,7 +268,7 @@ const useChannels = (): UseChannelsResults => {
         {
           profileId: "0x01c6a9",
           publicationTypes: ["POST"],
-          limit: 31,
+          limit: 10,
         },
         lensProfile
       );
@@ -235,6 +342,8 @@ const useChannels = (): UseChannelsResults => {
     videos,
     tab,
     setTab,
+    fetchMoreVideos,
+    hasMore
   };
 };
 

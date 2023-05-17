@@ -41,7 +41,7 @@ const Home: NextPage = (): JSX.Element => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { handleConnect, handleLensSignIn, connected } = useConnect();
-  const { videos, tab, setTab } = useChannels();
+  const { videos, tab, setTab, fetchMoreVideos, hasMore } = useChannels();
 
   useEffect(() => {
     dispatch(setHistoryURLRedux(router.asPath));
@@ -72,6 +72,8 @@ const Home: NextPage = (): JSX.Element => {
               dispatchVideos={dispatchVideos}
               options={options}
               videoSync={videoSync}
+              hasMore={hasMore}
+              fetchMoreVideos={fetchMoreVideos}
             />
           </div>
           <div className="relative w-full h-full flex flex-col gap-5 items-center justify-center">
@@ -96,6 +98,8 @@ const Home: NextPage = (): JSX.Element => {
               dispatch={dispatch}
               dispatchVideos={dispatchVideos}
               videoSync={videoSync}
+              hasMore={hasMore}
+              fetchMoreVideos={fetchMoreVideos}
             />
           ) : (
             <Interactions viewer={viewer} />

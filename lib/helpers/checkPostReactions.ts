@@ -20,7 +20,6 @@ const checkPostReactions = async (
       const data = await hasReactedPost(publicationObject, {
         profileId: lensProfile,
       });
-      console.log("here", data)
       hasReacted = data.data.publications.items;
     }
 

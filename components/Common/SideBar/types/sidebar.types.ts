@@ -7,12 +7,16 @@ export type ChannelsProps = {
   dispatch: Dispatch<AnyAction>;
   dispatchVideos: Publication[];
   videoSync: VideoSyncState;
+  fetchMoreVideos: () => Promise<void>;
+  hasMore: boolean;
 };
 
 export type UseChannelsResults = {
   videos: Publication[];
   tab: number;
   setTab: (e: number) => void;
+  fetchMoreVideos: () => Promise<void>;
+  hasMore: boolean;
 };
 
 export type UseConnectResults = {
@@ -68,6 +72,8 @@ export type SideBarProps = {
   dispatchVideos: Publication[];
   options: string;
   videoSync: VideoSyncState;
+  fetchMoreVideos: () => Promise<void>;
+  hasMore: boolean;
 };
 
 export type SwitcherProps = {

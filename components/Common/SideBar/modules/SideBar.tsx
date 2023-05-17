@@ -19,7 +19,9 @@ const SideBar: FunctionComponent<SideBarProps> = ({
   viewer,
   dispatchVideos,
   options,
-  videoSync
+  videoSync,
+  fetchMoreVideos,
+  hasMore
 }): JSX.Element => {
   return (
     <div className="relative w-full lg:w-80 h-fit lg:h-full flex flex-col">
@@ -31,6 +33,8 @@ const SideBar: FunctionComponent<SideBarProps> = ({
           dispatch={dispatch}
           dispatchVideos={dispatchVideos}
           videoSync={videoSync}
+          fetchMoreVideos={fetchMoreVideos}
+          hasMore={hasMore}
         />
       ) : (
         <Interactions viewer={viewer} />
