@@ -356,7 +356,7 @@ export const feedTimelineAuth = (request: any) => {
   return apolloClient.query({
     query: gql(FEED_TIMELINE),
     variables: {
-      request: request,
+      request,
     },
     fetchPolicy: "network-only",
   });
@@ -366,7 +366,7 @@ export const feedTimeline = (request: any) => {
   return authClient.query({
     query: gql(FEED_TIMELINE),
     variables: {
-      request: request,
+      request,
     },
     fetchPolicy: "network-only",
   });

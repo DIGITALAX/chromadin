@@ -112,6 +112,7 @@ const useConnect = (): UseConnectResults => {
   useEffect(() => {
     setConnected(isConnected);
     const newAddress = getAddress();
+  
     if (
       (newAddress && newAddress.replace(/^"|"$/g, "") === address) ||
       (!newAddress && address)
@@ -131,7 +132,7 @@ const useConnect = (): UseConnectResults => {
         }
         handleRefreshProfile();
       }
-    } else if (isConnected && address !== newAddress) {
+    } else if ((isConnected && address !== newAddress)) {
       dispatch(setLensProfile(undefined));
       removeAuthenticationToken();
     }

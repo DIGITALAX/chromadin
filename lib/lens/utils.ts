@@ -115,7 +115,7 @@ export const getAddress = () => {
     const data = localStorage.getItem(ADDRESS_CHROMADIN);
 
     if (!data) {
-      return false;
+      return null;
     }
 
     return data;

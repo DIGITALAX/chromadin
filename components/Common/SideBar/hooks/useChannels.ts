@@ -69,11 +69,14 @@ const useChannels = (): UseChannelsResults => {
       sortedArr: any[] = [];
     try {
       if (authStatus && lensProfile) {
-        data = await profilePublicationsAuth({
-          profileId: "0x01c6a9",
-          publicationTypes: ["POST"],
-          limit: 10,
-        });
+        data = await profilePublicationsAuth(
+          {
+            profileId: "0x01c6a9",
+            publicationTypes: ["POST"],
+            limit: 10,
+          },
+          lensProfile
+        );
       } else {
         data = await profilePublications({
           profileId: "0x01c6a9",
@@ -159,12 +162,15 @@ const useChannels = (): UseChannelsResults => {
     }
     try {
       if (authStatus && lensProfile) {
-        data = await profilePublicationsAuth({
-          profileId: "0x01c6a9",
-          publicationTypes: ["POST"],
-          limit: 10,
-          cursor: paginated?.next,
-        });
+        data = await profilePublicationsAuth(
+          {
+            profileId: "0x01c6a9",
+            publicationTypes: ["POST"],
+            limit: 10,
+            cursor: paginated?.next,
+          },
+          lensProfile
+        );
       } else {
         data = await profilePublications({
           profileId: "0x01c6a9",
@@ -248,11 +254,14 @@ const useChannels = (): UseChannelsResults => {
     let data: ApolloQueryResult<any>;
     try {
       if (authStatus && lensProfile) {
-        data = await profilePublicationsAuth({
-          profileId: "0x01c6a9",
-          publicationTypes: ["POST"],
-          limit: 10,
-        });
+        data = await profilePublicationsAuth(
+          {
+            profileId: "0x01c6a9",
+            publicationTypes: ["POST"],
+            limit: 10,
+          },
+          lensProfile
+        );
       } else {
         data = await profilePublications({
           profileId: "0x01c6a9",
@@ -343,7 +352,7 @@ const useChannels = (): UseChannelsResults => {
     tab,
     setTab,
     fetchMoreVideos,
-    hasMore
+    hasMore,
   };
 };
 

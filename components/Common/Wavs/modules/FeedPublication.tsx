@@ -73,7 +73,11 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
         profileType={profileType}
       />
       <div
-        className={`relative w-full h-auto grow rounded-md grid grid-flow-row auto-rows-auto p-3 preG:p-6 gap-6 border-2 border-black bg-gradient-to-r from-offBlack via-gray-600 to-black`}
+        className={`relative w-full h-auto grow rounded-md grid grid-flow-row auto-rows-auto p-3 preG:p-6 gap-6 border-2  bg-gradient-to-r ${
+          (publication as any)?.decrypted
+            ? "from-gray-400 via-gray-600 to-gray-800 border-white"
+            : "from-offBlack via-gray-600 to-black border-black"
+        }`}
       >
         {(publication?.__typename === "Mirror" ||
           publication?.__typename === "Comment") && (
@@ -195,7 +199,9 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                           "image/webp" ||
                         (image as MediaSet)?.original?.mimeType ===
                           "image/jpg" ||
-                        (image as MediaSet)?.original?.mimeType === "image/jpeg"
+                        (image as MediaSet)?.original?.mimeType ===
+                          "image/jpeg" ||
+                        (image as MediaSet)?.original?.mimeType === "image/gif"
                           ? formattedImageURL
                           : (image as MediaSet)?.original?.url
                       }

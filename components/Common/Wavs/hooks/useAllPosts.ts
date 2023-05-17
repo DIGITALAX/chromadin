@@ -3,6 +3,8 @@ import {
   feedTimeline,
   feedTimelineAuth,
 } from "@/graphql/lens/queries/feedTimeline";
+import { Signer } from "ethers";
+import { Web3Provider } from "@ethersproject/providers";
 import getProfiles from "@/graphql/lens/queries/getProfiles";
 import { LENS_CREATORS } from "@/lib/constants";
 import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
@@ -21,8 +23,12 @@ import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { QuickProfilesInterface } from "../types/wavs.types";
+import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
+import { useSigner, useAccount } from "wagmi";
 
 const useAllPosts = () => {
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
   const lensProfile = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
@@ -118,9 +124,40 @@ const useAllPosts = () => {
         return;
       }
       const arr: any[] = [...data?.data.publications?.items];
-      const sortedArr = arr.sort(
+      let sortedArr = arr.sort(
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
+
+      if (signer && address) {
+        const sdk = await LensGatedSDK.create({
+          provider: new Web3Provider(window?.ethereum as any),
+          signer: signer as Signer,
+          env: LensEnvironment.Polygon,
+        });
+
+        sortedArr = await Promise.all(
+          sortedArr.map(async (post) => {
+            if (post.canDecrypt && post.canDecrypt.result) {
+              try {
+                const { decrypted } = await sdk.gated.decryptMetadata(
+                  post.metadata
+                );
+                if (decrypted) {
+                  return {
+                    ...post,
+                    decrypted,
+                  };
+                }
+              } catch (err: any) {
+                console.error(err.message);
+                return null;
+              }
+            } else {
+              return post;
+            }
+          })
+        );
+      }
 
       if (sortedArr?.length < 10) {
         setHasMore(false);
@@ -217,9 +254,39 @@ const useAllPosts = () => {
       }
 
       const arr: any[] = [...data?.data?.publications?.items];
-      const sortedArr = arr.sort(
+      let sortedArr = arr.sort(
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
+
+      if (signer && address) {
+        const sdk = await LensGatedSDK.create({
+          provider: new Web3Provider(window?.ethereum as any),
+          signer: signer as Signer,
+          env: LensEnvironment.Polygon,
+        });
+
+        sortedArr = sortedArr.map(async (post) => {
+          if (post.canDecrypt && post.canDecrypt.result) {
+            try {
+              const { decrypted } = await sdk.gated.decryptMetadata(
+                post.metadata
+              );
+              if (decrypted) {
+                return {
+                  ...post,
+                  decrypted,
+                };
+              }
+            } catch (err: any) {
+              console.error(err.message);
+              return null;
+            }
+          } else {
+            return post;
+          }
+        });
+      }
+
       if (sortedArr?.length < 10) {
         setHasMore(false);
       } else {

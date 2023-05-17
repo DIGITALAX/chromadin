@@ -20,10 +20,16 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
+import { useSigner, useAccount } from "wagmi";
+import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
+import { Signer } from "ethers";
+import { Web3Provider } from "@ethersproject/providers";
 
 const useProfileFeed = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
   const profileRef = useRef<InfiniteScroll>(null);
   const profileDispatch = useSelector(
     (state: RootState) => state.app.profileFeedReducer.value
@@ -61,18 +67,21 @@ const useProfileFeed = () => {
     setProfileLoading(true);
     let data;
     try {
-      if (!lensProfile?.id) {
+      if (!lensProfile) {
         data = await profilePublications({
           profileId: profileId?.profile?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
         });
       } else {
-        data = await profilePublicationsAuth({
-          profileId: profileId?.profile?.id,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 10,
-        });
+        data = await profilePublicationsAuth(
+          {
+            profileId: profileId?.profile?.id,
+            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            limit: 10,
+          },
+          lensProfile
+        );
       }
 
       if (!data || !data?.data || !data?.data?.publications) {
@@ -81,9 +90,40 @@ const useProfileFeed = () => {
       }
 
       const arr: any[] = [...data?.data?.publications?.items];
-      const sortedArr = arr.sort(
+      let sortedArr = arr.sort(
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
+
+      if (signer && address) {
+        const sdk = await LensGatedSDK.create({
+          provider: new Web3Provider(window?.ethereum as any),
+          signer: signer as Signer,
+          env: LensEnvironment.Polygon,
+        });
+
+        sortedArr = await Promise.all(
+          sortedArr.map(async (post) => {
+            if (post.canDecrypt && post.canDecrypt.result) {
+              try {
+                const { decrypted } = await sdk.gated.decryptMetadata(
+                  post.metadata
+                );
+                if (decrypted) {
+                  return {
+                    ...post,
+                    decrypted,
+                  };
+                }
+              } catch (err: any) {
+                console.error(err.message);
+                return null;
+              }
+            } else {
+              return post;
+            }
+          })
+        );
+      }
 
       if (!sortedArr || sortedArr?.length < 10) {
         setHasMoreProfile(false);
@@ -126,23 +166,23 @@ const useProfileFeed = () => {
         setProfileFeedCount({
           actionLike: sortedArr.map((obj: Publication) =>
             obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats.totalUpvotes
-              : obj.stats.totalUpvotes
+              ? obj.mirrorOf.stats?.totalUpvotes
+              : obj.stats?.totalUpvotes
           ),
           actionMirror: sortedArr.map((obj: Publication) =>
             obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats.totalAmountOfMirrors
-              : obj.stats.totalAmountOfMirrors
+              ? obj.mirrorOf.stats?.totalAmountOfMirrors
+              : obj.stats?.totalAmountOfMirrors
           ),
           actionCollect: sortedArr.map((obj: Publication) =>
             obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats.totalAmountOfCollects
-              : obj.stats.totalAmountOfCollects
+              ? obj.mirrorOf.stats?.totalAmountOfCollects
+              : obj.stats?.totalAmountOfCollects
           ),
           actionComment: sortedArr.map((obj: Publication) =>
             obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats.totalAmountOfComments
-              : obj.stats.totalAmountOfComments
+              ? obj.mirrorOf.stats?.totalAmountOfComments
+              : obj.stats?.totalAmountOfComments
           ),
           actionHasLiked: hasReactedArr ?? [],
           actionHasMirrored: hasMirroredArr ?? [],
@@ -171,17 +211,49 @@ const useProfileFeed = () => {
           cursor: profilePageData?.next,
         });
       } else {
-        data = await profilePublicationsAuth({
-          profileId: profileId?.profile?.id,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 10,
-          cursor: profilePageData?.next,
-        });
+        data = await profilePublicationsAuth(
+          {
+            profileId: profileId?.profile?.id,
+            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            limit: 10,
+            cursor: profilePageData?.next,
+          },
+          lensProfile
+        );
       }
       const arr: any[] = [...data?.data?.publications?.items];
-      const sortedArr = arr.sort(
+      let sortedArr = arr.sort(
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
+
+      if (signer && address) {
+        const sdk = await LensGatedSDK.create({
+          provider: new Web3Provider(window?.ethereum as any),
+          signer: signer as Signer,
+          env: LensEnvironment.Polygon,
+        });
+
+        sortedArr = sortedArr.map(async (post) => {
+          if (post.canDecrypt && post.canDecrypt.result) {
+            try {
+              const { decrypted } = await sdk.gated.decryptMetadata(
+                post.metadata
+              );
+              if (decrypted) {
+                return {
+                  ...post,
+                  decrypted,
+                };
+              }
+            } catch (err: any) {
+              console.error(err.message);
+              return null;
+            }
+          } else {
+            return post;
+          }
+        });
+      }
 
       if (sortedArr?.length < 10) {
         setHasMoreProfile(false);

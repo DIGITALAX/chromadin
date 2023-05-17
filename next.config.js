@@ -8,6 +8,7 @@ const allowedOrigins = [
   "https://api.studio.thegraph.com",
   "https://api.thegraph.com",
   "https://youtube.com",
+  
 ];
 
 const nextConfig = {

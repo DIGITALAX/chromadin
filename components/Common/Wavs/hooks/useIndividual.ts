@@ -19,10 +19,16 @@ import { setCommentFeedCount } from "@/redux/reducers/commentFeedCountSlice";
 import { useRouter } from "next/router";
 import { setIndividualFeedCount } from "@/redux/reducers/individualFeedCountReducer";
 import { setFeedType } from "@/redux/reducers/feedTypeSlice";
+import { useSigner, useAccount } from "wagmi";
+import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
+import { Signer } from "ethers";
+import { Web3Provider } from "@ethersproject/providers";
 
 const useIndividual = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
   const lensProfile = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
@@ -279,15 +285,46 @@ const useIndividual = () => {
     try {
       let pubData;
       if (lensProfile) {
-        const { data } = await getPublicationAuth({
-          publicationId: feedType,
-        });
+        const { data } = await getPublicationAuth(
+          {
+            publicationId: feedType,
+          },
+          lensProfile
+        );
         pubData = data;
       } else {
         const { data } = await getPublication({
           publicationId: feedType,
         });
         pubData = data;
+      }
+
+      if (signer && address) {
+        const sdk = await LensGatedSDK.create({
+          provider: new Web3Provider(window?.ethereum as any),
+          signer: signer as Signer,
+          env: LensEnvironment.Polygon,
+        });
+
+        if (
+          pubData?.publication.canDecrypt &&
+          pubData?.publication.canDecrypt.result
+        ) {
+          try {
+            const { decrypted } = await sdk.gated.decryptMetadata(
+              pubData?.publication.metadata
+            );
+            if (decrypted) {
+              return {
+                ...pubData?.publication,
+                decrypted,
+              };
+            }
+          } catch (err: any) {
+            console.error(err.message);
+            return null;
+          }
+        }
       }
 
       setMainPost(pubData?.publication);
@@ -358,7 +395,6 @@ const useIndividual = () => {
     ) {
       dispatch(setFeedType(""));
     }
-
   }, [router.asPath]);
 
   return {

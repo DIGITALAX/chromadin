@@ -59,13 +59,15 @@ const CollectInfo: FunctionComponent<CollectInfoProps> = ({
             )}
             {time && moment(time).isAfter() && (
               <div
-                className={`relative w-fit h-fit place-self-center grid grid-flow-row auto-rows-auto text-sm`}
+                className={`relative w-fit h-fit place-self-center grid grid-flow-row auto-rows-auto text-xs`}
               >
                 <div className="relative w-fit h-fit row-start-1 place-self-center">
                   Time Left to Collect:
                 </div>
                 <div className="relative w-fit h-fit row-start-2 place-self-center">
-                  {moment(`${time}`).fromNow()}
+                  {moment(`${time}`).fromNow().includes("in")
+                    ? moment(`${time}`).fromNow().split("in")[1]
+                    : moment(`${time}`).fromNow()}
                 </div>
               </div>
             )}

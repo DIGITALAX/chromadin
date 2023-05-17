@@ -513,9 +513,12 @@ const useControls = (): UseControlsResults => {
     try {
       let pubData: any;
       if (profileId) {
-        const { data } = await getPublicationAuth({
-          publicationId: purchase.id,
-        });
+        const { data } = await getPublicationAuth(
+          {
+            publicationId: purchase.id,
+          },
+          profileId
+        );
         pubData = data;
       } else {
         const { data } = await getPublication({
