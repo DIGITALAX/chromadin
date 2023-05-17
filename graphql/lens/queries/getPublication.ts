@@ -128,11 +128,6 @@ const GET_PUBLICATION = `query Publication($request: PublicationQueryRequest!) {
   }
   
   fragment PostFields on Post {
-    canDecrypt(
-      profileId: $profileId
-    ) {
-      result
-    }
     id
     profile {
       ...ProfileFields
@@ -402,11 +397,6 @@ fragment MediaFields on Media {
 }
 
 fragment ProfileFields on Profile {
-  canDecrypt(
-    profileId: $profileId
-  ) {
-    result
-  }
   id
   name
   bio
