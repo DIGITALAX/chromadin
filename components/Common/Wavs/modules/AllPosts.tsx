@@ -6,6 +6,7 @@ import FeedPublication from "./FeedPublication";
 import { AllPostsProps } from "../types/wavs.types";
 import QuickProfiles from "./QuickProfiles";
 import Search from "./Search";
+import SuperCreator from "./SuperCreator";
 
 const AllPosts: FunctionComponent<AllPostsProps> = ({
   hasMore,
@@ -96,7 +97,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   hasMoreSearch,
   setProfilesFound,
   setProfilesOpenSearch,
-  profileType
+  profileType,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4">
@@ -105,16 +106,25 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
           <div className="max-w-full overflow-x-scroll">
             <QuickProfiles router={router} quickProfiles={quickProfiles} />
           </div>
-          <Search
-            searchProfiles={searchProfiles}
-            profilesFound={profilesFound}
-            profilesOpenSearch={profilesOpenSearch}
-            router={router}
-            fetchMoreSearch={fetchMoreSearch}
-            hasMoreSearch={hasMoreSearch}
-            setProfilesOpenSearch={setProfilesOpenSearch}
-            setProfilesFound={setProfilesFound}
-          />
+          <div className="relative flex flex-row gap-1 w-fit h-fit ml-auto">
+            <SuperCreator
+              dispatch={dispatch}
+              handleConnect={handleConnect}
+              handleLensSignIn={handleLensSignIn}
+              address={address}
+              profileId={profileId}
+            />
+            <Search
+              searchProfiles={searchProfiles}
+              profilesFound={profilesFound}
+              profilesOpenSearch={profilesOpenSearch}
+              router={router}
+              fetchMoreSearch={fetchMoreSearch}
+              hasMoreSearch={hasMoreSearch}
+              setProfilesOpenSearch={setProfilesOpenSearch}
+              setProfilesFound={setProfilesFound}
+            />
+          </div>
         </div>
         <InfiniteScroll
           height={"40rem"}

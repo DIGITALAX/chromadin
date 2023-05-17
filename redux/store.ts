@@ -59,6 +59,8 @@ import profilePaginatedReducer from "./reducers/profilePaginatedSlice";
 import profileScrollPosReducer from "./reducers/profileScrollPosSlice";
 import quickProfilesReducer from "./reducers/quickProfilesSlice";
 import historyURLReducer from "./reducers/historyURLSlice";
+import superFollowReducer from "./reducers/superFollowSlice";
+import rainReducer from "./reducers/rainSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -119,7 +121,9 @@ const reducer = combineReducers({
   profilePaginatedReducer,
   profileScrollPosReducer,
   quickProfilesReducer,
-  historyURLReducer
+  historyURLReducer,
+  superFollowReducer,
+  rainReducer,
 });
 
 export const store = configureStore({

@@ -1,6 +1,7 @@
 import { Collection } from "@/components/Home/types/home.types";
 import {
   Erc20,
+  FollowModule,
   Profile,
   Publication,
 } from "@/components/Home/types/lens.types";
@@ -1123,6 +1124,7 @@ export interface QuickProfilesInterface {
   handle: string;
   id: string;
   image: string;
+  followModule: FollowModule;
 }
 
 export type QuickProfilesProps = {
@@ -1146,4 +1148,12 @@ export type SearchProps = {
   fetchMoreSearch: () => Promise<void>;
   setProfilesOpenSearch: (e: boolean) => void;
   setProfilesFound: (e: Profile[]) => void;
+};
+
+export type SuperCreatorProps = {
+  dispatch: Dispatch<AnyAction>;
+  handleLensSignIn: () => Promise<void>;
+  handleConnect: () => void;
+  profileId: string;
+  address: `0x${string}` | undefined;
 };

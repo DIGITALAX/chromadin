@@ -84,6 +84,7 @@ const useAllPosts = () => {
             id: prof.id,
             handle: prof.handle,
             image: prof?.picture?.original?.url,
+            followModule: prof?.followModule,
           };
         });
 

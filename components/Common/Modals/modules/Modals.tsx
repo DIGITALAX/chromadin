@@ -19,6 +19,8 @@ import useReactions from "../../Wavs/hooks/useReactions";
 import { useRouter } from "next/router";
 import FullScreenVideo from "./FullScreenVideo";
 import { useRef } from "react";
+import FollowSuper from "./FollowSuper";
+import useSuperCreator from "../../Wavs/hooks/useSuperCreator";
 
 const Modals = () => {
   const videoRef = useRef<HTMLDivElement>(null);
@@ -65,11 +67,18 @@ const Modals = () => {
   const reaction = useSelector(
     (state: RootState) => state.app.reactionStateReducer
   );
+  const rain = useSelector((state: RootState) => state.app.rainReducer.value);
   const dispatchVideos = useSelector(
     (state: RootState) => state.app.channelsReducer.value
   );
   const fullScreenVideo = useSelector(
     (state: RootState) => state.app.fullScreenVideoReducer
+  );
+  const superFollow = useSelector(
+    (state: RootState) => state.app.superFollowReducer
+  );
+  const quickProfiles = useSelector(
+    (state: RootState) => state.app.quickProfilesReducer.value
   );
   const viewer = useSelector((state: RootState) => state.app.viewReducer.value);
   const {
@@ -78,7 +87,7 @@ const Modals = () => {
     followLoading,
     approved,
     approveCurrency: approveFollowCurrency,
-    unfollowProfile
+    unfollowProfile,
   } = useFollowers();
   const {
     collectInfoLoading: controlsCollectInfoLoading,
@@ -114,6 +123,7 @@ const Modals = () => {
     hasMoreCollect,
     hasMoreMirror,
   } = useWho();
+  const { followSuper, superCreatorLoading, canvasRef } = useSuperCreator();
   return (
     <>
       {fullScreenVideo.value && (
@@ -211,9 +221,22 @@ const Modals = () => {
         />
       )}
       {collectModal?.open && <Collect message={collectModal?.message} />}
+      {superFollow?.open && (
+        <FollowSuper
+          dispatch={dispatch}
+          followSuper={followSuper}
+          quickProfiles={quickProfiles}
+          router={router}
+          rain={rain}
+          superCreatorLoading={superCreatorLoading}
+          canvasRef={canvasRef}
+        />
+      )}
       {imageViewer.value && <ImageLarge mainImage={mainImage!} />}
       {errorModal.value && <Error />}
-      {successModal.open && <Success media={successModal.media} />}
+      {successModal.open && (
+        <Success dispatch={dispatch} media={successModal.media} />
+      )}
       {indexingModal?.value && (
         <IndexingModal message={indexingModal?.message} />
       )}

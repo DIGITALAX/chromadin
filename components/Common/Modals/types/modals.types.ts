@@ -7,6 +7,7 @@ import { NextRouter } from "next/router";
 import { Ref } from "react";
 import ReactPlayer from "react-player";
 import { AnyAction, Dispatch } from "redux";
+import { QuickProfilesInterface } from "../../Wavs/types/wavs.types";
 
 export type IndexingModalProps = {
   message: string | undefined;
@@ -63,6 +64,7 @@ export type ImageLargeProps = {
 
 export type SuccessProps = {
   media: string;
+  dispatch: Dispatch<AnyAction>;
 };
 
 export type ImageViewerProps = {
@@ -91,4 +93,14 @@ export type FullScreenVideoProps = {
   dispatchVideos: Publication[];
   videoSync: VideoSyncState;
   viewer: string;
+};
+
+export type SuperFollowProps = {
+  dispatch: Dispatch<AnyAction>;
+  followSuper: () => Promise<void>;
+  quickProfiles: QuickProfilesInterface[];
+  router: NextRouter;
+  superCreatorLoading: boolean;
+  rain: boolean;
+  canvasRef: Ref<HTMLCanvasElement>;
 };

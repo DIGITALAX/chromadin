@@ -132,7 +132,7 @@ const Feed: FunctionComponent<FeedProps> = ({
   hasMoreSearch,
   setProfilesFound,
   setProfilesOpenSearch,
-  profileType
+  profileType,
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
