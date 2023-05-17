@@ -233,26 +233,28 @@ const useProfileFeed = () => {
           env: LensEnvironment.Polygon,
         });
 
-        sortedArr = sortedArr.map(async (post) => {
-          if (post.canDecrypt && post.canDecrypt.result) {
-            try {
-              const { decrypted } = await sdk.gated.decryptMetadata(
-                post.metadata
-              );
-              if (decrypted) {
-                return {
-                  ...post,
-                  decrypted,
-                };
+        sortedArr = await Promise.all(
+          sortedArr.map(async (post) => {
+            if (post.canDecrypt && post.canDecrypt.result) {
+              try {
+                const { decrypted } = await sdk.gated.decryptMetadata(
+                  post.metadata
+                );
+                if (decrypted) {
+                  return {
+                    ...post,
+                    decrypted,
+                  };
+                }
+              } catch (err: any) {
+                console.error(err.message);
+                return null;
               }
-            } catch (err: any) {
-              console.error(err.message);
-              return null;
+            } else {
+              return post;
             }
-          } else {
-            return post;
-          }
-        });
+          })
+        );
       }
 
       if (sortedArr?.length < 10) {

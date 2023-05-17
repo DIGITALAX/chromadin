@@ -106,11 +106,14 @@ const useAllPosts = () => {
       let data;
 
       if (lensProfile) {
-        data = await feedTimelineAuth({
-          profileIds: LENS_CREATORS,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 10,
-        });
+        data = await feedTimelineAuth(
+          {
+            profileIds: LENS_CREATORS,
+            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            limit: 10,
+          },
+          lensProfile
+        );
       } else {
         data = await feedTimeline({
           profileIds: LENS_CREATORS,
@@ -137,7 +140,7 @@ const useAllPosts = () => {
 
         sortedArr = await Promise.all(
           sortedArr.map(async (post) => {
-            if (post.canDecrypt && post.canDecrypt.result) {
+            if (post?.canDecrypt && post?.canDecrypt.result) {
               try {
                 const { decrypted } = await sdk.gated.decryptMetadata(
                   post.metadata
@@ -238,12 +241,15 @@ const useAllPosts = () => {
       let data;
 
       if (lensProfile) {
-        data = await feedTimelineAuth({
-          profileIds: LENS_CREATORS,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
-          limit: 10,
-          cursor: paginated?.next,
-        });
+        data = await feedTimelineAuth(
+          {
+            profileIds: LENS_CREATORS,
+            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            limit: 10,
+            cursor: paginated?.next,
+          },
+          lensProfile
+        );
       } else {
         data = await feedTimeline({
           profileIds: LENS_CREATORS,
@@ -265,26 +271,28 @@ const useAllPosts = () => {
           env: LensEnvironment.Polygon,
         });
 
-        sortedArr = sortedArr.map(async (post) => {
-          if (post.canDecrypt && post.canDecrypt.result) {
-            try {
-              const { decrypted } = await sdk.gated.decryptMetadata(
-                post.metadata
-              );
-              if (decrypted) {
-                return {
-                  ...post,
-                  decrypted,
-                };
+        sortedArr = await Promise.all(
+          sortedArr.map(async (post) => {
+            if (post.canDecrypt && post.canDecrypt.result) {
+              try {
+                const { decrypted } = await sdk.gated.decryptMetadata(
+                  post.metadata
+                );
+                if (decrypted) {
+                  return {
+                    ...post,
+                    decrypted,
+                  };
+                }
+              } catch (err: any) {
+                console.error(err.message);
+                return null;
               }
-            } catch (err: any) {
-              console.error(err.message);
-              return null;
+            } else {
+              return post;
             }
-          } else {
-            return post;
-          }
-        });
+          })
+        );
       }
 
       if (sortedArr?.length < 10) {
@@ -319,32 +327,32 @@ const useAllPosts = () => {
             ...reactionFeedCount.like,
             ...sortedArr.map((obj: Publication) =>
               obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats.totalUpvotes
-                : obj.stats.totalUpvotes
+                ? obj.mirrorOf.stats?.totalUpvotes
+                : obj.stats?.totalUpvotes
             ),
           ],
           actionMirror: [
             ...reactionFeedCount.mirror,
             ...sortedArr.map((obj: Publication) =>
               obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats.totalAmountOfMirrors
-                : obj.stats.totalAmountOfMirrors
+                ? obj.mirrorOf.stats?.totalAmountOfMirrors
+                : obj.stats?.totalAmountOfMirrors
             ),
           ],
           actionCollect: [
             ...reactionFeedCount.collect,
             ...sortedArr.map((obj: Publication) =>
               obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats.totalAmountOfCollects
-                : obj.stats.totalAmountOfCollects
+                ? obj.mirrorOf.stats?.totalAmountOfCollects
+                : obj.stats?.totalAmountOfCollects
             ),
           ],
           actionComment: [
             ...reactionFeedCount.comment,
             ...sortedArr.map((obj: Publication) =>
               obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats.totalAmountOfComments
-                : obj.stats.totalAmountOfComments
+                ? obj.mirrorOf.stats?.totalAmountOfComments
+                : obj.stats?.totalAmountOfComments
             ),
           ],
           actionHasLiked: [
