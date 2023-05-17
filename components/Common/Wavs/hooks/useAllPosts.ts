@@ -303,7 +303,11 @@ const useAllPosts = () => {
     try {
       const index = (
         profile?.id === "" || !profile?.id ? feedDispatch : profileDispatch
-      )?.findIndex((feed) => feed.id === feedId.value);
+      )?.findIndex(
+        (feed) =>
+          (feed.__typename === "Mirror" ? feed.mirrorOf.id : feed.id) ===
+          feedId.value
+      );
       if (index !== -1) {
         dispatch(
           setIndividualFeedCount({
