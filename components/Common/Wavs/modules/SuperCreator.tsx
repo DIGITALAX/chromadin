@@ -10,21 +10,21 @@ const SuperCreator: FunctionComponent<SuperCreatorProps> = ({
   dispatch,
 }): JSX.Element => {
   return (
-    <div className="relative w-fit h-fit flex flex-col items-start justify-start ml-auto animate-pulse">
-      <div
-        className="relative flex flex-col h-fit w-full rounded-md text-white whitespace-nowrap px-3 py-1 cursor-pointer active:scale-95 font-dosis hover:text-moda"
-        onClick={
-          !address
-            ? () => handleConnect()
-            : address && !profileId
-            ? () => handleLensSignIn()
-            : () => dispatch(setSuperFollow(true))
-        }
-      >
-        <div className={`relative text-sm w-fit h-fit justify-center flex`}>
+    <div className="relative w-auto h-fit flex items-start justify-start ml-auto px-3 order-2 sm:order-1 lg:order-2 stuck1:order-1">
+      <div className="relative flex flex-col h-fit w-full rounded-md text-white whitespace-nowrap gap-1">
+        <div
+          className={`relative text-sm w-fit h-fit justify-center flex border border-white font-earl border-dashed py-px px-2 flex items-center rounded-md active:scale-95 hover:text-moda cursor-pointer `}
+          onClick={
+            !address
+              ? () => handleConnect()
+              : address && !profileId
+              ? () => handleLensSignIn()
+              : () => dispatch(setSuperFollow(true))
+          }
+        >
           super creator
         </div>
-        <div className="relative h-fit w-full justify-end flex text-ama font-earl text-xxs text-right">
+        <div className="relative h-fit w-full justify-end flex text-ama font-dosis text-xxs text-right">
           {!address || !profileId ? "sign in 2 follow" : " follow"}
         </div>
       </div>

@@ -67,6 +67,7 @@ module.exports = {
         tablet: "1260px",
         wrap: "1360px",
         alto: "1950px",
+        stuck1: "1120px",
       },
     },
   },

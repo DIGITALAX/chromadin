@@ -43,7 +43,7 @@ const FollowSuper: FunctionComponent<SuperFollowProps> = ({
                   />
                 </div>
                 <div
-                  className="relative w-fit h-fit px-3 py-2 flex font-dosis rounded-md cursor-pointer active:scale-95"
+                  className="relative w-fit h-fit px-3 py-2 flex  font-dosis rounded-md cursor-pointer active:scale-95"
                   onClick={() => !superCreatorLoading && followSuper()}
                 >
                   <Image

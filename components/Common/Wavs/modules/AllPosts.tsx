@@ -106,7 +106,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
           <div className="max-w-full overflow-x-scroll">
             <QuickProfiles router={router} quickProfiles={quickProfiles} />
           </div>
-          <div className="relative flex flex-row gap-1 w-fit h-fit ml-auto">
+          <div className="relative flex flex-col sm:flex-row lg:flex-col stuck1:flex-row gap-5 sm:gap-1 lg:gap-3 stuck1:gap-1 w-full flex-shrink-0 sm:w-auto h-fit ml-auto sm:pt-0 pt-3">
             <SuperCreator
               dispatch={dispatch}
               handleConnect={handleConnect}
