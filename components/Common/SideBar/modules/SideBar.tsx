@@ -25,7 +25,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({
 }): JSX.Element => {
   return (
     <div className="relative w-full lg:w-80 h-fit lg:h-full flex flex-col">
-      <Switcher options={options} />
+      <Switcher options={options} dispatch={dispatch}/>
       <Tabs tab={tab} setTab={setTab} viewer={viewer} />
       {tab === 0 ? (
         <Channels

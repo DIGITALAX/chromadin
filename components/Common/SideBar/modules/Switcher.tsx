@@ -4,9 +4,11 @@ import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
 import MarqueeText from "react-fast-marquee";
 import { SwitcherProps } from "../types/sidebar.types";
+import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
 
 const Switcher: FunctionComponent<SwitcherProps> = ({
   options,
+  dispatch,
 }): JSX.Element => {
   const router = useRouter();
   return (
@@ -54,6 +56,7 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
                   className="relative w-fit justify-center lg:w-full h-full grid grid-flow-row auto-rows-auto flex items-center"
                   key={index}
                   onClick={() => {
+                    dispatch(setCollectOpen(false));
                     if (!router.asPath.includes("&search=")) {
                       if (router.asPath.includes("&profile=")) {
                         router.push(

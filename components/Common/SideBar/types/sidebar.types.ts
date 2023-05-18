@@ -78,4 +78,5 @@ export type SideBarProps = {
 
 export type SwitcherProps = {
   options: string;
+  dispatch: Dispatch<AnyAction>;
 };

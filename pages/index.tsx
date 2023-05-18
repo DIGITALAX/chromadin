@@ -54,7 +54,7 @@ const Home: NextPage = (): JSX.Element => {
       </Head>
       <div className="relative w-full h-full flex flex-row xl:flex-nowrap flex-wrap">
         <div className="relative w-full h-fit flex lg:hidden">
-          <Switcher options={options} />
+          <Switcher options={options} dispatch={dispatch} />
         </div>
         <div className="relative w-full h-full flex flex-row items-center">
           <div className="relative w-fit h-full hidden lg:flex">
