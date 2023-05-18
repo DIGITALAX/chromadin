@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import { FeedProps } from "../types/wavs.types";
 import Individual from "./Individual";
 import Switch from "./Switch";
+import MakePost from "./MakePost";
 
 const Feed: FunctionComponent<FeedProps> = ({
   dispatch,
@@ -136,7 +137,14 @@ const Feed: FunctionComponent<FeedProps> = ({
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
-      <div className="relative w-full h-full flex flex-col xl:flex-row items-start justify-center gap-8">
+      <div className="relative w-full h-full flex flex-col items-start justify-center gap-3">
+        <MakePost
+          dispatch={dispatch}
+          handleLensSignIn={handleLensSignIn}
+          handleConnect={handleConnect}
+          profileId={profileId}
+          address={address}
+        />
         {feedType !== "" ? (
           <Individual
             dispatch={dispatch}

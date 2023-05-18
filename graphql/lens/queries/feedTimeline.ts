@@ -380,11 +380,6 @@ fragment MediaFields on Media {
 }
 
 fragment ProfileFields on Profile {
-  canDecrypt(
-    profileId: $profileId
-  ) {
-    result
-  }
   id
   name
   bio
@@ -476,6 +471,11 @@ fragment Erc20Fields on Erc20 {
 }
 
 fragment PostFields on Post {
+  canDecrypt(
+    profileId: $profileId
+  ) {
+    result
+  }
   id
   profile {
     ...ProfileFields

@@ -43,7 +43,7 @@ const OptionsComment: FunctionComponent<OptionsCommentProps> = ({
         className={`relative w-4 h-4 items-center flex ${
           !commentLoading &&
           !imageLoading &&
-          (!postImages || (postImages as any)?.length < 4) &&
+          (!postImages?.length || (postImages as any)?.length < 4) &&
           "cursor-pointer active:scale-95"
         } ${imageLoading && "animate-spin"} ${
           postImages?.length === 4 && "opacity-20"
@@ -82,7 +82,7 @@ const OptionsComment: FunctionComponent<OptionsCommentProps> = ({
         className={`relative w-4 h-4 items-center flex ${
           !commentLoading &&
           !videoLoading &&
-          (!postImages || (postImages as any)?.length < 4) &&
+          (!postImages?.length || (postImages as any)?.length < 4) &&
           "cursor-pointer active:scale-95"
         } ${videoLoading && "animate-spin"} ${
           postImages?.length === 4 && "opacity-20"

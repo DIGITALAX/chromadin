@@ -78,7 +78,7 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
   address,
 }): JSX.Element => {
   return (
-    <div className="relative w-full h-60 flex flex-col ">
+    <div className="relative w-full h-60 flex flex-col">
       <div className="relative w-full h-full rounded-br-2xl rounded-tr-2xl border-2 border-black bg-gradient-to-r from-offBlack via-gray-600 to-black p-4 flex flex-col gap-3">
         {(mappedFeaturedFiles?.length !== 0 ||
           postImagesDispatched?.length !== 0) && (

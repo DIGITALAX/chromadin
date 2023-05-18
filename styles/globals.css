@@ -532,3 +532,29 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.2);
   filter: blur(5px);
 }
+
+#highlighted-content3 {
+  font-family: "Economica B";
+  font-size: 1rem;
+  line-height: 1.5rem;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+#highlighted-content3::-webkit-scrollbar {
+  display: none;
+}
+
+#post3 {
+  color: transparent;
+  background: transparent;
+  caret-color: white;
+}
+
+#post3 #highlighting3 * {
+  font-family: "Economica B";
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem;
+  overflow-y: scroll;
+  white-space: pre-wrap;
+}

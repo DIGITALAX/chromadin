@@ -1157,3 +1157,11 @@ export type SuperCreatorProps = {
   profileId: string;
   address: `0x${string}` | undefined;
 };
+
+export type MakePostProps = {
+  dispatch: Dispatch<AnyAction>;
+  handleLensSignIn: () => Promise<void>;
+  handleConnect: () => void;
+  profileId: string;
+  address: `0x${string}` | undefined;
+};

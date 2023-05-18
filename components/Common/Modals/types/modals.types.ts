@@ -1,13 +1,19 @@
-import { Profile, Publication } from "@/components/Home/types/lens.types";
+import {
+  Erc20,
+  Profile,
+  Publication,
+} from "@/components/Home/types/lens.types";
 import { FollowerOnlyState } from "@/redux/reducers/followerOnlySlice";
 import { MainVideoState } from "@/redux/reducers/mainVideoSlice";
 import { PostCollectValuesState } from "@/redux/reducers/postCollectSlice";
 import { VideoSyncState } from "@/redux/reducers/videoSyncSlice";
 import { NextRouter } from "next/router";
-import { Ref } from "react";
+import { FormEvent, KeyboardEvent, Ref } from "react";
 import ReactPlayer from "react-player";
 import { AnyAction, Dispatch } from "redux";
 import { QuickProfilesInterface } from "../../Wavs/types/wavs.types";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { UploadedMedia } from "@/components/Home/types/home.types";
 
 export type IndexingModalProps = {
   message: string | undefined;
@@ -103,4 +109,72 @@ export type SuperFollowProps = {
   superCreatorLoading: boolean;
   rain: boolean;
   canvasRef: Ref<HTMLCanvasElement>;
+};
+
+export type PostProps = {
+  dispatch: Dispatch<AnyAction>;
+  postLoading: boolean;
+  handlePostDescription: (e: FormEvent<Element>) => Promise<void>;
+  mentionProfiles: Profile[];
+  profilesOpen: boolean;
+  handleMentionClick: (user: any) => void;
+  gifOpen: boolean;
+  handleKeyDownDelete: (e: KeyboardEvent<Element>) => void;
+  handleGifSubmit: () => Promise<void>;
+  handleGif: (e: FormEvent) => void;
+  results: any[];
+  handleSetGif: (result: any) => void;
+  setGifOpen: (e: boolean) => void;
+  videoLoading: boolean;
+  imageLoading: boolean;
+  uploadImages: (e: FormEvent) => Promise<void>;
+  uploadVideo: (e: FormEvent) => Promise<void>;
+  handleRemoveImage: (e: UploadedMedia) => void;
+  postImagesDispatched: UploadedMedia[];
+  mappedFeaturedFiles: UploadedMedia[];
+  collectOpen: boolean;
+  enabledCurrencies: Erc20[];
+  audienceTypes: string[];
+  setAudienceType: (e: string) => void;
+  audienceType: string;
+  setEnabledCurrency: (e: string) => void;
+  enabledCurrency: string | undefined;
+  setChargeCollectDropDown: (e: boolean) => void;
+  setAudienceDropDown: (e: boolean) => void;
+  setCurrencyDropDown: (e: boolean) => void;
+  chargeCollectDropDown: boolean;
+  audienceDropDown: boolean;
+  currencyDropDown: boolean;
+  referral: number;
+  setReferral: (e: number) => void;
+  limit: number;
+  setLimit: (e: number) => void;
+  value: number;
+  setValue: (e: number) => void;
+  collectibleDropDown: boolean;
+  setCollectibleDropDown: (e: boolean) => void;
+  collectible: string;
+  setCollectible: (e: string) => void;
+  chargeCollect: string;
+  setChargeCollect: (e: string) => void;
+  limitedDropDown: boolean;
+  setLimitedDropDown: (e: boolean) => void;
+  limitedEdition: string;
+  setLimitedEdition: (e: string) => void;
+  setTimeLimit: (e: string) => void;
+  timeLimit: string;
+  timeLimitDropDown: boolean;
+  setTimeLimitDropDown: (e: boolean) => void;
+  collectNotif: string;
+  handleLensSignIn: () => Promise<void>;
+  handleConnect: () => void;
+  address: `0x${string}` | undefined;
+  profileId: string;
+  handlePost: () => Promise<void>;
+  postDescription: string;
+  textElement: Ref<HTMLTextAreaElement>;
+  caretCoord: {
+    x: number;
+    y: number;
+  };
 };

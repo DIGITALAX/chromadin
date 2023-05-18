@@ -61,6 +61,7 @@ import quickProfilesReducer from "./reducers/quickProfilesSlice";
 import historyURLReducer from "./reducers/historyURLSlice";
 import superFollowReducer from "./reducers/superFollowSlice";
 import rainReducer from "./reducers/rainSlice";
+import makePostReducer from "./reducers/makePostSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -124,6 +125,7 @@ const reducer = combineReducers({
   historyURLReducer,
   superFollowReducer,
   rainReducer,
+  makePostReducer,
 });
 
 export const store = configureStore({

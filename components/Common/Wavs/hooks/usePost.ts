@@ -8,28 +8,29 @@ import {
 } from "wagmi";
 import LensHubProxy from "../../../../abis/LensHubProxy.json";
 import handleIndexCheck from "@/lib/helpers/handleIndexCheck";
-import {
-  createCommentTypedData,
-  createDispatcherCommentData,
-} from "@/graphql/lens/mutations/comment";
 import { RootState } from "@/redux/store";
 import { splitSignature } from "ethers/lib/utils.js";
 import broadcast from "@/graphql/lens/mutations/broadcast";
 import { omit } from "lodash";
 import uploadPostContent from "@/lib/helpers/uploadPostContent";
+import { getPostData, removePostData, setPostData } from "@/lib/lens/utils";
 import { setIndexModal } from "@/redux/reducers/indexModalSlice";
+import getPostHTML from "@/lib/helpers/commentHTML";
 import { Profile } from "@/components/Home/types/lens.types";
-import { waitForTransaction } from "@wagmi/core";
-import getCommentHTML from "@/lib/helpers/commentHTML";
 import getCaretPos from "@/lib/helpers/getCaretPos";
+import { waitForTransaction } from "@wagmi/core";
+import {
+  createDispatcherPostData,
+  createPostTypedData,
+} from "@/graphql/lens/mutations/post";
 import { MediaType, UploadedMedia } from "../types/wavs.types";
-import { setPostImages } from "@/redux/reducers/postImageSlice";
 import { searchProfile } from "@/graphql/lens/queries/search";
+import { setPostImages } from "@/redux/reducers/postImageSlice";
 
-const useComment = () => {
-  const [commentLoading, setCommentLoading] = useState<boolean>(false);
-  const [commentArgs, setCommentArgs] = useState<any>();
-  const [commentDescription, setCommentDescription] = useState<string>("");
+const useMakePost = () => {
+  const [postLoading, setPostLoading] = useState<boolean>(false);
+  const [postArgs, setPostArgs] = useState<any>();
+  const [postDescription, setPostDescription] = useState<string>("");
   const [caretCoord, setCaretCoord] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -39,14 +40,16 @@ const useComment = () => {
   const textElement = useRef<HTMLTextAreaElement>(null);
   const [mentionProfiles, setMentionProfiles] = useState<Profile[]>([]);
   const [results, setResults] = useState<any>([]);
-  const [gifs, setGifs] = useState<UploadedMedia[]>([]);
-  const [searchGif, setSearchGif] = useState<boolean>(false);
-  const [commentHTML, setCommentHTML] = useState<string>("");
+  const [gifs, setGifs] = useState<UploadedMedia[]>(
+    JSON.parse(getPostData() || "{}").images || []
+  );
+  const [searchGif, setSearchGif] = useState<string>("");
+  const [postHTML, setPostHTML] = useState<string>("");
   const [contentURI, setContentURI] = useState<string>();
   const { signTypedDataAsync } = useSignTypedData();
   const dispatch = useDispatch();
   const profileId = useSelector(
-    (state: RootState) => state.app.lensProfileReducer.profile?.id
+    (state: RootState) => state.app.lensProfileReducer.profile
   );
   const collectOpen = useSelector(
     (state: RootState) => state.app.collectOpenReducer.value
@@ -61,16 +64,15 @@ const useComment = () => {
     (state: RootState) => state?.app?.collectValueTypeReducer?.type
   );
 
-  const { config: commentConfig, isSuccess: commentSuccess } =
-    usePrepareContractWrite({
-      address: LENS_HUB_PROXY_ADDRESS_MATIC,
-      abi: LensHubProxy,
-      functionName: "commentWithSig",
-      enabled: Boolean(commentArgs),
-      args: [commentArgs],
-    });
+  const { config, isSuccess } = usePrepareContractWrite({
+    address: LENS_HUB_PROXY_ADDRESS_MATIC,
+    abi: LensHubProxy,
+    functionName: "postWithSig",
+    enabled: Boolean(postArgs),
+    args: [postArgs],
+  });
 
-  const { writeAsync: commentWriteAsync } = useContractWrite(commentConfig);
+  const { writeAsync } = useContractWrite(config);
 
   const handleGif = (e: FormEvent): void => {
     setSearchGif((e.target as HTMLFormElement).value);
@@ -94,20 +96,40 @@ const useComment = () => {
           type: MediaType.Gif,
         },
       ]);
+      const postStorage = JSON.parse(getPostData() || "{}");
+      setPostData(
+        JSON.stringify({
+          ...postStorage,
+          images: [
+            ...(postImages as any),
+            {
+              cid: result,
+              type: MediaType.Gif,
+            },
+          ],
+        })
+      );
     }
   };
 
   const handleKeyDownDelete = (e: KeyboardEvent<Element>) => {
-    const highlightedContent = document.querySelector("#highlighted-content2")!;
+    const highlightedContent = document.querySelector("#highlighted-content3")!;
     const selection = window.getSelection();
+    const postStorage = JSON.parse(getPostData() || "{}");
     if (e.key === "Backspace" && selection?.toString() !== "") {
       const start = textElement.current!.selectionStart;
       const end = textElement.current!.selectionEnd;
 
       if (start === 0 && end === textElement.current!.value?.length) {
-        setCommentDescription("");
-        setCommentHTML("");
+        setPostDescription("");
+        setPostHTML("");
         // highlightedContent.innerHTML = "";
+        setPostData(
+          JSON.stringify({
+            ...postStorage,
+            post: "",
+          })
+        );
       } else {
         const selectedText = selection!.toString();
         const selectedHtml = highlightedContent.innerHTML.substring(start, end);
@@ -118,35 +140,54 @@ const useComment = () => {
         const strippedText = selectedText.replace(/<[^>]*>/g, "");
 
         const newHTML =
-          commentHTML.slice(0, start) + strippedHtml + commentHTML.slice(end);
+          postHTML.slice(0, start) + strippedHtml + postHTML.slice(end);
         const newDescription =
-          commentDescription.slice(0, start) +
+          postDescription.slice(0, start) +
           strippedText +
-          commentDescription.slice(end);
+          postDescription.slice(end);
 
-        setCommentHTML(newHTML);
-        setCommentDescription(newDescription);
+        setPostHTML(newHTML);
+        setPostDescription(newDescription);
         (e.currentTarget! as any).value = newDescription;
         // highlightedContent.innerHTML = newHTML;
+        setPostData(
+          JSON.stringify({
+            ...postStorage,
+            post: newDescription,
+          })
+        );
       }
     } else if (
       e.key === "Backspace" &&
-      commentDescription?.length === 0 &&
-      commentHTML?.length === 0
+      postDescription?.length === 0 &&
+      postHTML?.length === 0
     ) {
       (e.currentTarget! as any).value = "";
       // highlightedContent.innerHTML = "";
+      setPostData(
+        JSON.stringify({
+          ...postStorage,
+          post: "",
+        })
+      );
       e.preventDefault();
     }
   };
 
-  const handleCommentDescription = async (e: any): Promise<void> => {
-    let resultElement = document.querySelector("#highlighted-content2");
+  const handlePostDescription = async (e: any): Promise<void> => {
+    let resultElement = document.querySelector("#highlighted-content3");
     const newValue = e.target.value.endsWith("\n")
       ? e.target.value + " "
       : e.target.value;
-    setCommentHTML(getCommentHTML(e, resultElement as Element));
-    setCommentDescription(newValue);
+    setPostHTML(getPostHTML(e, resultElement as Element));
+    setPostDescription(newValue);
+    const postStorage = JSON.parse(getPostData() || "{}");
+    setPostData(
+      JSON.stringify({
+        ...postStorage,
+        post: e.target.value,
+      })
+    );
     if (
       e.target.value.split(" ")[e.target.value.split(" ")?.length - 1][0] ===
         "@" &&
@@ -163,7 +204,7 @@ const useComment = () => {
       const allProfiles = await searchProfile({
         query: e.target.value.split(" ")[e.target.value.split(" ")?.length - 1],
         type: "PROFILE",
-        limit: 20,
+        limit: 50,
       });
       setMentionProfiles(allProfiles?.data?.search?.items);
     } else {
@@ -172,13 +213,14 @@ const useComment = () => {
     }
   };
 
-  const clearComment = () => {
-    setCommentLoading(false);
-    setCommentDescription("");
-    setCommentHTML("");
+  const clearPost = () => {
+    setPostLoading(false);
+    setPostDescription("");
+    setPostHTML("");
     setGifs([]);
     dispatch(setPostImages([]));
     // (document as any).querySelector("#highlighted-content").innerHTML = "";
+    removePostData();
     dispatch(
       setIndexModal({
         actionValue: true,
@@ -187,57 +229,53 @@ const useComment = () => {
     );
   };
 
-  const commentPost = async (id: string): Promise<void> => {
-    if (!profileId) {
-      return;
-    }
+  const handlePost = async (): Promise<void> => {
     if (
-      (!commentDescription ||
-        commentDescription === "" ||
-        commentDescription.trim()?.length < 0) &&
+      (!postDescription ||
+        postDescription === "" ||
+        postDescription.trim()?.length < 0) &&
       (!postImages?.length || postImages?.length < 1)
     ) {
       return;
     }
-    setCommentLoading(true);
+    setPostLoading(true);
     let result: any;
     try {
       const contentURIValue = await uploadPostContent(
         postImages,
-        commentDescription,
+        postDescription,
         setContentURI,
         contentURI
       );
+
       if (dispatcher) {
-        result = await createDispatcherCommentData({
-          profileId: profileId,
-          publicationId: id,
-          contentURI: "ipfs://" + contentURIValue,
+        result = await createDispatcherPostData({
+          profileId: profileId?.id,
+          contentURI: contentURIValue,
           collectModule: collectModuleType,
           referenceModule: {
             followerOnlyReferenceModule: false,
           },
         });
-        clearComment();
+        clearPost();
         setTimeout(async () => {
           await handleIndexCheck(
-            result?.data?.createCommentViaDispatcher?.txHash,
+            result?.data?.createPostViaDispatcher?.txHash,
             dispatch,
             true
           );
         }, 7000);
       } else {
-        result = await createCommentTypedData({
-          profileId: profileId,
-          publicationId: id,
-          contentURI: "ipfs://" + contentURIValue,
+        result = await createPostTypedData({
+          profileId: profileId?.id,
+          contentURI: contentURIValue,
           collectModule: collectModuleType,
           referenceModule: {
             followerOnlyReferenceModule: false,
           },
         });
 
-        const typedData: any = result.data.createCommentTypedData.typedData;
+        const typedData: any = result.data.createPostTypedData.typedData;
 
         const signature: any = await signTypedDataAsync({
           domain: omit(typedData?.domain, ["__typename"]),
@@ -246,14 +284,14 @@ const useComment = () => {
         });
 
         const broadcastResult: any = await broadcast({
-          id: result?.data?.createCommentTypedData?.id,
+          id: result?.data?.createPostTypedData?.id,
           signature,
         });
 
         if (broadcastResult?.data?.broadcast?.__typename !== "RelayerResult") {
           const { v, r, s } = splitSignature(signature);
 
-          const commentArgs = {
+          const postArgs = {
             profileId: typedData.value.profileId,
             contentURI: typedData.value.contentURI,
             profileIdPointed: typedData.value.profileIdPointed,
@@ -270,9 +308,9 @@ const useComment = () => {
               deadline: typedData.value.deadline,
             },
           };
-          setCommentArgs(commentArgs);
+          setPostArgs(postArgs);
         } else {
-          clearComment();
+          clearPost();
           setTimeout(async () => {
             await handleIndexCheck(
               broadcastResult?.data?.broadcast?.txHash,
@@ -283,80 +321,94 @@ const useComment = () => {
         }
       }
     } catch (err: any) {
-      if (err.message.includes("data availability publication")) {
-        dispatch(
-          setIndexModal({
-            actionValue: true,
-            actionMessage: "Momoka won't let you interact ATM.",
-          })
-        );
-        setTimeout(() => {
-          dispatch(
-            setIndexModal({
-              actionValue: false,
-              actionMessage: "",
-            })
-          );
-        }, 4000);
-      }
       console.error(err.message);
     }
-    setCommentLoading(false);
+    setPostLoading(false);
   };
 
-  const handleCommentWrite = async (): Promise<void> => {
-    setCommentLoading(true);
+  const handlePostWrite = async (): Promise<void> => {
+    setPostLoading(true);
     try {
-      const tx = await commentWriteAsync?.();
-      clearComment();
+      const tx = await writeAsync?.();
+      clearPost();
       const res = await waitForTransaction({
         hash: tx?.hash!,
       });
       await handleIndexCheck(res?.transactionHash, dispatch, true);
     } catch (err) {
       console.error(err);
-      setCommentLoading(false);
+      setPostLoading(false);
     }
   };
 
   const handleMentionClick = (user: any) => {
     setProfilesOpen(false);
-    let resultElement = document.querySelector("#highlighted-content2");
+    let resultElement = document.querySelector("#highlighted-content3");
     const newHTMLPost =
-      commentHTML?.substring(0, commentHTML.lastIndexOf("@")) +
+      postHTML?.substring(0, postHTML.lastIndexOf("@")) +
       `@${user?.handle}</span>`;
     const newElementPost =
-      commentDescription?.substring(0, commentDescription.lastIndexOf("@")) +
+      postDescription?.substring(0, postDescription.lastIndexOf("@")) +
       `@${user?.handle}`;
-    setCommentDescription(newElementPost);
+    setPostDescription(newElementPost);
+
+    const postStorage = JSON.parse(getPostData() || "{}");
+    setPostData(
+      JSON.stringify({
+        ...postStorage,
+        post: newElementPost,
+      })
+    );
 
     // if (newHTMLPost) (resultElement as any).innerHTML = newHTMLPost;
-    setCommentHTML(newHTMLPost);
+    setPostHTML(newHTMLPost);
   };
 
   useEffect(() => {
-    if (commentSuccess) {
-      handleCommentWrite();
+    if (isSuccess) {
+      handlePostWrite();
     }
-  }, [commentSuccess]);
+  }, [isSuccess]);
+
+  useEffect(() => {
+    const savedData = getPostData();
+    if (savedData) {
+      setPostDescription(JSON.parse(savedData).post);
+      let resultElement = document.querySelector("#highlighted-content3");
+      if (
+        JSON.parse(savedData).post[JSON.parse(savedData).post?.length - 1] ==
+        "\n"
+      ) {
+        JSON.parse(savedData).post += " ";
+      }
+      setPostHTML(
+        getPostHTML(JSON.parse(savedData).post, resultElement as Element, true)
+      );
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(setPostImages(gifs));
   }, [gifs]);
 
   useEffect(() => {
-    if (document.querySelector("#highlighted-content2")) {
-      document.querySelector("#highlighted-content2")!.innerHTML =
-        commentHTML.length === 0 ? "Have something to say?" : commentHTML;
+    if (searchGif === "" || searchGif === " ") {
+      setResults([]);
     }
-  }, [commentHTML, gifOpen, collectOpen]);
+  }, [searchGif]);
+
+  useEffect(() => {
+    if (document.querySelector("#highlighted-content3")) {
+      document.querySelector("#highlighted-content3")!.innerHTML =
+        postHTML.length === 0 ? "Have something to say?" : postHTML;
+    }
+  }, [postHTML, gifOpen, collectOpen]);
 
   return {
-    commentPost,
-    commentDescription,
+    postDescription,
     textElement,
-    handleCommentDescription,
-    commentLoading,
+    handlePostDescription,
+    postLoading,
     caretCoord,
     mentionProfiles,
     profilesOpen,
@@ -364,11 +416,14 @@ const useComment = () => {
     handleGifSubmit,
     handleGif,
     results,
+    gifs,
     handleSetGif,
+    handleKeyDownDelete,
     gifOpen,
     setGifOpen,
-    handleKeyDownDelete,
+    collectOpen,
+    handlePost,
   };
 };
 
-export default useComment;
+export default useMakePost;

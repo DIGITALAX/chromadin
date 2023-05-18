@@ -21,6 +21,10 @@ import FullScreenVideo from "./FullScreenVideo";
 import { useRef } from "react";
 import FollowSuper from "./FollowSuper";
 import useSuperCreator from "../../Wavs/hooks/useSuperCreator";
+import Post from "./Post";
+import useCollectOptions from "../../NFT/hooks/useCollectOptions";
+import useImageUpload from "../../NFT/hooks/useImageUpload";
+import useMakePost from "../../Wavs/hooks/usePost";
 
 const Modals = () => {
   const videoRef = useRef<HTMLDivElement>(null);
@@ -46,11 +50,17 @@ const Modals = () => {
   const lensProfile = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
+  const postImagesDispatched = useSelector(
+    (state: RootState) => state.app.postImageReducer.value
+  );
   const collectModuleValues = useSelector(
     (state: RootState) => state.app.postCollectReducer
   );
   const followersModal = useSelector(
     (state: RootState) => state.app.followerOnlyReducer
+  );
+  const collectOpen = useSelector(
+    (state: RootState) => state.app.collectOpenReducer.value
   );
   const claimModal = useSelector(
     (state: RootState) => state.app.noHandleReducer
@@ -67,6 +77,7 @@ const Modals = () => {
   const reaction = useSelector(
     (state: RootState) => state.app.reactionStateReducer
   );
+  const makePost = useSelector((state: RootState) => state.app.makePostReducer);
   const rain = useSelector((state: RootState) => state.app.rainReducer.value);
   const dispatchVideos = useSelector(
     (state: RootState) => state.app.channelsReducer.value
@@ -107,7 +118,7 @@ const Modals = () => {
   } = useReactions();
   const router = useRouter();
   const { address } = useAccount();
-  const { handleLensSignIn } = useConnect();
+  const { handleLensSignIn, handleConnect } = useConnect();
   const dispatch = useDispatch();
   const {
     reacters,
@@ -124,6 +135,67 @@ const Modals = () => {
     hasMoreMirror,
   } = useWho();
   const { followSuper, superCreatorLoading, canvasRef } = useSuperCreator();
+  const {
+    postDescription,
+    postLoading,
+    handlePostDescription,
+    textElement,
+    caretCoord,
+    mentionProfiles,
+    profilesOpen,
+    handleMentionClick,
+    handleGif,
+    handleGifSubmit,
+    handleSetGif,
+    results,
+    setGifOpen,
+    gifOpen,
+    handleKeyDownDelete,
+    handlePost,
+  } = useMakePost();
+  const {
+    collectNotif,
+    referral,
+    setCollectible,
+    collectibleDropDown,
+    setCollectibleDropDown,
+    collectible,
+    setAudienceDropDown,
+    audienceType,
+    audienceTypes,
+    chargeCollect,
+    limit,
+    limitedEdition,
+    audienceDropDown,
+    setAudienceType,
+    setTimeLimit,
+    timeLimit,
+    timeLimitDropDown,
+    setTimeLimitDropDown,
+    setLimitedEdition,
+    limitedDropDown,
+    setLimitedDropDown,
+    setReferral,
+    setLimit,
+    setChargeCollect,
+    setCurrencyDropDown,
+    chargeCollectDropDown,
+    setChargeCollectDropDown,
+    enabledCurrencies,
+    enabledCurrency,
+    currencyDropDown,
+    setEnabledCurrency,
+    value,
+    setValue,
+  } = useCollectOptions();
+  const {
+    videoLoading,
+    imageLoading,
+    uploadImage,
+    uploadVideo,
+    handleRemoveImage,
+    mappedFeaturedFiles,
+  } = useImageUpload();
   return (
     <>
       {fullScreenVideo.value && (
@@ -233,6 +305,72 @@ const Modals = () => {
         />
       )}
       {imageViewer.value && <ImageLarge mainImage={mainImage!} />}
+      {makePost.value && (
+        <Post
+          handlePost={handlePost}
+          dispatch={dispatch}
+          handleConnect={handleConnect}
+          handleLensSignIn={handleLensSignIn}
+          postDescription={postDescription}
+          textElement={textElement}
+          handlePostDescription={handlePostDescription}
+          postLoading={postLoading}
+          caretCoord={caretCoord}
+          mentionProfiles={mentionProfiles}
+          profilesOpen={profilesOpen}
+          handleMentionClick={handleMentionClick}
+          handleGifSubmit={handleGifSubmit}
+          handleGif={handleGif}
+          results={results}
+          handleSetGif={handleSetGif}
+          gifOpen={gifOpen}
+          setGifOpen={setGifOpen}
+          handleKeyDownDelete={handleKeyDownDelete}
+          handleRemoveImage={handleRemoveImage}
+          address={address}
+          profileId={lensProfile}
+          videoLoading={videoLoading}
+          uploadImages={uploadImage}
+          uploadVideo={uploadVideo}
+          imageLoading={imageLoading}
+          mappedFeaturedFiles={mappedFeaturedFiles}
+          collectOpen={collectOpen}
+          enabledCurrencies={enabledCurrencies}
+          audienceDropDown={audienceDropDown}
+          audienceType={audienceType}
+          setAudienceDropDown={setAudienceDropDown}
+          setAudienceType={setAudienceType}
+          value={value}
+          setChargeCollect={setChargeCollect}
+          setChargeCollectDropDown={setChargeCollectDropDown}
+          setCollectible={setCollectible}
+          setCollectibleDropDown={setCollectibleDropDown}
+          setCurrencyDropDown={setCurrencyDropDown}
+          setEnabledCurrency={setEnabledCurrency}
+          setLimit={setLimit}
+          setLimitedDropDown={setLimitedDropDown}
+          setLimitedEdition={setLimitedEdition}
+          setReferral={setReferral}
+          setTimeLimit={setTimeLimit}
+          setTimeLimitDropDown={setTimeLimitDropDown}
+          setValue={setValue}
+          enabledCurrency={enabledCurrency}
+          chargeCollect={chargeCollect}
+          chargeCollectDropDown={chargeCollectDropDown}
+          limit={limit}
+          limitedDropDown={limitedDropDown}
+          limitedEdition={limitedEdition}
+          timeLimit={timeLimit}
+          timeLimitDropDown={timeLimitDropDown}
+          audienceTypes={audienceTypes}
+          referral={referral}
+          collectNotif={collectNotif}
+          collectible={collectible}
+          collectibleDropDown={collectibleDropDown}
+          currencyDropDown={currencyDropDown}
+          postImagesDispatched={postImagesDispatched}
+        />
+      )}
       {errorModal.value && <Error />}
       {successModal.open && (
         <Success dispatch={dispatch} media={successModal.media} />

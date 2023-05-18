@@ -229,7 +229,7 @@ const useComment = () => {
     setCommentDescription("");
     setCommentHTML("");
     setGifs([]);
-    dispatch(setPostImages(undefined));
+    dispatch(setPostImages([]));
     // (document as any).querySelector("#highlighted-content").innerHTML = "";
     removeCommentData();
     dispatch(

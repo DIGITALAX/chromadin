@@ -2,18 +2,21 @@ import { UploadedMedia } from "@/components/Home/types/home.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface PostImagesState {
-  value?: UploadedMedia[];
+  value: UploadedMedia[];
 }
 
 const initialPostImagesState: PostImagesState = {
-  value: undefined,
+  value: [],
 };
 
 export const postImagesSlice = createSlice({
   name: "postImages",
   initialState: initialPostImagesState,
   reducers: {
-    setPostImages: (state: PostImagesState, action: PayloadAction<UploadedMedia[] | undefined>) => {
+    setPostImages: (
+      state: PostImagesState,
+      action: PayloadAction<UploadedMedia[]>
+    ) => {
       state.value = action.payload;
     },
   },
