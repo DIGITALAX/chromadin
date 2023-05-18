@@ -10,6 +10,7 @@ import { MakeCommentProps } from "../types/wavs.types";
 import OptionsComment from "./OptionsComment";
 import CollectButton from "../../Buttons/CollectButton";
 import CollectInput from "../../Buttons/CollectInput";
+import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 
 const MakeComment: FunctionComponent<MakeCommentProps> = ({
   profileId,
@@ -251,84 +252,90 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
           </div>
         ) : (
           <div className="relative w-full h-full rounded-md" id="boxBg1">
-            <div className="relative w-full h-full rounded-md grid grid-flow-col auto-cols-auto">
-              <textarea
-                id="post2"
-                onScroll={(e: any) => syncScroll(e, "highlighted-content2")}
-                onInput={(e: FormEvent) => {
-                  handleCommentDescription(e);
-                  syncScroll(e, "highlighted-content2");
-                }}
-                onKeyDown={(e: KeyboardEvent<Element>) =>
-                  handleKeyDownDelete(e)
-                }
-                style={{ resize: "none" }}
-                className="relative w-full h-full bg-black font-economicaB text-white p-2 z-1 rounded-lg overflow-y-scroll"
-                ref={textElement}
-                value={commentDescription}
-                disabled={commentLoading || !canComment ? true : false}
-              ></textarea>
-              <pre
-                id="highlighting2"
-                className={`absolute w-full h-full bg-black font-economicaB text-white p-2 rounded-lg overflow-y-scroll ${
-                  !canComment && "opacity-70"
-                }`}
-              >
-                <code
-                  id="highlighted-content2"
-                  className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-scroll z-0`}
-                >
-                  {!canComment
-                    ? "Looks Like Only Select Profiles Can Comment on this Post ATM"
-                    : commentId !== ""
-                    ? "Reply with a Comment?"
-                    : "Have Something to Say?"}
-                </code>
-              </pre>
-              {mentionProfiles?.length > 0 && profilesOpen && (
-                <div
-                  className={`absolute w-44 max-h-28 h-fit flex flex-col overflow-y-scroll items-center justify-center z-2 rounded-lg`}
-                  style={{
-                    top: caretCoord.y + 30,
-                    left: caretCoord.x,
-                  }}
-                >
-                  {mentionProfiles?.map((user: any, index: number) => {
-                    const profileImage: string = createProfilePicture(user);
-                    return (
-                      <div
-                        key={index}
-                        className={`relative w-full h-fit px-3 py-2 bg-white flex flex-row gap-3 cursor-pointer items-center justify-center border-y border-black hover:bg-rosa/70 z-2`}
-                        onClick={() => {
-                          handleMentionClick(user);
-                        }}
-                      >
-                        <div className="relative flex flex-row w-full h-full text-black font-economicaB lowercase place-self-center gap-2">
-                          <div
-                            className={`relative rounded-full flex bg-white w-3 h-3 items-center justify-center col-start-1`}
-                            id="crt"
-                          >
-                            {profileImage !== "" && (
-                              <Image
-                                src={profileImage}
-                                objectFit="cover"
-                                alt="pfp"
-                                layout="fill"
-                                className="relative w-fit h-fit rounded-full items-center justify-center flex"
-                                draggable={false}
-                              />
-                            )}
-                          </div>
-                          <div className="relative col-start-2 items-center justify-center w-fit h-fit text-xs flex">
-                            @{user?.handle?.split(".lens")[0]}
+            <ScrollSync>
+              <div className="relative w-full h-full rounded-md grid grid-flow-col auto-cols-auto">
+                <ScrollSyncPane>
+                  <textarea
+                    id="post2"
+                    onScroll={(e: any) => syncScroll(e, "highlighted-content2")}
+                    onInput={(e: FormEvent) => {
+                      handleCommentDescription(e);
+                      syncScroll(e, "highlighted-content2");
+                    }}
+                    onKeyDown={(e: KeyboardEvent<Element>) =>
+                      handleKeyDownDelete(e)
+                    }
+                    style={{ resize: "none" }}
+                    className="relative w-full h-full bg-black font-economicaB text-white p-2 z-1 rounded-lg overflow-y-scroll"
+                    ref={textElement}
+                    value={commentDescription}
+                    disabled={commentLoading || !canComment ? true : false}
+                  ></textarea>
+                </ScrollSyncPane>
+                <ScrollSyncPane>
+                  <pre
+                    id="highlighting2"
+                    className={`absolute w-full h-full bg-black font-economicaB text-white p-2 rounded-lg overflow-y-scroll ${
+                      !canComment && "opacity-70"
+                    }`}
+                  >
+                    <code
+                      id="highlighted-content2"
+                      className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-scroll z-0`}
+                    >
+                      {!canComment
+                        ? "Looks Like Only Select Profiles Can Comment on this Post ATM"
+                        : commentId !== ""
+                        ? "Reply with a Comment?"
+                        : "Have Something to Say?"}
+                    </code>
+                  </pre>
+                </ScrollSyncPane>
+                {mentionProfiles?.length > 0 && profilesOpen && (
+                  <div
+                    className={`absolute w-44 max-h-28 h-fit flex flex-col overflow-y-scroll items-center justify-center z-2 rounded-lg`}
+                    style={{
+                      top: caretCoord.y + 30,
+                      left: caretCoord.x,
+                    }}
+                  >
+                    {mentionProfiles?.map((user: any, index: number) => {
+                      const profileImage: string = createProfilePicture(user);
+                      return (
+                        <div
+                          key={index}
+                          className={`relative w-full h-fit px-3 py-2 bg-white flex flex-row gap-3 cursor-pointer items-center justify-center border-y border-black hover:bg-rosa/70 z-2`}
+                          onClick={() => {
+                            handleMentionClick(user);
+                          }}
+                        >
+                          <div className="relative flex flex-row w-full h-full text-black font-economicaB lowercase place-self-center gap-2">
+                            <div
+                              className={`relative rounded-full flex bg-white w-3 h-3 items-center justify-center col-start-1`}
+                              id="crt"
+                            >
+                              {profileImage !== "" && (
+                                <Image
+                                  src={profileImage}
+                                  objectFit="cover"
+                                  alt="pfp"
+                                  layout="fill"
+                                  className="relative w-fit h-fit rounded-full items-center justify-center flex"
+                                  draggable={false}
+                                />
+                              )}
+                            </div>
+                            <div className="relative col-start-2 items-center justify-center w-fit h-fit text-xs flex">
+                              @{user?.handle?.split(".lens")[0]}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </ScrollSync>
           </div>
         )}
         <div className="relative w-full h-fit preG:h-12 flex flex-row items-center gap-3 flex-wrap preG:flex-nowrap">
