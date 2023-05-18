@@ -561,45 +561,15 @@ input[type="range"]::-moz-range-thumb {
 
 #boxBg {
   background: #111313;
-  border-top: 1px solid #d1539d;
-  border-bottom: 1px solid #d1539d;
-  border-left: 1px solid #dbac2a;
-  border-right: 1px solid #dbac2a;
-  outline: 1px solid #fff;
+  border: 1px solid #d1539d;
+  outline: 1px solid #dbac2a;
   outline-offset: -8px;
-  box-shadow: 0 8px 8px -2px lightblue;
-  border-radius: 6px;
-  /* clip-path: polygon(
-    0 5%,
-    5% 0,
-    95% 0,
-    100% 5%,
-    100% 95%,
-    95% 100%,
-    5% 100%,
-    0% 95%,
-    0% 5%
-  ); */
+  box-shadow: 0 8px 8px -6px lightblue;
 }
 
 #boxBg1 {
   background: #111313;
-  border-top: 1px solid #d1539d;
-  border-bottom: 1px solid #d1539d;
-  border-left: 1px solid #dbac2a;
-  border-right: 1px solid #dbac2a;
-  outline: 1px solid #fff;
+  border: 1px solid #d1539d;
+  outline: 1px solid #dbac2a;
   outline-offset: -8px;
-  border-radius: 6px;
-  /* clip-path: polygon(
-    0 5%,
-    5% 0,
-    95% 0,
-    100% 5%,
-    100% 95%,
-    95% 100%,
-    5% 100%,
-    0% 95%,
-    0% 5%
-  ); */
 }
