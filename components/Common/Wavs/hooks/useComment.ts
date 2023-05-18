@@ -25,6 +25,7 @@ import getCaretPos from "@/lib/helpers/getCaretPos";
 import { MediaType, UploadedMedia } from "../types/wavs.types";
 import { setPostImages } from "@/redux/reducers/postImageSlice";
 import { searchProfile } from "@/graphql/lens/queries/search";
+import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
 
 const useComment = () => {
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
@@ -178,6 +179,8 @@ const useComment = () => {
     setCommentHTML("");
     setGifs([]);
     dispatch(setPostImages([]));
+    dispatch(setCollectOpen(false));
+    setGifOpen(false);
     // (document as any).querySelector("#highlighted-content").innerHTML = "";
     dispatch(
       setIndexModal({

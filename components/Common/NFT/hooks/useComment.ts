@@ -30,6 +30,7 @@ import getCaretPos from "@/lib/helpers/getCaretPos";
 import { searchProfile } from "@/graphql/lens/queries/search";
 import { setPostImages } from "@/redux/reducers/postImageSlice";
 import { waitForTransaction } from "@wagmi/core";
+import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
 
 const useComment = () => {
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
@@ -230,6 +231,8 @@ const useComment = () => {
     setCommentHTML("");
     setGifs([]);
     dispatch(setPostImages([]));
+    dispatch(setCollectOpen(false));
+    setGifOpen(false);
     // (document as any).querySelector("#highlighted-content").innerHTML = "";
     removeCommentData();
     dispatch(

@@ -26,6 +26,7 @@ import {
 import { MediaType, UploadedMedia } from "../types/wavs.types";
 import { searchProfile } from "@/graphql/lens/queries/search";
 import { setPostImages } from "@/redux/reducers/postImageSlice";
+import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
 
 const useMakePost = () => {
   const [postLoading, setPostLoading] = useState<boolean>(false);
@@ -219,6 +220,8 @@ const useMakePost = () => {
     setPostHTML("");
     setGifs([]);
     dispatch(setPostImages([]));
+    dispatch(setCollectOpen(false));
+    setGifOpen(false);
     // (document as any).querySelector("#highlighted-content").innerHTML = "";
     removePostData();
     dispatch(

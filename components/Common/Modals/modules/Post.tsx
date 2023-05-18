@@ -12,6 +12,8 @@ import CollectButton from "../../Buttons/CollectButton";
 import OptionsComment from "../../Wavs/modules/OptionsComment";
 import { setModal } from "@/redux/reducers/modalSlice";
 import syncScroll from "@/lib/helpers/syncScroll";
+import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
+import { setPostImages } from "@/redux/reducers/postImageSlice";
 
 const Post: FunctionComponent<PostProps> = ({
   dispatch,
@@ -79,19 +81,27 @@ const Post: FunctionComponent<PostProps> = ({
 }): JSX.Element => {
   return (
     <div className="inset-0 justify-center fixed z-20 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto">
-      <div className="relative w-full lg:w-[50vw] h-fit col-start-1 place-self-center bg-offBlack rounded-lg">
+      <div
+        className="relative w-full lg:w-[50vw] h-fit col-start-1 place-self-center rounded-lg"
+        id="boxBg"
+      >
         <div className="relative w-full row-start-2 h-fit rounded-xl grid grid-flow-col auto-cols-auto">
           <div className="relative w-full h-full col-start-1 rounded-xl place-self-center">
-            <div className="relative w-full h-full grid grid-flow-row auto-rows-auto gap-4 pb-8">
-              <div className="relative w-fit h-fit row-start-1 self-center justify-self-end pr-3 pt-3 cursor-pointer">
+            <div className="relative w-full h-full grid grid-flow-row auto-rows-auto gap-4 pb-2">
+              <div className="relative w-fit h-fit row-start-1 self-center justify-self-end pr-5 pt-5 cursor-pointer">
                 <ImCross
                   color="white"
                   size={15}
-                  onClick={() => dispatch(setMakePost(false))}
+                  onClick={() => {
+                    dispatch(setMakePost(false));
+                    dispatch(setCollectOpen(false));
+                    setGifOpen(false);
+                    // dispatch(setPostImages([]));
+                  }}
                 />
               </div>
-              <div className="relative w-full h-60 flex flex-col">
-                <div className="relative w-full h-full rounded-br-2xl rounded-tr-2xl border-2 border-black p-4 flex flex-col gap-3">
+              <div className="relative w-full min-h-60 h-fit flex flex-col">
+                <div className="relative w-full h-full px-4 pb-4 flex flex-col gap-3">
                   {(mappedFeaturedFiles?.length !== 0 ||
                     postImagesDispatched?.length !== 0) && (
                     <ImageUploads
@@ -267,8 +277,8 @@ const Post: FunctionComponent<PostProps> = ({
                       </div>
                     </div>
                   ) : (
-                    <div className="relative w-full h-full border border-white p-px rounded-md">
-                      <div className="relative w-full h-full border border-white p-px rounded-md grid grid-flow-col auto-cols-auto">
+                    <div className="relative w-full h-full p-px rounded-md">
+                      <div className="relative w-full h-40 border border-white p-px rounded-md grid grid-flow-col auto-cols-auto">
                         <textarea
                           id="post3"
                           onScroll={(e: any) =>

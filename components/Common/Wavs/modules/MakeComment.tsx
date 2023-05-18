@@ -250,8 +250,8 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
             </div>
           </div>
         ) : (
-          <div className="relative w-full h-full border border-white p-px rounded-md">
-            <div className="relative w-full h-full border border-white p-px rounded-md grid grid-flow-col auto-cols-auto">
+          <div className="relative w-full h-full rounded-md" id="boxBg1">
+            <div className="relative w-full h-full rounded-md grid grid-flow-col auto-cols-auto">
               <textarea
                 id="post2"
                 onScroll={(e: any) => syncScroll(e, "highlighted-content2")}
