@@ -7,27 +7,23 @@ import { setNoHandle } from "@/redux/reducers/noHandleSlice";
 
 const MakePost: FunctionComponent<MakePostProps> = ({
   dispatch,
-  handleConnect,
   profileId,
   address,
 }): JSX.Element => {
+  console.log({ profileId, address });
   return (
     <div className="relative w-full h-fit flex justify-end ml-auto">
       <div
         className="relative w-4 h-4 flex cursor-pointer active:scale-95"
         onClick={() =>
-          !profileId && !address
-            ? () => handleConnect()
-            : address && !profileId
-            ? () =>
-                dispatch(
-                  setNoHandle({
-                    actionValue: true,
-                    actionMessage:
-                      "Sign In to Lens to Make A Post.",
-                  })
-                )
-            : dispatch(setMakePost(true))
+          profileId && address
+            ? dispatch(setMakePost(true))
+            : dispatch(
+                setNoHandle({
+                  actionValue: true,
+                  actionMessage: "Sign In to Lens to Make A Post.",
+                })
+              )
         }
       >
         <Image

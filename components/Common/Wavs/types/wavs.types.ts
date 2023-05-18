@@ -1159,7 +1159,6 @@ export type SuperCreatorProps = {
 
 export type MakePostProps = {
   dispatch: Dispatch<AnyAction>;
-  handleConnect: () => void;
   profileId: string;
   address: `0x${string}` | undefined;
 };

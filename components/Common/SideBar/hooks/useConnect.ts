@@ -67,6 +67,12 @@ const useConnect = (): UseConnectResults => {
 
   const handleConnect = (): void => {
     openConnectModal && openConnectModal();
+    dispatch(
+      setNoHandle({
+        actionValue: false,
+        actionMessage: "",
+      })
+    );
   };
 
   const handleLensSignIn = async (): Promise<void> => {
@@ -101,6 +107,12 @@ const useConnect = (): UseConnectResults => {
       console.error(err.message);
     }
     setSignInLoading(false);
+    dispatch(
+      setNoHandle({
+        actionValue: false,
+        actionMessage: "",
+      })
+    );
   };
 
   const handleRefreshProfile = async (): Promise<void> => {

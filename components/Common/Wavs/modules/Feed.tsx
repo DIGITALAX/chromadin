@@ -140,7 +140,6 @@ const Feed: FunctionComponent<FeedProps> = ({
       <div className="relative w-full h-full flex flex-col items-start justify-center gap-3">
         <MakePost
           dispatch={dispatch}
-          handleConnect={handleConnect}
           profileId={profileId}
           address={address}
         />

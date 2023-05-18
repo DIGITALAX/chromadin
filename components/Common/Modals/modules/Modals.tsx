@@ -384,6 +384,9 @@ const Modals = () => {
           message={claimModal.message}
           signInLoading={signInLoading}
           handleLensSignIn={handleLensSignIn}
+          handleConnect={handleConnect}
+          address={address}
+          profileId={lensProfile}
         />
       )}
       {imageFeedViewer?.open && (

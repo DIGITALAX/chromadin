@@ -10,11 +10,14 @@ const Claim: FunctionComponent<ClaimProps> = ({
   message,
   handleLensSignIn,
   signInLoading,
+  address,
+  profileId,
+  handleConnect,
 }): JSX.Element => {
   return (
     <div className="inset-0 justify-center fixed z-20 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto">
       <div className="relative w-80 h-96 col-start-1 place-self-center bg-offBlack rounded-lg border border-white">
-        <div className="relative w-fit row-start-2 h-full grid grid-flow-col auto-cols-auto">
+        <div className="relative w-full row-start-2 h-full grid grid-flow-col auto-cols-auto place-self-center">
           <div className="relative w-fit h-full col-start-1 place-self-center">
             <div className="absolute w-full h-full flex items-start">
               <video
@@ -26,10 +29,10 @@ const Claim: FunctionComponent<ClaimProps> = ({
               >
                 <source src={"/videos/lens.mp4"} type="video/mp4" />
               </video>
-              <div className="absolute w-full h-full flex bg-black/70 rounded-lg"></div>
+              <div className="absolute w-full h-full flex bg-offBlack/70 rounded-lg"></div>
             </div>
-            <div className="relative w-fit h-full grid grid-flow-row auto-rows-auto gap-10 pb-8">
-              <div className="relative w-fit h-fit row-start-1 self-center justify-self-end pr-5 pt-2 cursor-pointer">
+            <div className="relative w-fit h-full grid grid-flow-row auto-rows-auto gap-10 pb-8 place-self-center">
+              <div className="relative w-fit h-fit row-start-1 self-center justify-self-end pr-2 pt-2 cursor-pointer">
                 <ImCross
                   color="white"
                   size={15}
@@ -59,7 +62,11 @@ const Claim: FunctionComponent<ClaimProps> = ({
                 </Link>
               ) : (
                 <div
-                  onClick={() => handleLensSignIn()}
+                  onClick={
+                    address && !profileId
+                      ? () => handleLensSignIn()
+                      : () => handleConnect()
+                  }
                   className="relative w-28 h-10 col-start-1 grid grid-flow-col auto-cols-auto px-4 row-start-3 cursor-pointer active:scale-95 bg-lensLight/80 font-earl text-white rounded-md place-self-center"
                 >
                   <div
@@ -67,7 +74,13 @@ const Claim: FunctionComponent<ClaimProps> = ({
                       signInLoading && "animate-spin"
                     }`}
                   >
-                    {signInLoading ? <AiOutlineLoading /> : "Sign In"}
+                    {signInLoading ? (
+                      <AiOutlineLoading />
+                    ) : address && !profileId ? (
+                      "Sign In"
+                    ) : (
+                      "Connect"
+                    )}
                   </div>
                 </div>
               )}

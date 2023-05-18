@@ -184,4 +184,7 @@ export type ClaimProps = {
   dispatch: Dispatch<AnyAction>;
   handleLensSignIn: () => Promise<void>;
   signInLoading: boolean;
+  address: `0x${string}` | undefined;
+  profileId: string;
+  handleConnect: () => void;
 };
