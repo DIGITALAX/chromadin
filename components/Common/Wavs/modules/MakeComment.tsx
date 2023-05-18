@@ -266,7 +266,7 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
                       handleKeyDownDelete(e)
                     }
                     style={{ resize: "none" }}
-                    className="relative w-full h-full bg-black font-economicaB text-white p-2 z-1 rounded-lg overflow-y-scroll"
+                    className="relative w-full h-full bg-black font-economicaB text-white p-2 z-1 rounded-lg overflow-y-auto"
                     ref={textElement}
                     value={commentDescription}
                     disabled={commentLoading || !canComment ? true : false}
@@ -275,13 +275,13 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
                 <ScrollSyncPane>
                   <pre
                     id="highlighting2"
-                    className={`absolute w-full h-full bg-black font-economicaB text-white p-2 rounded-lg overflow-y-scroll ${
+                    className={`absolute w-full h-full bg-black font-economicaB text-white p-2 rounded-lg overflow-y-auto ${
                       !canComment && "opacity-70"
                     }`}
                   >
                     <code
                       id="highlighted-content2"
-                      className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-scroll z-0`}
+                      className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-auto z-0`}
                     >
                       {!canComment
                         ? "Looks Like Only Select Profiles Can Comment on this Post ATM"

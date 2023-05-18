@@ -231,7 +231,7 @@ input[type="range"]::-moz-range-thumb {
   font-family: "Arcade Classic";
   font-size: 1rem;
   line-height: 1.5rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-width: none;
 }
 
@@ -249,7 +249,7 @@ input[type="range"]::-moz-range-thumb {
   font-family: "Arcade Classic";
   font-size: 1rem; /* 16px */
   line-height: 1.5rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   white-space: pre-wrap;
 }
 
@@ -472,7 +472,7 @@ input[type="range"]::-moz-range-thumb {
   font-family: "Economica B";
   font-size: 1rem;
   line-height: 1.5rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-width: none;
 }
 
@@ -490,7 +490,7 @@ input[type="range"]::-moz-range-thumb {
   font-family: "Economica B";
   font-size: 1rem; /* 16px */
   line-height: 1.5rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   white-space: pre-wrap;
 }
 
@@ -537,7 +537,7 @@ input[type="range"]::-moz-range-thumb {
   font-family: "Economica B";
   font-size: 1rem;
   line-height: 1.5rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-width: none;
 }
 
@@ -555,7 +555,7 @@ input[type="range"]::-moz-range-thumb {
   font-family: "Economica B";
   font-size: 1rem; /* 16px */
   line-height: 1.5rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   white-space: pre-wrap;
 }
 
