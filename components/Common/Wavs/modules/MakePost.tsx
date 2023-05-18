@@ -10,7 +10,6 @@ const MakePost: FunctionComponent<MakePostProps> = ({
   profileId,
   address,
 }): JSX.Element => {
-  console.log({ profileId, address });
   return (
     <div className="relative w-full h-fit flex justify-end ml-auto">
       <div
