@@ -28,7 +28,7 @@ const Pies: FunctionComponent<PiesProps> = ({
               key={index}
               onClick={() =>
                 window.open(
-                  `https://www.chromadin.xyz/#wavs?option=history&profile=${
+                  `https://www.chromadin.xyz/#chat?option=history&profile=${
                     piesRedux[index]?.handle?.split(".lens")[0]
                   }`
                 )

@@ -336,7 +336,7 @@ const Vending: FunctionComponent<VendingProps> = ({
                         className="relative flex flex-row w-fit h-fit gap-3 items-center pt-3 cursor-pointer"
                         onClick={() =>
                           window.open(
-                            `https://www.chromadin.xyz/#wavs?option=history&profile=${
+                            `https://www.chromadin.xyz/#chat?option=history&profile=${
                               collection.profile?.handle?.split(".lens")[0]
                             }`
                           )

@@ -45,14 +45,14 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
       className={`${
         viewer === "sampler"
           ? "absolute top-0 z-2 w-0 h-0"
-          : viewer === "collect" || viewer === "wavs"
+          : viewer === "collect" || viewer === "chat"
           ? "h-28 bg-chroma bg-cover z-0 relative w-full"
           : "h-[15rem] galaxy:h-[20rem] preG:h-[25rem] sm:h-[30rem] mid:h-[35.8rem] z-0 relative w-full"
       } flex gap-2 justify-center items-center`}
     >
       <div
         className={`relative w-full h-full flex gap-2 items-center justify-center ${
-          viewer === "collect" || viewer === "wavs"
+          viewer === "collect" || viewer === "chat"
             ? "flex-row bg-black/50 p-2"
             : "flex-col"
         }`}

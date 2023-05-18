@@ -68,14 +68,14 @@ const Drops: FunctionComponent<DropsProps> = ({
                   );
                   if (
                     router.asPath.includes("#sampler") ||
-                    router.asPath.includes("#wavs")
+                    router.asPath.includes("#chat")
                   ) {
                     if (!router.asPath.includes("&search=")) {
                       if (router.asPath.includes("&post=")) {
                         router.push(
                           router.asPath.split(
-                            router.asPath.includes("#wavs")
-                              ? "#wavs"
+                            router.asPath.includes("#chat")
+                              ? "#chat"
                               : "#sampler"
                           )[0] +
                             "#collect?option=fulfillment&post=" +
@@ -84,8 +84,8 @@ const Drops: FunctionComponent<DropsProps> = ({
                       } else if (router.asPath.includes("&profile=")) {
                         router.push(
                           router.asPath.split(
-                            router.asPath.includes("#wavs")
-                              ? "#wavs"
+                            router.asPath.includes("#chat")
+                              ? "#chat"
                               : "#sampler"
                           )[0] +
                             "#collect?option=fulfillment&profile=" +
@@ -94,8 +94,8 @@ const Drops: FunctionComponent<DropsProps> = ({
                       } else {
                         router.push(
                           router.asPath.split(
-                            router.asPath.includes("#wavs")
-                              ? "#wavs"
+                            router.asPath.includes("#chat")
+                              ? "#chat"
                               : "#sampler"
                           )[0] + "#collect?option=fulfillment"
                         );
@@ -104,8 +104,8 @@ const Drops: FunctionComponent<DropsProps> = ({
                       if (router.asPath.includes("&post=")) {
                         router.push(
                           router.asPath.split(
-                            router.asPath.includes("#wavs")
-                              ? "#wavs"
+                            router.asPath.includes("#chat")
+                              ? "#chat"
                               : "#sampler"
                           )[0] +
                             "#collect?option=fulfillment" +
@@ -120,8 +120,8 @@ const Drops: FunctionComponent<DropsProps> = ({
                       } else if (router.asPath.includes("&profile=")) {
                         router.push(
                           router.asPath.split(
-                            router.asPath.includes("#wavs")
-                              ? "#wavs"
+                            router.asPath.includes("#chat")
+                              ? "#chat"
                               : "#sampler"
                           )[0] +
                             "#collect?option=fulfillment" +
@@ -136,8 +136,8 @@ const Drops: FunctionComponent<DropsProps> = ({
                       } else {
                         router.push(
                           router.asPath.split(
-                            router.asPath.includes("#wavs")
-                              ? "#wavs"
+                            router.asPath.includes("#chat")
+                              ? "#chat"
                               : "#sampler"
                           )[0] +
                             "#collect?option=fulfillment" +

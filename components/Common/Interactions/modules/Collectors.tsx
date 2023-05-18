@@ -64,7 +64,7 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
                     onClick={() => {
                       window.open(
                         router.asPath.includes("&search=")
-                          ? `https://www.chromadin.xyz/#wavs?option=history&search=` +
+                          ? `https://www.chromadin.xyz/#chat?option=history&search=` +
                               router.asPath
                                 .split("&search=")[1]
                                 .split("&profile=")[0] +
@@ -72,7 +72,7 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
                               collector?.defaultProfile?.handle?.split(
                                 ".lens"
                               )[0]
-                          : `https://www.chromadin.xyz/#wavs?option=history&profile=${
+                          : `https://www.chromadin.xyz/#chat?option=history&profile=${
                               collector?.defaultProfile?.handle?.split(
                                 ".lens"
                               )[0]

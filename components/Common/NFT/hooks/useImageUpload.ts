@@ -25,7 +25,7 @@ const useImageUpload = () => {
   const [mappedFeaturedFiles, setMappedFeaturedFiles] = useState<
     UploadedMedia[]
   >(
-    page !== "wavs"
+    page !== "chat"
       ? postOpen
         ? JSON.parse(getCommentData() || "{}").images || []
         : JSON.parse(getPostData() || "{}").images || []

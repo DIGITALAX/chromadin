@@ -380,7 +380,7 @@ const useIndividual = () => {
   }, [feedType]);
 
   useEffect(() => {
-    if (feedType !== "" && router.asPath?.includes("#wavs")) {
+    if (feedType !== "" && router.asPath?.includes("#chat")) {
       if (index.message === "Successfully Indexed") {
         getPostComments();
       }
@@ -388,10 +388,10 @@ const useIndividual = () => {
   }, [index.message]);
 
   useEffect(() => {
-    if (router.asPath.includes("&post=") && router.asPath.includes("#wavs")) {
+    if (router.asPath.includes("&post=") && router.asPath.includes("#chat")) {
       dispatch(setFeedType(router.asPath.split("&post=")[1]));
     } else if (
-      router.asPath.includes("#wavs") &&
+      router.asPath.includes("#chat") &&
       !router.asPath.includes("&post=")
     ) {
       dispatch(setFeedType(""));

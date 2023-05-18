@@ -107,13 +107,13 @@ const Comments: FunctionComponent<CommentsProps> = ({
                         onClick={() => {
                           router.push(
                             router.asPath.includes("&search=")
-                              ? `https://www.chromadin.xyz/#wavs?option=history&search=` +
+                              ? `https://www.chromadin.xyz/#chat?option=history&search=` +
                                   router.asPath
                                     .split("&search=")[1]
                                     .split("&profile=")[0] +
                                   "&profile=" +
                                   comment?.profile?.handle?.split(".lens")[0]
-                              : `https://www.chromadin.xyz/#wavs?option=history&profile=${comment?.profile?.handle?.split(".lens")[0]}`
+                              : `https://www.chromadin.xyz/#chat?option=history&profile=${comment?.profile?.handle?.split(".lens")[0]}`
                           );
                         }}
                       >
@@ -139,13 +139,13 @@ const Comments: FunctionComponent<CommentsProps> = ({
                           onClick={() => {
                             router.push(
                               router.asPath.includes("&search=")
-                                ? `https://www.chromadin.xyz/#wavs?option=history&search=` +
+                                ? `https://www.chromadin.xyz/#chat?option=history&search=` +
                                     router.asPath
                                       .split("&search=")[1]
                                       .split("&profile=")[0] +
                                     "&profile=" +
                                     comment?.profile?.handle?.split(".lens")[0]
-                                : `https://www.chromadin.xyz/#wavs?option=history&profile=${comment?.profile?.handle?.split(".lens")[0]}`
+                                : `https://www.chromadin.xyz/#chat?option=history&profile=${comment?.profile?.handle?.split(".lens")[0]}`
                             );
                           }}
                         >

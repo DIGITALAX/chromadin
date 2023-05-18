@@ -251,12 +251,12 @@ const Modals = () => {
       {purchaseModal?.open && (
         <Purchase
           collectInfoLoading={
-            router.asPath?.includes("#wavs")
+            router.asPath?.includes("#chat")
               ? purchaseInfoLoading
               : controlsCollectInfoLoading
           }
           approvalLoading={
-            router.asPath?.includes("#wavs")
+            router.asPath?.includes("#chat")
               ? postApprovalLoading
               : approvalLoading
           }
@@ -264,15 +264,15 @@ const Modals = () => {
           collectModuleValues={collectModuleValues}
           lensProfile={lensProfile}
           collectComment={
-            router.asPath?.includes("#wavs") ? collectPost : collectVideo
+            router.asPath?.includes("#chat") ? collectPost : collectVideo
           }
           collectLoading={
-            router.asPath?.includes("#wavs")
+            router.asPath?.includes("#chat")
               ? collectFeedLoading[purchaseModal?.index!]
               : collectCommentLoading[purchaseModal?.index!]
           }
           approveCurrency={
-            router.asPath?.includes("#wavs")
+            router.asPath?.includes("#chat")
               ? postApproveCurrency
               : approveCurrency
           }

@@ -117,11 +117,11 @@ const Individual: FunctionComponent<IndividualProps> = ({
         <div
           className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
           onClick={() => {
-            history.includes("#wavs") &&
+            history.includes("#chat") &&
             (history.includes("&profile=") || history.includes("&post="))
               ? router.asPath.includes("&search=")
                 ? router.push(
-                    `#wavs?option=history&search=${
+                    `#chat?option=history&search=${
                       router.asPath
                         ?.split("&search=")[1]
                         ?.split(
@@ -129,7 +129,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
                         )[0]
                     }`
                   )
-                : router.push("#wavs?option=history")
+                : router.push("#chat?option=history")
               : router.back();
           }}
         >

@@ -341,13 +341,13 @@ const useProfileFeed = () => {
 
   useEffect(() => {
     if (
-      router.asPath.includes("#wavs") &&
+      router.asPath.includes("#chat") &&
       router.asPath.includes("&profile=") &&
       profileId?.profile
     ) {
       getProfile();
     } else if (
-      router.asPath.includes("#wavs") &&
+      router.asPath.includes("#chat") &&
       !router.asPath.includes("&profile=")
     ) {
       dispatch(setProfile(undefined));
@@ -409,7 +409,7 @@ const useProfileFeed = () => {
   useEffect(() => {
     if (
       router.asPath.includes("&profile=") &&
-      router.asPath.includes("#wavs")
+      router.asPath.includes("#chat")
     ) {
       getSingleProfile();
     }

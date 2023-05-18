@@ -18,7 +18,7 @@ const SwitchView: FunctionComponent = (): JSX.Element => {
     case "sampler":
       return <Sampler />;
 
-    case "wavs":
+    case "chat":
       return <Wavs />;
 
     default:

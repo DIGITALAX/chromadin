@@ -49,7 +49,7 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
               ["QmZxFboSxnP4AL4YgYVrRLri2JrvGTn3fEHjbYB5gVBuTA", "sampler"],
               ["QmeE6aepU7wpHdjH8L3tpFwtV5jBhoytE3NhHWmi3qGDjo", "stream"],
               ["QmTZ5Rj837exSGmt4FxEcth8uJMZFaYYDv9h6C67xx1yDg", "collect"],
-              ["QmNpdJ2nak6TTb452swiUuQWMoFqhm3kqoYxH4er2zh6s4", "wavs"],
+              ["QmNpdJ2nak6TTb452swiUuQWMoFqhm3kqoYxH4er2zh6s4", "chat"],
             ]).map((values: string[], index: number) => {
               return (
                 <div

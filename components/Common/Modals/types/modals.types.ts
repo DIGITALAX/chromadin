@@ -12,7 +12,6 @@ import { FormEvent, KeyboardEvent, Ref } from "react";
 import ReactPlayer from "react-player";
 import { AnyAction, Dispatch } from "redux";
 import { QuickProfilesInterface } from "../../Wavs/types/wavs.types";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { UploadedMedia } from "@/components/Home/types/home.types";
 
 export type IndexingModalProps = {

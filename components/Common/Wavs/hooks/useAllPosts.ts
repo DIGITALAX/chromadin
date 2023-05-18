@@ -589,7 +589,7 @@ const useAllPosts = () => {
   };
 
   useEffect(() => {
-    if (router.asPath?.includes("#wavs")) {
+    if (router.asPath?.includes("#chat")) {
       if (indexer.message === "Successfully Indexed") {
         refetchInteractions();
 
@@ -603,7 +603,7 @@ const useAllPosts = () => {
   useEffect(() => {
     if (
       (!feedDispatch || feedDispatch.length < 1) &&
-      router.asPath.includes("#wavs")
+      router.asPath.includes("#chat")
     ) {
       getQuickProfiles();
       getTimeline();
