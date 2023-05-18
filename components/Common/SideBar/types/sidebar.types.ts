@@ -24,6 +24,7 @@ export type UseConnectResults = {
   handleLensSignIn: () => Promise<void>;
   handleRefreshProfile: () => Promise<void>;
   connected: boolean;
+  signInLoading: boolean;
 };
 
 export type ConnectProps = {

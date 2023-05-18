@@ -3,10 +3,10 @@ import Image from "next/legacy/image";
 import { FunctionComponent } from "react";
 import { MakePostProps } from "../types/wavs.types";
 import { setMakePost } from "@/redux/reducers/makePostSlice";
+import { setNoHandle } from "@/redux/reducers/noHandleSlice";
 
 const MakePost: FunctionComponent<MakePostProps> = ({
   dispatch,
-  handleLensSignIn,
   handleConnect,
   profileId,
   address,
@@ -19,7 +19,14 @@ const MakePost: FunctionComponent<MakePostProps> = ({
           !profileId && !address
             ? () => handleConnect()
             : address && !profileId
-            ? () => handleLensSignIn()
+            ? () =>
+                dispatch(
+                  setNoHandle({
+                    actionValue: true,
+                    actionMessage:
+                      "Sign In to Lens to Make A Post.",
+                  })
+                )
             : dispatch(setMakePost(true))
         }
       >

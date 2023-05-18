@@ -1,10 +1,10 @@
 import { FunctionComponent } from "react";
 import { SuperCreatorProps } from "../types/wavs.types";
 import { setSuperFollow } from "@/redux/reducers/superFollowSlice";
+import { setNoHandle } from "@/redux/reducers/noHandleSlice";
 
 const SuperCreator: FunctionComponent<SuperCreatorProps> = ({
   handleConnect,
-  handleLensSignIn,
   address,
   profileId,
   dispatch,
@@ -18,7 +18,13 @@ const SuperCreator: FunctionComponent<SuperCreatorProps> = ({
             !address
               ? () => handleConnect()
               : address && !profileId
-              ? () => handleLensSignIn()
+              ? () =>
+                  dispatch(
+                    setNoHandle({
+                      actionValue: true,
+                      actionMessage: "Sign In To Lens to Super Creator Follow.",
+                    })
+                  )
               : () => dispatch(setSuperFollow(true))
           }
         >

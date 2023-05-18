@@ -1152,7 +1152,6 @@ export type SearchProps = {
 
 export type SuperCreatorProps = {
   dispatch: Dispatch<AnyAction>;
-  handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
   profileId: string;
   address: `0x${string}` | undefined;
@@ -1160,7 +1159,6 @@ export type SuperCreatorProps = {
 
 export type MakePostProps = {
   dispatch: Dispatch<AnyAction>;
-  handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
   profileId: string;
   address: `0x${string}` | undefined;

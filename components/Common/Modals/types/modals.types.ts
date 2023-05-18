@@ -178,3 +178,10 @@ export type PostProps = {
     y: number;
   };
 };
+
+export type ClaimProps = {
+  message: string;
+  dispatch: Dispatch<AnyAction>;
+  handleLensSignIn: () => Promise<void>;
+  signInLoading: boolean;
+};

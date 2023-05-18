@@ -118,7 +118,7 @@ const Modals = () => {
   } = useReactions();
   const router = useRouter();
   const { address } = useAccount();
-  const { handleLensSignIn, handleConnect } = useConnect();
+  const { handleLensSignIn, handleConnect, signInLoading } = useConnect();
   const dispatch = useDispatch();
   const {
     reacters,
@@ -378,7 +378,14 @@ const Modals = () => {
       {indexingModal?.value && (
         <IndexingModal message={indexingModal?.message} />
       )}
-      {claimModal?.value && <Claim />}
+      {claimModal?.value && (
+        <Claim
+          dispatch={dispatch}
+          message={claimModal.message}
+          signInLoading={signInLoading}
+          handleLensSignIn={handleLensSignIn}
+        />
+      )}
       {imageFeedViewer?.open && (
         <ImageViewerModal
           image={imageFeedViewer.image}

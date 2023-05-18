@@ -28,6 +28,7 @@ const useConnect = (): UseConnectResults => {
   const dispatch = useDispatch();
   const { address, isConnected } = useAccount();
   const [connected, setConnected] = useState<boolean>(false);
+  const [signInLoading, setSignInLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const { data } = useContractRead({
@@ -69,6 +70,7 @@ const useConnect = (): UseConnectResults => {
   };
 
   const handleLensSignIn = async (): Promise<void> => {
+    setSignInLoading(true);
     try {
       const challengeResponse = await generateChallenge(address);
       const signature = await signMessageAsync({
@@ -86,12 +88,19 @@ const useConnect = (): UseConnectResults => {
           dispatch(setLensProfile(profile?.data?.defaultProfile));
           dispatch(setAuthStatus(true));
         } else {
-          dispatch(setNoHandle(true));
+          dispatch(
+            setNoHandle({
+              actionValue: true,
+              actionMessage:
+                "Own Your Digital Roots. Claim A Lens Handle to Sign In & Collect.",
+            })
+          );
         }
       }
     } catch (err: any) {
       console.error(err.message);
     }
+    setSignInLoading(false);
   };
 
   const handleRefreshProfile = async (): Promise<void> => {
@@ -112,7 +121,7 @@ const useConnect = (): UseConnectResults => {
   useEffect(() => {
     setConnected(isConnected);
     const newAddress = getAddress();
-  
+
     if (
       (newAddress && newAddress.replace(/^"|"$/g, "") === address) ||
       (!newAddress && address)
@@ -132,7 +141,7 @@ const useConnect = (): UseConnectResults => {
         }
         handleRefreshProfile();
       }
-    } else if ((isConnected && address !== newAddress)) {
+    } else if (isConnected && address !== newAddress) {
       dispatch(setLensProfile(undefined));
       removeAuthenticationToken();
     }
@@ -144,7 +153,13 @@ const useConnect = (): UseConnectResults => {
     }
   }, [data]);
 
-  return { handleConnect, handleLensSignIn, handleRefreshProfile, connected };
+  return {
+    handleConnect,
+    handleLensSignIn,
+    handleRefreshProfile,
+    connected,
+    signInLoading,
+  };
 };
 
 export default useConnect;

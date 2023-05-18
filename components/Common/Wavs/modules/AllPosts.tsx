@@ -110,7 +110,6 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
             <SuperCreator
               dispatch={dispatch}
               handleConnect={handleConnect}
-              handleLensSignIn={handleLensSignIn}
               address={address}
               profileId={profileId}
             />
