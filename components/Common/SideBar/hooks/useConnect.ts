@@ -91,6 +91,12 @@ const useConnect = (): UseConnectResults => {
         setAddress(address as string);
         const profile = await getDefaultProfile(address);
         if (profile?.data?.defaultProfile) {
+          dispatch(
+            setNoHandle({
+              actionValue: false,
+              actionMessage: "",
+            })
+          );
           dispatch(setLensProfile(profile?.data?.defaultProfile));
           dispatch(setAuthStatus(true));
         } else {
@@ -107,12 +113,6 @@ const useConnect = (): UseConnectResults => {
       console.error(err.message);
     }
     setSignInLoading(false);
-    dispatch(
-      setNoHandle({
-        actionValue: false,
-        actionMessage: "",
-      })
-    );
   };
 
   const handleRefreshProfile = async (): Promise<void> => {
