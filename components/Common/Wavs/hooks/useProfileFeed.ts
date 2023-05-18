@@ -24,6 +24,7 @@ import { useSigner, useAccount } from "wagmi";
 import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
 import { Signer } from "ethers";
 import { Web3Provider } from "@ethersproject/providers";
+import { setPostSent } from "@/redux/reducers/postSentSlice";
 
 const useProfileFeed = () => {
   const router = useRouter();
@@ -33,6 +34,9 @@ const useProfileFeed = () => {
   const profileRef = useRef<InfiniteScroll>(null);
   const profileDispatch = useSelector(
     (state: RootState) => state.app.profileFeedReducer.value
+  );
+  const postSent = useSelector(
+    (state: RootState) => state.app.postSentReducer.value
   );
   const auth = useSelector(
     (state: RootState) => state.app.authStatusReducer.value
@@ -349,6 +353,17 @@ const useProfileFeed = () => {
       dispatch(setProfile(undefined));
     }
   }, [auth, profileId.profile, router.asPath]);
+
+  useEffect(() => {
+    if (
+      postSent &&
+      !router.asPath.includes("&post=") &&
+      router.asPath.includes("&profile=")
+    ) {
+      dispatch(setPostSent(false));
+      getProfile();
+    }
+  }, [postSent]);
 
   const getSingleProfile = async () => {
     let prof, follow;

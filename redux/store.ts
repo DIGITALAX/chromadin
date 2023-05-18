@@ -62,6 +62,8 @@ import historyURLReducer from "./reducers/historyURLSlice";
 import superFollowReducer from "./reducers/superFollowSlice";
 import rainReducer from "./reducers/rainSlice";
 import makePostReducer from "./reducers/makePostSlice";
+import publicationImageReducer from "./reducers/publicationImageSlice";
+import postSentReducer from "./reducers/postSentSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -126,6 +128,8 @@ const reducer = combineReducers({
   superFollowReducer,
   rainReducer,
   makePostReducer,
+  publicationImageReducer,
+  postSentReducer,
 });
 
 export const store = configureStore({

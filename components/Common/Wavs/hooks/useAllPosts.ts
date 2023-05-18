@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { QuickProfilesInterface } from "../types/wavs.types";
 import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
 import { useSigner, useAccount } from "wagmi";
+import { setPostSent } from "@/redux/reducers/postSentSlice";
 
 const useAllPosts = () => {
   const { data: signer } = useSigner();
@@ -46,6 +47,9 @@ const useAllPosts = () => {
   );
   const auth = useSelector(
     (state: RootState) => state.app.authStatusReducer.value
+  );
+  const postSent = useSelector(
+    (state: RootState) => state.app.postSentReducer.value
   );
   const feedType = useSelector(
     (state: RootState) => state.app.feedTypeReducer.value
@@ -605,6 +609,17 @@ const useAllPosts = () => {
       getTimeline();
     }
   }, [auth]);
+
+  useEffect(() => {
+    if (
+      postSent &&
+      !router.asPath.includes("&post=") &&
+      !router.asPath.includes("&profile=")
+    ) {
+      dispatch(setPostSent(false));
+      getTimeline();
+    }
+  }, [postSent]);
 
   return {
     followerOnly,

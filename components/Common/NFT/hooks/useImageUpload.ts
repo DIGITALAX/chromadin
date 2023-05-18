@@ -1,5 +1,10 @@
 import { MediaType, UploadedMedia } from "@/components/Home/types/home.types";
-import { getCommentData, setCommentData } from "@/lib/lens/utils";
+import {
+  getCommentData,
+  getPostData,
+  setCommentData,
+  setPostData,
+} from "@/lib/lens/utils";
 import { RootState } from "@/redux/store";
 import { FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,17 +13,30 @@ import { setPostImages } from "@/redux/reducers/postImageSlice";
 import compressImageFiles from "@/lib/helpers/compressImageFiles";
 import fileLimitAlert from "@/lib/helpers/fileLimitAlert";
 import videoLimitAlert from "@/lib/helpers/videoLimitAlert";
+import { setPublicationImages } from "@/redux/reducers/publicationImageSlice";
 
 const useImageUpload = () => {
   const page = useSelector((state: RootState) => state.app.viewReducer.value);
+  const postOpen = useSelector(
+    (state: RootState) => state.app.makePostReducer.value
+  );
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [videoLoading, setVideoLoading] = useState<boolean>(false);
   const [mappedFeaturedFiles, setMappedFeaturedFiles] = useState<
     UploadedMedia[]
-  >(page !== "wavs" ? JSON.parse(getCommentData() || "{}").images || [] : []);
+  >(
+    page !== "wavs"
+      ? postOpen
+        ? JSON.parse(getCommentData() || "{}").images || []
+        : JSON.parse(getPostData() || "{}").images || []
+      : []
+  );
   const dispatch = useDispatch();
   const imagesUploaded = useSelector(
     (state: RootState) => state.app.postImageReducer.value
+  );
+  const imagesUploadedPub = useSelector(
+    (state: RootState) => state.app.publicationImageReducer.value
   );
 
   const uploadImage = async (
@@ -77,16 +95,29 @@ const useImageUpload = () => {
                 finalImages?.length ===
                 ((e as FormEvent).target as HTMLFormElement).files?.length
               ) {
-                let newArr = [...(imagesUploaded as any), ...finalImages];
+                let newArr = [
+                  ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
+                  ...finalImages,
+                ];
                 setMappedFeaturedFiles(newArr);
                 if (feed) {
-                  const postStorage = JSON.parse(getCommentData() || "{}");
-                  setCommentData(
-                    JSON.stringify({
-                      ...postStorage,
-                      images: newArr,
-                    })
-                  );
+                  if (postOpen) {
+                    const postStorage = JSON.parse(getPostData() || "{}");
+                    setPostData(
+                      JSON.stringify({
+                        ...postStorage,
+                        images: newArr,
+                      })
+                    );
+                  } else {
+                    const postStorage = JSON.parse(getCommentData() || "{}");
+                    setCommentData(
+                      JSON.stringify({
+                        ...postStorage,
+                        images: newArr,
+                      })
+                    );
+                  }
                 }
 
                 setImageLoading(false);
@@ -115,19 +146,29 @@ const useImageUpload = () => {
       });
       let cid = await response.json();
       let newArr = [
-        ...(imagesUploaded as any),
+        ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
         { cid: String(cid?.cid), type: MediaType.Video },
       ];
       setMappedFeaturedFiles(newArr);
 
       if (feed) {
-        const postStorage = JSON.parse(getCommentData() || "{}");
-        setCommentData(
-          JSON.stringify({
-            ...postStorage,
-            images: newArr,
-          })
-        );
+        if (postOpen) {
+          const postStorage = JSON.parse(getPostData() || "{}");
+          setPostData(
+            JSON.stringify({
+              ...postStorage,
+              images: newArr,
+            })
+          );
+        } else {
+          const postStorage = JSON.parse(getCommentData() || "{}");
+          setCommentData(
+            JSON.stringify({
+              ...postStorage,
+              images: newArr,
+            })
+          );
+        }
       }
     } catch (err: any) {
       console.error(err.message);
@@ -137,28 +178,47 @@ const useImageUpload = () => {
 
   const handleRemoveImage = (image: UploadedMedia, feed?: boolean): void => {
     const cleanedArray = lodash.filter(
-      imagesUploaded,
+      postOpen ? imagesUploadedPub : (imagesUploaded as any),
       (uploaded) => uploaded.cid !== image.cid
     );
     setMappedFeaturedFiles(cleanedArray);
 
     if (feed) {
-      const postStorage = JSON.parse(getCommentData() || "{}");
-      setCommentData(
-        JSON.stringify({
-          ...postStorage,
-          images: cleanedArray,
-        })
-      );
+      if (postOpen) {
+        const postStorage = JSON.parse(getPostData() || "{}");
+        setPostData(
+          JSON.stringify({
+            ...postStorage,
+            images: cleanedArray,
+          })
+        );
+      } else {
+        const postStorage = JSON.parse(getCommentData() || "{}");
+        setCommentData(
+          JSON.stringify({
+            ...postStorage,
+            images: cleanedArray,
+          })
+        );
+      }
     }
   };
 
   useEffect(() => {
-    if (mappedFeaturedFiles.length > 3) {
-      setMappedFeaturedFiles(mappedFeaturedFiles.slice(0, 4));
-      dispatch(setPostImages(mappedFeaturedFiles.slice(0, 4)));
+    if (postOpen) {
+      if (mappedFeaturedFiles.length > 3) {
+        setMappedFeaturedFiles(mappedFeaturedFiles.slice(0, 4));
+        dispatch(setPublicationImages(mappedFeaturedFiles.slice(0, 4)));
+      } else {
+        dispatch(setPublicationImages(mappedFeaturedFiles));
+      }
     } else {
-      dispatch(setPostImages(mappedFeaturedFiles));
+      if (mappedFeaturedFiles.length > 3) {
+        setMappedFeaturedFiles(mappedFeaturedFiles.slice(0, 4));
+        dispatch(setPostImages(mappedFeaturedFiles.slice(0, 4)));
+      } else {
+        dispatch(setPostImages(mappedFeaturedFiles));
+      }
     }
   }, [mappedFeaturedFiles]);
 

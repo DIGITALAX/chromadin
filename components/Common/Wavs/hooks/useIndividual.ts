@@ -291,10 +291,9 @@ const useIndividual = () => {
           },
           lensProfile
         );
-      
+
         pubData = data;
       } else {
-        console.log("here")
         const { data } = await getPublication({
           publicationId: feedType,
         });

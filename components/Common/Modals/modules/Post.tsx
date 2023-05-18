@@ -13,7 +13,6 @@ import OptionsComment from "../../Wavs/modules/OptionsComment";
 import { setModal } from "@/redux/reducers/modalSlice";
 import syncScroll from "@/lib/helpers/syncScroll";
 import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
-import { setPostImages } from "@/redux/reducers/postImageSlice";
 
 const Post: FunctionComponent<PostProps> = ({
   dispatch,
@@ -82,7 +81,7 @@ const Post: FunctionComponent<PostProps> = ({
   return (
     <div className="inset-0 justify-center fixed z-20 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto">
       <div
-        className="relative w-full lg:w-[50vw] h-fit col-start-1 place-self-center rounded-lg"
+        className="relative w-[80vw] preG:w-[70vw] sm:w-[50vw] h-fit col-start-1 place-self-center rounded-lg"
         id="boxBg"
       >
         <div className="relative w-full row-start-2 h-fit rounded-xl grid grid-flow-col auto-cols-auto">

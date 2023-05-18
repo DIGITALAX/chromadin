@@ -51,7 +51,7 @@ const Modals = () => {
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
   const postImagesDispatched = useSelector(
-    (state: RootState) => state.app.postImageReducer.value
+    (state: RootState) => state.app.publicationImageReducer.value
   );
   const collectModuleValues = useSelector(
     (state: RootState) => state.app.postCollectReducer

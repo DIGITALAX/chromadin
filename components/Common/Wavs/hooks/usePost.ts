@@ -25,8 +25,8 @@ import {
 } from "@/graphql/lens/mutations/post";
 import { MediaType, UploadedMedia } from "../types/wavs.types";
 import { searchProfile } from "@/graphql/lens/queries/search";
-import { setPostImages } from "@/redux/reducers/postImageSlice";
 import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
+import { setPublicationImages } from "@/redux/reducers/publicationImageSlice";
 
 const useMakePost = () => {
   const [postLoading, setPostLoading] = useState<boolean>(false);
@@ -219,7 +219,7 @@ const useMakePost = () => {
     setPostDescription("");
     setPostHTML("");
     setGifs([]);
-    dispatch(setPostImages([]));
+    dispatch(setPublicationImages([]));
     dispatch(setCollectOpen(false));
     setGifOpen(false);
     // (document as any).querySelector("#highlighted-content").innerHTML = "";
@@ -391,7 +391,7 @@ const useMakePost = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(setPostImages(gifs));
+    dispatch(setPublicationImages(gifs));
   }, [gifs]);
 
   useEffect(() => {
