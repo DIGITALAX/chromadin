@@ -274,7 +274,7 @@ const useMakePost = () => {
       } else {
         result = await createPostTypedData({
           profileId: profileId?.id,
-          contentURI: contentURIValue,
+          contentURI: "ipfs://" + contentURIValue,
           collectModule: collectModuleType,
           referenceModule: {
             followerOnlyReferenceModule: false,
