@@ -92,28 +92,32 @@ export const checkIndexed = (txHash?: string) => {
 const pollUntilIndexed = async (txHash: string, success: boolean) => {
   let count = 0;
   while (true) {
-    const response: any = await checkIndexed(txHash);
-    if (
-      response?.data?.hasTxHashBeenIndexed?.__typename ===
-      "TransactionIndexedResult"
-    ) {
+    try {
+      const response: any = await checkIndexed(txHash);
       if (
-        (response?.data?.hasTxHashBeenIndexed?.metadataStatus?.status ===
-          "SUCCESS" &&
-          success) ||
-        (response?.data?.hasTxHashBeenIndexed?.indexed && !success)
+        response?.data?.hasTxHashBeenIndexed?.__typename ===
+        "TransactionIndexedResult"
       ) {
-        return true;
-      } else {
-        if (response?.data?.hasTxHashBeenIndexed?.indexed === false) {
-          if (count == 2) {
-            return false;
+        if (
+          (response?.data?.hasTxHashBeenIndexed?.metadataStatus?.status ===
+            "SUCCESS" &&
+            success) ||
+          (response?.data?.hasTxHashBeenIndexed?.indexed && !success)
+        ) {
+          return true;
+        } else {
+          if (response?.data?.hasTxHashBeenIndexed?.indexed === false) {
+            if (count == 2) {
+              return false;
+            }
           }
         }
       }
+      count += 1;
+      await new Promise((resolve) => setTimeout(resolve, 6000));
+    } catch (err: any) {
+      console.error(err.message);
     }
-    count += 1;
-    await new Promise((resolve) => setTimeout(resolve, 6000));
   }
 };
 

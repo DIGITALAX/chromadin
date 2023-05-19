@@ -22,7 +22,6 @@ const uploadPostContent = async (
     });
   });
 
-
   const coverImage = lodash.filter(newImages, (image: PostImage) => {
     if (image.type === "image/png" || image.type === "image/gif") return true;
   });
@@ -44,7 +43,7 @@ const uploadPostContent = async (
     external_url: "https://www.chromadin.xyz/",
     image: coverImage.length > 0 ? (coverImage[0] as any).item : null,
     imageMimeType: "image/png",
-    name: postDescription ? postDescription?.slice(0, 20) : "The Dial",
+    name: postDescription ? postDescription?.slice(0, 20) : "Chromadin",
     mainContentFocus:
       videos?.length > 0
         ? "VIDEO"
@@ -54,17 +53,10 @@ const uploadPostContent = async (
         ? "ARTICLE"
         : "TEXT_ONLY",
     contentWarning: null,
-    attributes: [
-      {
-        traitType: "string",
-        key: "date",
-        date: Date.now(),
-      },
-    ],
+    attributes: [],
     media: newImages,
     locale: "en",
     tags: null,
-    createdOn: new Date(),
     appId: "chromadin",
   };
 

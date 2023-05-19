@@ -27,6 +27,7 @@ import { MediaType, UploadedMedia } from "../types/wavs.types";
 import { searchProfile } from "@/graphql/lens/queries/search";
 import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
 import { setPublicationImages } from "@/redux/reducers/publicationImageSlice";
+import { setMakePost } from "@/redux/reducers/makePostSlice";
 
 const useMakePost = () => {
   const [postLoading, setPostLoading] = useState<boolean>(false);
@@ -215,6 +216,7 @@ const useMakePost = () => {
   };
 
   const clearPost = () => {
+    dispatch(setMakePost(false));
     setPostLoading(false);
     setPostDescription("");
     setPostHTML("");
@@ -254,7 +256,7 @@ const useMakePost = () => {
       if (dispatcher) {
         result = await createDispatcherPostData({
           profileId: profileId?.id,
-          contentURI: contentURIValue,
+          contentURI: "ipfs://" + contentURIValue,
           collectModule: collectModuleType,
           referenceModule: {
             followerOnlyReferenceModule: false,
