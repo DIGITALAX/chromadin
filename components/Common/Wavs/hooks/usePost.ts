@@ -62,7 +62,7 @@ const useMakePost = () => {
     (state: RootState) => state.app.dispatcherReducer.value
   );
   const postImages = useSelector(
-    (state: RootState) => state?.app?.postImageReducer?.value
+    (state: RootState) => state?.app?.publicationImageReducer?.value
   );
   const collectModuleType = useSelector(
     (state: RootState) => state?.app?.collectValueTypeReducer?.type

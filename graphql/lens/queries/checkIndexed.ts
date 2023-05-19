@@ -94,7 +94,6 @@ const pollUntilIndexed = async (txHash: string, success: boolean) => {
   while (true) {
     try {
       const response: any = await checkIndexed(txHash);
-      console.log({response})
       if (
         response?.data?.hasTxHashBeenIndexed?.__typename ===
         "TransactionIndexedResult"
