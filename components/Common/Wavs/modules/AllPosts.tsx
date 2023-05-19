@@ -98,6 +98,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   setProfilesFound,
   setProfilesOpenSearch,
   profileType,
+  preElement
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4">
@@ -238,6 +239,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
                       currencyDropDown={currencyDropDown}
                       dispatch={dispatch}
                       postImagesDispatched={postImagesDispatched}
+                      preElement={preElement}
                     />
                   )}
                 </div>

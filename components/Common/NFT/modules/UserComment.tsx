@@ -10,7 +10,6 @@ import { AiOutlineLoading } from "react-icons/ai";
 import CollectInput from "../../Buttons/CollectInput";
 import CollectButton from "../../Buttons/CollectButton";
 import { setModal } from "@/redux/reducers/modalSlice";
-import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 
 const UserComment: FunctionComponent<UserCommentProps> = ({
   authStatus,
@@ -77,6 +76,7 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
   handleKeyDownDelete,
   commentId,
   canComment,
+  preElement,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-96 galaxy:h-80 sm:h-full border-y border-l border-white flex flex-col bg-pink">
@@ -252,90 +252,85 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
           </div>
         ) : (
           <div className="relative w-full h-full border border-white p-px rounded-md">
-            <ScrollSync>
-              <div className="relative w-full h-full border border-white p-px rounded-md grid grid-flow-col auto-cols-auto">
-                <ScrollSyncPane>
-                  <textarea
-                    id="post"
-                    onScroll={(e: any) => syncScroll(e, "highlighted-content")}
-                    onInput={(e: FormEvent) => {
-                      handleCommentDescription(e);
-                      syncScroll(e, "highlighted-content");
-                    }}
-                    onKeyDown={(e: KeyboardEvent<Element>) =>
-                      handleKeyDownDelete(e)
-                    }
-                    style={{ resize: "none" }}
-                    className="relative w-full h-full bg-offBlack font-arcade text-white p-2 z-1 rounded-lg overflow-y-auto"
-                    ref={textElement}
-                    value={commentDescription}
-                    disabled={commentLoading || !canComment ? true : false}
-                  ></textarea>
-                </ScrollSyncPane>
-                <ScrollSyncPane>
-                  <pre
-                    id="highlighting"
-                    className={`absolute w-full h-full bg-offBlack font-arcade text-white p-2 rounded-lg overflow-y-auto ${
-                      !canComment && "opacity-70"
-                    }`}
-                  >
-                    <code
-                      id="highlighted-content"
-                      className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-auto z-0`}
-                    >
-                      {!canComment
-                        ? "Looks Like Only Select Profiles Can Comment on this Post ATM"
-                        : commentId !== ""
-                        ? "Reply with a Comment?"
-                        : "Have Something to Say?"}
-                    </code>
-                  </pre>
-                </ScrollSyncPane>
-                {mentionProfiles?.length > 0 && profilesOpen && (
-                  <div
-                    className={`absolute w-44 max-h-28 h-fit flex flex-col overflow-y-scroll items-center justify-center z-2 rounded-lg`}
-                    style={{
-                      top: caretCoord.y + 30,
-                      left: caretCoord.x,
-                    }}
-                  >
-                    {mentionProfiles?.map((user: any, index: number) => {
-                      const profileImage: string = createProfilePicture(user);
-                      return (
-                        <div
-                          key={index}
-                          className={`relative w-full h-fit px-3 py-2 bg-white flex flex-row gap-3 cursor-pointer items-center justify-center border-y border-black hover:bg-rosa/70 z-2`}
-                          onClick={() => {
-                            handleMentionClick(user);
-                          }}
-                        >
-                          <div className="relative flex flex-row w-full h-full text-black font-earl lowercase place-self-center gap-2">
-                            <div
-                              className={`relative rounded-full flex bg-white w-3 h-3 items-center justify-center col-start-1`}
-                              id="crt"
-                            >
-                              {profileImage !== "" && (
-                                <Image
-                                  src={profileImage}
-                                  objectFit="cover"
-                                  alt="pfp"
-                                  layout="fill"
-                                  className="relative w-fit h-fit rounded-full items-center justify-center flex"
-                                  draggable={false}
-                                />
-                              )}
-                            </div>
-                            <div className="relative col-start-2 items-center justify-center w-fit h-fit text-xs flex">
-                              @{user?.handle?.split(".lens")[0]}
-                            </div>
+            <div className="relative w-full h-full border border-white p-px rounded-md grid grid-flow-col auto-cols-auto">
+              <textarea
+                id="post"
+                onScroll={() => syncScroll(textElement, preElement)}
+                onInput={(e: FormEvent) => {
+                  handleCommentDescription(e);
+                  syncScroll(textElement, preElement);
+                }}
+                onKeyDown={(e: KeyboardEvent<Element>) =>
+                  handleKeyDownDelete(e)
+                }
+                style={{ resize: "none" }}
+                className="relative w-full h-full bg-offBlack font-arcade text-white p-2 z-1 rounded-lg overflow-y-auto"
+                ref={textElement}
+                value={commentDescription}
+                disabled={commentLoading || !canComment ? true : false}
+              ></textarea>
+              <pre
+                id="highlighting"
+                className={`absolute w-full h-full bg-offBlack font-arcade text-white p-2 rounded-lg overflow-y-auto ${
+                  !canComment && "opacity-70"
+                }`}
+                ref={preElement}
+              >
+                <code
+                  id="highlighted-content"
+                  className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-auto z-0`}
+                >
+                  {!canComment
+                    ? "Looks Like Only Select Profiles Can Comment on this Post ATM"
+                    : commentId !== ""
+                    ? "Reply with a Comment?"
+                    : "Have Something to Say?"}
+                </code>
+              </pre>
+              {mentionProfiles?.length > 0 && profilesOpen && (
+                <div
+                  className={`absolute w-44 max-h-28 h-fit flex flex-col overflow-y-scroll items-center justify-center z-2 rounded-lg`}
+                  style={{
+                    top: caretCoord.y + 30,
+                    left: caretCoord.x,
+                  }}
+                >
+                  {mentionProfiles?.map((user: any, index: number) => {
+                    const profileImage: string = createProfilePicture(user);
+                    return (
+                      <div
+                        key={index}
+                        className={`relative w-full h-fit px-3 py-2 bg-white flex flex-row gap-3 cursor-pointer items-center justify-center border-y border-black hover:bg-rosa/70 z-2`}
+                        onClick={() => {
+                          handleMentionClick(user);
+                        }}
+                      >
+                        <div className="relative flex flex-row w-full h-full text-black font-earl lowercase place-self-center gap-2">
+                          <div
+                            className={`relative rounded-full flex bg-white w-3 h-3 items-center justify-center col-start-1`}
+                            id="crt"
+                          >
+                            {profileImage !== "" && (
+                              <Image
+                                src={profileImage}
+                                objectFit="cover"
+                                alt="pfp"
+                                layout="fill"
+                                className="relative w-fit h-fit rounded-full items-center justify-center flex"
+                                draggable={false}
+                              />
+                            )}
+                          </div>
+                          <div className="relative col-start-2 items-center justify-center w-fit h-fit text-xs flex">
+                            @{user?.handle?.split(".lens")[0]}
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            </ScrollSync>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         )}
         <div className="relative w-full h-fit galaxy:h-12 flex flex-row items-center gap-3 flex-wrap galaxy:flex-nowrap">

@@ -89,7 +89,8 @@ const Comments: FunctionComponent<CommentsProps> = ({
   canComment,
   openComment,
   router,
-  profileType
+  profileType,
+  preElement,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex min-w-full">
@@ -153,6 +154,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
                   />
                   {comment?.id === commentId && (
                     <MakeComment
+                      preElement={preElement}
                       commentPost={commentPost}
                       commentDescription={commentDescription}
                       textElement={textElement}

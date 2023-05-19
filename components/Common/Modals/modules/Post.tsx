@@ -13,7 +13,6 @@ import OptionsComment from "../../Wavs/modules/OptionsComment";
 import { setModal } from "@/redux/reducers/modalSlice";
 import syncScroll from "@/lib/helpers/syncScroll";
 import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
-import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 
 const Post: FunctionComponent<PostProps> = ({
   dispatch,
@@ -78,6 +77,7 @@ const Post: FunctionComponent<PostProps> = ({
   address,
   profileId,
   handlePost,
+  preElement,
 }): JSX.Element => {
   return (
     <div className="inset-0 justify-center fixed z-20 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto">
@@ -278,89 +278,84 @@ const Post: FunctionComponent<PostProps> = ({
                     </div>
                   ) : (
                     <div className="relative w-full h-full p-px rounded-md">
-                      <ScrollSync>
-                        <div className="relative w-full h-40 border border-white p-px rounded-md grid grid-flow-col auto-cols-auto">
-                          <ScrollSyncPane>
-                            <textarea
-                              id="post3"
-                              onScroll={(e: any) =>
-                                syncScroll(e, "highlighted-content3")
-                              }
-                              onInput={(e: FormEvent) => {
-                                handlePostDescription(e);
-                                syncScroll(e, "highlighted-content3");
-                              }}
-                              onKeyDown={(e: KeyboardEvent<Element>) =>
-                                handleKeyDownDelete(e)
-                              }
-                              style={{ resize: "none" }}
-                              className="relative w-full h-full bg-black font-economicaB text-white p-2 z-1 rounded-lg overflow-y-scroll"
-                              ref={textElement}
-                              value={postDescription}
-                              disabled={postLoading ? true : false}
-                            ></textarea>
-                          </ScrollSyncPane>
-                          <ScrollSyncPane>
-                            <pre
-                              id="highlighting3"
-                              className={`absolute w-full h-full bg-black font-economicaB text-white p-2 rounded-lg overflow-y-auto`}
-                            >
-                              <code
-                                id="highlighted-content3"
-                                className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-auto z-0`}
-                              >
-                                Have Something to Say?
-                              </code>
-                            </pre>
-                          </ScrollSyncPane>
-                          {mentionProfiles?.length > 0 && profilesOpen && (
-                            <div
-                              className={`absolute w-44 max-h-28 h-fit flex flex-col overflow-y-auto items-center justify-center z-2 rounded-lg`}
-                              style={{
-                                top: caretCoord.y + 30,
-                                left: caretCoord.x,
-                              }}
-                            >
-                              {mentionProfiles?.map(
-                                (user: any, index: number) => {
-                                  const profileImage: string =
-                                    createProfilePicture(user);
-                                  return (
-                                    <div
-                                      key={index}
-                                      className={`relative w-full h-fit px-3 py-2 bg-white flex flex-row gap-3 cursor-pointer items-center justify-center border-y border-black hover:bg-rosa/70 z-2`}
-                                      onClick={() => {
-                                        handleMentionClick(user);
-                                      }}
-                                    >
-                                      <div className="relative flex flex-row w-full h-full text-black font-economicaB lowercase place-self-center gap-2">
-                                        <div
-                                          className={`relative rounded-full flex bg-white w-3 h-3 items-center justify-center col-start-1`}
-                                          id="crt"
-                                        >
-                                          {profileImage !== "" && (
-                                            <Image
-                                              src={profileImage}
-                                              objectFit="cover"
-                                              alt="pfp"
-                                              layout="fill"
-                                              className="relative w-fit h-fit rounded-full items-center justify-center flex"
-                                              draggable={false}
-                                            />
-                                          )}
-                                        </div>
-                                        <div className="relative col-start-2 items-center justify-center w-fit h-fit text-xs flex">
-                                          @{user?.handle?.split(".lens")[0]}
-                                        </div>
+                      <div className="relative w-full h-40 border border-white p-px rounded-md grid grid-flow-col auto-cols-auto">
+                        <textarea
+                          id="post3"
+                          onScroll={(e: any) =>
+                            syncScroll(textElement, preElement)
+                          }
+                          onInput={(e: FormEvent) => {
+                            handlePostDescription(e);
+                            syncScroll(textElement, preElement);
+                          }}
+                          onKeyDown={(e: KeyboardEvent<Element>) =>
+                            handleKeyDownDelete(e)
+                          }
+                          style={{ resize: "none" }}
+                          className="relative w-full h-full bg-black font-economicaB text-white p-2 z-1 rounded-lg overflow-y-scroll"
+                          ref={textElement}
+                          value={postDescription}
+                          disabled={postLoading ? true : false}
+                        ></textarea>
+                        <pre
+                          id="highlighting3"
+                          className={`absolute w-full h-full bg-black font-economicaB text-white p-2 rounded-lg overflow-y-auto`}
+                          ref={preElement}
+                        >
+                          <code
+                            id="highlighted-content3"
+                            className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-auto z-0`}
+                          >
+                            Have Something to Say?
+                          </code>
+                        </pre>
+                        {mentionProfiles?.length > 0 && profilesOpen && (
+                          <div
+                            className={`absolute w-44 max-h-28 h-fit flex flex-col overflow-y-auto items-center justify-center z-2 rounded-lg`}
+                            style={{
+                              top: caretCoord.y + 30,
+                              left: caretCoord.x,
+                            }}
+                          >
+                            {mentionProfiles?.map(
+                              (user: any, index: number) => {
+                                const profileImage: string =
+                                  createProfilePicture(user);
+                                return (
+                                  <div
+                                    key={index}
+                                    className={`relative w-full h-fit px-3 py-2 bg-white flex flex-row gap-3 cursor-pointer items-center justify-center border-y border-black hover:bg-rosa/70 z-2`}
+                                    onClick={() => {
+                                      handleMentionClick(user);
+                                    }}
+                                  >
+                                    <div className="relative flex flex-row w-full h-full text-black font-economicaB lowercase place-self-center gap-2">
+                                      <div
+                                        className={`relative rounded-full flex bg-white w-3 h-3 items-center justify-center col-start-1`}
+                                        id="crt"
+                                      >
+                                        {profileImage !== "" && (
+                                          <Image
+                                            src={profileImage}
+                                            objectFit="cover"
+                                            alt="pfp"
+                                            layout="fill"
+                                            className="relative w-fit h-fit rounded-full items-center justify-center flex"
+                                            draggable={false}
+                                          />
+                                        )}
+                                      </div>
+                                      <div className="relative col-start-2 items-center justify-center w-fit h-fit text-xs flex">
+                                        @{user?.handle?.split(".lens")[0]}
                                       </div>
                                     </div>
-                                  );
-                                }
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </ScrollSync>
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                   <div className="relative w-full h-fit preG:h-12 flex flex-row items-center gap-3 flex-wrap preG:flex-nowrap">

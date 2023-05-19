@@ -109,6 +109,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
   setProfilesOpenSearch,
   setProfilesFound,
   profileType,
+  preElement,
 }): JSX.Element => {
   let action: string;
 
@@ -209,6 +210,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
           setReactProfileLoading={setReactProfileLoading}
           profile={profile}
           profileType={profileType}
+          preElement={preElement}
         />
       );
 
@@ -304,6 +306,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
           setProfilesOpenSearch={setProfilesOpenSearch}
           setProfilesFound={setProfilesFound}
           profileType={profileType}
+          preElement={preElement}
         />
       );
   }

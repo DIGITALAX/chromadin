@@ -97,6 +97,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   profile,
   profileCollections,
   profileType,
+  preElement
 }): JSX.Element => {
   const history = useSelector(
     (state: RootState) => state.app.historyURLReducer.value
@@ -257,6 +258,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
                       currencyDropDown={currencyDropDown}
                       dispatch={dispatch}
                       postImagesDispatched={postImagesDispatched}
+                      preElement={preElement}
                     />
                   )}
                 </div>

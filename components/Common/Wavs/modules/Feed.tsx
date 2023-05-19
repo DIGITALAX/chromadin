@@ -134,6 +134,7 @@ const Feed: FunctionComponent<FeedProps> = ({
   setProfilesFound,
   setProfilesOpenSearch,
   profileType,
+  preElement
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
@@ -145,6 +146,7 @@ const Feed: FunctionComponent<FeedProps> = ({
         />
         {feedType !== "" ? (
           <Individual
+            preElement={preElement}
             dispatch={dispatch}
             commentors={commentors}
             fetchMoreComments={getMorePostComments}
@@ -253,6 +255,7 @@ const Feed: FunctionComponent<FeedProps> = ({
           </div>
         ) : (
           <Switch
+          preElement={preElement}
             dispatch={dispatch}
             followerOnly={followerOnly}
             feedDispatch={feedDispatch}

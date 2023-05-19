@@ -1,7 +1,13 @@
-const syncScroll = (e: any, element: string) => {
-  let resultElement = document.querySelector(`#${element}`);
-  (resultElement as any).scrollTop = e.target.scrollTop;
-  (resultElement as any).scrollLeft = e.target.scrollLeft;
+import { RefObject } from "react";
+
+const syncScroll = (
+  textElement: RefObject<HTMLTextAreaElement>,
+  preRef: RefObject<HTMLPreElement> | null
+) => {
+  if (textElement?.current && preRef?.current) {
+    preRef.current.scrollTop = textElement.current.scrollTop;
+    preRef.current.scrollLeft = textElement.current.scrollLeft;
+  }
 };
 
 export default syncScroll;

@@ -31,6 +31,7 @@ const NFT: FunctionComponent<NFTProps> = ({ mainNFT, viewer }): JSX.Element => {
     setGifOpen,
     gifOpen,
     handleKeyDownDelete,
+    preElement
   } = useComment();
   const {
     collectNotif,
@@ -167,6 +168,7 @@ const NFT: FunctionComponent<NFTProps> = ({ mainNFT, viewer }): JSX.Element => {
           handleKeyDownDelete={handleKeyDownDelete}
           commentId={commentId}
           canComment={canComment}
+          preElement={preElement}
         />
       ) : (
         <Description

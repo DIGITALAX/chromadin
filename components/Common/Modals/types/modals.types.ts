@@ -8,7 +8,7 @@ import { MainVideoState } from "@/redux/reducers/mainVideoSlice";
 import { PostCollectValuesState } from "@/redux/reducers/postCollectSlice";
 import { VideoSyncState } from "@/redux/reducers/videoSyncSlice";
 import { NextRouter } from "next/router";
-import { FormEvent, KeyboardEvent, Ref } from "react";
+import { FormEvent, KeyboardEvent, Ref, RefObject } from "react";
 import ReactPlayer from "react-player";
 import { AnyAction, Dispatch } from "redux";
 import { QuickProfilesInterface } from "../../Wavs/types/wavs.types";
@@ -171,7 +171,8 @@ export type PostProps = {
   profileId: string;
   handlePost: () => Promise<void>;
   postDescription: string;
-  textElement: Ref<HTMLTextAreaElement>;
+  textElement: RefObject<HTMLTextAreaElement>;
+  preElement: RefObject<HTMLPreElement>;
   caretCoord: {
     x: number;
     y: number;

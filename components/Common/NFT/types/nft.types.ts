@@ -1,6 +1,6 @@
 import { UploadedMedia } from "@/components/Home/types/home.types";
 import { Erc20, Profile } from "@/components/Home/types/lens.types";
-import { FormEvent, KeyboardEvent, Ref } from "react";
+import { FormEvent, KeyboardEvent, Ref, RefObject } from "react";
 import { AnyAction, Dispatch } from "redux";
 
 export type NFTProps = {
@@ -17,7 +17,8 @@ export type UserCommentProps = {
   commentDescription: string;
   commentLoading: boolean;
   handleCommentDescription: (e: FormEvent) => Promise<void>;
-  textElement: Ref<HTMLTextAreaElement>;
+  textElement: RefObject<HTMLTextAreaElement>;
+  preElement: RefObject<HTMLPreElement>;
   caretCoord: {
     x: number;
     y: number;

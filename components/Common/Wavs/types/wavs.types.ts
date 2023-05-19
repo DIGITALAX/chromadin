@@ -10,7 +10,7 @@ import { IndividualFeedCountState } from "@/redux/reducers/individualFeedCountRe
 import { ProfileFeedCountState } from "@/redux/reducers/profileFeedCountSlice";
 import { ReactionFeedCountState } from "@/redux/reducers/reactionFeedCountSlice";
 import { NextRouter } from "next/router";
-import { FormEvent, KeyboardEvent, Ref } from "react";
+import { FormEvent, KeyboardEvent, Ref, RefObject } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AnyAction, Dispatch } from "redux";
 
@@ -225,7 +225,8 @@ export type FeedProps = {
   commentPost: (id: string) => Promise<void>;
   commentDescription: string;
   handleCommentDescription: (e: FormEvent) => Promise<void>;
-  textElement: Ref<HTMLTextAreaElement>;
+  textElement: RefObject<HTMLTextAreaElement>;
+  preElement: RefObject<HTMLPreElement>;
   caretCoord: {
     x: number;
     y: number;
@@ -420,7 +421,8 @@ export type IndividualProps = {
   commentPost: (id: string) => Promise<void>;
   commentDescription: string;
   handleCommentDescription: (e: FormEvent) => Promise<void>;
-  textElement: Ref<HTMLTextAreaElement>;
+  textElement: RefObject<HTMLTextAreaElement>;
+  preElement: RefObject<HTMLPreElement>;
   caretCoord: {
     x: number;
     y: number;
@@ -526,7 +528,8 @@ export type CommentsProps = {
   commentDescription: string;
   commentLoading: boolean;
   handleCommentDescription: (e: FormEvent) => Promise<void>;
-  textElement: Ref<HTMLTextAreaElement>;
+  textElement: RefObject<HTMLTextAreaElement>;
+  preElement: RefObject<HTMLPreElement>;
   caretCoord: {
     x: number;
     y: number;
@@ -659,7 +662,8 @@ export type MakeCommentProps = {
   commentDescription: string;
   commentLoading: boolean;
   handleCommentDescription: (e: FormEvent) => Promise<void>;
-  textElement: Ref<HTMLTextAreaElement>;
+  textElement: RefObject<HTMLTextAreaElement>;
+  preElement: RefObject<HTMLPreElement>;
   caretCoord: {
     x: number;
     y: number;
@@ -815,7 +819,8 @@ export type ProfileFeedProps = {
   commentPost: (id: string) => Promise<void>;
   commentDescription: string;
   handleCommentDescription: (e: FormEvent) => Promise<void>;
-  textElement: Ref<HTMLTextAreaElement>;
+  textElement: RefObject<HTMLTextAreaElement>;
+  preElement: RefObject<HTMLPreElement>;
   caretCoord: {
     x: number;
     y: number;
@@ -919,7 +924,8 @@ export type SwitchProps = {
   commentPost: (id: string) => Promise<void>;
   commentDescription: string;
   handleCommentDescription: (e: FormEvent) => Promise<void>;
-  textElement: Ref<HTMLTextAreaElement>;
+  textElement: RefObject<HTMLTextAreaElement>;
+  preElement: RefObject<HTMLPreElement>;
   caretCoord: {
     x: number;
     y: number;
@@ -1044,7 +1050,8 @@ export type AllPostsProps = {
   commentPost: (id: string) => Promise<void>;
   commentDescription: string;
   handleCommentDescription: (e: FormEvent) => Promise<void>;
-  textElement: Ref<HTMLTextAreaElement>;
+  textElement: RefObject<HTMLTextAreaElement>;
+  preElement: RefObject<HTMLPreElement>;
   caretCoord: {
     x: number;
     y: number;
