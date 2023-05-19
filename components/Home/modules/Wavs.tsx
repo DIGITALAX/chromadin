@@ -135,6 +135,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     gifOpen,
     setGifOpen,
     handleKeyDownDelete,
+    preElement
   } = useComment();
 
   const {
@@ -338,6 +339,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         setProfilesOpenSearch={setProfilesOpenSearch}
         setProfilesFound={setProfilesFound}
         profileType={profileType}
+        preElement={preElement}
       />
     </div>
   );

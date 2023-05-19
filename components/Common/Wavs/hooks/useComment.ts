@@ -38,6 +38,7 @@ const useComment = () => {
   const [gifOpen, setGifOpen] = useState<boolean>(false);
   const [profilesOpen, setProfilesOpen] = useState<boolean>(false);
   const textElement = useRef<HTMLTextAreaElement>(null);
+  const preElement = useRef<HTMLPreElement>(null);
   const [mentionProfiles, setMentionProfiles] = useState<Profile[]>([]);
   const [results, setResults] = useState<any>([]);
   const [gifs, setGifs] = useState<UploadedMedia[]>([]);
@@ -371,6 +372,7 @@ const useComment = () => {
     gifOpen,
     setGifOpen,
     handleKeyDownDelete,
+    preElement,
   };
 };
 
