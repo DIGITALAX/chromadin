@@ -152,6 +152,7 @@ const Modals = () => {
     gifOpen,
     handleKeyDownDelete,
     handlePost,
+    preElement
   } = useMakePost();
   const {
     collectNotif,
@@ -369,6 +370,7 @@ const Modals = () => {
           collectibleDropDown={collectibleDropDown}
           currencyDropDown={currencyDropDown}
           postImagesDispatched={postImagesDispatched}
+          preElement={preElement}
         />
       )}
       {errorModal.value && <Error />}
