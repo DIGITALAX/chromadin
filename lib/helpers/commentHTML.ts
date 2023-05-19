@@ -5,13 +5,13 @@ const getCommentHTML = (
 ): string => {
   const regexLinks = /\b(https?:\/\/)?(www\.)?\w+\.\b(com|xyz)\b/gi;
   const regexMentions = /(?:^|\s)[#@](\S+)/g;
-  const linkHighlight = (saved ? e : e.target.value).replace(
-    regexLinks,
-    (match: string) => {
-      return `<span style="color: #0091ff">${match}</span>`;
-    }
-  );
-  const mentionHighlight = linkHighlight.replace(
+  // const linkHighlight = (saved ? e : e.target.value).replace(
+  //   regexLinks,
+  //   (match: string) => {
+  //     return `<span style="color: #0091ff">${match}</span>`;
+  //   }
+  // );
+  const mentionHighlight = (saved ? e : e.target.value).replace(
     regexMentions,
     (match: string) => {
       return `<span style="color: #0091ff">${match}</span>`;
