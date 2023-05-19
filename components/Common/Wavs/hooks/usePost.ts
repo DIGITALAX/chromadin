@@ -28,6 +28,7 @@ import { searchProfile } from "@/graphql/lens/queries/search";
 import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
 import { setPublicationImages } from "@/redux/reducers/publicationImageSlice";
 import { setMakePost } from "@/redux/reducers/makePostSlice";
+import { setPostSent } from "@/redux/reducers/postSentSlice";
 
 const useMakePost = () => {
   const [postLoading, setPostLoading] = useState<boolean>(false);
@@ -341,6 +342,7 @@ const useMakePost = () => {
         hash: tx?.hash!,
       });
       await handleIndexCheck(res?.transactionHash, dispatch, true);
+      dispatch(setPostSent(true));
     } catch (err) {
       console.error(err);
       setPostLoading(false);
