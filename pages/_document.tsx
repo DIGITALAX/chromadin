@@ -15,7 +15,7 @@ export default function Document() {
         <meta name="og:url" content="https://chromadin.xyz/" />
         <meta name="og:image" content="https://chromadin.xyz/card.png/" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@igitalax_" />
+        <meta name="twitter:site" content="@digitalax_" />
         <meta name="twitter:creator" content="@digitalax_" />
         <meta name="twitter:image" content="https://chromadin.xyz/card.png/" />
         <meta name="twitter:url" content="https://chromadin.xyz/" />
