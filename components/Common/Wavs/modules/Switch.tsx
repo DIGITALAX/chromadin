@@ -110,6 +110,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
   setProfilesFound,
   profileType,
   preElement,
+  filterDecrypt
 }): JSX.Element => {
   let action: string;
 
@@ -211,6 +212,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
           profile={profile}
           profileType={profileType}
           preElement={preElement}
+          filterDecrypt={filterDecrypt}
         />
       );
 
@@ -218,6 +220,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
       return (
         <AllPosts
           router={router}
+          filterDecrypt={filterDecrypt}
           feedType={feedType}
           dispatch={dispatch}
           feedDispatch={feedDispatch}

@@ -98,6 +98,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   profileCollections,
   profileType,
   preElement,
+  filterDecrypt,
 }): JSX.Element => {
   const history = useSelector(
     (state: RootState) => state.app.historyURLReducer.value
@@ -146,7 +147,13 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           loader={""}
           hasMore={hasMoreProfile}
           next={fetchMoreProfile}
-          dataLength={profileDispatch?.length}
+          dataLength={
+            filterDecrypt
+              ? profileDispatch.filter((pub: any) => {
+                  if (pub.decrypt || pub.gated) return pub;
+                }).length
+              : profileDispatch?.length
+          }
           className={`relative row-start-1 w-full ml-auto h-full max-w-full overflow-y-scroll`}
           style={{ color: "#131313", fontFamily: "Digi Reg" }}
           scrollThreshold={0.9}
@@ -156,7 +163,12 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           initialScrollY={feedType === "" ? scrollPos : 0}
         >
           <div className="w-full h-full relative flex flex-col gap-4 pb-3">
-            {profileDispatch?.map((publication: Publication, index: number) => {
+            {(filterDecrypt
+              ? profileDispatch.filter((pub: any) => {
+                  if (pub.decrypt || pub.gated) return pub;
+                })
+              : profileDispatch
+            )?.map((publication: Publication, index: number) => {
               return (
                 <div
                   className="relative w-full h-fit gap-2 flex flex-col"

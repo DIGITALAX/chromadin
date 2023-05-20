@@ -99,7 +99,8 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   setProfilesOpenSearch,
   profileType,
   preElement,
-  allCollections
+  allCollections,
+  filterDecrypt,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4">
@@ -132,7 +133,13 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
           loader={""}
           hasMore={hasMore}
           next={fetchMore}
-          dataLength={feedDispatch?.length}
+          dataLength={
+            filterDecrypt
+              ? feedDispatch.filter((pub: any) => {
+                  if (pub.decrypt || pub.gated) return pub;
+                }).length
+              : feedDispatch?.length
+          }
           className={`relative row-start-1 w-full ml-auto h-full max-w-full overflow-y-scroll`}
           style={{ color: "#131313", fontFamily: "Digi Reg" }}
           scrollThreshold={0.9}
@@ -142,7 +149,12 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
           initialScrollY={feedType === "" ? scrollPos : 0}
         >
           <div className="w-full h-full relative flex flex-col gap-4 pb-3">
-            {feedDispatch?.map((publication: Publication, index: number) => {
+            {(filterDecrypt
+              ? feedDispatch.filter((pub: any) => {
+                  if (pub.decrypt || pub.gated) return pub;
+                })
+              : feedDispatch
+            )?.map((publication: Publication, index: number) => {
               return (
                 <div
                   className="relative w-full h-fit gap-2 flex flex-col"
@@ -242,7 +254,6 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
                       dispatch={dispatch}
                       postImagesDispatched={postImagesDispatched}
                       preElement={preElement}
-        
                     />
                   )}
                 </div>

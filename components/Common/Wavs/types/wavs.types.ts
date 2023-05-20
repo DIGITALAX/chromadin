@@ -317,6 +317,7 @@ export type FeedProps = {
   fetchMoreSearch: () => Promise<void>;
   setProfilesOpenSearch: (e: boolean) => void;
   setProfilesFound: (e: Profile[]) => void;
+  filterDecrypt: boolean;
 };
 
 export interface ApprovalArgs {
@@ -890,10 +891,12 @@ export type ProfileFeedProps = {
   scrollPos: number;
   profile: Profile | undefined;
   profileCollections: Collection[];
+  filterDecrypt: boolean;
 };
 
 export type SwitchProps = {
   router: NextRouter;
+  filterDecrypt: boolean;
   dispatch: Dispatch<AnyAction>;
   followerOnly: boolean[];
   feedDispatch: Publication[];
@@ -1021,6 +1024,7 @@ export type SwitchProps = {
 
 export type AllPostsProps = {
   router: NextRouter;
+  filterDecrypt: boolean;
   dispatch: Dispatch<AnyAction>;
   followerOnly: boolean[];
   feedDispatch: Publication[];

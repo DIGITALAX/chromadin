@@ -3,6 +3,8 @@ import { FeedProps } from "../types/wavs.types";
 import Individual from "./Individual";
 import Switch from "./Switch";
 import MakePost from "./MakePost";
+import { BiLock } from "react-icons/bi";
+import { setFilterDecrypt } from "@/redux/reducers/filterDecryptSlice";
 
 const Feed: FunctionComponent<FeedProps> = ({
   dispatch,
@@ -135,11 +137,24 @@ const Feed: FunctionComponent<FeedProps> = ({
   setProfilesOpenSearch,
   profileType,
   preElement,
+  filterDecrypt,
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
       <div className="relative w-full h-full flex flex-col items-start justify-center gap-3">
-        <MakePost dispatch={dispatch} profileId={profileId} address={address} />
+        <div className="relative w-full h-fit flex flex-row">
+          <BiLock
+            size={18}
+            color="white"
+            className="relative justify-start flex cursor-pointer active:scale-95"
+            onClick={() => dispatch(setFilterDecrypt(!filterDecrypt))}
+          />
+          <MakePost
+            dispatch={dispatch}
+            profileId={profileId}
+            address={address}
+          />
+        </div>
         {feedType !== "" ? (
           <Individual
             preElement={preElement}
@@ -358,6 +373,7 @@ const Feed: FunctionComponent<FeedProps> = ({
             setProfilesOpenSearch={setProfilesOpenSearch}
             setProfilesFound={setProfilesFound}
             profileType={profileType}
+            filterDecrypt={filterDecrypt}
           />
         )}
       </div>

@@ -52,6 +52,9 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const commentors = useSelector(
     (state: RootState) => state.app.commentReducer.value
   );
+  const filterDecrypt = useSelector(
+    (state: RootState) => state.app.filterDecryptReducer.value
+  );
   const scrollPos = useSelector(
     (state: RootState) => state.app.scrollPosReducer.value
   );
@@ -135,7 +138,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     gifOpen,
     setGifOpen,
     handleKeyDownDelete,
-    preElement
+    preElement,
   } = useComment();
 
   const {
@@ -340,6 +343,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         setProfilesFound={setProfilesFound}
         profileType={profileType}
         preElement={preElement}
+        filterDecrypt={filterDecrypt}
       />
     </div>
   );

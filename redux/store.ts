@@ -65,6 +65,7 @@ import makePostReducer from "./reducers/makePostSlice";
 import publicationImageReducer from "./reducers/publicationImageSlice";
 import postSentReducer from "./reducers/postSentSlice";
 import decryptReducer from "./reducers/decryptSlice";
+import filterDecryptReducer from "./reducers/filterDecryptSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -132,6 +133,7 @@ const reducer = combineReducers({
   publicationImageReducer,
   postSentReducer,
   decryptReducer,
+  filterDecryptReducer,
 });
 
 export const store = configureStore({
