@@ -32,7 +32,7 @@ const Decrypt: FunctionComponent<DecryptProps> = ({
                 />
               </div>
               <div className="relative w-full h-fit justify-center items-center text-white font-earl text-sm text-center px-4">
-                Collect Your Keys 2 Decrypt
+                Collect Your Keys 2 Decrypt.
               </div>
               <div className="relative w-full h-fit overflow-x-scroll">
                 <div className="flex flex-row w-fit gap-3 h-fit px-4">

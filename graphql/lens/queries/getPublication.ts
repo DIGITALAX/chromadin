@@ -515,6 +515,7 @@ fragment PostFields on Post {
   reaction(request: null)
   mirrors(by: null)
   hasCollectedByMe
+  onChainContentURI
 }
 
 

@@ -26,6 +26,7 @@ import { QuickProfilesInterface } from "../types/wavs.types";
 import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
 import { useSigner, useAccount } from "wagmi";
 import { setPostSent } from "@/redux/reducers/postSentSlice";
+import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
 
 const useAllPosts = () => {
   const { data: signer } = useSigner();
@@ -146,13 +147,24 @@ const useAllPosts = () => {
           sortedArr.map(async (post) => {
             if (post?.canDecrypt && post?.canDecrypt.result) {
               try {
-                const { decrypted } = await sdk.gated.decryptMetadata(
-                  post.metadata
+                const data = await fetchIPFSJSON(
+                  post.onChainContentURI
+                    ?.split("ipfs://")[1]
+                    .replace(/"/g, "")
+                    .trim()
+                );
+                const { decrypted, error } = await sdk.gated.decryptMetadata(
+                  data.json
                 );
                 if (decrypted) {
                   return {
                     ...post,
                     decrypted,
+                  };
+                } else if (error) {
+                  return {
+                    ...post,
+                    gated: true,
                   };
                 }
               } catch (err: any) {
@@ -310,13 +322,24 @@ const useAllPosts = () => {
           sortedArr.map(async (post) => {
             if (post.canDecrypt && post.canDecrypt.result) {
               try {
-                const { decrypted } = await sdk.gated.decryptMetadata(
-                  post.metadata
+                const data = await fetchIPFSJSON(
+                  post.onChainContentURI
+                    ?.split("ipfs://")[1]
+                    .replace(/"/g, "")
+                    .trim()
+                );
+                const { decrypted ,error } = await sdk.gated.decryptMetadata(
+                  data.json
                 );
                 if (decrypted) {
                   return {
                     ...post,
                     decrypted,
+                  };
+                } else if (error) {
+                  return {
+                    ...post,
+                    gated: true,
                   };
                 }
               } catch (err: any) {

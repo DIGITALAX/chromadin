@@ -23,6 +23,7 @@ import { useSigner, useAccount } from "wagmi";
 import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
 import { Signer } from "ethers";
 import { Web3Provider } from "@ethersproject/providers";
+import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
 
 const useIndividual = () => {
   const dispatch = useDispatch();
@@ -314,13 +315,24 @@ const useIndividual = () => {
           pubData?.publication.canDecrypt.result
         ) {
           try {
-            const { decrypted } = await sdk.gated.decryptMetadata(
-              pubData?.publication.metadata
+            const data = await fetchIPFSJSON(
+              pubData?.publication.onChainContentURI
+                ?.split("ipfs://")[1]
+                .replace(/"/g, "")
+                .trim()
+            );
+            const { decrypted, error } = await sdk.gated.decryptMetadata(
+              data.json
             );
             if (decrypted) {
               decryptedData = {
                 ...pubData?.publication,
                 decrypted,
+              };
+            } else if (error) {
+              return {
+                ...pubData?.publication,
+                gated: true,
               };
             }
           } catch (err: any) {

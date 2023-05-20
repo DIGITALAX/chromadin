@@ -149,6 +149,7 @@ query Publications($request: PublicationsQueryRequest! $profileId: ProfileId) {
     reaction(request: null)
     mirrors(by: null)
     hasCollectedByMe
+    onChainContentURI
   }
   
   fragment MirrorBaseFields on Mirror {
