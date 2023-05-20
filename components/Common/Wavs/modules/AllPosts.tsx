@@ -150,9 +150,16 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
         >
           <div className="w-full h-full relative flex flex-col gap-4 pb-3">
             {(filterDecrypt
-              ? feedDispatch.filter((pub: any) => {
-                  if (pub.decrypt || pub.gated) return pub;
-                })
+              ? feedDispatch
+                  .map((pub: any, index: number) => ({
+                    ...pub,
+                    originalIndex: index,
+                  }))
+                  .filter((pub: any) => pub.decrypt || pub.gated)
+                  .map((publication: Publication) => ({
+                    ...publication,
+                    filterIndex: (publication as any).originalIndex,
+                  }))
               : feedDispatch
             )?.map((publication: Publication, index: number) => {
               return (
@@ -163,22 +170,80 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
                   <FeedPublication
                     dispatch={dispatch}
                     publication={publication}
-                    hasMirrored={reactionAmounts.hasMirrored[index]}
-                    hasReacted={reactionAmounts.hasLiked?.[index]}
-                    hasCollected={reactionAmounts.hasCollected[index]}
-                    followerOnly={followerOnly[index]}
+                    hasMirrored={
+                      filterDecrypt
+                        ? reactionAmounts.hasMirrored[
+                            (publication as any)?.filterIndex
+                          ]
+                        : reactionAmounts.hasMirrored[index]
+                    }
+                    hasReacted={
+                      filterDecrypt
+                        ? reactionAmounts.hasLiked[
+                            (publication as any)?.filterIndex
+                          ]
+                        : reactionAmounts.hasLiked?.[index]
+                    }
+                    hasCollected={
+                      filterDecrypt
+                        ? reactionAmounts.hasCollected[
+                            (publication as any)?.filterIndex
+                          ]
+                        : reactionAmounts.hasCollected[index]
+                    }
+                    followerOnly={
+                      filterDecrypt
+                        ? followerOnly[(publication as any)?.filterIndex]
+                        : followerOnly[index]
+                    }
                     collectPost={collectPost}
                     mirrorPost={mirrorPost}
                     reactPost={reactPost}
                     address={address}
                     index={index}
-                    mirrorLoading={mirrorLoading[index]}
-                    reactLoading={reactLoading[index]}
-                    collectLoading={collectLoading[index]}
-                    reactAmount={reactionAmounts.like[index]}
-                    mirrorAmount={reactionAmounts.mirror[index]}
-                    collectAmount={reactionAmounts.collect[index]}
-                    commentAmount={reactionAmounts.comment[index]}
+                    mirrorLoading={
+                      filterDecrypt
+                        ? mirrorLoading[(publication as any)?.filterIndex]
+                        : mirrorLoading[index]
+                    }
+                    reactLoading={
+                      filterDecrypt
+                        ? reactLoading[(publication as any)?.filterIndex]
+                        : reactLoading[index]
+                    }
+                    collectLoading={
+                      filterDecrypt
+                        ? collectLoading[(publication as any)?.filterIndex]
+                        : collectLoading[index]
+                    }
+                    reactAmount={
+                      filterDecrypt
+                        ? reactionAmounts.like[
+                            (publication as any)?.filterIndex
+                          ]
+                        : reactionAmounts.like[index]
+                    }
+                    mirrorAmount={
+                      filterDecrypt
+                        ? reactionAmounts.mirror[
+                            (publication as any)?.filterIndex
+                          ]
+                        : reactionAmounts.mirror[index]
+                    }
+                    collectAmount={
+                      filterDecrypt
+                        ? reactionAmounts.collect[
+                            (publication as any)?.filterIndex
+                          ]
+                        : reactionAmounts.collect[index]
+                    }
+                    commentAmount={
+                      filterDecrypt
+                        ? reactionAmounts.comment[
+                            (publication as any)?.filterIndex
+                          ]
+                        : reactionAmounts.comment[index]
+                    }
                     openComment={commentOpen}
                     feedType={feedType}
                     router={router}
