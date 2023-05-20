@@ -120,7 +120,10 @@ const useProfileFeed = () => {
                 }
               } catch (err: any) {
                 console.error(err.message);
-                return null;
+                return {
+                  ...post,
+                  gated: true,
+                };
               }
             } else if (
               post?.metadata?.content?.includes("This publication is gated") ||
@@ -280,7 +283,10 @@ const useProfileFeed = () => {
                 }
               } catch (err: any) {
                 console.error(err.message);
-                return null;
+                return {
+                  ...post,
+                  gated: true,
+                };
               }
             } else if (
               post?.metadata?.content?.includes("This publication is gated") ||

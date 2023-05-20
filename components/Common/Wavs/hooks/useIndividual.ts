@@ -325,7 +325,10 @@ const useIndividual = () => {
             }
           } catch (err: any) {
             console.error(err.message);
-            decryptedData = pubData?.publication;
+            decryptedData = {
+              ...pubData?.publication,
+              gated: true,
+            };
           }
         } else if (
           pubData?.publication?.metadata?.content?.includes(
