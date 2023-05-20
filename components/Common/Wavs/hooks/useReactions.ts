@@ -125,7 +125,7 @@ const useReactions = () => {
       });
       dispatch(
         setFeedReactId({
-          actionValue: id,
+          actionValue: mirrorId ? mirrorId : id,
           actionType: 0,
         })
       );
@@ -137,7 +137,7 @@ const useReactions = () => {
       ) {
         dispatch(
           setFeedReactId({
-            actionValue: id,
+            actionValue: mirrorId ? mirrorId : id,
             actionType: 0,
           })
         );
@@ -268,14 +268,14 @@ const useReactions = () => {
           setMirrorArgs(mirrorArgs);
           dispatch(
             setFeedReactId({
-              actionValue: id,
+              actionValue: mirrorId ? mirrorId : id,
               actionType: 1,
             })
           );
         } else {
           dispatch(
             setFeedReactId({
-              actionValue: id,
+              actionValue: mirrorId ? mirrorId : id,
               actionType: 1,
             })
           );
@@ -417,14 +417,14 @@ const useReactions = () => {
         setCollectArgs(collectArgs);
         dispatch(
           setFeedReactId({
-            actionValue: id,
+            actionValue: mirrorId ? mirrorId : id,
             actionType: 2,
           })
         );
       } else {
         dispatch(
           setFeedReactId({
-            actionValue: id,
+            actionValue: mirrorId ? mirrorId : id,
             actionType: 2,
           })
         );

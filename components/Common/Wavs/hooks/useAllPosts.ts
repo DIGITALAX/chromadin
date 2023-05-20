@@ -328,7 +328,7 @@ const useAllPosts = () => {
                     .replace(/"/g, "")
                     .trim()
                 );
-                const { decrypted ,error } = await sdk.gated.decryptMetadata(
+                const { decrypted, error } = await sdk.gated.decryptMetadata(
                   data
                 );
                 if (decrypted) {
@@ -584,22 +584,6 @@ const useAllPosts = () => {
             })
           );
         }
-      } else {
-        dispatch(
-          setIndividualFeedCount({
-            actionLike:
-              feedId.type === 0 ? individual.like + 1 : individual.like,
-            actionMirror:
-              feedId.type === 1 ? individual.mirror + 1 : individual.mirror,
-            actionCollect:
-              feedId.type === 2 ? individual.collect + 1 : individual.collect,
-            actionComment:
-              feedId.type === 3 ? individual.comment + 1 : individual.comment,
-            actionHasLiked: feedId.type === 0 ? true : individual.hasLiked,
-            actionHasMirrored: feedId.type === 1 ? true : individual.mirror,
-            actionHasCollected: feedId.type === 2 ? true : individual.collect,
-          })
-        );
       }
     } catch (err: any) {
       console.error(err.message);
