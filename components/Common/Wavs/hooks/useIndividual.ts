@@ -275,6 +275,8 @@ const useIndividual = () => {
       );
       if (!res.data.publication.canComment.result) {
         dispatch(setCanComment(false));
+      } else {
+        dispatch(setCanComment(true));
       }
     } catch (err: any) {
       console.error(err.message);
