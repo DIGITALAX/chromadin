@@ -300,6 +300,8 @@ const useIndividual = () => {
         pubData = data;
       }
 
+      let decryptedData;
+
       if (signer && address) {
         const sdk = await LensGatedSDK.create({
           provider: new Web3Provider(window?.ethereum as any),
@@ -316,14 +318,14 @@ const useIndividual = () => {
               pubData?.publication.metadata
             );
             if (decrypted) {
-              return {
+              decryptedData = {
                 ...pubData?.publication,
                 decrypted,
               };
             }
           } catch (err: any) {
             console.error(err.message);
-            return null;
+            decryptedData = pubData?.publication;
           }
         } else if (
           pubData?.publication?.metadata?.content?.includes(
@@ -334,12 +336,12 @@ const useIndividual = () => {
               "This publication is gated"
             ))
         ) {
-          return {
+          decryptedData = {
             ...pubData?.publication,
             gated: true,
           };
         } else {
-          return pubData?.publication;
+          decryptedData = pubData?.publication;
         }
       } else {
         if (
@@ -351,33 +353,30 @@ const useIndividual = () => {
               "This publication is gated"
             ))
         ) {
-          return {
+          decryptedData = {
             ...pubData?.publication,
             gated: true,
           };
         } else {
-          return pubData?.publication;
+          decryptedData = pubData?.publication;
         }
       }
 
-      setMainPost(pubData?.publication);
+      setMainPost(decryptedData);
       setFollowerOnly(
-        pubData?.publication.__typename === "Mirror"
-          ? pubData?.publication.mirrorOf.referenceModule?.type ===
+        decryptedData?.__typename === "Mirror"
+          ? decryptedData?.mirrorOf.referenceModule?.type ===
             "FollowerOnlyReferenceModule"
             ? true
             : false
-          : pubData?.publication.referenceModule?.type ===
+          : decryptedData?.referenceModule?.type ===
             "FollowerOnlyReferenceModule"
           ? true
           : false
       );
       let hasMirroredArr, hasReactedArr;
       if (lensProfile) {
-        hasMirroredArr = await checkIfMirrored(
-          [pubData?.publication],
-          lensProfile
-        );
+        hasMirroredArr = await checkIfMirrored([decryptedData], lensProfile);
         hasReactedArr = await checkPostReactions(
           {
             publicationId: feedType,
@@ -388,13 +387,13 @@ const useIndividual = () => {
       }
       dispatch(
         setIndividualFeedCount({
-          actionLike: pubData?.publication.stats.totalUpvotes,
-          actionMirror: pubData?.publication.stats.totalAmountOfMirrors,
-          actionCollect: pubData?.publication.stats.totalAmountOfCollects,
-          actionComment: pubData?.publication.stats.totalAmountOfComments,
+          actionLike: decryptedData?.stats.totalUpvotes,
+          actionMirror: decryptedData?.stats.totalAmountOfMirrors,
+          actionCollect: decryptedData?.stats.totalAmountOfCollects,
+          actionComment: decryptedData?.stats.totalAmountOfComments,
           actionHasLiked: hasReactedArr ? hasReactedArr?.[0] : false,
           actionHasMirrored: hasMirroredArr ? hasMirroredArr?.[0] : false,
-          actionHasCollected: pubData?.publication.hasCollectedByMe,
+          actionHasCollected: decryptedData?.hasCollectedByMe,
         })
       );
     } catch (err: any) {
