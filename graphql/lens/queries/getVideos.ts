@@ -125,6 +125,7 @@ query Publications($request: PublicationsQueryRequest! $profileId: ProfileId) {
       profileId: $profileId
     ) {
       result
+      reasons
     }
     id
     profile {

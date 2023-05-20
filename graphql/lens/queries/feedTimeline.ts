@@ -475,6 +475,7 @@ fragment PostFields on Post {
     profileId: $profileId
   ) {
     result
+    reasons
   }
   id
   profile {
