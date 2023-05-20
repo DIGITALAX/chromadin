@@ -311,7 +311,7 @@ const Post: FunctionComponent<PostProps> = ({
                         </pre>
                         {mentionProfiles?.length > 0 && profilesOpen && (
                           <div
-                            className={`absolute w-44 max-h-28 h-fit flex flex-col overflow-y-auto items-center justify-center z-2 rounded-lg`}
+                            className={`absolute w-44 max-h-28 h-fit flex flex-col overflow-y-auto items-start justify-center z-2 rounded-lg`}
                             style={{
                               top: caretCoord.y + 30,
                               left: caretCoord.x,
