@@ -124,7 +124,7 @@ const useProfileFeed = () => {
                     ...post,
                     decrypted,
                   };
-                } else if (error) {
+                } else  {
                   return {
                     ...post,
                     gated: true,
@@ -298,7 +298,7 @@ const useProfileFeed = () => {
                     ...post,
                     decrypted,
                   };
-                } else if (error) {
+                } else  {
                   return {
                     ...post,
                     gated: true,

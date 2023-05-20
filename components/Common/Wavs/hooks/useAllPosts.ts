@@ -161,7 +161,7 @@ const useAllPosts = () => {
                     ...post,
                     decrypted,
                   };
-                } else if (error) {
+                } else {
                   return {
                     ...post,
                     gated: true,
@@ -336,7 +336,7 @@ const useAllPosts = () => {
                     ...post,
                     decrypted,
                   };
-                } else if (error) {
+                } else {
                   return {
                     ...post,
                     gated: true,

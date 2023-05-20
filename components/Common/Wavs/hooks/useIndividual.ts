@@ -329,7 +329,7 @@ const useIndividual = () => {
                 ...pubData?.publication,
                 decrypted,
               };
-            } else if (error) {
+            } else {
               decryptedData = {
                 ...pubData?.publication,
                 gated: true,
