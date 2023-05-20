@@ -12,7 +12,7 @@ import { FormEvent, KeyboardEvent, Ref, RefObject } from "react";
 import ReactPlayer from "react-player";
 import { AnyAction, Dispatch } from "redux";
 import { QuickProfilesInterface } from "../../Wavs/types/wavs.types";
-import { UploadedMedia } from "@/components/Home/types/home.types";
+import { Collection, UploadedMedia } from "@/components/Home/types/home.types";
 
 export type IndexingModalProps = {
   message: string | undefined;
@@ -187,4 +187,9 @@ export type ClaimProps = {
   address: `0x${string}` | undefined;
   profileId: string;
   handleConnect: () => void;
+};
+
+export type DecryptProps = {
+  dispatch: Dispatch<AnyAction>;
+  collections: Collection[];
 };

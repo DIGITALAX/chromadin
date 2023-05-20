@@ -73,6 +73,7 @@ export type FeedPublicationProps = {
   setMirrorLoader?: (e: boolean[]) => void;
   openComment: string;
   profileType: string;
+  allCollections: Collection[];
 };
 
 export type ProfileSideBarProps = {
@@ -484,6 +485,7 @@ export type IndividualProps = {
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
   individualAmounts: IndividualFeedCountState;
+  allCollections: Collection[];
 };
 
 export type CommentsProps = {
@@ -589,6 +591,7 @@ export type CommentsProps = {
   canComment: boolean;
   openComment: string;
   profileType: string;
+  allCollections: Collection[];
 };
 
 export interface UploadedMedia {
@@ -1125,6 +1128,7 @@ export type AllPostsProps = {
   setProfilesOpenSearch: (e: boolean) => void;
   setProfilesFound: (e: Profile[]) => void;
   profileType: string;
+  allCollections: Collection[];
 };
 
 export interface QuickProfilesInterface {
@@ -1142,7 +1146,6 @@ export type QuickProfilesProps = {
 export type AccountProps = {
   profile: Profile | undefined;
   profileCollections: Collection[];
-  router: NextRouter;
   dispatch: Dispatch<AnyAction>;
 };
 

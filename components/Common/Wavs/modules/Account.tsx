@@ -11,7 +11,6 @@ import { setFollowerOnly } from "@/redux/reducers/followerOnlySlice";
 const Account: FunctionComponent<AccountProps> = ({
   profile,
   profileCollections,
-  router,
   dispatch,
 }): JSX.Element => {
   return (

@@ -159,11 +159,39 @@ const useAllPosts = () => {
                 console.error(err.message);
                 return null;
               }
+            } else if (
+              post?.metadata?.content?.includes("This publication is gated") ||
+              (post.__typename === "Mirror" &&
+                post.mirrorOf.metadata.content.includes(
+                  "This publication is gated"
+                ))
+            ) {
+              return {
+                ...post,
+                gated: true,
+              };
             } else {
               return post;
             }
           })
         );
+      } else {
+        sortedArr = sortedArr.map((post) => {
+          if (
+            post.metadata.content.includes("This publication is gated") ||
+            (post.__typename === "Mirror" &&
+              post.mirrorOf.metadata.content.includes(
+                "This publication is gated"
+              ))
+          ) {
+            return {
+              ...post,
+              gated: true,
+            };
+          } else {
+            return post;
+          }
+        });
       }
 
       if (sortedArr?.length < 10) {
@@ -292,11 +320,29 @@ const useAllPosts = () => {
                 console.error(err.message);
                 return null;
               }
+            } else if (
+              post?.metadata?.content?.includes("This publication is gated")
+            ) {
+              return {
+                ...post,
+                gated: true,
+              };
             } else {
               return post;
             }
           })
         );
+      } else {
+        sortedArr = sortedArr.map((post) => {
+          if (post.metadata.content.includes("This publication is gated")) {
+            return {
+              ...post,
+              gated: true,
+            };
+          } else {
+            return post;
+          }
+        });
       }
 
       if (sortedArr?.length < 10) {

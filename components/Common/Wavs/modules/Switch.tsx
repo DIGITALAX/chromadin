@@ -307,6 +307,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
           setProfilesFound={setProfilesFound}
           profileType={profileType}
           preElement={preElement}
+          allCollections={profileCollections}
         />
       );
   }

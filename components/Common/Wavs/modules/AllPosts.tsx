@@ -98,7 +98,8 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   setProfilesFound,
   setProfilesOpenSearch,
   profileType,
-  preElement
+  preElement,
+  allCollections
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4">
@@ -170,6 +171,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
                     feedType={feedType}
                     router={router}
                     profileType={profileType}
+                    allCollections={allCollections}
                   />
                   {(publication?.__typename === "Mirror"
                     ? publication?.mirrorOf?.id
@@ -240,6 +242,7 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
                       dispatch={dispatch}
                       postImagesDispatched={postImagesDispatched}
                       preElement={preElement}
+        
                     />
                   )}
                 </div>

@@ -8,6 +8,9 @@ import { FeedPublicationProps } from "../types/wavs.types";
 import { setImageFeedViewer } from "@/redux/reducers/imageFeedViewerSlice";
 import descriptionRegex from "@/lib/helpers/descriptionRegex";
 import { FaRegCommentDots } from "react-icons/fa";
+import { BiLock } from "react-icons/bi";
+import { setDecrypt } from "@/redux/reducers/decryptSlice";
+import { Collection } from "@/components/Home/types/home.types";
 
 const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
   publication,
@@ -36,6 +39,7 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
   openComment,
   router,
   profileType,
+  allCollections,
 }): JSX.Element => {
   return (
     <div
@@ -74,7 +78,10 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
       />
       <div
         className={`relative w-full h-auto grow rounded-md grid grid-flow-row auto-rows-auto p-3 preG:p-6 gap-6 border-2  bg-gradient-to-r ${
-          (publication as any)?.decrypted
+          (publication as any)?.decrypted ||
+          (publication as any)?.gated ||
+          (publication as any)?.mirrorOf?.decrypted ||
+          (publication as any)?.mirrorOf?.gated
             ? "from-gray-400 via-gray-600 to-gray-800 border-white"
             : "from-offBlack via-gray-600 to-black border-black"
         }`}
@@ -143,8 +150,12 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
               dangerouslySetInnerHTML={{
                 __html: descriptionRegex(
                   publication?.__typename !== "Mirror"
-                    ? publication?.metadata?.content
-                    : publication?.mirrorOf?.metadata?.content
+                    ? !(publication as any)?.gated
+                      ? publication?.metadata?.content
+                      : publication?.metadata?.description
+                    : !(publication as any)?.mirrorOf?.gated
+                    ? publication?.mirrorOf?.metadata?.content
+                    : publication?.mirrorOf?.metadata?.description
                 ),
               }}
               className="relative place-self-center whitespace-preline break-all preG:break-words"
@@ -159,143 +170,191 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
               : "row-start-2"
           }`}
         >
-          {(publication?.__typename === "Mirror"
-            ? publication?.mirrorOf?.metadata?.media
-            : publication?.metadata?.media
-          )?.map((image: MediaSet | string, index: number) => {
-            let formattedImageURL: string;
+          {!(publication as any)?.gated &&
+            !(publication as any)?.mirrorOf?.gated &&
+            (publication?.__typename === "Mirror"
+              ? publication?.mirrorOf?.metadata?.media
+              : publication?.metadata?.media
+            )?.map((image: MediaSet | string, index: number) => {
+              let formattedImageURL: string;
 
-            if ((image as MediaSet).original.url.includes("ipfs://")) {
-              formattedImageURL = `${INFURA_GATEWAY}/ipfs/${
-                (image as MediaSet).original.url?.split("ipfs://")[1]
-              }`;
-            } else {
-              formattedImageURL = (image as MediaSet).original.url;
-            }
+              if ((image as MediaSet).original.url.includes("ipfs://")) {
+                formattedImageURL = `${INFURA_GATEWAY}/ipfs/${
+                  (image as MediaSet).original.url?.split("ipfs://")[1]
+                }`;
+              } else {
+                formattedImageURL = (image as MediaSet).original.url;
+              }
 
-            return (
+              return (
+                <div
+                  key={index}
+                  className={`relative w-40 h-40 preG:w-60 preG:h-60 border-2 border-black rounded-lg bg-black grid grid-flow-col auto-cols-auto col-start-${
+                    index + 1
+                  } cursor-pointer hover:opacity-70 active:scale-95`}
+                  onClick={() =>
+                    dispatch(
+                      setImageFeedViewer({
+                        actionType: (image as MediaSet).original.mimeType,
+                        actionOpen: true,
+                        actionImage: formattedImageURL,
+                      })
+                    )
+                  }
+                >
+                  <div className="relative w-full h-full col-start-1 flex">
+                    {(image as MediaSet)?.original?.mimeType !== "video/mp4" ? (
+                      <Image
+                        src={
+                          (image as MediaSet)?.original?.mimeType ===
+                            "image/png" ||
+                          (image as MediaSet)?.original?.mimeType ===
+                            "image/webp" ||
+                          (image as MediaSet)?.original?.mimeType ===
+                            "image/jpg" ||
+                          (image as MediaSet)?.original?.mimeType ===
+                            "image/jpeg" ||
+                          (image as MediaSet)?.original?.mimeType ===
+                            "image/gif"
+                            ? formattedImageURL
+                            : (image as MediaSet)?.original?.url
+                        }
+                        layout="fill"
+                        objectFit="cover"
+                        objectPosition={"center"}
+                        className="rounded-md"
+                        draggable={false}
+                      />
+                    ) : (
+                      <video
+                        muted
+                        controls
+                        className="rounded-md absolute w-full h-full object-cover"
+                      >
+                        <source src={formattedImageURL} type="video/mp4" />
+                      </video>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+        {(publication as any)?.gated ? (
+          <div
+            className={`relative w-full h-full ${
+              publication?.__typename === "Mirror" ||
+              publication?.__typename === "Comment"
+                ? "row-start-4"
+                : "row-start-3"
+            } grid grid-flow-col auto-cols-auto`}
+          >
+            {
               <div
-                key={index}
-                className={`relative w-40 h-40 preG:w-60 preG:h-60 border-2 border-black rounded-lg bg-black grid grid-flow-col auto-cols-auto col-start-${
-                  index + 1
-                } cursor-pointer hover:opacity-70 active:scale-95`}
+                className={`relative w-fit h-full col-start-1 row-start-1 sm:col-start-2 sm:pt-0 pt-3 justify-self-end self-center grid grid-flow-col auto-cols-auto font-digi gap-1 cursor-pointer hover:opacity-70 active:scale-95 text-white`}
                 onClick={() =>
                   dispatch(
-                    setImageFeedViewer({
-                      actionType: (image as MediaSet).original.mimeType,
+                    setDecrypt({
                       actionOpen: true,
-                      actionImage: formattedImageURL,
+                      actionCollections: allCollections.filter(
+                        (coll: Collection) => {
+                          return (
+                            publication?.__typename === "Mirror"
+                              ? publication?.mirrorOf?.metadata?.description
+                              : publication?.metadata?.description
+                          )
+                            ?.split("gate.")[1]
+                            ?.split("are ready to collect")[0]
+                            .split(",")
+                            .map((word: string) => word.trim())
+                            .includes(coll.name.toLowerCase());
+                        }
+                      ),
                     })
                   )
                 }
               >
-                <div className="relative w-full h-full col-start-1 flex">
-                  {(image as MediaSet)?.original?.mimeType !== "video/mp4" ? (
-                    <Image
-                      src={
-                        (image as MediaSet)?.original?.mimeType ===
-                          "image/png" ||
-                        (image as MediaSet)?.original?.mimeType ===
-                          "image/webp" ||
-                        (image as MediaSet)?.original?.mimeType ===
-                          "image/jpg" ||
-                        (image as MediaSet)?.original?.mimeType ===
-                          "image/jpeg" ||
-                        (image as MediaSet)?.original?.mimeType === "image/gif"
-                          ? formattedImageURL
-                          : (image as MediaSet)?.original?.url
-                      }
-                      layout="fill"
-                      objectFit="cover"
-                      objectPosition={"center"}
-                      className="rounded-md"
-                      draggable={false}
-                    />
-                  ) : (
-                    <video
-                      muted
-                      controls
-                      className="rounded-md absolute w-full h-full object-cover"
-                    >
-                      <source src={formattedImageURL} type="video/mp4" />
-                    </video>
-                  )}
+                <div className="relative w-fit h-fit self-end col-start-1 text-sm">
+                  Decrypt
+                </div>
+                <div className="relative w-fit h-fit col-start-2 self-end -top-1">
+                  <BiLock color={"white"} size={15} />
                 </div>
               </div>
-            );
-          })}
-        </div>
-        <div
-          className={`relative w-full h-full ${
-            publication?.__typename === "Mirror" ||
-            publication?.__typename === "Comment"
-              ? "row-start-4"
-              : "row-start-3"
-          } grid grid-flow-col auto-cols-auto`}
-        >
-          {feedType !==
-            (publication?.__typename !== "Mirror"
-              ? publication?.id
-              : publication?.mirrorOf.id) && (
-            <div
-              className={`relative w-fit h-full col-start-1 row-start-1 sm:col-start-2 sm:pt-0 pt-3 justify-self-end self-center grid grid-flow-col auto-cols-auto font-digi gap-1 cursor-pointer hover:opacity-70 active:scale-95 text-white`}
-              onClick={() =>
-                router.push(
-                  router.asPath.includes("&post=")
-                    ? router.asPath.includes("?option=")
-                      ? router.asPath.split("&post=")[0] +
+            }
+          </div>
+        ) : (
+          <div
+            className={`relative w-full h-full ${
+              publication?.__typename === "Mirror" ||
+              publication?.__typename === "Comment"
+                ? "row-start-4"
+                : "row-start-3"
+            } grid grid-flow-col auto-cols-auto`}
+          >
+            {feedType !==
+              (publication?.__typename !== "Mirror"
+                ? publication?.id
+                : publication?.mirrorOf.id) && (
+              <div
+                className={`relative w-fit h-full col-start-1 row-start-1 sm:col-start-2 sm:pt-0 pt-3 justify-self-end self-center grid grid-flow-col auto-cols-auto font-digi gap-1 cursor-pointer hover:opacity-70 active:scale-95 text-white`}
+                onClick={() =>
+                  router.push(
+                    router.asPath.includes("&post=")
+                      ? router.asPath.includes("?option=")
+                        ? router.asPath.split("&post=")[0] +
+                          `&post=${
+                            publication?.__typename !== "Mirror"
+                              ? publication?.id
+                              : publication?.mirrorOf.id
+                          }`
+                        : router.asPath.split("&post=")[0] +
+                          `?option=history&post=${
+                            publication?.__typename !== "Mirror"
+                              ? publication?.id
+                              : publication?.mirrorOf.id
+                          }`
+                      : router.asPath.includes("&profile=")
+                      ? router.asPath.includes("?option=")
+                        ? router.asPath.split("&profile=")[0] +
+                          `&post=${
+                            publication?.__typename !== "Mirror"
+                              ? publication?.id
+                              : publication?.mirrorOf.id
+                          }`
+                        : router.asPath.split("&profile=")[0] +
+                          `?option=history&post=${
+                            publication?.__typename !== "Mirror"
+                              ? publication?.id
+                              : publication?.mirrorOf.id
+                          }`
+                      : router.asPath.includes("?option=")
+                      ? router.asPath +
                         `&post=${
                           publication?.__typename !== "Mirror"
                             ? publication?.id
                             : publication?.mirrorOf.id
                         }`
-                      : router.asPath.split("&post=")[0] +
+                      : router.asPath +
                         `?option=history&post=${
                           publication?.__typename !== "Mirror"
                             ? publication?.id
                             : publication?.mirrorOf.id
                         }`
-                    : router.asPath.includes("&profile=")
-                    ? router.asPath.includes("?option=")
-                      ? router.asPath.split("&profile=")[0] +
-                        `&post=${
-                          publication?.__typename !== "Mirror"
-                            ? publication?.id
-                            : publication?.mirrorOf.id
-                        }`
-                      : router.asPath.split("&profile=")[0] +
-                        `?option=history&post=${
-                          publication?.__typename !== "Mirror"
-                            ? publication?.id
-                            : publication?.mirrorOf.id
-                        }`
-                    : router.asPath.includes("?option=")
-                    ? router.asPath +
-                      `&post=${
-                        publication?.__typename !== "Mirror"
-                          ? publication?.id
-                          : publication?.mirrorOf.id
-                      }`
-                    : router.asPath +
-                      `?option=history&post=${
-                        publication?.__typename !== "Mirror"
-                          ? publication?.id
-                          : publication?.mirrorOf.id
-                      }`
-                )
-              }
-            >
-              <div className="relative w-fit h-fit self-end col-start-1 text-sm">
-                {publication?.__typename !== "Comment"
-                  ? "View Post"
-                  : "View Comment"}
+                  )
+                }
+              >
+                <div className="relative w-fit h-fit self-end col-start-1 text-sm">
+                  {publication?.__typename !== "Comment"
+                    ? "View Post"
+                    : "View Comment"}
+                </div>
+                <div className="relative w-fit h-fit col-start-2 self-end">
+                  <AiFillEye color={"white"} size={20} />
+                </div>
               </div>
-              <div className="relative w-fit h-fit col-start-2 self-end">
-                <AiFillEye color={"white"} size={20} />
-              </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

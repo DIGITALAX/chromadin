@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FeedPublication from "./FeedPublication";
 import { Publication } from "@/components/Home/types/lens.types";
-import FetchMoreLoading from "../../Loading/FetchMoreLoading";
 import { CommentsProps } from "../types/wavs.types";
 import MakeComment from "./MakeComment";
 
@@ -91,6 +90,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
   router,
   profileType,
   preElement,
+  allCollections
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex min-w-full">
@@ -151,6 +151,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
                     openComment={openComment}
                     router={router}
                     profileType={profileType}
+                    allCollections={allCollections}
                   />
                   {comment?.id === commentId && (
                     <MakeComment

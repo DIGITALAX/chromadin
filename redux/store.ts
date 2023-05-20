@@ -64,6 +64,7 @@ import rainReducer from "./reducers/rainSlice";
 import makePostReducer from "./reducers/makePostSlice";
 import publicationImageReducer from "./reducers/publicationImageSlice";
 import postSentReducer from "./reducers/postSentSlice";
+import decryptReducer from "./reducers/decryptSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -130,6 +131,7 @@ const reducer = combineReducers({
   makePostReducer,
   publicationImageReducer,
   postSentReducer,
+  decryptReducer,
 });
 
 export const store = configureStore({

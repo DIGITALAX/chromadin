@@ -325,6 +325,38 @@ const useIndividual = () => {
             console.error(err.message);
             return null;
           }
+        } else if (
+          pubData?.publication?.metadata?.content?.includes(
+            "This publication is gated"
+          ) ||
+          (pubData?.publication?.__typename === "Mirror" &&
+            pubData?.publication?.mirrorOf.metadata.content.includes(
+              "This publication is gated"
+            ))
+        ) {
+          return {
+            ...pubData?.publication,
+            gated: true,
+          };
+        } else {
+          return pubData?.publication;
+        }
+      } else {
+        if (
+          pubData?.publication.metadata.content.includes(
+            "This publication is gated"
+          ) ||
+          (pubData?.publication?.__typename === "Mirror" &&
+            pubData?.publication?.mirrorOf.metadata.content.includes(
+              "This publication is gated"
+            ))
+        ) {
+          return {
+            ...pubData?.publication,
+            gated: true,
+          };
+        } else {
+          return pubData?.publication;
         }
       }
 

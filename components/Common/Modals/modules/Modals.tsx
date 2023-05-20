@@ -25,6 +25,7 @@ import Post from "./Post";
 import useCollectOptions from "../../NFT/hooks/useCollectOptions";
 import useImageUpload from "../../NFT/hooks/useImageUpload";
 import useMakePost from "../../Wavs/hooks/usePost";
+import Decrypt from "./Decrypt";
 
 const Modals = () => {
   const videoRef = useRef<HTMLDivElement>(null);
@@ -59,6 +60,7 @@ const Modals = () => {
   const followersModal = useSelector(
     (state: RootState) => state.app.followerOnlyReducer
   );
+  const decrypt = useSelector((state: RootState) => state.app.decryptReducer);
   const collectOpen = useSelector(
     (state: RootState) => state.app.collectOpenReducer.value
   );
@@ -152,7 +154,7 @@ const Modals = () => {
     gifOpen,
     handleKeyDownDelete,
     handlePost,
-    preElement
+    preElement,
   } = useMakePost();
   const {
     collectNotif,
@@ -372,6 +374,9 @@ const Modals = () => {
           postImagesDispatched={postImagesDispatched}
           preElement={preElement}
         />
+      )}
+      {decrypt.open && (
+        <Decrypt dispatch={dispatch} collections={decrypt.collections} />
       )}
       {errorModal.value && <Error />}
       {successModal.open && (

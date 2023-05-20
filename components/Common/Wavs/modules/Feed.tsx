@@ -134,16 +134,12 @@ const Feed: FunctionComponent<FeedProps> = ({
   setProfilesFound,
   setProfilesOpenSearch,
   profileType,
-  preElement
+  preElement,
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
       <div className="relative w-full h-full flex flex-col items-start justify-center gap-3">
-        <MakePost
-          dispatch={dispatch}
-          profileId={profileId}
-          address={address}
-        />
+        <MakePost dispatch={dispatch} profileId={profileId} address={address} />
         {feedType !== "" ? (
           <Individual
             preElement={preElement}
@@ -240,6 +236,7 @@ const Feed: FunctionComponent<FeedProps> = ({
             individualAmounts={individualAmounts}
             router={router}
             profileType={profileType}
+            allCollections={profileCollections}
           />
         ) : postsLoading || profileLoading ? (
           <div className="relative w-full h-full flex flex-col gap-4 overflow-y-scroll">
@@ -255,7 +252,7 @@ const Feed: FunctionComponent<FeedProps> = ({
           </div>
         ) : (
           <Switch
-          preElement={preElement}
+            preElement={preElement}
             dispatch={dispatch}
             followerOnly={followerOnly}
             feedDispatch={feedDispatch}

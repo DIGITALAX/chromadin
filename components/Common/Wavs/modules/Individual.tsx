@@ -102,6 +102,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
   router,
   profileType,
   preElement,
+  allCollections,
 }): JSX.Element => {
   const history = useSelector(
     (state: RootState) => state.app.historyURLReducer.value
@@ -165,6 +166,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
             openComment={commentOpen}
             router={router}
             profileType={profileType}
+            allCollections={allCollections}
           />
           {(mainPost?.__typename === "Mirror"
             ? mainPost?.mirrorOf?.id
@@ -329,6 +331,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
         router={router}
         profileType={profileType}
         preElement={preElement}
+        allCollections={allCollections}
       />
     </div>
   );

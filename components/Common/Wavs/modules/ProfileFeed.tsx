@@ -97,7 +97,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   profile,
   profileCollections,
   profileType,
-  preElement
+  preElement,
 }): JSX.Element => {
   const history = useSelector(
     (state: RootState) => state.app.historyURLReducer.value
@@ -140,7 +140,6 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           dispatch={dispatch}
           profile={profile}
           profileCollections={profileCollections}
-          router={router}
         />
         <InfiniteScroll
           height={"40rem"}
@@ -189,6 +188,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
                     setMirrorLoader={setMirrorProfileLoading}
                     setReactLoader={setReactProfileLoading}
                     profileType={profileType}
+                    allCollections={profileCollections}
                   />
                   {(publication?.__typename === "Mirror"
                     ? publication?.mirrorOf?.id
