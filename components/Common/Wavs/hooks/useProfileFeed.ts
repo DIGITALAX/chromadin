@@ -117,14 +117,14 @@ const useProfileFeed = () => {
                     .trim()
                 );
                 const { decrypted, error } = await sdk.gated.decryptMetadata(
-                  data.json
+                  data
                 );
                 if (decrypted) {
                   return {
                     ...post,
                     decrypted,
                   };
-                } else  {
+                } else {
                   return {
                     ...post,
                     gated: true,
@@ -291,14 +291,14 @@ const useProfileFeed = () => {
                     .trim()
                 );
                 const { decrypted, error } = await sdk.gated.decryptMetadata(
-                  data.json
+                  data
                 );
                 if (decrypted) {
                   return {
                     ...post,
                     decrypted,
                   };
-                } else  {
+                } else {
                   return {
                     ...post,
                     gated: true,

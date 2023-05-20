@@ -322,7 +322,7 @@ const useIndividual = () => {
                 .trim()
             );
             const { decrypted, error } = await sdk.gated.decryptMetadata(
-              data.json
+              data
             );
             if (decrypted) {
               decryptedData = {
