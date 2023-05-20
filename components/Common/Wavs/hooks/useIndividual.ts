@@ -330,7 +330,7 @@ const useIndividual = () => {
                 decrypted,
               };
             } else if (error) {
-              return {
+              decryptedData = {
                 ...pubData?.publication,
                 gated: true,
               };
