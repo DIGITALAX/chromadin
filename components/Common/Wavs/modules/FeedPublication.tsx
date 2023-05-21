@@ -205,8 +205,18 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                   key={index}
                   className={`relative w-40 h-40 preG:w-60 preG:h-60 border-2 border-black rounded-lg bg-black grid grid-flow-col auto-cols-auto col-start-${
                     index + 1
-                  } cursor-pointer hover:opacity-70 active:scale-95`}
+                  } ${
+                    ((publication as any)?.decrypted
+                      ? (image as any).type
+                      : (image as MediaSet)?.original?.mimeType) !==
+                      "video/mp4" &&
+                    "cursor-pointer hover:opacity-70 active:scale-95"
+                  } `}
                   onClick={() =>
+                    ((publication as any)?.decrypted
+                      ? (image as any).type
+                      : (image as MediaSet)?.original?.mimeType) !==
+                      "video/mp4" &&
                     dispatch(
                       setImageFeedViewer({
                         actionType: (publication as any)?.decrypted
@@ -219,7 +229,12 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                   }
                 >
                   <div className="relative w-full h-full col-start-1 flex">
-                    {(image as MediaSet)?.original?.mimeType !== "video/mp4" ? (
+                    {(
+                      (publication as any)?.decrypted
+                        ? (image as any).type
+                        : (image as MediaSet)?.original?.mimeType !==
+                          "video/mp4"
+                    ) ? (
                       <Image
                         src={
                           ((publication as any)?.decrypted
