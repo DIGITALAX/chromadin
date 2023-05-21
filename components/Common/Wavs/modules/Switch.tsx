@@ -110,7 +110,23 @@ const Switch: FunctionComponent<SwitchProps> = ({
   setProfilesFound,
   profileType,
   preElement,
-  filterDecrypt
+  filterDecrypt,
+  decryptFeed,
+  decryptFeedProfile,
+  decryptAmounts,
+  followerOnlyDecrypt,
+  hasMoreDecrypt,
+  fetchMoreDecrypt,
+  decryptScrollPos,
+  setScrollPosDecrypt,
+  scrollRefDecrypt,
+  decryptProfileAmounts,
+  decryptProfileScrollPos,
+  hasMoreDecryptProfile,
+  fetchMoreProfileDecrypt,
+  followerOnlyProfileDecrypt,
+  scrollRefDecryptProfile,
+  setScrollPosDecryptProfile,
 }): JSX.Element => {
   let action: string;
 
@@ -213,6 +229,14 @@ const Switch: FunctionComponent<SwitchProps> = ({
           profileType={profileType}
           preElement={preElement}
           filterDecrypt={filterDecrypt}
+          decryptFeedProfile={decryptFeedProfile}
+          decryptProfileAmounts={decryptProfileAmounts}
+          decryptProfileScrollPos={decryptProfileScrollPos}
+          scrollRefDecryptProfile={scrollRefDecryptProfile}
+          setScrollPosDecryptProfile={setScrollPosDecryptProfile}
+          hasMoreDecryptProfile={hasMoreDecryptProfile}
+          fetchMoreProfileDecrypt={fetchMoreProfileDecrypt}
+          followerOnlyProfileDecrypt={followerOnlyProfileDecrypt}
         />
       );
 
@@ -311,6 +335,14 @@ const Switch: FunctionComponent<SwitchProps> = ({
           profileType={profileType}
           preElement={preElement}
           allCollections={profileCollections}
+          decryptFeed={decryptFeed}
+          decryptAmounts={decryptAmounts}
+          followerOnlyDecrypt={followerOnlyDecrypt}
+          hasMoreDecrypt={hasMoreDecrypt}
+          fetchMoreDecrypt={fetchMoreDecrypt}
+          decryptScrollPos={decryptScrollPos}
+          setScrollPosDecrypt={setScrollPosDecrypt}
+          scrollRefDecrypt={scrollRefDecrypt}
         />
       );
   }

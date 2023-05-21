@@ -138,6 +138,24 @@ const Feed: FunctionComponent<FeedProps> = ({
   profileType,
   preElement,
   filterDecrypt,
+  decryptFeed,
+  decryptFeedProfile,
+  followerOnlyDecrypt,
+  decryptAmounts,
+  decryptLoading,
+  fetchMoreDecrypt,
+  hasMoreDecrypt,
+  decryptScrollPos,
+  setScrollPosDecrypt,
+  scrollRefDecrypt,
+  fetchMoreProfileDecrypt,
+  followerOnlyProfileDecrypt,
+  decryptProfileAmounts,
+  decryptProfileScrollPos,
+  decryptProfileLoading,
+  hasMoreDecryptProfile,
+  scrollRefDecryptProfile,
+  setScrollPosDecryptProfile,
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
@@ -253,7 +271,10 @@ const Feed: FunctionComponent<FeedProps> = ({
             profileType={profileType}
             allCollections={profileCollections}
           />
-        ) : postsLoading || profileLoading ? (
+        ) : postsLoading ||
+          profileLoading ||
+          decryptLoading ||
+          decryptProfileLoading ? (
           <div className="relative w-full h-full flex flex-col gap-4 overflow-y-scroll">
             {Array.from({ length: 3 }).map((_, index: number) => {
               return (
@@ -374,6 +395,22 @@ const Feed: FunctionComponent<FeedProps> = ({
             setProfilesFound={setProfilesFound}
             profileType={profileType}
             filterDecrypt={filterDecrypt}
+            decryptFeed={decryptFeed}
+            decryptAmounts={decryptAmounts}
+            followerOnlyDecrypt={followerOnlyDecrypt}
+            fetchMoreDecrypt={fetchMoreDecrypt}
+            hasMoreDecrypt={hasMoreDecrypt}
+            decryptScrollPos={decryptScrollPos}
+            setScrollPosDecrypt={setScrollPosDecrypt}
+            scrollRefDecrypt={scrollRefDecrypt}
+            decryptFeedProfile={decryptFeedProfile}
+            decryptProfileAmounts={decryptProfileAmounts}
+            fetchMoreProfileDecrypt={fetchMoreProfileDecrypt}
+            followerOnlyProfileDecrypt={followerOnlyProfileDecrypt}
+            scrollRefDecryptProfile={scrollRefDecryptProfile}
+            setScrollPosDecryptProfile={setScrollPosDecryptProfile}
+            hasMoreDecryptProfile={hasMoreDecryptProfile}
+            decryptProfileScrollPos={decryptProfileScrollPos}
           />
         )}
       </div>

@@ -1,3 +1,4 @@
+import { Publication } from "@/components/Home/types/lens.types";
 import {
   hasReactedIndi,
   hasReactedPost,
@@ -6,7 +7,7 @@ import {
 const checkPostReactions = async (
   publicationObject: any,
   lensProfile: string | undefined,
-  indi?: boolean
+  indi?: boolean,
 ): Promise<any> => {
   let hasReactedArr: any[] = [];
   let hasReacted: any;
@@ -22,7 +23,7 @@ const checkPostReactions = async (
       });
       hasReacted = data.data.publications.items;
     }
-
+    
     if (hasReacted.length < 1) {
       return [];
     } else {

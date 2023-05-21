@@ -101,6 +101,14 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   preElement,
   allCollections,
   filterDecrypt,
+  decryptFeed,
+  decryptAmounts,
+  followerOnlyDecrypt,
+  hasMoreDecrypt,
+  fetchMoreDecrypt,
+  scrollRefDecrypt,
+  decryptScrollPos,
+  setScrollPosDecrypt,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4">
@@ -131,199 +139,175 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
         <InfiniteScroll
           height={"40rem"}
           loader={""}
-          hasMore={hasMore}
-          next={fetchMore}
-          dataLength={
-            filterDecrypt
-              ? feedDispatch.filter((pub: any) => {
-                  if (pub.decrypt || pub.gated) return pub;
-                }).length
-              : feedDispatch?.length
-          }
+          hasMore={filterDecrypt ? hasMoreDecrypt : hasMore}
+          next={filterDecrypt ? fetchMoreDecrypt : fetchMore}
+          dataLength={filterDecrypt ? decryptFeed.length : feedDispatch?.length}
           className={`relative row-start-1 w-full ml-auto h-full max-w-full overflow-y-scroll`}
           style={{ color: "#131313", fontFamily: "Digi Reg" }}
           scrollThreshold={0.9}
           scrollableTarget={"scrollableDiv"}
-          ref={scrollRef}
-          onScroll={(e: MouseEvent) => setScrollPos(e)}
-          initialScrollY={feedType === "" ? scrollPos : 0}
+          ref={filterDecrypt ? scrollRefDecrypt : scrollRef}
+          onScroll={
+            filterDecrypt
+              ? (e: MouseEvent) => setScrollPosDecrypt(e)
+              : (e: MouseEvent) => setScrollPos(e)
+          }
+          initialScrollY={
+            feedType === "" ? (filterDecrypt ? decryptScrollPos : scrollPos) : 0
+          }
         >
           <div className="w-full h-full relative flex flex-col gap-4 pb-3">
-            {(filterDecrypt
-              ? feedDispatch
-                  .map((pub: any, index: number) => ({
-                    ...pub,
-                    originalIndex: index,
-                  }))
-                  .filter((pub: any) => pub.decrypt || pub.gated)
-                  .map((publication: Publication) => ({
-                    ...publication,
-                    filterIndex: (publication as any).originalIndex,
-                  }))
-              : feedDispatch
-            )?.map((publication: Publication, index: number) => {
-              return (
-                <div
-                  className="relative w-full h-fit gap-2 flex flex-col"
-                  key={index}
-                >
-                  <FeedPublication
-                    dispatch={dispatch}
-                    publication={publication}
-                    hasMirrored={
-                      filterDecrypt
-                        ? reactionAmounts.hasMirrored[
-                            (publication as any)?.filterIndex
-                          ]
-                        : reactionAmounts.hasMirrored[index]
-                    }
-                    hasReacted={
-                      filterDecrypt
-                        ? reactionAmounts.hasLiked[
-                            (publication as any)?.filterIndex
-                          ]
-                        : reactionAmounts.hasLiked?.[index]
-                    }
-                    hasCollected={
-                      filterDecrypt
-                        ? reactionAmounts.hasCollected[
-                            (publication as any)?.filterIndex
-                          ]
-                        : reactionAmounts.hasCollected[index]
-                    }
-                    followerOnly={
-                      filterDecrypt
-                        ? followerOnly[(publication as any)?.filterIndex]
-                        : followerOnly[index]
-                    }
-                    collectPost={collectPost}
-                    mirrorPost={mirrorPost}
-                    reactPost={reactPost}
-                    address={address}
-                    index={index}
-                    mirrorLoading={
-                      filterDecrypt
-                        ? mirrorLoading[(publication as any)?.filterIndex]
-                        : mirrorLoading[index]
-                    }
-                    reactLoading={
-                      filterDecrypt
-                        ? reactLoading[(publication as any)?.filterIndex]
-                        : reactLoading[index]
-                    }
-                    collectLoading={
-                      filterDecrypt
-                        ? collectLoading[(publication as any)?.filterIndex]
-                        : collectLoading[index]
-                    }
-                    reactAmount={
-                      filterDecrypt
-                        ? reactionAmounts.like[
-                            (publication as any)?.filterIndex
-                          ]
-                        : reactionAmounts.like[index]
-                    }
-                    mirrorAmount={
-                      filterDecrypt
-                        ? reactionAmounts.mirror[
-                            (publication as any)?.filterIndex
-                          ]
-                        : reactionAmounts.mirror[index]
-                    }
-                    collectAmount={
-                      filterDecrypt
-                        ? reactionAmounts.collect[
-                            (publication as any)?.filterIndex
-                          ]
-                        : reactionAmounts.collect[index]
-                    }
-                    commentAmount={
-                      filterDecrypt
-                        ? reactionAmounts.comment[
-                            (publication as any)?.filterIndex
-                          ]
-                        : reactionAmounts.comment[index]
-                    }
-                    openComment={commentOpen}
-                    feedType={feedType}
-                    router={router}
-                    profileType={profileType}
-                    allCollections={allCollections}
-                  />
-                  {(publication?.__typename === "Mirror"
-                    ? publication?.mirrorOf?.id
-                    : publication?.id) === commentOpen && (
-                    <MakeComment
-                      commentPost={commentPost}
-                      commentDescription={commentDescription}
-                      textElement={textElement}
-                      handleCommentDescription={handleCommentDescription}
-                      commentLoading={commentLoading}
-                      caretCoord={caretCoord}
-                      mentionProfiles={mentionProfiles}
-                      profilesOpen={profilesOpen}
-                      handleMentionClick={handleMentionClick}
-                      handleGifSubmit={handleGifSubmit}
-                      handleGif={handleGif}
-                      results={results}
-                      handleSetGif={handleSetGif}
-                      gifOpen={gifOpen}
-                      setGifOpen={setGifOpen}
-                      handleKeyDownDelete={handleKeyDownDelete}
-                      handleLensSignIn={handleLensSignIn}
-                      handleConnect={handleConnect}
-                      handleRemoveImage={handleRemoveImage}
-                      address={address}
-                      profileId={profileId}
-                      videoLoading={videoLoading}
-                      uploadImages={uploadImages}
-                      uploadVideo={uploadVideo}
-                      imageLoading={imageLoading}
-                      mappedFeaturedFiles={mappedFeaturedFiles}
-                      collectOpen={collectOpen}
-                      enabledCurrencies={enabledCurrencies}
-                      audienceDropDown={audienceDropDown}
-                      audienceType={audienceType}
-                      setAudienceDropDown={setAudienceDropDown}
-                      setAudienceType={setAudienceType}
-                      value={value}
-                      setChargeCollect={setChargeCollect}
-                      setChargeCollectDropDown={setChargeCollectDropDown}
-                      setCollectible={setCollectible}
-                      setCollectibleDropDown={setCollectibleDropDown}
-                      setCurrencyDropDown={setCurrencyDropDown}
-                      setEnabledCurrency={setEnabledCurrency}
-                      setLimit={setLimit}
-                      setLimitedDropDown={setLimitedDropDown}
-                      setLimitedEdition={setLimitedEdition}
-                      setReferral={setReferral}
-                      setTimeLimit={setTimeLimit}
-                      setTimeLimitDropDown={setTimeLimitDropDown}
-                      setValue={setValue}
-                      enabledCurrency={enabledCurrency}
-                      chargeCollect={chargeCollect}
-                      chargeCollectDropDown={chargeCollectDropDown}
-                      limit={limit}
-                      limitedDropDown={limitedDropDown}
-                      limitedEdition={limitedEdition}
-                      timeLimit={timeLimit}
-                      timeLimitDropDown={timeLimitDropDown}
-                      audienceTypes={audienceTypes}
-                      referral={referral}
-                      canComment={canComment}
-                      collectNotif={collectNotif}
-                      collectible={collectible}
-                      collectibleDropDown={collectibleDropDown}
-                      commentId={commentOpen}
-                      currencyDropDown={currencyDropDown}
+            {(filterDecrypt ? decryptFeed : feedDispatch)?.map(
+              (publication: Publication, index: number) => {
+                return (
+                  <div
+                    className="relative w-full h-fit gap-2 flex flex-col"
+                    key={index}
+                  >
+                    <FeedPublication
                       dispatch={dispatch}
-                      postImagesDispatched={postImagesDispatched}
-                      preElement={preElement}
+                      publication={publication}
+                      hasMirrored={
+                        filterDecrypt
+                          ? decryptAmounts.hasMirrored[index]
+                          : reactionAmounts.hasMirrored[index]
+                      }
+                      hasReacted={
+                        filterDecrypt
+                          ? decryptAmounts.hasLiked[index]
+                          : reactionAmounts.hasLiked?.[index]
+                      }
+                      hasCollected={
+                        filterDecrypt
+                          ? decryptAmounts.hasCollected[index]
+                          : reactionAmounts.hasCollected[index]
+                      }
+                      followerOnly={
+                        filterDecrypt
+                          ? followerOnlyDecrypt[index]
+                          : followerOnly[index]
+                      }
+                      collectPost={collectPost}
+                      mirrorPost={mirrorPost}
+                      reactPost={reactPost}
+                      address={address}
+                      index={index}
+                      mirrorLoading={
+                        filterDecrypt
+                          ? mirrorLoading[index]
+                          : mirrorLoading[index]
+                      }
+                      reactLoading={
+                        filterDecrypt
+                          ? reactLoading[index]
+                          : reactLoading[index]
+                      }
+                      collectLoading={
+                        filterDecrypt
+                          ? collectLoading[index]
+                          : collectLoading[index]
+                      }
+                      reactAmount={
+                        filterDecrypt
+                          ? decryptAmounts.like[index]
+                          : reactionAmounts.like[index]
+                      }
+                      mirrorAmount={
+                        filterDecrypt
+                          ? decryptAmounts.mirror[index]
+                          : reactionAmounts.mirror[index]
+                      }
+                      collectAmount={
+                        filterDecrypt
+                          ? decryptAmounts.collect[index]
+                          : reactionAmounts.collect[index]
+                      }
+                      commentAmount={
+                        filterDecrypt
+                          ? decryptAmounts.comment[index]
+                          : reactionAmounts.comment[index]
+                      }
+                      openComment={commentOpen}
+                      feedType={feedType}
+                      router={router}
+                      profileType={profileType}
+                      allCollections={allCollections}
                     />
-                  )}
-                </div>
-              );
-            })}
+                    {(publication?.__typename === "Mirror"
+                      ? publication?.mirrorOf?.id
+                      : publication?.id) === commentOpen && (
+                      <MakeComment
+                        commentPost={commentPost}
+                        commentDescription={commentDescription}
+                        textElement={textElement}
+                        handleCommentDescription={handleCommentDescription}
+                        commentLoading={commentLoading}
+                        caretCoord={caretCoord}
+                        mentionProfiles={mentionProfiles}
+                        profilesOpen={profilesOpen}
+                        handleMentionClick={handleMentionClick}
+                        handleGifSubmit={handleGifSubmit}
+                        handleGif={handleGif}
+                        results={results}
+                        handleSetGif={handleSetGif}
+                        gifOpen={gifOpen}
+                        setGifOpen={setGifOpen}
+                        handleKeyDownDelete={handleKeyDownDelete}
+                        handleLensSignIn={handleLensSignIn}
+                        handleConnect={handleConnect}
+                        handleRemoveImage={handleRemoveImage}
+                        address={address}
+                        profileId={profileId}
+                        videoLoading={videoLoading}
+                        uploadImages={uploadImages}
+                        uploadVideo={uploadVideo}
+                        imageLoading={imageLoading}
+                        mappedFeaturedFiles={mappedFeaturedFiles}
+                        collectOpen={collectOpen}
+                        enabledCurrencies={enabledCurrencies}
+                        audienceDropDown={audienceDropDown}
+                        audienceType={audienceType}
+                        setAudienceDropDown={setAudienceDropDown}
+                        setAudienceType={setAudienceType}
+                        value={value}
+                        setChargeCollect={setChargeCollect}
+                        setChargeCollectDropDown={setChargeCollectDropDown}
+                        setCollectible={setCollectible}
+                        setCollectibleDropDown={setCollectibleDropDown}
+                        setCurrencyDropDown={setCurrencyDropDown}
+                        setEnabledCurrency={setEnabledCurrency}
+                        setLimit={setLimit}
+                        setLimitedDropDown={setLimitedDropDown}
+                        setLimitedEdition={setLimitedEdition}
+                        setReferral={setReferral}
+                        setTimeLimit={setTimeLimit}
+                        setTimeLimitDropDown={setTimeLimitDropDown}
+                        setValue={setValue}
+                        enabledCurrency={enabledCurrency}
+                        chargeCollect={chargeCollect}
+                        chargeCollectDropDown={chargeCollectDropDown}
+                        limit={limit}
+                        limitedDropDown={limitedDropDown}
+                        limitedEdition={limitedEdition}
+                        timeLimit={timeLimit}
+                        timeLimitDropDown={timeLimitDropDown}
+                        audienceTypes={audienceTypes}
+                        referral={referral}
+                        canComment={canComment}
+                        collectNotif={collectNotif}
+                        collectible={collectible}
+                        collectibleDropDown={collectibleDropDown}
+                        commentId={commentOpen}
+                        currencyDropDown={currencyDropDown}
+                        dispatch={dispatch}
+                        postImagesDispatched={postImagesDispatched}
+                        preElement={preElement}
+                      />
+                    )}
+                  </div>
+                );
+              }
+            )}
           </div>
         </InfiniteScroll>
       </div>

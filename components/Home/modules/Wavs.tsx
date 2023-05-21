@@ -58,6 +58,9 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const scrollPos = useSelector(
     (state: RootState) => state.app.scrollPosReducer.value
   );
+  const decryptScrollPos = useSelector(
+    (state: RootState) => state.app.decryptScrollPosReducer.value
+  );
   const profileScroll = useSelector(
     (state: RootState) => state.app.profileScrollPosReducer.value
   );
@@ -79,6 +82,21 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const profileType = useSelector(
     (state: RootState) => state.app.profileReducer.profile?.id
   );
+  const decryptFeed = useSelector(
+    (state: RootState) => state.app.decryptFeedReducer.value
+  );
+  const decryptAmounts = useSelector(
+    (state: RootState) => state.app.decryptFeedCountReducer
+  );
+  const decryptFeedProfile = useSelector(
+    (state: RootState) => state.app.decryptProfileFeedReducer.value
+  );
+  const decryptProfileScroll = useSelector(
+    (state: RootState) => state.app.decryptProfileScrollPosReducer.value
+  );
+  const decryptProfileAmounts = useSelector(
+    (state: RootState) => state.app.decryptProfileFeedCountReducer
+  );
 
   const { handleLensSignIn, handleConnect } = useConnect();
   const {
@@ -88,6 +106,12 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     fetchMore,
     scrollRef,
     setScrollPos,
+    followerOnlyDecrypt,
+    hasMoreDecrypt,
+    decryptLoading,
+    fetchMoreDecrypt,
+    scrollRefDecrypt,
+    setScrollPosDecrypt,
   } = useAllPosts();
 
   const {
@@ -198,6 +222,12 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     reactProfileLoading,
     setReactProfileLoading,
     setProfileScroll,
+    hasMoreDecryptProfile,
+    setScrollPosDecryptProfile,
+    scrollRefDecryptProfile,
+    followerOnlyProfileDecrypt,
+    fetchMoreProfileDecrypt,
+    decryptProfileLoading,
   } = useProfileFeed();
 
   const {
@@ -344,6 +374,24 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         profileType={profileType}
         preElement={preElement}
         filterDecrypt={filterDecrypt}
+        decryptFeed={decryptFeed}
+        decryptAmounts={decryptAmounts}
+        decryptLoading={decryptLoading}
+        hasMoreDecrypt={hasMoreDecrypt}
+        fetchMoreDecrypt={fetchMoreDecrypt}
+        followerOnlyDecrypt={followerOnlyDecrypt}
+        decryptScrollPos={decryptScrollPos}
+        setScrollPosDecrypt={setScrollPosDecrypt}
+        scrollRefDecrypt={scrollRefDecrypt}
+        decryptFeedProfile={decryptFeedProfile}
+        decryptProfileAmounts={decryptProfileAmounts}
+        decryptProfileLoading={decryptProfileLoading}
+        fetchMoreProfileDecrypt={fetchMoreProfileDecrypt}
+        followerOnlyProfileDecrypt={followerOnlyProfileDecrypt}
+        scrollRefDecryptProfile={scrollRefDecryptProfile}
+        setScrollPosDecryptProfile={setScrollPosDecryptProfile}
+        hasMoreDecryptProfile={hasMoreDecryptProfile}
+        decryptProfileScrollPos={decryptProfileScroll}
       />
     </div>
   );

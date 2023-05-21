@@ -27,6 +27,10 @@ import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
 import { useSigner, useAccount } from "wagmi";
 import { setPostSent } from "@/redux/reducers/postSentSlice";
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
+import { setDecryptFeedRedux } from "@/redux/reducers/decryptFeedSlice";
+import { setDecryptFeedCount } from "@/redux/reducers/decryptFeedCountSlice";
+import { setDecryptPaginated } from "@/redux/reducers/decryptPaginatedSlice";
+import { setDecryptScrollPosRedux } from "@/redux/reducers/decryptScrollPosSlice";
 
 const useAllPosts = () => {
   const { data: signer } = useSigner();
@@ -36,6 +40,15 @@ const useAllPosts = () => {
   );
   const feedDispatch = useSelector(
     (state: RootState) => state.app.feedReducer.value
+  );
+  const decryptFeed = useSelector(
+    (state: RootState) => state.app.decryptFeedReducer.value
+  );
+  const filterDecrypt = useSelector(
+    (state: RootState) => state.app.filterDecryptReducer.value
+  );
+  const decryptFeedCount = useSelector(
+    (state: RootState) => state.app.decryptFeedCountReducer
   );
   const indexer = useSelector(
     (state: RootState) => state.app.indexModalReducer
@@ -76,8 +89,12 @@ const useAllPosts = () => {
   const profileDispatch = useSelector(
     (state: RootState) => state.app.profileFeedReducer.value
   );
+  const decryptPaginated = useSelector(
+    (state: RootState) => state.app.decryptPaginatedReducer.value
+  );
 
   const scrollRef = useRef<InfiniteScroll>(null);
+  const scrollRefDecrypt = useRef<InfiniteScroll>(null);
   const dispatch = useDispatch();
   const router = useRouter();
   const [followerOnly, setFollowerOnly] = useState<boolean[]>(
@@ -85,6 +102,11 @@ const useAllPosts = () => {
   );
   const [postsLoading, setPostsLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [followerOnlyDecrypt, setFollowerOnlyDecrypt] = useState<boolean[]>(
+    Array.from({ length: feedDispatch.length }, () => false)
+  );
+  const [decryptLoading, setDecryptLoading] = useState<boolean>(false);
+  const [hasMoreDecrypt, setHasMoreDecrypt] = useState<boolean>(true);
 
   const getQuickProfiles = async () => {
     try {
@@ -453,6 +475,370 @@ const useAllPosts = () => {
     }
   };
 
+  const getDecryptFeed = async () => {
+    setDecryptLoading(true);
+    try {
+      let data;
+
+      if (lensProfile) {
+        data = await feedTimelineAuth(
+          {
+            profileIds: LENS_CREATORS,
+            publicationTypes: ["POST"],
+            limit: 10,
+            metadata: {
+              tags: {
+                all: ["encrypted", "chromadin", "labyrinth"],
+              },
+            },
+          },
+          lensProfile
+        );
+      } else {
+        data = await feedTimeline({
+          profileIds: LENS_CREATORS,
+          publicationTypes: ["POST"],
+          limit: 10,
+          metadata: {
+            tags: {
+              all: ["encrypted", "chromadin", "labyrinth"],
+            },
+          },
+        });
+      }
+
+      if (!data || !data?.data || !data?.data?.publications) {
+        setDecryptLoading(false);
+        return;
+      }
+      const arr: any[] = [...data?.data.publications?.items];
+      let sortedArr = arr.sort(
+        (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+      );
+
+      if (signer && address) {
+        const sdk = await LensGatedSDK.create({
+          provider: new Web3Provider(window?.ethereum as any),
+          signer: signer as Signer,
+          env: LensEnvironment.Polygon,
+        });
+
+        sortedArr = await Promise.all(
+          sortedArr.map(async (post) => {
+            if (post?.canDecrypt && post?.canDecrypt.result) {
+              try {
+                const data = await fetchIPFSJSON(
+                  post.onChainContentURI
+                    ?.split("ipfs://")[1]
+                    .replace(/"/g, "")
+                    .trim()
+                );
+                const { decrypted, error } = await sdk.gated.decryptMetadata(
+                  data
+                );
+                if (decrypted) {
+                  return {
+                    ...post,
+                    decrypted,
+                  };
+                } else {
+                  return {
+                    ...post,
+                    gated: true,
+                  };
+                }
+              } catch (err: any) {
+                console.error(err.message);
+                return {
+                  ...post,
+                  gated: true,
+                };
+              }
+            } else {
+              return {
+                ...post,
+                gated: true,
+              };
+            }
+          })
+        );
+      } else {
+        sortedArr = sortedArr.map((post) => {
+          if (post.metadata.content.includes("This publication is gated")) {
+            return {
+              ...post,
+              gated: true,
+            };
+          } else {
+            return post;
+          }
+        });
+      }
+
+      if (sortedArr?.length < 10) {
+        setHasMoreDecrypt(false);
+      } else {
+        setHasMoreDecrypt(true);
+      }
+      dispatch(setDecryptPaginated(data?.data?.publications?.pageInfo));
+      let hasReactedArr, hasMirroredArr;
+      if (lensProfile) {
+        hasReactedArr = await checkPostReactions(
+          {
+            profileIds: LENS_CREATORS,
+            publicationTypes: ["POST"],
+            limit: 10,
+            metadata: {
+              tags: {
+                all: ["encrypted", "chromadin", "labyrinth"],
+              },
+            },
+          },
+          lensProfile
+        );
+        hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
+      }
+      const hasCollectedArr = sortedArr.map((obj: Publication) =>
+        obj.__typename === "Mirror"
+          ? obj.mirrorOf.hasCollectedByMe
+          : obj.hasCollectedByMe
+      );
+      setFollowerOnlyDecrypt(
+        sortedArr.map((obj: Publication) =>
+          obj.__typename === "Mirror"
+            ? obj.mirrorOf.referenceModule?.type ===
+              "FollowerOnlyReferenceModule"
+              ? true
+              : false
+            : obj.referenceModule?.type === "FollowerOnlyReferenceModule"
+            ? true
+            : false
+        )
+      );
+      dispatch(setDecryptFeedRedux(sortedArr));
+      dispatch(
+        setDecryptFeedCount({
+          actionLike: sortedArr.map((obj: Publication) =>
+            obj.__typename === "Mirror"
+              ? obj.mirrorOf.stats.totalUpvotes
+              : obj.stats.totalUpvotes
+          ),
+          actionMirror: sortedArr.map((obj: Publication) =>
+            obj.__typename === "Mirror"
+              ? obj.mirrorOf.stats.totalAmountOfMirrors
+              : obj.stats.totalAmountOfMirrors
+          ),
+          actionCollect: sortedArr.map((obj: Publication) =>
+            obj.__typename === "Mirror"
+              ? obj.mirrorOf.stats.totalAmountOfCollects
+              : obj.stats.totalAmountOfCollects
+          ),
+          actionComment: sortedArr.map((obj: Publication) =>
+            obj.__typename === "Mirror"
+              ? obj.mirrorOf.stats.totalAmountOfComments
+              : obj.stats.totalAmountOfComments
+          ),
+          actionHasLiked: hasReactedArr ?? [],
+          actionHasMirrored: hasMirroredArr ?? [],
+          actionHasCollected: hasCollectedArr ?? [],
+        })
+      );
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setDecryptLoading(false);
+  };
+
+  const fetchMoreDecrypt = async () => {
+    try {
+      if (!decryptPaginated?.next) {
+        // fix apollo duplications on null next
+        setHasMoreDecrypt(false);
+        return;
+      }
+      let data;
+
+      if (lensProfile) {
+        data = await feedTimelineAuth(
+          {
+            profileIds: LENS_CREATORS,
+            publicationTypes: ["POST"],
+            metadata: {
+              tags: {
+                all: ["encrypted", "chromadin", "labyrinth"],
+              },
+            },
+            limit: 10,
+            cursor: decryptPaginated?.next,
+          },
+          lensProfile
+        );
+      } else {
+        data = await feedTimeline({
+          profileIds: LENS_CREATORS,
+          publicationTypes: ["POST"],
+          metadata: {
+            tags: {
+              all: ["encrypted", "chromadin", "labyrinth"],
+            },
+          },
+          limit: 10,
+          cursor: decryptPaginated?.next,
+        });
+      }
+
+      const arr: any[] = [...data?.data?.publications?.items];
+      let sortedArr = arr.sort(
+        (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+      );
+
+      if (signer && address) {
+        const sdk = await LensGatedSDK.create({
+          provider: new Web3Provider(window?.ethereum as any),
+          signer: signer as Signer,
+          env: LensEnvironment.Polygon,
+        });
+
+        sortedArr = await Promise.all(
+          sortedArr.map(async (post) => {
+            if (post.canDecrypt && post.canDecrypt.result) {
+              try {
+                const data = await fetchIPFSJSON(
+                  post.onChainContentURI
+                    ?.split("ipfs://")[1]
+                    .replace(/"/g, "")
+                    .trim()
+                );
+                const { decrypted, error } = await sdk.gated.decryptMetadata(
+                  data
+                );
+                if (decrypted) {
+                  return {
+                    ...post,
+                    decrypted,
+                  };
+                } else {
+                  return {
+                    ...post,
+                    gated: true,
+                  };
+                }
+              } catch (err: any) {
+                console.error(err.message);
+                return {
+                  ...post,
+                  gated: true,
+                };
+              }
+            } else if (
+              post?.metadata?.content?.includes("This publication is gated")
+            ) {
+              return {
+                ...post,
+                gated: true,
+              };
+            } else {
+              return post;
+            }
+          })
+        );
+      } else {
+        sortedArr = sortedArr.map((post) => {
+          if (post.metadata.content.includes("This publication is gated")) {
+            return {
+              ...post,
+              gated: true,
+            };
+          } else {
+            return post;
+          }
+        });
+      }
+
+      if (sortedArr?.length < 10) {
+        setHasMoreDecrypt(false);
+      } else {
+        setHasMoreDecrypt(true);
+      }
+      dispatch(setDecryptFeedRedux([...decryptFeed, ...sortedArr]));
+      dispatch(setDecryptPaginated(data?.data?.publications?.pageInfo));
+      let hasMirroredArr, hasReactedArr;
+      if (lensProfile) {
+        hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
+        hasReactedArr = await checkPostReactions(
+          {
+            profileIds: LENS_CREATORS,
+            publicationTypes: ["POST"],
+            metadata: {
+              tags: {
+                all: ["encrypted", "chromadin", "labyrinth"],
+              },
+            },
+            limit: 10,
+            cursor: decryptPaginated?.next,
+          },
+          lensProfile
+        );
+      }
+
+      const hasCollectedArr = sortedArr.map((obj: Publication) =>
+        obj.__typename === "Mirror"
+          ? obj.mirrorOf.hasCollectedByMe
+          : obj.hasCollectedByMe
+      );
+      dispatch(
+        setDecryptFeedCount({
+          actionLike: [
+            ...decryptFeedCount.like,
+            ...sortedArr.map((obj: Publication) =>
+              obj.__typename === "Mirror"
+                ? obj.mirrorOf.stats?.totalUpvotes
+                : obj.stats?.totalUpvotes
+            ),
+          ],
+          actionMirror: [
+            ...decryptFeedCount.mirror,
+            ...sortedArr.map((obj: Publication) =>
+              obj.__typename === "Mirror"
+                ? obj.mirrorOf.stats?.totalAmountOfMirrors
+                : obj.stats?.totalAmountOfMirrors
+            ),
+          ],
+          actionCollect: [
+            ...decryptFeedCount.collect,
+            ...sortedArr.map((obj: Publication) =>
+              obj.__typename === "Mirror"
+                ? obj.mirrorOf.stats?.totalAmountOfCollects
+                : obj.stats?.totalAmountOfCollects
+            ),
+          ],
+          actionComment: [
+            ...decryptFeedCount.comment,
+            ...sortedArr.map((obj: Publication) =>
+              obj.__typename === "Mirror"
+                ? obj.mirrorOf.stats?.totalAmountOfComments
+                : obj.stats?.totalAmountOfComments
+            ),
+          ],
+          actionHasLiked: [
+            ...decryptFeedCount.hasLiked,
+            ...(hasReactedArr ?? []),
+          ],
+          actionHasMirrored: [
+            ...decryptFeedCount.hasMirrored,
+            ...(hasMirroredArr ?? []),
+          ],
+          actionHasCollected: [
+            ...decryptFeedCount.hasCollected,
+            ...(hasCollectedArr ?? []),
+          ],
+        })
+      );
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+
   const refetchInteractions = () => {
     try {
       const index = (
@@ -647,6 +1033,10 @@ const useAllPosts = () => {
     dispatch(setScrollPosRedux((e.target as HTMLDivElement)?.scrollTop));
   };
 
+  const setScrollPosDecrypt = (e: MouseEvent) => {
+    dispatch(setDecryptScrollPosRedux((e.target as HTMLDivElement)?.scrollTop));
+  };
+
   useEffect(() => {
     if (router.asPath?.includes("#chat")) {
       if (indexer.message === "Successfully Indexed") {
@@ -660,14 +1050,25 @@ const useAllPosts = () => {
   }, [indexer.message]);
 
   useEffect(() => {
-    if (
-      (!feedDispatch || feedDispatch.length < 1) &&
-      router.asPath.includes("#chat")
-    ) {
-      getQuickProfiles();
-      getTimeline();
+    if (router.asPath.includes("#chat")) {
+      if (filterDecrypt) {
+        if (decryptFeed.length < 1 || !decryptFeed) {
+          getDecryptFeed();
+        }
+      } else {
+        if (!feedDispatch || feedDispatch.length < 1) {
+          getTimeline();
+        }
+      }
+
+      if (
+        (!feedDispatch || feedDispatch.length < 1) &&
+        (decryptFeed.length < 1 || !decryptFeed)
+      ) {
+        getQuickProfiles();
+      }
     }
-  }, [auth]);
+  }, [filterDecrypt, auth]);
 
   useEffect(() => {
     if (
@@ -676,7 +1077,12 @@ const useAllPosts = () => {
       !router.asPath.includes("&profile=")
     ) {
       dispatch(setPostSent(false));
-      getTimeline();
+
+      if (filterDecrypt) {
+        getDecryptFeed();
+      } else {
+        getTimeline();
+      }
     }
   }, [postSent]);
 
@@ -687,6 +1093,12 @@ const useAllPosts = () => {
     hasMore,
     scrollRef,
     setScrollPos,
+    fetchMoreDecrypt,
+    decryptLoading,
+    hasMoreDecrypt,
+    scrollRefDecrypt,
+    setScrollPosDecrypt,
+    followerOnlyDecrypt,
   };
 };
 

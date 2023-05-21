@@ -6,6 +6,8 @@ import {
   Publication,
 } from "@/components/Home/types/lens.types";
 import { CommentFeedCountState } from "@/redux/reducers/commentFeedCountSlice";
+import { DecryptFeedCountState } from "@/redux/reducers/decryptFeedCountSlice";
+import { DecryptProfileFeedCountState } from "@/redux/reducers/decryptProfileCountSlice";
 import { IndividualFeedCountState } from "@/redux/reducers/individualFeedCountReducer";
 import { ProfileFeedCountState } from "@/redux/reducers/profileFeedCountSlice";
 import { ReactionFeedCountState } from "@/redux/reducers/reactionFeedCountSlice";
@@ -318,6 +320,24 @@ export type FeedProps = {
   setProfilesOpenSearch: (e: boolean) => void;
   setProfilesFound: (e: Profile[]) => void;
   filterDecrypt: boolean;
+  decryptFeed: Publication[];
+  decryptAmounts: DecryptFeedCountState;
+  followerOnlyDecrypt: boolean[];
+  decryptLoading: boolean;
+  fetchMoreDecrypt: () => Promise<void>;
+  hasMoreDecrypt: boolean;
+  decryptScrollPos: number;
+  setScrollPosDecrypt: (e: MouseEvent) => void;
+  scrollRefDecrypt: Ref<InfiniteScroll>;
+  decryptFeedProfile: Publication[];
+  decryptProfileAmounts: DecryptProfileFeedCountState;
+  decryptProfileLoading: boolean;
+  fetchMoreProfileDecrypt: () => Promise<void>;
+  followerOnlyProfileDecrypt: boolean[];
+  scrollRefDecryptProfile: Ref<InfiniteScroll>;
+  setScrollPosDecryptProfile: (e: MouseEvent) => void;
+  hasMoreDecryptProfile: boolean;
+  decryptProfileScrollPos: number;
 };
 
 export interface ApprovalArgs {
@@ -892,6 +912,14 @@ export type ProfileFeedProps = {
   profile: Profile | undefined;
   profileCollections: Collection[];
   filterDecrypt: boolean;
+  decryptFeedProfile: Publication[];
+  decryptProfileAmounts: DecryptProfileFeedCountState;
+  fetchMoreProfileDecrypt: () => Promise<void>;
+  followerOnlyProfileDecrypt: boolean[];
+  scrollRefDecryptProfile: Ref<InfiniteScroll>;
+  setScrollPosDecryptProfile: (e: MouseEvent) => void;
+  hasMoreDecryptProfile: boolean;
+  decryptProfileScrollPos: number;
 };
 
 export type SwitchProps = {
@@ -1020,6 +1048,22 @@ export type SwitchProps = {
   hasMoreSearch: boolean;
   setProfilesOpenSearch: (e: boolean) => void;
   setProfilesFound: (e: Profile[]) => void;
+  decryptFeed: Publication[];
+  decryptAmounts: DecryptFeedCountState;
+  followerOnlyDecrypt: boolean[];
+  fetchMoreDecrypt: () => Promise<void>;
+  hasMoreDecrypt: boolean;
+  decryptScrollPos: number;
+  setScrollPosDecrypt: (e: MouseEvent) => void;
+  scrollRefDecrypt: Ref<InfiniteScroll>;
+  decryptFeedProfile: Publication[];
+  decryptProfileAmounts: DecryptProfileFeedCountState;
+  fetchMoreProfileDecrypt: () => Promise<void>;
+  followerOnlyProfileDecrypt: boolean[];
+  scrollRefDecryptProfile: Ref<InfiniteScroll>;
+  setScrollPosDecryptProfile: (e: MouseEvent) => void;
+  hasMoreDecryptProfile: boolean;
+  decryptProfileScrollPos: number;
 };
 
 export type AllPostsProps = {
@@ -1133,6 +1177,14 @@ export type AllPostsProps = {
   setProfilesFound: (e: Profile[]) => void;
   profileType: string;
   allCollections: Collection[];
+  decryptFeed: Publication[];
+  decryptAmounts: DecryptFeedCountState;
+  followerOnlyDecrypt: boolean[];
+  fetchMoreDecrypt: () => Promise<void>;
+  hasMoreDecrypt: boolean;
+  decryptScrollPos: number;
+  setScrollPosDecrypt: (e: MouseEvent) => void;
+  scrollRefDecrypt: Ref<InfiniteScroll>;
 };
 
 export interface QuickProfilesInterface {

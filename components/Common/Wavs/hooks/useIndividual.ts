@@ -323,9 +323,7 @@ const useIndividual = () => {
                 .replace(/"/g, "")
                 .trim()
             );
-            const { decrypted, error } = await sdk.gated.decryptMetadata(
-              data
-            );
+            const { decrypted, error } = await sdk.gated.decryptMetadata(data);
             if (decrypted) {
               decryptedData = {
                 ...pubData?.publication,

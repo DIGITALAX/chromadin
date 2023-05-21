@@ -324,7 +324,7 @@ const Vending: FunctionComponent<VendingProps> = ({
                       <div className="relative flex flex-row w-full h-fit gap-2  text-sm font-arcade">
                         <div className="relative uppercase text-white w-fit h-fit cursor-pointer whitespace-nowrap">
                           {collection?.name.length > 20
-                            ? collection?.name.slice(0, 20)
+                            ? collection?.name.slice(0, 18) + "..."
                             : collection?.name}
                         </div>
                         <div className="relative w-full h-fit text-ama justify-end flex">

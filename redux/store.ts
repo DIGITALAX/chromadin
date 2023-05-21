@@ -66,6 +66,14 @@ import publicationImageReducer from "./reducers/publicationImageSlice";
 import postSentReducer from "./reducers/postSentSlice";
 import decryptReducer from "./reducers/decryptSlice";
 import filterDecryptReducer from "./reducers/filterDecryptSlice";
+import decryptFeedCountReducer from "./reducers/decryptFeedCountSlice";
+import decryptFeedReducer from "./reducers/decryptFeedSlice";
+import decryptPaginatedReducer from "./reducers/decryptPaginatedSlice";
+import decryptScrollPosReducer from "./reducers/decryptScrollPosSlice";
+import decryptProfileFeedCountReducer from "./reducers/decryptProfileCountSlice";
+import decryptProfileFeedReducer from "./reducers/decryptProfileFeedSlice";
+import decryptProfilePaginatedReducer from "./reducers/decryptProfilePaginatedSlice";
+import decryptProfileScrollPosReducer from "./reducers/decryptProfileScrollPosSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -134,6 +142,14 @@ const reducer = combineReducers({
   postSentReducer,
   decryptReducer,
   filterDecryptReducer,
+  decryptFeedCountReducer,
+  decryptFeedReducer,
+  decryptPaginatedReducer,
+  decryptScrollPosReducer,
+  decryptProfileFeedCountReducer,
+  decryptProfileFeedReducer,
+  decryptProfilePaginatedReducer,
+  decryptProfileScrollPosReducer,
 });
 
 export const store = configureStore({
