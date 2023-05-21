@@ -30,6 +30,9 @@ const Switch: FunctionComponent = (): JSX.Element => {
   const isCreator = useSelector(
     (state: RootState) => state.app.isCreatorReducer.value
   );
+  const buyerHistoryReducer = useSelector(
+    (state: RootState) => state.app.buyerHistoryReducer.value
+  );
   const {
     currency,
     setCurrency,
@@ -49,12 +52,16 @@ const Switch: FunctionComponent = (): JSX.Element => {
     approveSpend,
     purchaseLoading,
   } = useFulfillment();
-  const { history, historyLoading } = useHistory();
+  const {
+    history,
+    historyLoading,
+    buyerHistory,
+    historySwitch,
+    setHistorySwitch,
+  } = useHistory();
   switch (action) {
     case "account":
-      return (
-        <Account profile={profile} isCreator={isCreator}/>
-      );
+      return <Account profile={profile} isCreator={isCreator} />;
 
     case "fulfillment":
       return (
@@ -89,6 +96,10 @@ const Switch: FunctionComponent = (): JSX.Element => {
           history={history}
           historyReducer={historyReducer}
           historyLoading={historyLoading}
+          buyerHistory={buyerHistory}
+          buyerHistoryReducer={buyerHistoryReducer}
+          historySwitch={historySwitch}
+          setHistorySwitch={setHistorySwitch}
         />
       );
   }

@@ -26,7 +26,7 @@ export type CommentsProps = {
   authStatus: boolean;
   lensProfile: Profile | undefined;
   commentId: string;
-  router: NextRouter
+  router: NextRouter;
 };
 
 export type AccountProps = {
@@ -124,10 +124,17 @@ export interface History {
 export type useHistoryResults = {
   history: History[];
   historyLoading: boolean;
+  buyerHistory: History[];
+  historySwitch: boolean;
+  setHistorySwitch: (e: boolean) => void;
 };
 
 export type HistoryProps = {
   history: History[];
   historyReducer: History[];
   historyLoading: boolean;
+  buyerHistory: History[];
+  buyerHistoryReducer: History[];
+  historySwitch: boolean;
+  setHistorySwitch: (e: boolean) => void;
 };

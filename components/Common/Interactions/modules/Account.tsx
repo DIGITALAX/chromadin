@@ -11,7 +11,7 @@ const Account: FunctionComponent<AccountProps> = ({
 }): JSX.Element => {
   const formattedURL = createProfilePicture(profile);
   return (
-    <div className="relative w-full h-full xl:h-[45.8rem] flex flex-col items-start justify-center bg-black border-t border-white">
+    <div className="relative w-full h-full xl:h-[45.8rem] flex flex-col items-start justify-start bg-black border-t border-white">
       <div className="absolute w-full h-full xl:h-[40vw] flex grow top-0">
         <Image
           src={`${INFURA_GATEWAY}/ipfs/QmUBMaicGmBVTqUr5QXaqEu1AkavAhprwpDXKbMiy74g8p`}
@@ -78,7 +78,7 @@ const Account: FunctionComponent<AccountProps> = ({
         </div>
       )}
       {isCreator && (
-        <div className="relative w-full h-full flex flex-col items-center justify-center p-3">
+        <div className="relative w-full h-fit flex flex-col items-center justify-center p-3">
           <Link
             className="relative w-fit h-fit py-2 px-3 rounded-br-lg  rounded-tl-lg bg-offBlack border-white border font-earl text-white text-sm word-break cursor-pointer flex items-center justify-center active:scale-95 hover:opacity-70"
             target="_blank"

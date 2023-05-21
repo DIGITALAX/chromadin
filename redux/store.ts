@@ -75,6 +75,7 @@ import decryptProfileFeedReducer from "./reducers/decryptProfileFeedSlice";
 import decryptProfilePaginatedReducer from "./reducers/decryptProfilePaginatedSlice";
 import decryptProfileScrollPosReducer from "./reducers/decryptProfileScrollPosSlice";
 import collectionPaginatedReducer from "./reducers/collectionPaginatedSlice";
+import buyerHistoryReducer from "./reducers/buyerHistorySlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -152,6 +153,7 @@ const reducer = combineReducers({
   decryptProfilePaginatedReducer,
   decryptProfileScrollPosReducer,
   collectionPaginatedReducer,
+  buyerHistoryReducer,
 });
 
 export const store = configureStore({
