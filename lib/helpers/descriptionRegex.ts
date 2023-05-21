@@ -1,5 +1,6 @@
 const descriptionRegex = (description: string, messages?: boolean) => {
-  const lines = description?.split(/[\r\n]+/);
+  const replacedDescription = description.replace(/\n\n/g, '\n \n'); // Replace all occurrences of "\n \n" with "\n\n"
+  const lines = replacedDescription?.split(/[\r\n]+/);
   const styledLines = lines?.map((line: string) => {
     const words = line.split(" ");
     const styledWords = words.map((word: string) => {
@@ -69,7 +70,7 @@ const descriptionRegex = (description: string, messages?: boolean) => {
     const styledLine = `<span>${styledWords?.join(" ")}</span>`;
     return styledLine;
   });
-  const formattedDescription = styledLines?.join("<br /><br />");
+  const formattedDescription = styledLines?.join("<br />");
   return `<div>${formattedDescription}</div>`;
 };
 

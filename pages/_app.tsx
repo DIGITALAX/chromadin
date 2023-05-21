@@ -9,7 +9,6 @@ import { polygon } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import Modals from "@/components/Common/Modals/modules/Modals";
 
-
 const { chains, provider } = configureChains(
   [polygon],
   [
