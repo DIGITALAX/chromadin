@@ -403,6 +403,19 @@ const useAllPosts = () => {
       }
       dispatch(setFeedsRedux([...feedDispatch, ...sortedArr]));
       dispatch(setPaginated(data?.data?.publications?.pageInfo));
+      setFollowerOnly([
+        ...followerOnly,
+        ...sortedArr.map((obj: Publication) =>
+          obj.__typename === "Mirror"
+            ? obj.mirrorOf.referenceModule?.type ===
+              "FollowerOnlyReferenceModule"
+              ? true
+              : false
+            : obj.referenceModule?.type === "FollowerOnlyReferenceModule"
+            ? true
+            : false
+        ),
+      ]);
       let hasMirroredArr, hasReactedArr;
       if (lensProfile) {
         hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
@@ -598,19 +611,12 @@ const useAllPosts = () => {
         );
         hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
       }
-      const hasCollectedArr = sortedArr.map((obj: Publication) =>
-        obj.__typename === "Mirror"
-          ? obj.mirrorOf.hasCollectedByMe
-          : obj.hasCollectedByMe
+      const hasCollectedArr = sortedArr.map(
+        (obj: Publication) => obj.hasCollectedByMe
       );
       setFollowerOnlyDecrypt(
         sortedArr.map((obj: Publication) =>
-          obj.__typename === "Mirror"
-            ? obj.mirrorOf.referenceModule?.type ===
-              "FollowerOnlyReferenceModule"
-              ? true
-              : false
-            : obj.referenceModule?.type === "FollowerOnlyReferenceModule"
+          obj.referenceModule?.type === "FollowerOnlyReferenceModule"
             ? true
             : false
         )
@@ -618,25 +624,17 @@ const useAllPosts = () => {
       dispatch(setDecryptFeedRedux(sortedArr));
       dispatch(
         setDecryptFeedCount({
-          actionLike: sortedArr.map((obj: Publication) =>
-            obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats.totalUpvotes
-              : obj.stats.totalUpvotes
+          actionLike: sortedArr.map(
+            (obj: Publication) => obj.stats.totalUpvotes
           ),
-          actionMirror: sortedArr.map((obj: Publication) =>
-            obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats.totalAmountOfMirrors
-              : obj.stats.totalAmountOfMirrors
+          actionMirror: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfMirrors
           ),
-          actionCollect: sortedArr.map((obj: Publication) =>
-            obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats.totalAmountOfCollects
-              : obj.stats.totalAmountOfCollects
+          actionCollect: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfCollects
           ),
-          actionComment: sortedArr.map((obj: Publication) =>
-            obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats.totalAmountOfComments
-              : obj.stats.totalAmountOfComments
+          actionComment: sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfComments
           ),
           actionHasLiked: hasReactedArr ?? [],
           actionHasMirrored: hasMirroredArr ?? [],
@@ -762,6 +760,14 @@ const useAllPosts = () => {
       }
       dispatch(setDecryptFeedRedux([...decryptFeed, ...sortedArr]));
       dispatch(setDecryptPaginated(data?.data?.publications?.pageInfo));
+      setFollowerOnlyDecrypt([
+        ...followerOnlyDecrypt,
+        ...sortedArr.map((obj: Publication) =>
+          obj.referenceModule?.type === "FollowerOnlyReferenceModule"
+            ? true
+            : false
+        ),
+      ]);
       let hasMirroredArr, hasReactedArr;
       if (lensProfile) {
         hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
@@ -781,43 +787,31 @@ const useAllPosts = () => {
         );
       }
 
-      const hasCollectedArr = sortedArr.map((obj: Publication) =>
-        obj.__typename === "Mirror"
-          ? obj.mirrorOf.hasCollectedByMe
-          : obj.hasCollectedByMe
+      const hasCollectedArr = sortedArr.map(
+        (obj: Publication) => obj.hasCollectedByMe
       );
       dispatch(
         setDecryptFeedCount({
           actionLike: [
             ...decryptFeedCount.like,
-            ...sortedArr.map((obj: Publication) =>
-              obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats?.totalUpvotes
-                : obj.stats?.totalUpvotes
-            ),
+            ...sortedArr.map((obj: Publication) => obj.stats?.totalUpvotes),
           ],
           actionMirror: [
             ...decryptFeedCount.mirror,
-            ...sortedArr.map((obj: Publication) =>
-              obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats?.totalAmountOfMirrors
-                : obj.stats?.totalAmountOfMirrors
+            ...sortedArr.map(
+              (obj: Publication) => obj.stats?.totalAmountOfMirrors
             ),
           ],
           actionCollect: [
             ...decryptFeedCount.collect,
-            ...sortedArr.map((obj: Publication) =>
-              obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats?.totalAmountOfCollects
-                : obj.stats?.totalAmountOfCollects
+            ...sortedArr.map(
+              (obj: Publication) => obj.stats?.totalAmountOfCollects
             ),
           ],
           actionComment: [
             ...decryptFeedCount.comment,
-            ...sortedArr.map((obj: Publication) =>
-              obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats?.totalAmountOfComments
-                : obj.stats?.totalAmountOfComments
+            ...sortedArr.map(
+              (obj: Publication) => obj.stats?.totalAmountOfComments
             ),
           ],
           actionHasLiked: [

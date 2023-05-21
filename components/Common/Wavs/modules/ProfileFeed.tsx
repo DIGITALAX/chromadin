@@ -189,30 +189,22 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
                       publication={publication}
                       hasMirrored={
                         filterDecrypt
-                          ? decryptProfileAmounts.hasMirrored[
-                              (publication as any)?.filterIndex
-                            ]
+                          ? decryptProfileAmounts.hasMirrored[index]
                           : profileAmounts.hasMirrored[index]
                       }
                       hasReacted={
                         filterDecrypt
-                          ? decryptProfileAmounts.hasLiked[
-                              (publication as any)?.filterIndex
-                            ]
+                          ? decryptProfileAmounts.hasLiked[index]
                           : profileAmounts.hasLiked?.[index]
                       }
                       hasCollected={
                         filterDecrypt
-                          ? decryptProfileAmounts.hasCollected[
-                              (publication as any)?.filterIndex
-                            ]
+                          ? decryptProfileAmounts.hasCollected[index]
                           : profileAmounts.hasCollected[index]
                       }
                       followerOnly={
                         filterDecrypt
-                          ? followerOnlyProfileDecrypt[
-                              (publication as any)?.filterIndex
-                            ]
+                          ? followerOnlyProfileDecrypt[index]
                           : followerOnly[index]
                       }
                       collectPost={collectPost}
@@ -222,45 +214,37 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
                       index={index}
                       mirrorLoading={
                         filterDecrypt
-                          ? mirrorLoading[(publication as any)?.filterIndex]
+                          ? mirrorLoading[index]
                           : mirrorLoading[index]
                       }
                       reactLoading={
                         filterDecrypt
-                          ? reactLoading[(publication as any)?.filterIndex]
+                          ? reactLoading[index]
                           : reactLoading[index]
                       }
                       collectLoading={
                         filterDecrypt
-                          ? collectLoading[(publication as any)?.filterIndex]
+                          ? collectLoading[index]
                           : collectLoading[index]
                       }
                       reactAmount={
                         filterDecrypt
-                          ? decryptProfileAmounts.like[
-                              (publication as any)?.filterIndex
-                            ]
+                          ? decryptProfileAmounts.like[index]
                           : profileAmounts.like[index]
                       }
                       mirrorAmount={
                         filterDecrypt
-                          ? decryptProfileAmounts.mirror[
-                              (publication as any)?.filterIndex
-                            ]
+                          ? decryptProfileAmounts.mirror[index]
                           : profileAmounts.mirror[index]
                       }
                       collectAmount={
                         filterDecrypt
-                          ? decryptProfileAmounts.collect[
-                              (publication as any)?.filterIndex
-                            ]
+                          ? decryptProfileAmounts.collect[index]
                           : profileAmounts.collect[index]
                       }
                       commentAmount={
                         filterDecrypt
-                          ? decryptProfileAmounts.comment[
-                              (publication as any)?.filterIndex
-                            ]
+                          ? decryptProfileAmounts.comment[index]
                           : profileAmounts.comment[index]
                       }
                       openComment={commentOpen}
