@@ -137,11 +137,11 @@ const useMakePost = () => {
       } else {
         const selectedText = selection!.toString();
         const selectedHtml = highlightedContent.innerHTML.substring(start, end);
-        const strippedHtml = selectedHtml.replace(
+        const strippedHtml = selectedHtml?.replace(
           /( style="[^"]*")|( style='[^']*')/g,
           ""
         );
-        const strippedText = selectedText.replace(/<[^>]*>/g, "");
+        const strippedText = selectedText?.replace(/<[^>]*>/g, "");
 
         const newHTML =
           postHTML.slice(0, start) + strippedHtml + postHTML.slice(end);

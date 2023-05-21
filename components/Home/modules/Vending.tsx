@@ -191,9 +191,9 @@ const Vending: FunctionComponent<VendingProps> = ({
                             setMainNFT({
                               name: collection?.name,
                               media: collection?.uri?.image
-                                .split("ipfs://")[1]
-                                .replace(/"/g, "")
-                                .trim(),
+                                ?.split("ipfs://")[1]
+                                ?.replace(/"/g, "")
+                                ?.trim(),
                               description: collection?.uri?.description,
                               type: collection?.uri?.type,
                               drop: collection?.drop,

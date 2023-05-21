@@ -135,7 +135,7 @@ const useConnect = (): UseConnectResults => {
     const newAddress = getAddress();
 
     if (
-      (newAddress && newAddress.replace(/^"|"$/g, "") === address) ||
+      (newAddress && newAddress?.replace(/^"|"$/g, "") === address) ||
       (!newAddress && address)
     ) {
       const token = getAuthenticationToken();

@@ -1,5 +1,5 @@
 const descriptionRegex = (description: string, messages?: boolean) => {
-  const replacedDescription = description.replace(/\n\n/g, '\n \n'); // Replace all occurrences of "\n \n" with "\n\n"
+  const replacedDescription = description?.replace(/\n\n/g, '\n \n'); // Replace all occurrences of "\n \n" with "\n\n"
   const lines = replacedDescription?.split(/[\r\n]+/);
   const styledLines = lines?.map((line: string) => {
     const words = line.split(" ");

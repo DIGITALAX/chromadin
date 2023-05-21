@@ -18,8 +18,8 @@ const getCommentHTML = (
     }
   );
   const finalHTML = mentionHighlight
-    .replace(new RegExp("&", "g"), "&")
-    .replace(new RegExp("<", "g"), "<");
+    ?.replace(new RegExp("&", "g"), "&")
+    ?.replace(new RegExp("<", "g"), "<");
   if (finalHTML && resultElement) (resultElement as any).innerHTML = finalHTML;
   return finalHTML;
 };

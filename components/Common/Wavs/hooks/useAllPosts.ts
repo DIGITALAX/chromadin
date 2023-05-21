@@ -176,7 +176,7 @@ const useAllPosts = () => {
                 const data = await fetchIPFSJSON(
                   post.onChainContentURI
                     ?.split("ipfs://")[1]
-                    .replace(/"/g, "")
+                    ?.replace(/"/g, "")
                     .trim()
                 );
                 const { decrypted, error } = await sdk.gated.decryptMetadata(
@@ -351,7 +351,7 @@ const useAllPosts = () => {
                 const data = await fetchIPFSJSON(
                   post.onChainContentURI
                     ?.split("ipfs://")[1]
-                    .replace(/"/g, "")
+                    ?.replace(/"/g, "")
                     .trim()
                 );
                 const { decrypted, error } = await sdk.gated.decryptMetadata(
@@ -547,7 +547,7 @@ const useAllPosts = () => {
                 const data = await fetchIPFSJSON(
                   post.onChainContentURI
                     ?.split("ipfs://")[1]
-                    .replace(/"/g, "")
+                    ?.replace(/"/g, "")
                     .trim()
                 );
                 const { decrypted, error } = await sdk.gated.decryptMetadata(
@@ -708,7 +708,7 @@ const useAllPosts = () => {
                 const data = await fetchIPFSJSON(
                   post.onChainContentURI
                     ?.split("ipfs://")[1]
-                    .replace(/"/g, "")
+                    ?.replace(/"/g, "")
                     .trim()
                 );
                 const { decrypted, error } = await sdk.gated.decryptMetadata(

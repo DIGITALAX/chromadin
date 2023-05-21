@@ -55,8 +55,8 @@ const useDrop = () => {
           const json = await fetchIPFSJSON(
             (collection.uri as any)
               ?.split("ipfs://")[1]
-              .replace(/"/g, "")
-              .trim()
+              ?.replace(/"/g, "")
+              ?.trim()
           );
 
           let collectionDrops;
@@ -72,8 +72,8 @@ const useDrop = () => {
             dropjson = await fetchIPFSJSON(
               collectionDrops[0]?.dropURI
                 ?.split("ipfs://")[1]
-                .replace(/"/g, "")
-                .trim()
+                ?.replace(/"/g, "")
+                ?.trim()
             );
           }
           const defaultProfile = await getDefaultProfile(collection.owner);
@@ -98,8 +98,8 @@ const useDrop = () => {
       const latest = await fetchIPFSJSON(
         collectionDrops[0]?.dropURI
           ?.split("ipfs://")[1]
-          .replace(/"/g, "")
-          .trim()
+          ?.replace(/"/g, "")
+          ?.trim()
       );
       dispatch(
         setMainNFT({
