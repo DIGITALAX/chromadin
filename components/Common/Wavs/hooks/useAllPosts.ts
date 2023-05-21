@@ -31,6 +31,7 @@ import { setDecryptFeedRedux } from "@/redux/reducers/decryptFeedSlice";
 import { setDecryptFeedCount } from "@/redux/reducers/decryptFeedCountSlice";
 import { setDecryptPaginated } from "@/redux/reducers/decryptPaginatedSlice";
 import { setDecryptScrollPosRedux } from "@/redux/reducers/decryptScrollPosSlice";
+import { setDecryptProfileFeedCount } from "@/redux/reducers/decryptProfileCountSlice";
 
 const useAllPosts = () => {
   const { data: signer } = useSigner();
@@ -91,6 +92,9 @@ const useAllPosts = () => {
   );
   const decryptPaginated = useSelector(
     (state: RootState) => state.app.decryptPaginatedReducer.value
+  );
+  const decryptProfileFeedCount = useSelector(
+    (state: RootState) => state.app.decryptProfileFeedCountReducer
   );
 
   const scrollRef = useRef<InfiniteScroll>(null);
@@ -859,110 +863,223 @@ const useAllPosts = () => {
           })
         );
         if (profile?.id === "" || !profile?.id) {
-          dispatch(
-            setReactionFeedCount({
-              actionLike:
-                feedId.type === 0
-                  ? reactionFeedCount.like.map((obj: number, number: number) =>
-                      number === index ? obj + 1 : obj
-                    )
-                  : reactionFeedCount.like,
-              actionMirror:
-                feedId.type === 1
-                  ? reactionFeedCount.mirror.map(
-                      (obj: number, number: number) =>
+          if (filterDecrypt) {
+            dispatch(
+              setDecryptFeedCount({
+                actionLike:
+                  feedId.type === 0
+                    ? decryptFeedCount.like.map((obj: number, number: number) =>
                         number === index ? obj + 1 : obj
-                    )
-                  : reactionFeedCount.mirror,
-              actionCollect:
-                feedId.type === 2
-                  ? reactionFeedCount.collect.map(
-                      (obj: number, number: number) =>
-                        number === index ? obj + 1 : obj
-                    )
-                  : reactionFeedCount.collect,
-              actionComment:
-                feedId.type === 3
-                  ? reactionFeedCount.comment.map(
-                      (obj: number, number: number) =>
-                        number === index ? obj + 1 : obj
-                    )
-                  : reactionFeedCount.comment,
-              actionHasLiked:
-                feedId.type === 0
-                  ? reactionFeedCount.hasLiked.map(
-                      (obj: boolean, number: number) =>
-                        number === index ? true : obj
-                    )
-                  : reactionFeedCount.hasLiked,
-              actionHasMirrored:
-                feedId.type === 1
-                  ? reactionFeedCount.hasMirrored.map(
-                      (obj: boolean, number: number) =>
-                        number === index ? true : obj
-                    )
-                  : reactionFeedCount.mirror,
-              actionHasCollected:
-                feedId.type === 2
-                  ? reactionFeedCount.hasCollected.map(
-                      (obj: boolean, number: number) =>
-                        number === index ? true : obj
-                    )
-                  : reactionFeedCount.collect,
-            })
-          );
+                      )
+                    : decryptFeedCount.like,
+                actionMirror:
+                  feedId.type === 1
+                    ? decryptFeedCount.mirror.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : decryptFeedCount.mirror,
+                actionCollect:
+                  feedId.type === 2
+                    ? decryptFeedCount.collect.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : decryptFeedCount.collect,
+                actionComment:
+                  feedId.type === 3
+                    ? decryptFeedCount.comment.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : decryptFeedCount.comment,
+                actionHasLiked:
+                  feedId.type === 0
+                    ? decryptFeedCount.hasLiked.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : decryptFeedCount.hasLiked,
+                actionHasMirrored:
+                  feedId.type === 1
+                    ? decryptFeedCount.hasMirrored.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : decryptFeedCount.mirror,
+                actionHasCollected:
+                  feedId.type === 2
+                    ? decryptFeedCount.hasCollected.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : decryptFeedCount.collect,
+              })
+            );
+          } else {
+            dispatch(
+              setReactionFeedCount({
+                actionLike:
+                  feedId.type === 0
+                    ? reactionFeedCount.like.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : reactionFeedCount.like,
+                actionMirror:
+                  feedId.type === 1
+                    ? reactionFeedCount.mirror.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : reactionFeedCount.mirror,
+                actionCollect:
+                  feedId.type === 2
+                    ? reactionFeedCount.collect.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : reactionFeedCount.collect,
+                actionComment:
+                  feedId.type === 3
+                    ? reactionFeedCount.comment.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : reactionFeedCount.comment,
+                actionHasLiked:
+                  feedId.type === 0
+                    ? reactionFeedCount.hasLiked.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : reactionFeedCount.hasLiked,
+                actionHasMirrored:
+                  feedId.type === 1
+                    ? reactionFeedCount.hasMirrored.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : reactionFeedCount.mirror,
+                actionHasCollected:
+                  feedId.type === 2
+                    ? reactionFeedCount.hasCollected.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : reactionFeedCount.collect,
+              })
+            );
+          }
         } else {
-          dispatch(
-            setProfileFeedCount({
-              actionLike:
-                feedId.type === 0
-                  ? profileFeedCount.like.map((obj: number, number: number) =>
-                      number === index ? obj + 1 : obj
-                    )
-                  : profileFeedCount.like,
-              actionMirror:
-                feedId.type === 1
-                  ? profileFeedCount.mirror.map((obj: number, number: number) =>
-                      number === index ? obj + 1 : obj
-                    )
-                  : profileFeedCount.mirror,
-              actionCollect:
-                feedId.type === 2
-                  ? profileFeedCount.collect.map(
-                      (obj: number, number: number) =>
+          if (filterDecrypt) {
+            dispatch(
+              setDecryptProfileFeedCount({
+                actionLike:
+                  feedId.type === 0
+                    ? decryptProfileFeedCount.like.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : decryptProfileFeedCount.like,
+                actionMirror:
+                  feedId.type === 1
+                    ? decryptProfileFeedCount.mirror.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : decryptProfileFeedCount.mirror,
+                actionCollect:
+                  feedId.type === 2
+                    ? decryptProfileFeedCount.collect.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : decryptProfileFeedCount.collect,
+                actionComment:
+                  feedId.type === 3
+                    ? decryptProfileFeedCount.comment.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : decryptProfileFeedCount.comment,
+                actionHasLiked:
+                  feedId.type === 0
+                    ? decryptProfileFeedCount.hasLiked.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : decryptProfileFeedCount.hasLiked,
+                actionHasMirrored:
+                  feedId.type === 1
+                    ? decryptProfileFeedCount.hasMirrored.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : decryptProfileFeedCount.mirror,
+                actionHasCollected:
+                  feedId.type === 2
+                    ? decryptProfileFeedCount.hasCollected.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : decryptProfileFeedCount.collect,
+              })
+            );
+          } else {
+            dispatch(
+              setProfileFeedCount({
+                actionLike:
+                  feedId.type === 0
+                    ? profileFeedCount.like.map((obj: number, number: number) =>
                         number === index ? obj + 1 : obj
-                    )
-                  : profileFeedCount.collect,
-              actionComment:
-                feedId.type === 3
-                  ? profileFeedCount.comment.map(
-                      (obj: number, number: number) =>
-                        number === index ? obj + 1 : obj
-                    )
-                  : profileFeedCount.comment,
-              actionHasLiked:
-                feedId.type === 0
-                  ? profileFeedCount.hasLiked.map(
-                      (obj: boolean, number: number) =>
-                        number === index ? true : obj
-                    )
-                  : profileFeedCount.hasLiked,
-              actionHasMirrored:
-                feedId.type === 1
-                  ? profileFeedCount.hasMirrored.map(
-                      (obj: boolean, number: number) =>
-                        number === index ? true : obj
-                    )
-                  : profileFeedCount.mirror,
-              actionHasCollected:
-                feedId.type === 2
-                  ? profileFeedCount.hasCollected.map(
-                      (obj: boolean, number: number) =>
-                        number === index ? true : obj
-                    )
-                  : profileFeedCount.collect,
-            })
-          );
+                      )
+                    : profileFeedCount.like,
+                actionMirror:
+                  feedId.type === 1
+                    ? profileFeedCount.mirror.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : profileFeedCount.mirror,
+                actionCollect:
+                  feedId.type === 2
+                    ? profileFeedCount.collect.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : profileFeedCount.collect,
+                actionComment:
+                  feedId.type === 3
+                    ? profileFeedCount.comment.map(
+                        (obj: number, number: number) =>
+                          number === index ? obj + 1 : obj
+                      )
+                    : profileFeedCount.comment,
+                actionHasLiked:
+                  feedId.type === 0
+                    ? profileFeedCount.hasLiked.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : profileFeedCount.hasLiked,
+                actionHasMirrored:
+                  feedId.type === 1
+                    ? profileFeedCount.hasMirrored.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : profileFeedCount.mirror,
+                actionHasCollected:
+                  feedId.type === 2
+                    ? profileFeedCount.hasCollected.map(
+                        (obj: boolean, number: number) =>
+                          number === index ? true : obj
+                      )
+                    : profileFeedCount.collect,
+              })
+            );
+          }
         }
       }
     } catch (err: any) {
