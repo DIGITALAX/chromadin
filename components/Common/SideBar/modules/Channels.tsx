@@ -130,7 +130,7 @@ const Channels: FunctionComponent<ChannelsProps> = ({
                               />
                             </div>
                             <div
-                              className="relative w-full h-fit text-lg lg:text-sm font-arcade flex justify-start lg:justify-center"
+                              className="relative w-full h-fit text-lg lg:text-sm font-arcade flex justify-start lg:justify-start lg:px-1.5"
                               id={`record${(index % 3) + 1}`}
                             >
                               {content?.metadata?.content?.split("\n\n")[0]
