@@ -23,7 +23,7 @@ const History: FunctionComponent<HistoryProps> = ({
           : "h-full xl:h-[45.8rem]"
       }`}
     >
-      <div className="relative w-full h-20 flex flex-row border-white border-b text-white font-earl text-sm">
+      <div className="relative w-full h-20 max-h-20 flex flex-row border-white border-b text-white font-earl text-sm">
         <div
           className="relative w-full h-full flex items-center justify-center border-r border-white cursor-pointer hover:opacity-70"
           onClick={() => setHistorySwitch(false)}
@@ -89,7 +89,7 @@ const History: FunctionComponent<HistoryProps> = ({
           old channel surfing.
         </div>
       ) : (
-        <div className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 preG:gap-4 lg:gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap items-start">
+        <div className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap items-start">
           {(historySwitch
             ? buyerHistory?.length < 1
               ? buyerHistoryReducer
@@ -175,22 +175,18 @@ const History: FunctionComponent<HistoryProps> = ({
           })}
         </div>
       )}
-      {!historyLoading && (
-        <>
-          <div className="relative w-full h-full flex">
-            <Image
-              src={`${INFURA_GATEWAY}/ipfs/QmPKeuGZU2QZQm8GVhp7X3WvhzELLnmL5VNCFitgzCP6od`}
-              layout="fill"
-              objectFit="cover"
-              draggable={false}
-              priority
-            />
-          </div>
-          <div className="relative bottom-0 w-full h-fit py-2 border-y border-white text-white font-arcade uppercase items-end justify-center flex">
-            CHROMADIN HISTORY
-          </div>
-        </>
-      )}
+      <div className={`relative w-full h-full hidden xl:flex`}>
+        <Image
+          src={`${INFURA_GATEWAY}/ipfs/QmPKeuGZU2QZQm8GVhp7X3WvhzELLnmL5VNCFitgzCP6od`}
+          layout="fill"
+          objectFit="cover"
+          draggable={false}
+          priority
+        />
+      </div>
+      <div className="relative bottom-0 w-full h-fit py-2 border-y border-white text-white font-arcade uppercase items-end justify-center flex">
+        CHROMADIN HISTORY
+      </div>
     </div>
   );
 };
