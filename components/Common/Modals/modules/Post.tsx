@@ -199,21 +199,19 @@ const Post: FunctionComponent<PostProps> = ({
                                   label={"24 Hour Collect"}
                                 />
                               )}
+                            {collectible === "yes" && (
+                              <CollectButton
+                                col={"1"}
+                                row={"1"}
+                                selectFunction={setLimitedEdition}
+                                openDropdown={limitedDropDown}
+                                handleOpenDropdown={setLimitedDropDown}
+                                selectValue={limitedEdition}
+                                label={"Limited edition?"}
+                              />
+                            )}
                             {collectible === "yes" &&
-                              chargeCollect === "yes" && (
-                                <CollectButton
-                                  col={"1"}
-                                  row={"1"}
-                                  selectFunction={setLimitedEdition}
-                                  openDropdown={limitedDropDown}
-                                  handleOpenDropdown={setLimitedDropDown}
-                                  selectValue={limitedEdition}
-                                  label={"Limited edition?"}
-                                />
-                              )}
-                            {collectible === "yes" &&
-                              limitedEdition === "yes" &&
-                              chargeCollect === "yes" && (
+                              limitedEdition === "yes" && (
                                 <CollectInput
                                   min="1"
                                   step="1"

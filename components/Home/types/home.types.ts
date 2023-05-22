@@ -65,6 +65,10 @@ export interface CollectValueType {
   freeCollectModule?: {
     followerOnly: boolean;
   };
+  simpleCollectModule?: {
+    collectLimit: string;
+    followerOnly: boolean;
+  };
   revertCollectModule?: boolean;
   feeCollectModule?: {
     amount: {

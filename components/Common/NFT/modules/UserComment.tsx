@@ -177,7 +177,7 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
                       label={"24 Hour Collect"}
                     />
                   )}
-                  {collectible === "yes" && chargeCollect === "yes" && (
+                  {collectible === "yes" && (
                     <CollectButton
                       col={"1"}
                       row={"1"}
@@ -188,22 +188,20 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
                       label={"Limited edition?"}
                     />
                   )}
-                  {collectible === "yes" &&
-                    limitedEdition === "yes" &&
-                    chargeCollect === "yes" && (
-                      <CollectInput
-                        min="1"
-                        step="1"
-                        defaultValue={limit.toString()}
-                        placeholder={limit.toString()}
-                        id="collectLimit"
-                        label="Edition Amount"
-                        name="collectLimit"
-                        col={"1"}
-                        row={"1"}
-                        handleValueChange={setLimit}
-                      />
-                    )}
+                  {collectible === "yes" && limitedEdition === "yes" && (
+                    <CollectInput
+                      min="1"
+                      step="1"
+                      defaultValue={limit.toString()}
+                      placeholder={limit.toString()}
+                      id="collectLimit"
+                      label="Edition Amount"
+                      name="collectLimit"
+                      col={"1"}
+                      row={"1"}
+                      handleValueChange={setLimit}
+                    />
+                  )}
                 </div>
                 <div className="relative flex flex-col galaxy:flex-row w-full">
                   {collectible === "yes" && chargeCollect === "yes" && (
