@@ -51,7 +51,7 @@ const QuickProfiles: FunctionComponent<QuickProfilesProps> = ({
                       objectPosition={"center"}
                       src={
                         profile?.image?.includes(
-                          "https://lens.infura-ipfs.io/ipfs/"
+                          "https://lens.infura-ipfs.io/ipfs/" || "nftstorage"
                         )
                           ? profile?.image
                           : `${INFURA_GATEWAY}/ipfs/${

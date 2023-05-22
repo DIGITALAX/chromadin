@@ -23,7 +23,7 @@ const Account: FunctionComponent<AccountProps> = ({
           <Image
             src={
               (profile?.coverPicture as any)?.original?.url.includes(
-                "https://lens.infura-ipfs.io/ipfs/"
+                "https://lens.infura-ipfs.io/ipfs/" || "nftstorage"
               )
                 ? (profile?.coverPicture as any)?.original?.url
                 : `${INFURA_GATEWAY}/ipfs/${
@@ -77,7 +77,7 @@ const Account: FunctionComponent<AccountProps> = ({
               <Image
                 src={
                   (profile?.picture as any)?.original?.url.includes(
-                    "https://lens.infura-ipfs.io/ipfs/"
+                    "https://lens.infura-ipfs.io/ipfs/" || "nftstorage"
                   )
                     ? (profile?.picture as any)?.original?.url
                     : `${INFURA_GATEWAY}/ipfs/${
