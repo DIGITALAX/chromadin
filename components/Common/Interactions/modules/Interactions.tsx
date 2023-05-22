@@ -78,7 +78,7 @@ const Interactions: FunctionComponent<InteractionProps> = ({
             getMorePostComments={getMorePostComments}
             commentsLoading={commentsLoading}
             video={
-              lodash.find(videos?.length > 0 ? videos : dispatchVideos, {
+              lodash.find(dispatchVideos, {
                 id: mainVideo.id,
               })!
             }

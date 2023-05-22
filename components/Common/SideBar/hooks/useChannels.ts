@@ -250,6 +250,7 @@ const useChannels = (): UseChannelsResults => {
     );
   };
 
+
   const refetchInteractions = async () => {
     let data: ApolloQueryResult<any>;
     try {

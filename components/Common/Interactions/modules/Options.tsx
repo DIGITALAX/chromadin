@@ -6,7 +6,6 @@ import { FunctionComponent } from "react";
 import { useDispatch } from "react-redux";
 
 const Options: FunctionComponent = (): JSX.Element => {
-  const dispatch = useDispatch();
   const router = useRouter();
   return (
     <div className="relative w-full h-28 flex flex-row items-center gap-1 justify-center bg-black xl:py-0 py-4">

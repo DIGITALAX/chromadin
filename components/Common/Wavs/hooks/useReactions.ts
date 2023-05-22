@@ -562,7 +562,6 @@ const useReactions = () => {
         });
         pubData = data;
       }
-      console.log({ pubData });
       const collectModule =
         pubData?.publication?.__typename === "Mirror"
           ? pubData?.publication?.mirrorOf?.collectModule
