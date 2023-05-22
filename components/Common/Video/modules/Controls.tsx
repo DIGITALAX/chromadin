@@ -36,12 +36,9 @@ const Controls: FunctionComponent<ControlsProps> = ({
   mirrorAmount,
   likeAmount,
   videoSync,
-  dispatch
+  dispatch,
 }): JSX.Element => {
-  const currentIndex = lodash.findIndex(
-    videos?.length > 0 ? videos : dispatchVideos,
-    { id: mainVideo.id }
-  );
+  const currentIndex = lodash.findIndex(dispatchVideos, { id: mainVideo.id });
   return (
     <div className="relative h-fit flex flex-col md:flex-row w-full gap-3 items-center galaxy:px-2 justify-center">
       <div className="relative w-fit md:w-56 h-full flex justify-center items-center gap-3">
@@ -185,62 +182,52 @@ const Controls: FunctionComponent<ControlsProps> = ({
             dispatch(
               setMainVideo({
                 actionVideo: `${INFURA_GATEWAY}/ipfs/${
-                  (videos?.length > 0 ? videos : dispatchVideos)[
-                    currentIndex ===
-                    (videos?.length > 0 ? videos : dispatchVideos).length - 1
+                  dispatchVideos[
+                    currentIndex === dispatchVideos.length - 1
                       ? 0
                       : currentIndex === 0
-                      ? (videos?.length > 0 ? videos : dispatchVideos).length -
-                        1
+                      ? dispatchVideos.length - 1
                       : currentIndex - 1
                   ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
                 }`,
                 actionCollected:
                   videoSync.collectedArray[
-                    currentIndex ===
-                    (videos?.length > 0 ? videos : dispatchVideos).length - 1
+                    currentIndex === dispatchVideos.length - 1
                       ? 0
                       : currentIndex === 0
-                      ? (videos?.length > 0 ? videos : dispatchVideos).length -
-                        1
+                      ? dispatchVideos.length - 1
                       : currentIndex - 1
                   ],
                 actionLiked:
                   videoSync.likedArray[
-                    currentIndex ===
-                    (videos?.length > 0 ? videos : dispatchVideos).length - 1
+                    currentIndex === dispatchVideos.length - 1
                       ? 0
                       : currentIndex === 0
-                      ? (videos?.length > 0 ? videos : dispatchVideos).length -
-                        1
+                      ? dispatchVideos.length - 1
                       : currentIndex - 1
                   ],
                 actionMirrored:
                   videoSync.mirroredArray[
-                    currentIndex ===
-                    (videos?.length > 0 ? videos : dispatchVideos).length - 1
+                    currentIndex === dispatchVideos.length - 1
                       ? 0
                       : currentIndex === 0
-                      ? (videos?.length > 0 ? videos : dispatchVideos).length -
-                        1
+                      ? dispatchVideos.length - 1
                       : currentIndex - 1
                   ],
-                actionId: (videos?.length > 0 ? videos : dispatchVideos)[
-                  currentIndex ===
-                  (videos?.length > 0 ? videos : dispatchVideos).length - 1
-                    ? 0
-                    : currentIndex === 0
-                    ? (videos?.length > 0 ? videos : dispatchVideos).length - 1
-                    : currentIndex - 1
-                ].id,
-                actionLocal: `${
-                  json[
-                    currentIndex ===
-                    (videos?.length > 0 ? videos : dispatchVideos).length - 1
+                actionId:
+                  dispatchVideos[
+                    currentIndex === dispatchVideos.length - 1
                       ? 0
                       : currentIndex === 0
-                      ? (videos?.length > 0 ? videos : dispatchVideos).length -
-                        1
+                      ? dispatchVideos.length - 1
+                      : currentIndex - 1
+                  ].id,
+                actionLocal: `${
+                  json[
+                    currentIndex === dispatchVideos.length - 1
+                      ? 0
+                      : currentIndex === 0
+                      ? dispatchVideos.length - 1
                       : currentIndex - 1
                   ].link
                 }`,
@@ -291,35 +278,26 @@ const Controls: FunctionComponent<ControlsProps> = ({
             dispatch(
               setMainVideo({
                 actionVideo: `${INFURA_GATEWAY}/ipfs/${
-                  (videos?.length > 0 ? videos : dispatchVideos)[
-                    (currentIndex + 1) %
-                      (videos?.length > 0 ? videos : dispatchVideos)?.length
+                  dispatchVideos[
+                    (currentIndex + 1) % dispatchVideos?.length
                   ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
                 }`,
                 actionCollected:
                   videoSync.collectedArray[
-                    (currentIndex + 1) %
-                      (videos?.length > 0 ? videos : dispatchVideos)?.length
+                    (currentIndex + 1) % dispatchVideos?.length
                   ],
                 actionLiked:
                   videoSync.likedArray[
-                    (currentIndex + 1) %
-                      (videos?.length > 0 ? videos : dispatchVideos)?.length
+                    (currentIndex + 1) % dispatchVideos?.length
                   ],
                 actionMirrored:
                   videoSync.mirroredArray[
-                    (currentIndex + 1) %
-                      (videos?.length > 0 ? videos : dispatchVideos)?.length
+                    (currentIndex + 1) % dispatchVideos?.length
                   ],
-                actionId: (videos?.length > 0 ? videos : dispatchVideos)[
-                  (currentIndex + 1) %
-                    (videos?.length > 0 ? videos : dispatchVideos).length
-                ].id,
+                actionId:
+                  dispatchVideos[(currentIndex + 1) % dispatchVideos.length].id,
                 actionLocal: `${
-                  json[
-                    (currentIndex + 1) %
-                      (videos?.length > 0 ? videos : dispatchVideos)?.length
-                  ].link
+                  json[(currentIndex + 1) % dispatchVideos?.length].link
                 }`,
               })
             )

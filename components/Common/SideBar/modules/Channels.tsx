@@ -75,7 +75,7 @@ const Channels: FunctionComponent<ChannelsProps> = ({
           scrollThreshold={1}
         >
           {(videos?.length > 0 || dispatchVideos?.length > 0) &&
-            (videos?.length > 0 ? videos : dispatchVideos)?.map(
+            (dispatchVideos)?.map(
               (content: Publication, index: number) => {
                 return (
                   <div

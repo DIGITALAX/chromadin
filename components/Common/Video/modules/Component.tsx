@@ -16,12 +16,9 @@ const Component: FunctionComponent<ComponentProps> = ({
   dispatchVideos,
   muted,
   videoSync,
-  dispatch
+  dispatch,
 }): JSX.Element => {
-  const currentIndex = lodash.findIndex(
-    videos?.length > 0 ? videos : dispatchVideos,
-    { id: mainVideo.id }
-  );
+  const currentIndex = lodash.findIndex(dispatchVideos, { id: mainVideo.id });
   return (
     <ReactPlayer
       url={mainVideo.local}
@@ -39,34 +36,24 @@ const Component: FunctionComponent<ComponentProps> = ({
         dispatch(
           setMainVideo({
             actionVideo: `${INFURA_GATEWAY}/ipfs/${
-              (videos?.length > 0 ? videos : dispatchVideos)[
+              dispatchVideos[
                 (currentIndex + 1) % videos?.length
               ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
             }`,
             actionCollected:
               videoSync.collectedArray[
-                (currentIndex + 1) %
-                  (videos?.length > 0 ? videos : dispatchVideos)?.length
+                (currentIndex + 1) % dispatchVideos?.length
               ],
             actionLiked:
-              videoSync.likedArray[
-                (currentIndex + 1) %
-                  (videos?.length > 0 ? videos : dispatchVideos)?.length
-              ],
+              videoSync.likedArray[(currentIndex + 1) % dispatchVideos?.length],
             actionMirrored:
               videoSync.mirroredArray[
-                (currentIndex + 1) %
-                  (videos?.length > 0 ? videos : dispatchVideos)?.length
+                (currentIndex + 1) % dispatchVideos?.length
               ],
-            actionId: (videos?.length > 0 ? videos : dispatchVideos)[
-              (currentIndex + 1) %
-                (videos?.length > 0 ? videos : dispatchVideos)?.length
-            ].id,
+            actionId:
+              dispatchVideos[(currentIndex + 1) % dispatchVideos?.length].id,
             actionLocal: `${
-              json[
-                (currentIndex + 1) %
-                  (videos?.length > 0 ? videos : dispatchVideos)?.length
-              ].link
+              json[(currentIndex + 1) % dispatchVideos?.length].link
             }`,
           })
         )
