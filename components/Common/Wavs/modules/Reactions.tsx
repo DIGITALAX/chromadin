@@ -50,7 +50,6 @@ const Reactions: FunctionComponent<ReactionProps> = ({
   profileType,
   router,
 }): JSX.Element => {
-  console.log({ c: publication?.collectModule });
   return (
     <div
       className={`relative w-fit h-fit col-start-1 justify-self-center grid grid-flow-col auto-cols-auto gap-4`}
