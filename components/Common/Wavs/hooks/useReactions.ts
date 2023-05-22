@@ -611,7 +611,7 @@ const useReactions = () => {
             ((collectModule?.__typename === "SimpleCollectModuleSettings" ||
               collectModule?.type === "SimpleCollectModule") &&
               !collectModule?.amount &&
-              !collectModule?.limit &&
+              !collectModule?.simpleCollectLimit &&
               !collectModule?.endTime)
               ? true
               : false,
