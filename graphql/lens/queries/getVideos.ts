@@ -317,6 +317,11 @@ query Publications($request: PublicationsQueryRequest! $profileId: ProfileId) {
       referralFee
       endTimestamp
     }
+    ... on SimpleCollectModuleSettings {
+      type
+      followerOnly
+      simpleCollectLimit: collectLimit
+    }
     ... on RevertCollectModuleSettings {
       type
     }
@@ -642,6 +647,11 @@ query Publications($request: PublicationsQueryRequest!) {
       }
       recipient
       referralFee
+    }
+    ... on SimpleCollectModuleSettings {
+      type
+      followerOnly
+      simpleCollectLimit: collectLimit
     }
     ... on LimitedFeeCollectModuleSettings {
       type

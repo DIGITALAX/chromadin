@@ -284,6 +284,11 @@ fragment CollectModuleFields on CollectModule {
     recipient
     referralFee
   }
+  ... on SimpleCollectModuleSettings {
+    type
+    followerOnly
+    simpleCollectLimit: collectLimit
+  }
   ... on LimitedFeeCollectModuleSettings {
     type
     collectLimit
@@ -641,6 +646,11 @@ fragment CollectModuleFields on CollectModule {
     }
     recipient
     referralFee
+  }
+  ... on SimpleCollectModuleSettings {
+    type
+    followerOnly
+    simpleCollectLimit: collectLimit
   }
   ... on LimitedFeeCollectModuleSettings {
     type

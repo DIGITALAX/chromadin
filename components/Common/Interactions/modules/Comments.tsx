@@ -296,8 +296,10 @@ const Comments: FunctionComponent<CommentsProps> = ({
                                     )
                                 : comment?.collectModule?.type ===
                                     "FreeCollectModule" ||
-                                  (comment?.collectModule?.type ===
-                                    "SimpleCollectModuleSettings" &&
+                                  ((comment?.collectModule?.type ===
+                                    "SimpleCollectModuleSettings" ||
+                                    comment?.collectModule?.type ===
+                                      "SimpleCollectModule") &&
                                     !comment?.collectModule?.amount &&
                                     !comment?.collectModule?.limit &&
                                     !comment?.collectModule?.endTime)

@@ -312,11 +312,13 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                 : publication?.collectModule?.type === "FreeCollectModule" ||
                   publication?.collectModule?.__typename ===
                     "FreeCollectModuleSettings" ||
-                  ((publication?.collectModule?.__typename as any) ===
-                    "SimpleCollectModuleSettings" &&
+                  (((publication?.collectModule as any)?.type ===
+                    "SimpleCollectModuleSettings" ||
+                    publication?.collectModule?.type ===
+                      "SimpleCollectModule") &&
                     !(publication?.collectModule as any)?.amount &&
                     !(publication?.collectModule as any)?.limit &&
-                    !(publication?.collectModule as any)?.endTimestamp)
+                    !(publication?.collectModule as any)?.endTime)
                 ? () =>
                     collectPost(
                       publication?.__typename !== "Mirror"

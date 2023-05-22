@@ -318,6 +318,11 @@ const GET_PUBLICATION = `query Publication($request: PublicationQueryRequest!) {
       referralFee
       endTimestamp
     }
+    ... on SimpleCollectModuleSettings {
+      type
+      followerOnly
+      simpleCollectLimit: collectLimit
+    }
     ... on RevertCollectModuleSettings {
       type
     }
@@ -683,6 +688,11 @@ fragment CollectModuleFields on CollectModule {
     recipient
     referralFee
     endTimestamp
+  }
+  ... on SimpleCollectModuleSettings {
+    type
+    followerOnly
+    simpleCollectLimit: collectLimit
   }
   ... on RevertCollectModuleSettings {
     type

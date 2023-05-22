@@ -35,7 +35,6 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
             <div className="relative w-full h-fit flex flex-col gap-3 px-4 pt-4">
               {collectors?.map((collector: any, index: number) => {
                 let profileImage: string;
-                console.log({collector})
                 if (!(collector?.defaultProfile?.picture as any)?.original) {
                   profileImage = "";
                 } else if (
