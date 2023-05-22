@@ -561,7 +561,7 @@ const useControls = (): UseControlsResults => {
           actionApproved:
             collectModule?.type === "FreeCollectModule" ||
             isApproved > collectModule?.amount?.value ||
-            (collectModule?.type === "SimpleCollectModuleSettings" &&
+            (collectModule?.__typename === "SimpleCollectModuleSettings" &&
               !collectModule.amount &&
               !collectModule.limit &&
               !collectModule.endTime)

@@ -312,7 +312,7 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                 : publication?.collectModule?.type === "FreeCollectModule" ||
                   publication?.collectModule?.__typename ===
                     "FreeCollectModuleSettings" ||
-                  (((publication?.collectModule as any)?.type ===
+                  (((publication?.collectModule as any)?.__typename ===
                     "SimpleCollectModuleSettings" ||
                     publication?.collectModule?.type ===
                       "SimpleCollectModule") &&

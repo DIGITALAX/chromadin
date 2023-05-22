@@ -583,7 +583,7 @@ const useReactions = () => {
         setPostCollectValues({
           actionType: collectModule?.type,
           actionLimit:
-            collectModule?.type === "SimpleCollectModuleSettings" ||
+            collectModule?.__typename === "SimpleCollectModuleSettings" ||
             collectModule?.type === "SimpleCollectModule"
               ? collectModule?.simpleCollectLimit
               : collectModule?.collectLimit,
@@ -608,7 +608,7 @@ const useReactions = () => {
           actionApproved:
             collectModule?.type === "FreeCollectModule" ||
             isApproved > collectModule?.amount?.value ||
-            ((collectModule?.type === "SimpleCollectModuleSettings" ||
+            ((collectModule?.__typename === "SimpleCollectModuleSettings" ||
               collectModule?.type === "SimpleCollectModule") &&
               !collectModule?.amount &&
               !collectModule?.limit &&

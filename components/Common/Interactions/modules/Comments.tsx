@@ -296,7 +296,7 @@ const Comments: FunctionComponent<CommentsProps> = ({
                                     )
                                 : comment?.collectModule?.type ===
                                     "FreeCollectModule" ||
-                                  ((comment?.collectModule?.type ===
+                                  ((comment?.collectModule?.__typename ===
                                     "SimpleCollectModuleSettings" ||
                                     comment?.collectModule?.type ===
                                       "SimpleCollectModule") &&
