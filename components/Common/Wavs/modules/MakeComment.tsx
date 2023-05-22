@@ -175,7 +175,7 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
                       handleOpenDropdown={setTimeLimitDropDown}
                       selectValue={timeLimit}
                       label={"24 Hour Collect"}
-                    />
+                    /> 
                   )}
                   {collectible === "yes" && (
                     <CollectButton
