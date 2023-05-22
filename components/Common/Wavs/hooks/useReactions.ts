@@ -562,6 +562,7 @@ const useReactions = () => {
         });
         pubData = data;
       }
+      console.log({ pubData });
       const collectModule =
         pubData?.publication?.__typename === "Mirror"
           ? pubData?.publication?.mirrorOf?.collectModule
@@ -603,7 +604,11 @@ const useReactions = () => {
               : pubData?.publication?.hasCollectedByMe,
           actionApproved:
             collectModule?.type === "FreeCollectModule" ||
-            isApproved > collectModule?.amount?.value
+            isApproved > collectModule?.amount?.value ||
+            (collectModule?.type === "SimpleCollectModuleSettings" &&
+              !collectModule.amount &&
+              !collectModule.limit &&
+              !collectModule.endTime)
               ? true
               : false,
           actionTotalCollects:

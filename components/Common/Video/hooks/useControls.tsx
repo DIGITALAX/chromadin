@@ -560,7 +560,11 @@ const useControls = (): UseControlsResults => {
           actionCanCollect: pubData?.publication?.hasCollectedByMe,
           actionApproved:
             collectModule?.type === "FreeCollectModule" ||
-            isApproved > collectModule?.amount?.value
+            isApproved > collectModule?.amount?.value ||
+            (collectModule?.type === "SimpleCollectModuleSettings" &&
+              !collectModule.amount &&
+              !collectModule.limit &&
+              !collectModule.endTime)
               ? true
               : false,
           actionTotalCollects:

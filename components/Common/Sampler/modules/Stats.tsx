@@ -65,7 +65,7 @@ const Stats: FunctionComponent<StatsProps> = ({
                                   {(
                                     (Number(value?.amount) / 10 ** 18) *
                                     value?.total_amount_of_collects
-                                  ).toFixed(2)}{" "}
+                                  ).toFixed(3)}{" "}
                                   matic
                                 </div>
                                 <div className="relative w-full h-fit flex flex-row gap-2 justify-start items-center">
@@ -81,7 +81,7 @@ const Stats: FunctionComponent<StatsProps> = ({
                                   <div className="relative w-fit h-fit font-earl text-white text-sm">
                                     {value?.total_amount_of_collects} @{" "}
                                     {(Number(value?.amount) / 10 ** 18).toFixed(
-                                      1
+                                      2
                                     )}{" "}
                                     ea.
                                   </div>

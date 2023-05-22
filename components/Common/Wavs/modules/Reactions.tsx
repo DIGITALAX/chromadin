@@ -309,18 +309,15 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                         actionIndex: index,
                       })
                     )
-                : publication?.collectModule?.type !== "FreeCollectModule" &&
-                  publication?.collectModule?.__typename !==
-                    "FreeCollectModuleSettings"
+                : publication?.collectModule?.type === "FreeCollectModule" ||
+                  publication?.collectModule?.__typename ===
+                    "FreeCollectModuleSettings" ||
+                  ((publication?.collectModule?.__typename as any) ===
+                    "SimpleCollectModuleSettings" &&
+                    !(publication?.collectModule as any)?.amount &&
+                    !(publication?.collectModule as any)?.limit &&
+                    !(publication?.collectModule as any)?.endTimestamp)
                 ? () =>
-                    dispatch(
-                      setPurchase({
-                        actionOpen: true,
-                        actionId: publication?.id,
-                        actionIndex: index,
-                      })
-                    )
-                : () =>
                     collectPost(
                       publication?.__typename !== "Mirror"
                         ? publication?.id
@@ -333,6 +330,14 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                       publication?.__typename === "Mirror"
                         ? publication?.id
                         : undefined
+                    )
+                : () =>
+                    dispatch(
+                      setPurchase({
+                        actionOpen: true,
+                        actionId: publication?.id,
+                        actionIndex: index,
+                      })
                     )
             }
           >

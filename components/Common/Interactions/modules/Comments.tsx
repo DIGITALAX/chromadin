@@ -113,7 +113,9 @@ const Comments: FunctionComponent<CommentsProps> = ({
                                     .split("&profile=")[0] +
                                   "&profile=" +
                                   comment?.profile?.handle?.split(".lens")[0]
-                              : `https://www.chromadin.xyz/#chat?option=history&profile=${comment?.profile?.handle?.split(".lens")[0]}`
+                              : `https://www.chromadin.xyz/#chat?option=history&profile=${
+                                  comment?.profile?.handle?.split(".lens")[0]
+                                }`
                           );
                         }}
                       >
@@ -145,7 +147,9 @@ const Comments: FunctionComponent<CommentsProps> = ({
                                       .split("&profile=")[0] +
                                     "&profile=" +
                                     comment?.profile?.handle?.split(".lens")[0]
-                                : `https://www.chromadin.xyz/#chat?option=history&profile=${comment?.profile?.handle?.split(".lens")[0]}`
+                                : `https://www.chromadin.xyz/#chat?option=history&profile=${
+                                    comment?.profile?.handle?.split(".lens")[0]
+                                  }`
                             );
                           }}
                         >
@@ -290,9 +294,15 @@ const Comments: FunctionComponent<CommentsProps> = ({
                                         actionIndex: index,
                                       })
                                     )
-                                : comment?.collectModule?.type !==
-                                  "FreeCollectModule"
-                                ? () =>
+                                : comment?.collectModule?.type ===
+                                    "FreeCollectModule" ||
+                                  (comment?.collectModule?.type ===
+                                    "SimpleCollectModuleSettings" &&
+                                    !comment?.collectModule?.amount &&
+                                    !comment?.collectModule?.limit &&
+                                    !comment?.collectModule?.endTime)
+                                ? () => collectComment(comment?.id)
+                                : () =>
                                     dispatch(
                                       setPurchase({
                                         actionOpen: true,
@@ -300,7 +310,6 @@ const Comments: FunctionComponent<CommentsProps> = ({
                                         actionIndex: index,
                                       })
                                     )
-                                : () => collectComment(comment?.id)
                             }
                           >
                             {collectCommentLoading[index] ? (

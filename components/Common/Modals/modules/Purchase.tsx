@@ -54,7 +54,11 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
               <CollectInfo
                 approvalLoading={approvalLoading}
                 buttonText={
-                  collectModuleValues?.type === "FreeCollectModule"
+                  collectModuleValues?.type === "FreeCollectModule" ||
+                  (collectModuleValues?.type === "SimpleCollectModuleSettings" &&
+                    !collectModuleValues.amount &&
+                    !collectModuleValues.limit &&
+                    !collectModuleValues.endTime)
                     ? "Collect"
                     : (collectModuleValues?.endTime &&
                         !moment(collectModuleValues?.endTime).isAfter()) ||
