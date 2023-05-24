@@ -8,6 +8,7 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { polygon } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import Modals from "@/components/Common/Modals/modules/Modals";
+import { useEffect } from "react";
 
 const { chains, provider } = configureChains(
   [polygon],
@@ -30,6 +31,22 @@ const wagmiClient = createClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    console.log(`
+    ██████╗░██╗░█████╗░██╗░░░░░  ██╗███╗░░██╗  ████████╗░█████╗░  ████████╗██╗░░██╗███████╗
+    ██╔══██╗██║██╔══██╗██║░░░░░  ██║████╗░██║  ╚══██╔══╝██╔══██╗  ╚══██╔══╝██║░░██║██╔════╝
+    ██║░░██║██║███████║██║░░░░░  ██║██╔██╗██║  ░░░██║░░░██║░░██║  ░░░██║░░░███████║█████╗░░
+    ██║░░██║██║██╔══██║██║░░░░░  ██║██║╚████║  ░░░██║░░░██║░░██║  ░░░██║░░░██╔══██║██╔══╝░░
+    ██████╔╝██║██║░░██║███████╗  ██║██║░╚███║  ░░░██║░░░╚█████╔╝  ░░░██║░░░██║░░██║███████╗
+    ╚═════╝░╚═╝╚═╝░░╚═╝╚══════╝  ╚═╝╚═╝░░╚══╝  ░░░╚═╝░░░░╚════╝░  ░░░╚═╝░░░╚═╝░░╚═╝╚══════╝
+    
+    ██████╗░██╗███╗░░██╗
+    ██╔══██╗██║████╗░██║
+    ██║░░██║██║██╔██╗██║
+    ██║░░██║██║██║╚████║
+    ██████╔╝██║██║░╚███║
+    ╚═════╝░╚═╝╚═╝░░╚══╝`);
+  }, []);
   return (
     <Provider store={store}>
       <WagmiConfig client={wagmiClient}>
