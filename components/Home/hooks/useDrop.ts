@@ -89,10 +89,11 @@ const useDrop = () => {
           };
         })
       );
-
       const collectionDrops = drops?.data?.dropCreateds
         ?.filter((drop: any) =>
-          drop.collectionIds.includes(collections[0].collectionId)
+          drop.collectionIds.includes(
+            collections[collections?.length - 1].collectionId
+          )
         )
         .sort((a: any, b: any) => b.dropId - a.dropId);
       const latest = await fetchIPFSJSON(
@@ -103,23 +104,27 @@ const useDrop = () => {
       );
       dispatch(
         setMainNFT({
-          name: collections[0].name,
-          media: collections[0].uri.image.split("ipfs://")[1],
-          description: collections[0].uri.description,
-          type: collections[0].uri.type,
+          name: collections[collections?.length - 1].name,
+          media:
+            collections[collections?.length - 1].uri.image.split("ipfs://")[1],
+          description: collections[collections?.length - 1].uri.description,
+          type: collections[collections?.length - 1].uri.type,
           drop: {
             name: latest.name,
             image: latest.image,
           },
           creator: {
-            media: createProfilePicture(collections[0].profile, false),
-            name: collections[0].profile?.handle,
+            media: createProfilePicture(
+              collections[collections?.length - 1].profile,
+              false
+            ),
+            name: collections[collections?.length - 1].profile?.handle,
           },
-          price: collections[0].basePrices,
-          acceptedTokens: collections[0].acceptedTokens,
-          amount: collections[0]?.amount,
-          tokenIds: collections[0].tokenIds,
-          tokensSold: collections[0].soldTokens,
+          price: collections[collections?.length - 1].basePrices,
+          acceptedTokens: collections[collections?.length - 1].acceptedTokens,
+          amount: collections[collections?.length - 1]?.amount,
+          tokenIds: collections[collections?.length - 1].tokenIds,
+          tokensSold: collections[collections?.length - 1].soldTokens,
         })
       );
       dispatch(setCollectionsRedux(collections));
