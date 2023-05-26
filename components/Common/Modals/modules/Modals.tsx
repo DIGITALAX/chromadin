@@ -26,6 +26,7 @@ import useCollectOptions from "../../NFT/hooks/useCollectOptions";
 import useImageUpload from "../../NFT/hooks/useImageUpload";
 import useMakePost from "../../Wavs/hooks/usePost";
 import Decrypt from "./Decrypt";
+import IPFS from "./IPFS";
 
 const Modals = () => {
   const videoRef = useRef<HTMLDivElement>(null);
@@ -48,6 +49,7 @@ const Modals = () => {
     (state: RootState) => state.app.videoSyncReducer
   );
   const errorModal = useSelector((state: RootState) => state.app.errorReducer);
+  const ipfsModal = useSelector((state: RootState) => state.app.IPFSReducer);
   const lensProfile = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
@@ -155,6 +157,7 @@ const Modals = () => {
     handleKeyDownDelete,
     handlePost,
     preElement,
+    handleImagePaste,
   } = useMakePost();
   const {
     collectNotif,
@@ -373,12 +376,14 @@ const Modals = () => {
           currencyDropDown={currencyDropDown}
           postImagesDispatched={postImagesDispatched}
           preElement={preElement}
+          handleImagePaste={handleImagePaste}
         />
       )}
       {decrypt.open && (
         <Decrypt dispatch={dispatch} collections={decrypt.collections} />
       )}
       {errorModal.value && <Error />}
+      {ipfsModal.value && <IPFS />}
       {successModal.open && (
         <Success dispatch={dispatch} media={successModal.media} />
       )}

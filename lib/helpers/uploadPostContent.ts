@@ -1,12 +1,15 @@
 import { PostImage, UploadedMedia } from "@/components/Home/types/home.types";
+import { setIPFS } from "@/redux/reducers/IPFSSlice";
 import lodash from "lodash";
+import { AnyAction, Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 
 const uploadPostContent = async (
   postImages: UploadedMedia[] | undefined,
   postDescription: string,
   setContentURI: (e: string | undefined) => void,
-  contentURI: string | undefined
+  contentURI: string | undefined,
+  dispatch: Dispatch<AnyAction>
 ): Promise<string | undefined> => {
   let newImages: PostImage[] = [];
   postImages?.forEach((image) => {
@@ -72,6 +75,7 @@ const uploadPostContent = async (
       return responseJSON.cid;
     }
   } catch (err: any) {
+    dispatch(setIPFS(true));
     console.error(err.message);
   }
   return contentURI;

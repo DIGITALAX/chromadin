@@ -210,7 +210,8 @@ const useComment = () => {
         postImages,
         commentDescription,
         setContentURI,
-        contentURI
+        contentURI,
+        dispatch
       );
       if (dispatcher) {
         result = await createDispatcherCommentData({

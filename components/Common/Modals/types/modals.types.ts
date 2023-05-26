@@ -8,7 +8,13 @@ import { MainVideoState } from "@/redux/reducers/mainVideoSlice";
 import { PostCollectValuesState } from "@/redux/reducers/postCollectSlice";
 import { VideoSyncState } from "@/redux/reducers/videoSyncSlice";
 import { NextRouter } from "next/router";
-import { FormEvent, KeyboardEvent, Ref, RefObject } from "react";
+import {
+  ClipboardEvent,
+  FormEvent,
+  KeyboardEvent,
+  Ref,
+  RefObject,
+} from "react";
 import ReactPlayer from "react-player";
 import { AnyAction, Dispatch } from "redux";
 import { QuickProfilesInterface } from "../../Wavs/types/wavs.types";
@@ -177,6 +183,7 @@ export type PostProps = {
     x: number;
     y: number;
   };
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
 };
 
 export type ClaimProps = {

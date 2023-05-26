@@ -6,7 +6,7 @@ import {
   setPostData,
 } from "@/lib/lens/utils";
 import { RootState } from "@/redux/store";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect,  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import lodash from "lodash";
 import { setPostImages } from "@/redux/reducers/postImageSlice";
@@ -14,6 +14,7 @@ import compressImageFiles from "@/lib/helpers/compressImageFiles";
 import fileLimitAlert from "@/lib/helpers/fileLimitAlert";
 import videoLimitAlert from "@/lib/helpers/videoLimitAlert";
 import { setPublicationImages } from "@/redux/reducers/publicationImageSlice";
+import { setIPFS } from "@/redux/reducers/IPFSSlice";
 
 const useImageUpload = () => {
   const page = useSelector((state: RootState) => state.app.viewReducer.value);
@@ -26,7 +27,7 @@ const useImageUpload = () => {
     UploadedMedia[]
   >(
     page !== "chat"
-      ? postOpen
+      ? !postOpen
         ? JSON.parse(getCommentData() || "{}").images || []
         : JSON.parse(getPostData() || "{}").images || []
       : []
@@ -59,15 +60,50 @@ const useImageUpload = () => {
           body: e as File,
         });
         let cid = await response.json();
-        finalImages.push({
-          cid: String(cid?.cid),
-          type: MediaType.Image,
-        });
-        setMappedFeaturedFiles([...finalImages]);
+        if (response.status !== 200) {
+          setImageLoading(false);
+        } else {
+          finalImages.push({
+            cid: String(cid?.cid),
+            type: MediaType.Image,
+          });
+          setMappedFeaturedFiles([
+            ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
+            ...finalImages,
+          ]);
+          if (feed) {
+            if (postOpen) {
+              const postStorage = JSON.parse(getPostData() || "{}");
+              setPostData(
+                JSON.stringify({
+                  ...postStorage,
+                  images: [
+                    ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
+                    ...finalImages,
+                  ],
+                })
+              );
+            } else {
+              const postStorage = JSON.parse(getCommentData() || "{}");
+              setCommentData(
+                JSON.stringify({
+                  ...postStorage,
+                  images: [
+                    ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
+                    ...finalImages,
+                  ],
+                })
+              );
+            }
+          }
+        }
+
+        setImageLoading(false);
       } catch (err: any) {
+        setImageLoading(false);
+        dispatch(setIPFS(true))
         console.error(err.message);
       }
-      setImageLoading(false);
     } else {
       if (fileLimitAlert((e as any).target.files[0])) {
         setImageLoading(false);
@@ -124,6 +160,7 @@ const useImageUpload = () => {
               }
             }
           } catch (err: any) {
+            dispatch(setIPFS(true))
             console.error(err.message);
           }
         }
@@ -171,6 +208,7 @@ const useImageUpload = () => {
         }
       }
     } catch (err: any) {
+      dispatch(setIPFS(true))
       console.error(err.message);
     }
     setVideoLoading(false);

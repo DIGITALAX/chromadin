@@ -1,4 +1,9 @@
-import { FormEvent, FunctionComponent, KeyboardEvent } from "react";
+import {
+  ClipboardEvent,
+  FormEvent,
+  FunctionComponent,
+  KeyboardEvent,
+} from "react";
 import { PostProps } from "../types/modals.types";
 import { ImCross } from "react-icons/im";
 import { setMakePost } from "@/redux/reducers/makePostSlice";
@@ -78,6 +83,7 @@ const Post: FunctionComponent<PostProps> = ({
   profileId,
   handlePost,
   preElement,
+  handleImagePaste,
 }): JSX.Element => {
   return (
     <div className="inset-0 justify-center fixed z-20 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto">
@@ -294,6 +300,9 @@ const Post: FunctionComponent<PostProps> = ({
                           ref={textElement}
                           value={postDescription}
                           disabled={postLoading ? true : false}
+                          onPaste={(e: ClipboardEvent<HTMLTextAreaElement>) =>
+                            handleImagePaste(e)
+                          }
                         ></textarea>
                         <pre
                           id="highlighting3"

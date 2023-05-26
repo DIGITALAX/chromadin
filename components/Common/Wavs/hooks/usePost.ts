@@ -1,5 +1,12 @@
 import { LENS_HUB_PROXY_ADDRESS_MATIC } from "@/lib/constants";
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  ClipboardEvent,
+  FormEvent,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useContractWrite,
@@ -29,6 +36,7 @@ import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
 import { setPublicationImages } from "@/redux/reducers/publicationImageSlice";
 import { setMakePost } from "@/redux/reducers/makePostSlice";
 import { setPostSent } from "@/redux/reducers/postSentSlice";
+import useImageUpload from "./../../NFT/hooks/useImageUpload";
 
 const useMakePost = () => {
   const [postLoading, setPostLoading] = useState<boolean>(false);
@@ -52,6 +60,7 @@ const useMakePost = () => {
   const [contentURI, setContentURI] = useState<string>();
   const { signTypedDataAsync } = useSignTypedData();
   const dispatch = useDispatch();
+  const { uploadImage } = useImageUpload();
   const profileId = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile
   );
@@ -252,7 +261,8 @@ const useMakePost = () => {
         postImages,
         postDescription,
         setContentURI,
-        contentURI
+        contentURI,
+        dispatch
       );
 
       if (dispatcher) {
@@ -372,6 +382,19 @@ const useMakePost = () => {
     setPostHTML(newHTMLPost);
   };
 
+  const handleImagePaste = async (e: ClipboardEvent<HTMLTextAreaElement>) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf("image") !== -1) {
+        e.preventDefault();
+        e.stopPropagation();
+        const file = items[i].getAsFile();
+        await uploadImage(file as File, true);
+      }
+    }
+  };
+
   useEffect(() => {
     if (isSuccess) {
       handlePostWrite();
@@ -380,11 +403,11 @@ const useMakePost = () => {
 
   useEffect(() => {
     const savedData = getPostData();
-    if (savedData) {
+    if (savedData && JSON.parse(savedData)?.post) {
       setPostDescription(JSON.parse(savedData).post);
       let resultElement = document.querySelector("#highlighted-content3");
       if (
-        JSON.parse(savedData).post[JSON.parse(savedData).post?.length - 1] ==
+        JSON.parse(savedData)?.post[JSON.parse(savedData).post?.length - 1] ==
         "\n"
       ) {
         JSON.parse(savedData).post += " ";
@@ -432,6 +455,7 @@ const useMakePost = () => {
     collectOpen,
     handlePost,
     preElement,
+    handleImagePaste,
   };
 };
 

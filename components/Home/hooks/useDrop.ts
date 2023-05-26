@@ -10,9 +10,9 @@ import { RootState } from "@/redux/store";
 import { setCollectionsRedux } from "@/redux/reducers/collectionsSlice";
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
 import { setDropsRedux } from "@/redux/reducers/dropsSlice";
+import lodash from "lodash";
 
 const useDrop = () => {
-  const [collections, setCollections] = useState<Collection[]>([]);
   const [collectionsLoading, setCollectionsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -128,7 +128,6 @@ const useDrop = () => {
         })
       );
       dispatch(setCollectionsRedux(collections));
-      setCollections(collections);
     } catch (err: any) {
       setError(true);
       console.error(err.message);
@@ -145,13 +144,18 @@ const useDrop = () => {
     }
   };
 
+  // const handleShuffle = (): void => {
+  //   const shuffled = lodash.shuffle(collectionsDispatched);
+  //   dispatch(setCollectionsRedux(shuffled));
+  // };
+
   useEffect(() => {
     if (!collectionsDispatched || collectionsDispatched?.length < 1) {
       handleAllCollections();
     }
   }, []);
 
-  return { collections, collectionsLoading, error };
+  return { collectionsLoading, error };
 };
 
 export default useDrop;

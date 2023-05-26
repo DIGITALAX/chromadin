@@ -13,12 +13,13 @@ import useViewer from "../hooks/useViewer";
 import { setPriceFilter } from "@/redux/reducers/priceFilterSlice";
 import { setDateFilter } from "@/redux/reducers/dateFilterSlice";
 import lodash from "lodash";
+// import { CiShuffle } from "react-icons/ci";
 
 const Vending: FunctionComponent<VendingProps> = ({
   dispatch,
   router,
 }): JSX.Element => {
-  const { collections, collectionsLoading, error } = useDrop();
+  const { collectionsLoading, error } = useDrop();
   const {
     setDropDownPriceSort,
     dropDownPriceSort,
@@ -91,15 +92,19 @@ const Vending: FunctionComponent<VendingProps> = ({
               selectorValue={dateFilter.selected}
               dispatch={dispatch}
             />
+            {/* <div className="relative w-fit h-full flex items-center justify-center flex-col">
+              <div
+                className="relative w-fit h-fit items-center justify-center flex cursor-pointer active:scale-95"
+                onClick={() => handleShuffle()}
+              >
+                <CiShuffle color="white" size={15} />
+              </div>
+            </div> */}
             <SearchVending handleSearch={handleSearch} defaultValue={search} />
           </div>
           <div className="relative w-full h-full grid grid-cols-1 preG:grid-cols-2 sm:grid-cols-3 wrap:grid-cols-4">
-            {(collections?.length > 0 || dispatchCollections?.length > 0) &&
-              lodash(
-                collections?.length > 0
-                  ? [...collections]
-                  : [...dispatchCollections]
-              )
+            {dispatchCollections?.length > 0 &&
+              lodash(dispatchCollections)
                 .filter((collection: Collection) => {
                   if (priceFilter.selected === "ALL") {
                     return true;
