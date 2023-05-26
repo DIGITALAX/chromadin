@@ -57,8 +57,8 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
                   collectModuleValues?.type === "FreeCollectModule" ||
                   (collectModuleValues?.type === "SimpleCollectModule" &&
                     !collectModuleValues.amount &&
-                    !collectModuleValues.limit &&
-                    !collectModuleValues.endTime)
+                    !collectModuleValues.optionalCollectLimit &&
+                    !collectModuleValues.optionalEndTimestamp)
                     ? "Collect"
                     : (collectModuleValues?.endTime &&
                         !moment(collectModuleValues?.endTime).isAfter()) ||

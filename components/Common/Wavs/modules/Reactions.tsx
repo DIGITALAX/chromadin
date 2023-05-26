@@ -317,8 +317,8 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                     publication?.collectModule?.type ===
                       "SimpleCollectModule") &&
                     !(publication?.collectModule as any)?.amount &&
-                    !(publication?.collectModule as any)?.simpleCollectLimit &&
-                    !(publication?.collectModule as any)?.endTime)
+                    !(publication?.collectModule as any)?.optionalCollectLimit &&
+                    !(publication?.collectModule as any)?.optionalEndTimestamp)
                 ? () =>
                     collectPost(
                       publication?.__typename !== "Mirror"

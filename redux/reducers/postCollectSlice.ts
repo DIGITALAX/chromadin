@@ -7,6 +7,8 @@ export interface PostCollectValuesState {
   recipient?: string;
   referralFee?: number;
   endTime?: string;
+  optionalCollectLimit?: string;
+  optionalEndTimestamp?: string;
   amount?: {
     asset?: {
       address: string;

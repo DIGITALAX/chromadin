@@ -139,7 +139,7 @@ query Publications($request: PublicationsQueryRequest! $profileId: ProfileId) {
     }
     createdAt
     collectModule {
-      ...CollectModuleFields
+      ...CollectFields
     }
     referenceModule {
       ...ReferenceModuleFields
@@ -165,7 +165,7 @@ query Publications($request: PublicationsQueryRequest! $profileId: ProfileId) {
     }
     createdAt
     collectModule {
-      ...CollectModuleFields
+      ...CollectFields
     }
     referenceModule {
       ...ReferenceModuleFields
@@ -201,7 +201,7 @@ query Publications($request: PublicationsQueryRequest! $profileId: ProfileId) {
     }
     createdAt
     collectModule {
-      ...CollectModuleFields
+      ...CollectFields
     }
     referenceModule {
       ...ReferenceModuleFields
@@ -274,7 +274,7 @@ query Publications($request: PublicationsQueryRequest! $profileId: ProfileId) {
     }
   }
   
-  fragment CollectModuleFields on CollectModule {
+  fragment CollectFields on CollectModule {
     __typename
     ... on FreeCollectModuleSettings {
       type
@@ -319,8 +319,20 @@ query Publications($request: PublicationsQueryRequest! $profileId: ProfileId) {
     }
     ... on SimpleCollectModuleSettings {
       type
+      optionalCollectLimit: collectLimit
+      optionalEndTimestamp: endTimestamp
+      contractAddress
       followerOnly
-      simpleCollectLimit: collectLimit
+      fee {
+        amount {
+          asset {
+            ...Erc20Fields
+          }
+          value
+        }
+        recipient
+        referralFee
+      }
     }
     ... on RevertCollectModuleSettings {
       type
@@ -496,7 +508,7 @@ query Publications($request: PublicationsQueryRequest!) {
     }
     createdAt
     collectModule {
-      ...CollectModuleFields
+      ...CollectFields
     }
     referenceModule {
       ...ReferenceModuleFields
@@ -521,7 +533,7 @@ query Publications($request: PublicationsQueryRequest!) {
     }
     createdAt
     collectModule {
-      ...CollectModuleFields
+      ...CollectFields
     }
     referenceModule {
       ...ReferenceModuleFields
@@ -557,7 +569,7 @@ query Publications($request: PublicationsQueryRequest!) {
     }
     createdAt
     collectModule {
-      ...CollectModuleFields
+      ...CollectFields
     }
     referenceModule {
       ...ReferenceModuleFields
@@ -630,7 +642,7 @@ query Publications($request: PublicationsQueryRequest!) {
     }
   }
   
-  fragment CollectModuleFields on CollectModule {
+  fragment CollectFields on CollectModule {
     __typename
     ... on FreeCollectModuleSettings {
       type
@@ -650,8 +662,20 @@ query Publications($request: PublicationsQueryRequest!) {
     }
     ... on SimpleCollectModuleSettings {
       type
+      optionalCollectLimit: collectLimit
+      optionalEndTimestamp: endTimestamp
+      contractAddress
       followerOnly
-      simpleCollectLimit: collectLimit
+      fee {
+        amount {
+          asset {
+            ...Erc20Fields
+          }
+          value
+        }
+        recipient
+        referralFee
+      }
     }
     ... on LimitedFeeCollectModuleSettings {
       type

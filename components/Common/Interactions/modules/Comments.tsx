@@ -301,8 +301,10 @@ const Comments: FunctionComponent<CommentsProps> = ({
                                     comment?.collectModule?.type ===
                                       "SimpleCollectModule") &&
                                     !comment?.collectModule?.amount &&
-                                    !comment?.collectModule?.simpleCollectLimit &&
-                                    !comment?.collectModule?.endTime)
+                                    !comment?.collectModule
+                                      ?.optionalCollectLimit &&
+                                    !comment?.collectModule
+                                      ?.optionalEndTimestamp)
                                 ? () => collectComment(comment?.id)
                                 : () =>
                                     dispatch(

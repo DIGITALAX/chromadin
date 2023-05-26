@@ -563,8 +563,8 @@ const useControls = (): UseControlsResults => {
             isApproved > collectModule?.amount?.value ||
             (collectModule?.__typename === "SimpleCollectModuleSettings" &&
               !collectModule.amount &&
-              !collectModule.simpleCollectLimit &&
-              !collectModule.endTime)
+              !collectModule.optionalCollectLimit &&
+              !collectModule.optionalEndTimestamp)
               ? true
               : false,
           actionTotalCollects:

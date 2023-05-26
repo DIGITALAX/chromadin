@@ -17,7 +17,7 @@ const Frequency: FunctionComponent = (): JSX.Element => {
     moshVideoRef,
     currentVideoIndex,
   } = useDrops();
-  const { collections, collectionsLoading } = useDrop();
+  const { collectionsLoading } = useDrop();
   const dispatch = useDispatch();
   const router = useRouter();
   const dispatchCollections = useSelector(
@@ -61,17 +61,10 @@ const Frequency: FunctionComponent = (): JSX.Element => {
         </div>
         <div className="relative w-full h-px flex" id="raincode"></div>
         <Drops
-          collections={
-            collections?.length > 0
-              ? [
-                  ...collections?.slice(currentIndex),
-                  ...collections?.slice(0, currentIndex),
-                ]?.reverse()
-              : [
-                  ...dispatchCollections!?.slice(currentIndex),
-                  ...dispatchCollections!?.slice(0, currentIndex),
-                ]?.reverse()
-          }
+          collections={[
+            ...dispatchCollections!?.slice(currentIndex),
+            ...dispatchCollections!?.slice(0, currentIndex),
+          ]?.reverse()}
           dispatch={dispatch}
           collectionsLoading={collectionsLoading}
           router={router}

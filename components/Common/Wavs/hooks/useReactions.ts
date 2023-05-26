@@ -585,11 +585,14 @@ const useReactions = () => {
           actionLimit:
             collectModule?.__typename === "SimpleCollectModuleSettings" ||
             collectModule?.type === "SimpleCollectModule"
-              ? collectModule?.simpleCollectLimit
+              ? collectModule?.optionalCollectLimit
               : collectModule?.collectLimit,
           actionRecipient: collectModule?.recipient,
           actionReferralFee: collectModule?.referralFee,
-          actionEndTime: collectModule?.endTimestamp,
+          actionEndTime:
+            collectModule?.type === "SimpleCollectModule"
+              ? collectModule?.optionalEndTimestamp
+              : collectModule?.endTimestamp,
           actionValue: collectModule?.value,
           actionFollowerOnly: collectModule?.followerOnly,
           actionAmount: {
@@ -611,8 +614,8 @@ const useReactions = () => {
             ((collectModule?.__typename === "SimpleCollectModuleSettings" ||
               collectModule?.type === "SimpleCollectModule") &&
               !collectModule?.amount &&
-              !collectModule?.simpleCollectLimit &&
-              !collectModule?.endTime)
+              !collectModule?.optionalCollectLimit &&
+              !collectModule?.optionalEndTimestamp)
               ? true
               : false,
           actionTotalCollects:

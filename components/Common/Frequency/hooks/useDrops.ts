@@ -2,10 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { DropsResults } from "../types/collections.types";
 import useDrop from "@/components/Home/hooks/useDrop";
 import shuffle from "shuffle-array";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const useDrops = (): DropsResults => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const { collections } = useDrop();
+  const collections = useSelector(
+    (state: RootState) => state.app.collectionsReducer.value
+  );
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const moshVideoRef = useRef<HTMLVideoElement>(null);
   const moshArray: string[] = [

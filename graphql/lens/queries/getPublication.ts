@@ -140,7 +140,7 @@ const GET_PUBLICATION = `query Publication($request: PublicationQueryRequest!) {
     }
     createdAt
     collectModule {
-      ...CollectModuleFields
+      ...CollectFields
     }
     referenceModule {
       ...ReferenceModuleFields
@@ -166,7 +166,7 @@ const GET_PUBLICATION = `query Publication($request: PublicationQueryRequest!) {
     }
     createdAt
     collectModule {
-      ...CollectModuleFields
+      ...CollectFields
     }
     referenceModule {
       ...ReferenceModuleFields
@@ -202,7 +202,7 @@ const GET_PUBLICATION = `query Publication($request: PublicationQueryRequest!) {
     }
     createdAt
     collectModule {
-      ...CollectModuleFields
+      ...CollectFields
     }
     referenceModule {
       ...ReferenceModuleFields
@@ -275,7 +275,7 @@ const GET_PUBLICATION = `query Publication($request: PublicationQueryRequest!) {
     }
   }
   
-  fragment CollectModuleFields on CollectModule {
+  fragment CollectFields on CollectModule {
     __typename
     ... on FreeCollectModuleSettings {
       type
@@ -320,8 +320,20 @@ const GET_PUBLICATION = `query Publication($request: PublicationQueryRequest!) {
     }
     ... on SimpleCollectModuleSettings {
       type
+      optionalCollectLimit: collectLimit
+      optionalEndTimestamp: endTimestamp
+      contractAddress
       followerOnly
-      simpleCollectLimit: collectLimit
+      fee {
+        amount {
+          asset {
+            ...Erc20Fields
+          }
+          value
+        }
+        recipient
+        referralFee
+      }
     }
     ... on RevertCollectModuleSettings {
       type
@@ -510,7 +522,7 @@ fragment PostFields on Post {
   }
   createdAt
   collectModule {
-    ...CollectModuleFields
+    ...CollectFields
   }
   referenceModule {
     ...ReferenceModuleFields
@@ -537,7 +549,7 @@ fragment MirrorBaseFields on Mirror {
   }
   createdAt
   collectModule {
-    ...CollectModuleFields
+    ...CollectFields
   }
   referenceModule {
     ...ReferenceModuleFields
@@ -573,7 +585,7 @@ fragment CommentBaseFields on Comment {
   }
   createdAt
   collectModule {
-    ...CollectModuleFields
+    ...CollectFields
   }
   referenceModule {
     ...ReferenceModuleFields
@@ -646,7 +658,7 @@ fragment FollowModuleFields on FollowModule {
   }
 }
 
-fragment CollectModuleFields on CollectModule {
+fragment CollectFields on CollectModule {
   __typename
   ... on FreeCollectModuleSettings {
     type
@@ -691,8 +703,20 @@ fragment CollectModuleFields on CollectModule {
   }
   ... on SimpleCollectModuleSettings {
     type
+    optionalCollectLimit: collectLimit
+    optionalEndTimestamp: endTimestamp
+    contractAddress
     followerOnly
-    simpleCollectLimit: collectLimit
+    fee {
+      amount {
+        asset {
+          ...Erc20Fields
+        }
+        value
+      }
+      recipient
+      referralFee
+    }
   }
   ... on RevertCollectModuleSettings {
     type
