@@ -20,7 +20,7 @@ const IPFS: FunctionComponent = (): JSX.Element => {
               </div>
               <div className="relative w-full h-fit row-start-2 grid grid-flow-col auto-cols-auto px-4">
                 <div className="relative w-fit h-fit font-earl text-white text-xl place-self-center text-center">
-                  Looks like IPFS isn't responding right now.
+                  Looks like IPFS isn&apos;t responding right now.
                   <br />
                   <br />
                   ... Try reducing the file size.
