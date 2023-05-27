@@ -78,11 +78,15 @@ const useIndividual = () => {
         comments = await whoCommentedPublicationsAuth({
           commentsOf: feedType,
           limit: 10,
+          commentsOfOrdering: "RANKING",
+          commentsRankingFilter: "RELEVANT",
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: feedType,
           limit: 10,
+          commentsOfOrdering: "RANKING",
+          commentsRankingFilter: "RELEVANT",
         });
       }
       if (!comments || !comments?.data || !comments?.data?.publications) {

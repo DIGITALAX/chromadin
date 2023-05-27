@@ -46,11 +46,15 @@ const useInteractions = () => {
         comments = await whoCommentedPublicationsAuth({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
+          commentsOfOrdering: "RANKING",
+          commentsRankingFilter: "RELEVANT",
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
+          commentsOfOrdering: "RANKING",
+          commentsRankingFilter: "RELEVANT",
         });
       }
       if (!comments || !comments?.data || !comments?.data?.publications) {
@@ -75,6 +79,8 @@ const useInteractions = () => {
           {
             commentsOf: commentId !== "" ? commentId : mainVideo.id,
             limit: 30,
+            commentsOfOrdering: "RANKING",
+            commentsRankingFilter: "RELEVANT",
           },
           profileId
         );
@@ -99,12 +105,16 @@ const useInteractions = () => {
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
           cursor: paginated?.next,
+          commentsOfOrdering: "RANKING",
+          commentsRankingFilter: "RELEVANT",
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
           cursor: paginated?.next,
+          commentsOfOrdering: "RANKING",
+          commentsRankingFilter: "RELEVANT",
         });
       }
       if (
@@ -133,6 +143,8 @@ const useInteractions = () => {
             commentsOf: commentId !== "" ? commentId : mainVideo.id,
             limit: 30,
             cursor: paginated?.next,
+            commentsOfOrdering: "RANKING",
+            commentsRankingFilter: "RELEVANT",
           },
           profileId
         );
