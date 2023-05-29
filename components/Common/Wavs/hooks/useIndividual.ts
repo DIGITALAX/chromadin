@@ -11,7 +11,7 @@ import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import { useEffect, useState } from "react";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { Publication } from "@/components/Home/types/lens.types";
+import { CommentOrderingTypes, CommentRankingFilter, Publication } from "@/components/Home/types/lens.types";
 import canCommentPub from "@/graphql/lens/queries/canComment";
 import { setCanComment } from "@/redux/reducers/canCommentSlice";
 import { setCommentsRedux } from "@/redux/reducers/commentSlice";
@@ -78,15 +78,15 @@ const useIndividual = () => {
         comments = await whoCommentedPublicationsAuth({
           commentsOf: feedType,
           limit: 10,
-          commentsOfOrdering: "RANKING",
-          commentsRankingFilter: "RELEVANT",
+          commentsOfOrdering: CommentOrderingTypes.Ranking,
+          commentsRankingFilter: CommentRankingFilter.Relevant
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: feedType,
           limit: 10,
-          commentsOfOrdering: "RANKING",
-          commentsRankingFilter: "RELEVANT",
+          commentsOfOrdering: CommentOrderingTypes.Ranking,
+          commentsRankingFilter: CommentRankingFilter.Relevant
         });
       }
       if (!comments || !comments?.data || !comments?.data?.publications) {
@@ -123,8 +123,8 @@ const useIndividual = () => {
           {
             commentsOf: feedType,
             limit: 10,
-            commentsOfOrdering: "RANKING",
-            commentsRankingFilter: "RELEVANT",
+            commentsOfOrdering: CommentOrderingTypes.Ranking,
+            commentsRankingFilter: CommentRankingFilter.Relevant
           },
           lensProfile
         );
@@ -170,16 +170,16 @@ const useIndividual = () => {
           commentsOf: feedType,
           limit: 10,
           cursor: paginated?.next,
-          commentsOfOrdering: "RANKING",
-          commentsRankingFilter: "RELEVANT",
+          commentsOfOrdering: CommentOrderingTypes.Ranking,
+          commentsRankingFilter: CommentRankingFilter.Relevant
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: feedType,
           limit: 10,
           cursor: paginated?.next,
-          commentsOfOrdering: "RANKING",
-          commentsRankingFilter: "RELEVANT",
+          commentsOfOrdering: CommentOrderingTypes.Ranking,
+          commentsRankingFilter: CommentRankingFilter.Relevant
         });
       }
       if (
@@ -220,8 +220,8 @@ const useIndividual = () => {
             commentsOf: feedType,
             limit: 10,
             cursor: paginated?.next,
-            commentsOfOrdering: "RANKING",
-            commentsRankingFilter: "RELEVANT",
+            commentsOfOrdering: CommentOrderingTypes.Ranking,
+            commentsRankingFilter: CommentRankingFilter.Relevant
           },
           lensProfile
         );

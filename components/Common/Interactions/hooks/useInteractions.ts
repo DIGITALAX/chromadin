@@ -1,4 +1,4 @@
-import { Publication } from "@/components/Home/types/lens.types";
+import { CommentOrderingTypes, CommentRankingFilter, Publication } from "@/components/Home/types/lens.types";
 import canCommentPub from "@/graphql/lens/queries/canComment";
 import {
   whoCommentedPublications,
@@ -46,15 +46,15 @@ const useInteractions = () => {
         comments = await whoCommentedPublicationsAuth({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
-          commentsOfOrdering: "RANKING",
-          commentsRankingFilter: "RELEVANT",
+          commentsOfOrdering: CommentOrderingTypes.Ranking,
+          commentsRankingFilter: CommentRankingFilter.Relevant
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
-          commentsOfOrdering: "RANKING",
-          commentsRankingFilter: "RELEVANT",
+          commentsOfOrdering: CommentOrderingTypes.Ranking,
+          commentsRankingFilter: CommentRankingFilter.Relevant
         });
       }
       if (!comments || !comments?.data || !comments?.data?.publications) {
@@ -79,8 +79,8 @@ const useInteractions = () => {
           {
             commentsOf: commentId !== "" ? commentId : mainVideo.id,
             limit: 30,
-            commentsOfOrdering: "RANKING",
-            commentsRankingFilter: "RELEVANT",
+            commentsOfOrdering: CommentOrderingTypes.Ranking,
+            commentsRankingFilter: CommentRankingFilter.Relevant
           },
           profileId
         );
@@ -105,16 +105,16 @@ const useInteractions = () => {
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
           cursor: paginated?.next,
-          commentsOfOrdering: "RANKING",
-          commentsRankingFilter: "RELEVANT",
+          commentsOfOrdering: CommentOrderingTypes.Ranking,
+          commentsRankingFilter: CommentRankingFilter.Relevant
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
           limit: 30,
           cursor: paginated?.next,
-          commentsOfOrdering: "RANKING",
-          commentsRankingFilter: "RELEVANT",
+          commentsOfOrdering: CommentOrderingTypes.Ranking,
+          commentsRankingFilter: CommentRankingFilter.Relevant
         });
       }
       if (
@@ -143,8 +143,8 @@ const useInteractions = () => {
             commentsOf: commentId !== "" ? commentId : mainVideo.id,
             limit: 30,
             cursor: paginated?.next,
-            commentsOfOrdering: "RANKING",
-            commentsRankingFilter: "RELEVANT",
+            commentsOfOrdering: CommentOrderingTypes.Ranking,
+            commentsRankingFilter: CommentRankingFilter.Relevant
           },
           profileId
         );
