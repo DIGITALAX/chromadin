@@ -90,7 +90,7 @@ const useIndividual = () => {
         });
       }
       if (!comments || !comments?.data || !comments?.data?.publications) {
-        setCommentsLoading(false);
+        setCommentsLoading(false); 
         return;
       }
       const arr: any[] = [...comments?.data?.publications?.items];
