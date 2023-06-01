@@ -1,4 +1,8 @@
-import { CommentOrderingTypes, CommentRankingFilter, Publication } from "@/components/Home/types/lens.types";
+import {
+  CommentOrderingTypes,
+  CommentRankingFilter,
+  Publication,
+} from "@/components/Home/types/lens.types";
 import canCommentPub from "@/graphql/lens/queries/canComment";
 import {
   whoCommentedPublications,
@@ -45,27 +49,24 @@ const useInteractions = () => {
       if (profileId) {
         comments = await whoCommentedPublicationsAuth({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
-          limit: 30,
+          limit: 20,
           commentsOfOrdering: CommentOrderingTypes.Ranking,
-          commentsRankingFilter: CommentRankingFilter.Relevant
+          commentsRankingFilter: CommentRankingFilter.Relevant,
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
-          limit: 30,
+          limit: 20,
           commentsOfOrdering: CommentOrderingTypes.Ranking,
-          commentsRankingFilter: CommentRankingFilter.Relevant
+          commentsRankingFilter: CommentRankingFilter.Relevant,
         });
       }
       if (!comments || !comments?.data || !comments?.data?.publications) {
         setCommentsLoading(false);
         return;
       }
-      const arr: any[] = [...comments?.data?.publications?.items];
-      const sortedArr = arr.sort(
-        (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
-      );
-      if (sortedArr?.length < 30) {
+      const sortedArr: any[] = [...comments?.data?.publications?.items];
+      if (sortedArr?.length < 20) {
         setHasMoreComments(false);
       } else {
         setHasMoreComments(true);
@@ -78,11 +79,13 @@ const useInteractions = () => {
         const response = await checkPostReactions(
           {
             commentsOf: commentId !== "" ? commentId : mainVideo.id,
-            limit: 30,
+            limit: 20,
             commentsOfOrdering: CommentOrderingTypes.Ranking,
-            commentsRankingFilter: CommentRankingFilter.Relevant
+            commentsRankingFilter: CommentRankingFilter.Relevant,
           },
-          profileId
+          profileId,
+          undefined,
+          true
         );
         setHasReacted(response);
       }
@@ -103,18 +106,18 @@ const useInteractions = () => {
       if (profileId) {
         comments = await whoCommentedPublicationsAuth({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
-          limit: 30,
+          limit: 20,
           cursor: paginated?.next,
           commentsOfOrdering: CommentOrderingTypes.Ranking,
-          commentsRankingFilter: CommentRankingFilter.Relevant
+          commentsRankingFilter: CommentRankingFilter.Relevant,
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: commentId !== "" ? commentId : mainVideo.id,
-          limit: 30,
+          limit: 20,
           cursor: paginated?.next,
           commentsOfOrdering: CommentOrderingTypes.Ranking,
-          commentsRankingFilter: CommentRankingFilter.Relevant
+          commentsRankingFilter: CommentRankingFilter.Relevant,
         });
       }
       if (
@@ -126,11 +129,8 @@ const useInteractions = () => {
         setCommentsLoading(false);
         return;
       }
-      const arr: any[] = [...comments?.data?.publications?.items];
-      const sortedArr = arr.sort(
-        (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
-      );
-      if (sortedArr?.length < 30) {
+      const sortedArr: any[] = [...comments?.data?.publications?.items];
+      if (sortedArr?.length < 20) {
         setHasMoreComments(false);
       }
       setCommentors([...commentors, ...sortedArr]);
@@ -141,12 +141,14 @@ const useInteractions = () => {
         const hasReactedArr = await checkPostReactions(
           {
             commentsOf: commentId !== "" ? commentId : mainVideo.id,
-            limit: 30,
+            limit: 20,
             cursor: paginated?.next,
             commentsOfOrdering: CommentOrderingTypes.Ranking,
-            commentsRankingFilter: CommentRankingFilter.Relevant
+            commentsRankingFilter: CommentRankingFilter.Relevant,
           },
-          profileId
+          profileId,
+          undefined,
+          true
         );
         setHasReacted([...hasReacted, ...hasReactedArr]);
       }

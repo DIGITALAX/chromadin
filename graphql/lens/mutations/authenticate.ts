@@ -4,7 +4,7 @@ import { authClient } from "../../../lib/lens/client";
 const AUTHENTICATE_LOGIN = `
 mutation Authenticate($request: SignedAuthChallenge!) { 
   authenticate(request: $request) {
-    accessToken
+    accessTokenX
     refreshToken
   }
 }

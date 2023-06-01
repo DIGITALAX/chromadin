@@ -11,7 +11,11 @@ import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import { useEffect, useState } from "react";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { CommentOrderingTypes, CommentRankingFilter, Publication } from "@/components/Home/types/lens.types";
+import {
+  CommentOrderingTypes,
+  CommentRankingFilter,
+  Publication,
+} from "@/components/Home/types/lens.types";
 import canCommentPub from "@/graphql/lens/queries/canComment";
 import { setCanComment } from "@/redux/reducers/canCommentSlice";
 import { setCommentsRedux } from "@/redux/reducers/commentSlice";
@@ -79,24 +83,21 @@ const useIndividual = () => {
           commentsOf: feedType,
           limit: 10,
           commentsOfOrdering: CommentOrderingTypes.Ranking,
-          commentsRankingFilter: CommentRankingFilter.Relevant
+          commentsRankingFilter: CommentRankingFilter.Relevant,
         });
       } else {
         comments = await whoCommentedPublications({
           commentsOf: feedType,
           limit: 10,
           commentsOfOrdering: CommentOrderingTypes.Ranking,
-          commentsRankingFilter: CommentRankingFilter.Relevant
+          commentsRankingFilter: CommentRankingFilter.Relevant,
         });
       }
       if (!comments || !comments?.data || !comments?.data?.publications) {
-        setCommentsLoading(false); 
+        setCommentsLoading(false);
         return;
       }
-      const arr: any[] = [...comments?.data?.publications?.items];
-      const sortedArr = arr.sort(
-        (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
-      );
+      const sortedArr: any[] = [...comments?.data?.publications?.items];
       if (sortedArr?.length < 10) {
         setHasMoreComments(false);
       } else {
@@ -124,9 +125,11 @@ const useIndividual = () => {
             commentsOf: feedType,
             limit: 10,
             commentsOfOrdering: CommentOrderingTypes.Ranking,
-            commentsRankingFilter: CommentRankingFilter.Relevant
+            commentsRankingFilter: CommentRankingFilter.Relevant,
           },
-          lensProfile
+          lensProfile,
+          undefined,
+          true
         );
       }
       const hasCollectedArr = sortedArr.map(
@@ -171,7 +174,7 @@ const useIndividual = () => {
           limit: 10,
           cursor: paginated?.next,
           commentsOfOrdering: CommentOrderingTypes.Ranking,
-          commentsRankingFilter: CommentRankingFilter.Relevant
+          commentsRankingFilter: CommentRankingFilter.Relevant,
         });
       } else {
         comments = await whoCommentedPublications({
@@ -179,7 +182,7 @@ const useIndividual = () => {
           limit: 10,
           cursor: paginated?.next,
           commentsOfOrdering: CommentOrderingTypes.Ranking,
-          commentsRankingFilter: CommentRankingFilter.Relevant
+          commentsRankingFilter: CommentRankingFilter.Relevant,
         });
       }
       if (
@@ -191,10 +194,7 @@ const useIndividual = () => {
         setCommentsLoading(false);
         return;
       }
-      const arr: any[] = [...comments?.data?.publications?.items];
-      const sortedArr = arr.sort(
-        (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
-      );
+      const sortedArr: any[] = [...comments?.data?.publications?.items];
       if (sortedArr?.length < 10) {
         setHasMoreComments(false);
       }
@@ -221,9 +221,11 @@ const useIndividual = () => {
             limit: 10,
             cursor: paginated?.next,
             commentsOfOrdering: CommentOrderingTypes.Ranking,
-            commentsRankingFilter: CommentRankingFilter.Relevant
+            commentsRankingFilter: CommentRankingFilter.Relevant,
           },
-          lensProfile
+          lensProfile,
+          undefined,
+          true
         );
         const hasCollectedArr = sortedArr.map(
           (obj: Publication) => obj.hasCollectedByMe

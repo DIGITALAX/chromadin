@@ -8,6 +8,7 @@ const checkPostReactions = async (
   publicationObject: any,
   lensProfile: string | undefined,
   indi?: boolean,
+  order?: boolean
 ): Promise<any> => {
   let hasReactedArr: any[] = [];
   let hasReacted: any;
@@ -23,7 +24,7 @@ const checkPostReactions = async (
       });
       hasReacted = data.data.publications.items;
     }
-    
+
     if (hasReacted.length < 1) {
       return [];
     } else {
@@ -34,9 +35,13 @@ const checkPostReactions = async (
           hasReactedArr.push(false);
         }
       }
-      return hasReactedArr.sort(
-        (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
-      );
+      if (order) {
+        return hasReactedArr;
+      } else {
+        return hasReactedArr.sort(
+          (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+        );
+      }
     }
   } catch (err: any) {
     console.error(err.message);
