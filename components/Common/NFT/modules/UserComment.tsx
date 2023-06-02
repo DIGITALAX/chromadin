@@ -1,6 +1,11 @@
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
-import { FormEvent, FunctionComponent, KeyboardEvent } from "react";
+import {
+  ClipboardEvent,
+  FormEvent,
+  FunctionComponent,
+  KeyboardEvent,
+} from "react";
 import { UserCommentProps } from "../types/nft.types";
 import syncScroll from "@/lib/helpers/syncScroll";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
@@ -77,6 +82,8 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
   commentId,
   canComment,
   preElement,
+  setImageLoading,
+  handleImagePaste,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-96 galaxy:h-80 sm:h-full border-y border-l border-white flex flex-col bg-pink">
@@ -260,6 +267,9 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
                 }}
                 onKeyDown={(e: KeyboardEvent<Element>) =>
                   handleKeyDownDelete(e)
+                }
+                onPaste={(e: ClipboardEvent<HTMLTextAreaElement>) =>
+                  handleImagePaste(e, setImageLoading)
                 }
                 style={{ resize: "none" }}
                 className="relative w-full h-full bg-offBlack font-arcade text-white p-2 z-1 rounded-lg overflow-y-auto"

@@ -12,7 +12,13 @@ import { IndividualFeedCountState } from "@/redux/reducers/individualFeedCountRe
 import { ProfileFeedCountState } from "@/redux/reducers/profileFeedCountSlice";
 import { ReactionFeedCountState } from "@/redux/reducers/reactionFeedCountSlice";
 import { NextRouter } from "next/router";
-import { FormEvent, KeyboardEvent, Ref, RefObject } from "react";
+import {
+  ClipboardEvent,
+  FormEvent,
+  KeyboardEvent,
+  Ref,
+  RefObject,
+} from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AnyAction, Dispatch } from "redux";
 
@@ -338,6 +344,11 @@ export type FeedProps = {
   setScrollPosDecryptProfile: (e: MouseEvent) => void;
   hasMoreDecryptProfile: boolean;
   decryptProfileScrollPos: number;
+  handleImagePaste: (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => void;
+  setImageLoading: (e: boolean) => void;
 };
 
 export interface ApprovalArgs {
@@ -507,6 +518,11 @@ export type IndividualProps = {
   handleConnect: () => void;
   individualAmounts: IndividualFeedCountState;
   allCollections: Collection[];
+  handleImagePaste: (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => void;
+  setImageLoading: (e: boolean) => void;
 };
 
 export type CommentsProps = {
@@ -613,6 +629,11 @@ export type CommentsProps = {
   openComment: string;
   profileType: string;
   allCollections: Collection[];
+  handleImagePaste: (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => void;
+  setImageLoading: (e: boolean) => void;
 };
 
 export interface UploadedMedia {
@@ -746,6 +767,11 @@ export type MakeCommentProps = {
   handleKeyDownDelete: (e: KeyboardEvent<Element>) => void;
   commentId: string;
   canComment: boolean;
+  handleImagePaste: (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => void;
+  setImageLoading: (e: boolean) => void;
 };
 
 export type OptionsCommentProps = {
@@ -920,6 +946,11 @@ export type ProfileFeedProps = {
   setScrollPosDecryptProfile: (e: MouseEvent) => void;
   hasMoreDecryptProfile: boolean;
   decryptProfileScrollPos: number;
+  handleImagePaste: (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => void;
+  setImageLoading: (e: boolean) => void;
 };
 
 export type SwitchProps = {
@@ -1064,6 +1095,11 @@ export type SwitchProps = {
   setScrollPosDecryptProfile: (e: MouseEvent) => void;
   hasMoreDecryptProfile: boolean;
   decryptProfileScrollPos: number;
+  handleImagePaste: (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => void;
+  setImageLoading: (e: boolean) => void;
 };
 
 export type AllPostsProps = {
@@ -1185,6 +1221,11 @@ export type AllPostsProps = {
   decryptScrollPos: number;
   setScrollPosDecrypt: (e: MouseEvent) => void;
   scrollRefDecrypt: Ref<InfiniteScroll>;
+  handleImagePaste: (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => void;
+  setImageLoading: (e: boolean) => void;
 };
 
 export interface QuickProfilesInterface {

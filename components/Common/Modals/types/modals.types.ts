@@ -183,7 +183,11 @@ export type PostProps = {
     x: number;
     y: number;
   };
-  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
+  handleImagePaste: (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => void;
+  setImageLoading: (e: boolean) => void;
 };
 
 export type ClaimProps = {

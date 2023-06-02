@@ -1,6 +1,11 @@
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
-import { FormEvent, FunctionComponent, KeyboardEvent } from "react";
+import {
+  ClipboardEvent,
+  FormEvent,
+  FunctionComponent,
+  KeyboardEvent,
+} from "react";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import { AiOutlineLoading } from "react-icons/ai";
 import { setModal } from "@/redux/reducers/modalSlice";
@@ -77,6 +82,8 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
   canComment,
   address,
   preElement,
+  handleImagePaste,
+  setImageLoading,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-60 flex flex-col">
@@ -175,7 +182,7 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
                       handleOpenDropdown={setTimeLimitDropDown}
                       selectValue={timeLimit}
                       label={"24 Hour Collect"}
-                    /> 
+                    />
                   )}
                   {collectible === "yes" && (
                     <CollectButton
@@ -260,6 +267,9 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
                 }}
                 onKeyDown={(e: KeyboardEvent<Element>) =>
                   handleKeyDownDelete(e)
+                }
+                onPaste={(e: ClipboardEvent<HTMLTextAreaElement>) =>
+                  handleImagePaste(e, setImageLoading)
                 }
                 style={{ resize: "none" }}
                 className="relative w-full h-full bg-black font-economicaB text-white p-2 z-1 rounded-lg overflow-y-auto"

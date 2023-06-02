@@ -56,12 +56,25 @@ const useImageUpload = () => {
     }
     let finalImages: UploadedMedia[] = [];
     setImageLoading(true);
-    if (fileLimitAlert((e as any).target.files[0])) {
+    if (
+      fileLimitAlert(pasted ? (e as File[])[0] : (e as any).target.files[0])
+    ) {
       setImageLoading(false);
       return;
     }
-    Array.from(((e as FormEvent).target as HTMLFormElement)?.files).map(
-      async (_, index: number) => {
+    let uploadCounter = 0; // add a counter here
+    const numberOfFiles = pasted
+      ? (e as File[]).length
+      : (e as any).target.files.length;
+
+    const imageFiles = Array.from(
+      pasted
+        ? (e as File[])
+        : ((e as FormEvent).target as HTMLFormElement)?.files
+    );
+
+    await Promise.all(
+      imageFiles.map(async (_, index: number) => {
         try {
           // const compressedImage = await compressImageFiles(
           //   (e as any).target.files[index] as File
@@ -74,15 +87,24 @@ const useImageUpload = () => {
           });
           if (response.status !== 200) {
             setImageLoading(false);
+            return;
           } else {
             let cid = await response.json();
             finalImages.push({
               cid: String(cid?.cid),
               type: MediaType.Image,
             });
+            uploadCounter += 1; // increment counter here
+
+            if (uploadCounter === numberOfFiles) {
+              // check counter here
+              setImageLoading(false);
+            }
             if (
               finalImages?.length ===
-              ((e as FormEvent).target as HTMLFormElement).files?.length
+              (pasted
+                ? (e as File[]).length
+                : ((e as FormEvent).target as HTMLFormElement).files?.length)
             ) {
               let newArr = [
                 ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
@@ -108,15 +130,14 @@ const useImageUpload = () => {
                   );
                 }
               }
-
-              setImageLoading(false);
             }
           }
         } catch (err: any) {
           dispatch(setIPFS(true));
           console.error(err.message);
+          setImageLoading(false);
         }
-      }
+      })
     );
   };
 
@@ -219,6 +240,7 @@ const useImageUpload = () => {
     handleRemoveImage,
     videoLoading,
     uploadVideo,
+    setImageLoading
   };
 };
 

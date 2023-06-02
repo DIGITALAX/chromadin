@@ -1,11 +1,10 @@
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent } from "react";
 import Comments from "./Comments";
 import Collectors from "./Collectors";
 import { InteractionProps } from "../types/interactions.types";
 import Image from "next/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import useInteractions from "../hooks/useInteractions";
-import useChannels from "../../SideBar/hooks/useChannels";
 import lodash from "lodash";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +28,6 @@ const Interactions: FunctionComponent<InteractionProps> = ({
     hasMirrored,
     hasReacted,
   } = useInteractions();
-  const { videos } = useChannels();
   const {
     mirrorVideo,
     collectVideo,

@@ -163,6 +163,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     setGifOpen,
     handleKeyDownDelete,
     preElement,
+    handleImagePaste,
   } = useComment();
 
   const {
@@ -207,6 +208,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     uploadVideo,
     handleRemoveImage,
     mappedFeaturedFiles,
+    setImageLoading,
   } = useImageUpload();
 
   const {
@@ -392,6 +394,8 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         setScrollPosDecryptProfile={setScrollPosDecryptProfile}
         hasMoreDecryptProfile={hasMoreDecryptProfile}
         decryptProfileScrollPos={decryptProfileScroll}
+        handleImagePaste={handleImagePaste}
+        setImageLoading={setImageLoading}
       />
     </div>
   );

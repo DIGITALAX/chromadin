@@ -201,6 +201,7 @@ const Modals = () => {
     uploadVideo,
     handleRemoveImage,
     mappedFeaturedFiles,
+    setImageLoading
   } = useImageUpload();
   return (
     <>
@@ -377,6 +378,7 @@ const Modals = () => {
           postImagesDispatched={postImagesDispatched}
           preElement={preElement}
           handleImagePaste={handleImagePaste}
+          setImageLoading={setImageLoading}
         />
       )}
       {decrypt.open && (

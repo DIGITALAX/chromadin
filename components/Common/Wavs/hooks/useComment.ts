@@ -1,5 +1,12 @@
 import { LENS_HUB_PROXY_ADDRESS_MATIC } from "@/lib/constants";
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  ClipboardEvent,
+  FormEvent,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useContractWrite,
@@ -26,6 +33,7 @@ import { MediaType, UploadedMedia } from "../types/wavs.types";
 import { setPostImages } from "@/redux/reducers/postImageSlice";
 import { searchProfile } from "@/graphql/lens/queries/search";
 import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
+import useImageUpload from "../../NFT/hooks/useImageUpload";
 
 const useComment = () => {
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
@@ -46,6 +54,7 @@ const useComment = () => {
   const [commentHTML, setCommentHTML] = useState<string>("");
   const [contentURI, setContentURI] = useState<string>();
   const { signTypedDataAsync } = useSignTypedData();
+  const { uploadImage } = useImageUpload();
   const dispatch = useDispatch();
   const profileId = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
@@ -339,6 +348,30 @@ const useComment = () => {
     setCommentHTML(newHTMLPost);
   };
 
+  const handleImagePaste = async (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => {
+    setImageLoading(true);
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    let files: File[] = [];
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf("image") !== -1) {
+        e.preventDefault();
+        e.stopPropagation();
+        const file = items[i].getAsFile();
+        files.push(file as File); // Add the File to the array.
+      }
+    }
+    if (files.length > 0) {
+      await uploadImage(files, true);
+      setImageLoading(false);
+    } else {
+      setImageLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (commentSuccess) {
       handleCommentWrite();
@@ -374,6 +407,7 @@ const useComment = () => {
     setGifOpen,
     handleKeyDownDelete,
     preElement,
+    handleImagePaste,
   };
 };
 

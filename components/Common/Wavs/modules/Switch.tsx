@@ -127,6 +127,8 @@ const Switch: FunctionComponent<SwitchProps> = ({
   followerOnlyProfileDecrypt,
   scrollRefDecryptProfile,
   setScrollPosDecryptProfile,
+  setImageLoading,
+  handleImagePaste,
 }): JSX.Element => {
   let action: string;
 
@@ -237,6 +239,8 @@ const Switch: FunctionComponent<SwitchProps> = ({
           hasMoreDecryptProfile={hasMoreDecryptProfile}
           fetchMoreProfileDecrypt={fetchMoreProfileDecrypt}
           followerOnlyProfileDecrypt={followerOnlyProfileDecrypt}
+          handleImagePaste={handleImagePaste}
+          setImageLoading={setImageLoading}
         />
       );
 
@@ -343,6 +347,8 @@ const Switch: FunctionComponent<SwitchProps> = ({
           decryptScrollPos={decryptScrollPos}
           setScrollPosDecrypt={setScrollPosDecrypt}
           scrollRefDecrypt={scrollRefDecrypt}
+          handleImagePaste={handleImagePaste}
+          setImageLoading={setImageLoading}
         />
       );
   }

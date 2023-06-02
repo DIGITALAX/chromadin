@@ -382,7 +382,11 @@ const useMakePost = () => {
     setPostHTML(newHTMLPost);
   };
 
-  const handleImagePaste = async (e: ClipboardEvent<HTMLTextAreaElement>) => {
+  const handleImagePaste = async (
+    e: ClipboardEvent<HTMLTextAreaElement>,
+    setImageLoading: (e: boolean) => void
+  ) => {
+    setImageLoading(true);
     const items = e.clipboardData?.items;
     if (!items) return;
     let files: File[] = [];
@@ -395,7 +399,10 @@ const useMakePost = () => {
       }
     }
     if (files.length > 0) {
-      await uploadImage(files, true); // Call uploadImage with the array of Files.
+      await uploadImage(files, true);
+      setImageLoading(false);
+    } else {
+      setImageLoading(false);
     }
   };
 
