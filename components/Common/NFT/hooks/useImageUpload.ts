@@ -6,7 +6,7 @@ import {
   setPostData,
 } from "@/lib/lens/utils";
 import { RootState } from "@/redux/store";
-import { FormEvent, useEffect,  useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import lodash from "lodash";
 import { setPostImages } from "@/redux/reducers/postImageSlice";
@@ -41,131 +41,83 @@ const useImageUpload = () => {
   );
 
   const uploadImage = async (
-    e: FormEvent | File,
-    canvas?: boolean,
+    e: FormEvent | File[],
+    pasted?: boolean,
     feed?: boolean
   ): Promise<void> => {
-    if (!canvas) {
+    if (!pasted) {
       if ((e as any)?.target?.files?.length < 1) {
+        return;
+      }
+    } else {
+      if ((e as File[]).length < 1) {
         return;
       }
     }
     let finalImages: UploadedMedia[] = [];
     setImageLoading(true);
-    if (canvas) {
-      try {
-        // const compressedImage = await compressImageFiles(e as File);
-        const response = await fetch("/api/ipfs", {
-          method: "POST",
-          body: e as File,
-        });
-        let cid = await response.json();
-        if (response.status !== 200) {
-          setImageLoading(false);
-        } else {
-          finalImages.push({
-            cid: String(cid?.cid),
-            type: MediaType.Image,
-          });
-          setMappedFeaturedFiles([
-            ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
-            ...finalImages,
-          ]);
-          if (feed) {
-            if (postOpen) {
-              const postStorage = JSON.parse(getPostData() || "{}");
-              setPostData(
-                JSON.stringify({
-                  ...postStorage,
-                  images: [
-                    ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
-                    ...finalImages,
-                  ],
-                })
-              );
-            } else {
-              const postStorage = JSON.parse(getCommentData() || "{}");
-              setCommentData(
-                JSON.stringify({
-                  ...postStorage,
-                  images: [
-                    ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
-                    ...finalImages,
-                  ],
-                })
-              );
-            }
-          }
-        }
-
-        setImageLoading(false);
-      } catch (err: any) {
-        setImageLoading(false);
-        dispatch(setIPFS(true))
-        console.error(err.message);
-      }
-    } else {
-      if (fileLimitAlert((e as any).target.files[0])) {
-        setImageLoading(false);
-        return;
-      }
-      Array.from(((e as FormEvent).target as HTMLFormElement)?.files).map(
-        async (_, index: number) => {
-          try {
-            // const compressedImage = await compressImageFiles(
-            //   (e as any).target.files[index] as File
-            // );
-            const response = await fetch("/api/ipfs", {
-              method: "POST",
-              body: (e as any).target.files[index],
-            });
-            if (response.status !== 200) {
-              setImageLoading(false);
-            } else {
-              let cid = await response.json();
-              finalImages.push({
-                cid: String(cid?.cid),
-                type: MediaType.Image,
-              });
-              if (
-                finalImages?.length ===
-                ((e as FormEvent).target as HTMLFormElement).files?.length
-              ) {
-                let newArr = [
-                  ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
-                  ...finalImages,
-                ];
-                setMappedFeaturedFiles(newArr);
-                if (feed) {
-                  if (postOpen) {
-                    const postStorage = JSON.parse(getPostData() || "{}");
-                    setPostData(
-                      JSON.stringify({
-                        ...postStorage,
-                        images: newArr,
-                      })
-                    );
-                  } else {
-                    const postStorage = JSON.parse(getCommentData() || "{}");
-                    setCommentData(
-                      JSON.stringify({
-                        ...postStorage,
-                        images: newArr,
-                      })
-                    );
-                  }
-                }
-
-                setImageLoading(false);
-              }
-            }
-          } catch (err: any) {
-            dispatch(setIPFS(true))
-            console.error(err.message);
-          }
-        }
-      );
+    if (fileLimitAlert((e as any).target.files[0])) {
+      setImageLoading(false);
+      return;
     }
+    Array.from(((e as FormEvent).target as HTMLFormElement)?.files).map(
+      async (_, index: number) => {
+        try {
+          // const compressedImage = await compressImageFiles(
+          //   (e as any).target.files[index] as File
+          // );
+          const response = await fetch("/api/ipfs", {
+            method: "POST",
+            body: pasted
+              ? (e as File[])[index]
+              : (e as any).target.files[index],
+          });
+          if (response.status !== 200) {
+            setImageLoading(false);
+          } else {
+            let cid = await response.json();
+            finalImages.push({
+              cid: String(cid?.cid),
+              type: MediaType.Image,
+            });
+            if (
+              finalImages?.length ===
+              ((e as FormEvent).target as HTMLFormElement).files?.length
+            ) {
+              let newArr = [
+                ...(postOpen ? imagesUploadedPub : (imagesUploaded as any)),
+                ...finalImages,
+              ];
+              setMappedFeaturedFiles(newArr);
+              if (feed) {
+                if (postOpen) {
+                  const postStorage = JSON.parse(getPostData() || "{}");
+                  setPostData(
+                    JSON.stringify({
+                      ...postStorage,
+                      images: newArr,
+                    })
+                  );
+                } else {
+                  const postStorage = JSON.parse(getCommentData() || "{}");
+                  setCommentData(
+                    JSON.stringify({
+                      ...postStorage,
+                      images: newArr,
+                    })
+                  );
+                }
+              }
+
+              setImageLoading(false);
+            }
+          }
+        } catch (err: any) {
+          dispatch(setIPFS(true));
+          console.error(err.message);
+        }
+      }
+    );
   };
 
   const uploadVideo = async (e: FormEvent, feed?: boolean) => {
@@ -208,7 +160,7 @@ const useImageUpload = () => {
         }
       }
     } catch (err: any) {
-      dispatch(setIPFS(true))
+      dispatch(setIPFS(true));
       console.error(err.message);
     }
     setVideoLoading(false);

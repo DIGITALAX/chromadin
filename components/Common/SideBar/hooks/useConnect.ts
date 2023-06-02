@@ -131,32 +131,36 @@ const useConnect = (): UseConnectResults => {
   };
 
   useEffect(() => {
-    setConnected(isConnected);
-    const newAddress = getAddress();
-
-    if (
-      (newAddress && newAddress?.replace(/^"|"$/g, "") === address) ||
-      (!newAddress && address)
-    ) {
-      const token = getAuthenticationToken();
-      setAddress(address as string);
-      if (isConnected && !token) {
+    const handleAuthentication = async () => {
+      setConnected(isConnected);
+      const newAddress = getAddress();
+  
+      if (
+        (newAddress && newAddress?.replace(/^"|"$/g, "") === address) ||
+        (!newAddress && address)
+      ) {
+        const token = getAuthenticationToken();
+        setAddress(address as string);
+        if (isConnected && !token) {
+          dispatch(setLensProfile(undefined));
+          removeAuthenticationToken();
+        } else if (isConnected && token) {
+          if (isAuthExpired(token?.exp)) {
+            const refreshedAccessToken = await refreshAuth(); // await the refreshAuth promise
+            if (!refreshedAccessToken) {
+              dispatch(setLensProfile(undefined));
+              removeAuthenticationToken();
+            }
+          }
+          await handleRefreshProfile(); // await the handleRefreshProfile promise
+        }
+      } else if (isConnected && address !== newAddress) {
         dispatch(setLensProfile(undefined));
         removeAuthenticationToken();
-      } else if (isConnected && token) {
-        if (isAuthExpired(token?.exp)) {
-          const refreshedAccessToken = refreshAuth();
-          if (!refreshedAccessToken) {
-            dispatch(setLensProfile(undefined));
-            removeAuthenticationToken();
-          }
-        }
-        handleRefreshProfile();
       }
-    } else if (isConnected && address !== newAddress) {
-      dispatch(setLensProfile(undefined));
-      removeAuthenticationToken();
-    }
+    };
+  
+    handleAuthentication(); // Call the inner async function
   }, [isConnected]);
 
   useEffect(() => {

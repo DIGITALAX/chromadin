@@ -84,6 +84,9 @@ const useChannels = (): UseChannelsResults => {
           limit: 10,
         });
       }
+      if (!data || !data?.data || data?.data.publications?.items?.length < 1) {
+        return;
+      }
       const arr: any[] = [...data?.data.publications?.items];
       sortedArr = arr.sort(
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)

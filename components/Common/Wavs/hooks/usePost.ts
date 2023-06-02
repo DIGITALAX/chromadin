@@ -385,13 +385,17 @@ const useMakePost = () => {
   const handleImagePaste = async (e: ClipboardEvent<HTMLTextAreaElement>) => {
     const items = e.clipboardData?.items;
     if (!items) return;
+    let files: File[] = [];
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.indexOf("image") !== -1) {
         e.preventDefault();
         e.stopPropagation();
         const file = items[i].getAsFile();
-        await uploadImage(file as File, true);
+        files.push(file as File); // Add the File to the array.
       }
+    }
+    if (files.length > 0) {
+      await uploadImage(files, true); // Call uploadImage with the array of Files.
     }
   };
 
