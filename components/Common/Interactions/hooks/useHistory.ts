@@ -146,7 +146,7 @@ const useHistory = (): useHistoryResults => {
         getUserHistory();
       }
     }
-  }, [options, indexModal, history, address]);
+  }, [options, indexModal, history, address, historySwitch]);
 
   return {
     history,
