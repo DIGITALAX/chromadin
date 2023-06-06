@@ -33,6 +33,7 @@ export const ACCEPTED_TOKENS: string[][] = [
 ];
 
 export const LENS_CREATORS: string[] = [
+  "0x01cc42",
   "0x84ec",
   "0x0197d6",
   "0x016305",
