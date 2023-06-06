@@ -124,7 +124,6 @@ const useAllPosts = () => {
             followModule: prof?.followModule,
           };
         });
-
       dispatch(setQuickProfilesRedux(quickProfiles));
     } catch (err: any) {
       console.error(err.message);

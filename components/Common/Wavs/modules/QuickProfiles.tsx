@@ -1,4 +1,3 @@
-import { setProfile } from "@/redux/reducers/profileSlice";
 import { FunctionComponent } from "react";
 import {
   QuickProfilesInterface,
@@ -20,6 +19,7 @@ const QuickProfiles: FunctionComponent<QuickProfilesProps> = ({
         >
           {quickProfiles?.map(
             (profile: QuickProfilesInterface, index: number) => {
+
               return (
                 <div
                   key={index}
@@ -51,8 +51,10 @@ const QuickProfiles: FunctionComponent<QuickProfilesProps> = ({
                       objectPosition={"center"}
                       src={
                         profile?.image?.includes(
-                          "https://lens.infura-ipfs.io/ipfs/" || "nftstorage"
-                        )
+                          "https://lens.infura-ipfs.io/ipfs/"
+                        ) ||
+                        profile?.image?.includes("imagekit") ||
+                        profile?.image?.includes("nftstorage")
                           ? profile?.image
                           : `${INFURA_GATEWAY}/ipfs/${
                               profile?.image?.includes("ipfs://")

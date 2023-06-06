@@ -100,7 +100,9 @@ const Graphs: FunctionComponent<GraphsProps> = ({
                                   className="rounded-full w-full h-full flex"
                                   layout="fill"
                                   src={
-                                    item?.label?.pfp?.includes("ipfs://")
+                                    item?.label?.pfp?.includes("imagekit")
+                                      ? item?.label?.pfp
+                                      : item?.label?.pfp?.includes("ipfs://")
                                       ? `${INFURA_GATEWAY}/ipfs/${
                                           item?.label?.pfp?.split("ipfs://")[1]
                                         }`
@@ -145,7 +147,9 @@ const Graphs: FunctionComponent<GraphsProps> = ({
                             ) {
                               const img = document.createElement("img");
                               if (item?.label?.pfp) {
-                                img.src = item?.label?.pfp?.includes("ipfs://")
+                                img.src = item?.label?.pfp?.includes("imagekit")
+                                  ? item?.label?.pfp
+                                  : item?.label?.pfp?.includes("ipfs://")
                                   ? `${INFURA_GATEWAY}/ipfs/${
                                       item?.label?.pfp?.split("ipfs://")[1]
                                     }`
