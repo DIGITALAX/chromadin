@@ -139,7 +139,7 @@ const useAllPosts = () => {
         data = await feedTimelineAuth(
           {
             profileIds: LENS_CREATORS,
-            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            publicationTypes: ["POST", "MIRROR"],
             limit: 10,
           },
           lensProfile
@@ -147,7 +147,7 @@ const useAllPosts = () => {
       } else {
         data = await feedTimeline({
           profileIds: LENS_CREATORS,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          publicationTypes: ["POST", "MIRROR"],
           limit: 10,
         });
       }
@@ -245,7 +245,7 @@ const useAllPosts = () => {
         hasReactedArr = await checkPostReactions(
           {
             profileIds: LENS_CREATORS,
-            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            publicationTypes: ["POST", "MIRROR"],
             limit: 10,
           },
           lensProfile
@@ -316,7 +316,7 @@ const useAllPosts = () => {
         data = await feedTimelineAuth(
           {
             profileIds: LENS_CREATORS,
-            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            publicationTypes: ["POST", "MIRROR"],
             limit: 10,
             cursor: paginated?.next,
           },
@@ -325,7 +325,7 @@ const useAllPosts = () => {
       } else {
         data = await feedTimeline({
           profileIds: LENS_CREATORS,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          publicationTypes: ["POST", "MIRROR"],
           limit: 10,
           cursor: paginated?.next,
         });
@@ -425,7 +425,7 @@ const useAllPosts = () => {
         hasReactedArr = await checkPostReactions(
           {
             profileIds: LENS_CREATORS,
-            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            publicationTypes: ["POST", "MIRROR"],
             limit: 10,
             cursor: paginated?.next,
           },
