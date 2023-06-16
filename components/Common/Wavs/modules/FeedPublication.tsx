@@ -11,6 +11,7 @@ import { FaRegCommentDots } from "react-icons/fa";
 import { BiLock } from "react-icons/bi";
 import { setDecrypt } from "@/redux/reducers/decryptSlice";
 import { Collection } from "@/components/Home/types/home.types";
+import ReactPlayer from "react-player";
 
 const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
   publication,
@@ -200,6 +201,8 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                 }
               }
 
+              console.log(image);
+
               return (
                 <div
                   key={index}
@@ -207,16 +210,17 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                     index + 1
                   } ${
                     ((publication as any)?.decrypted
-                      ? (image as any).type
-                      : (image as MediaSet)?.original?.mimeType) !==
-                      "video/mp4" &&
-                    "cursor-pointer hover:opacity-70 active:scale-95"
+                      ? !(image as any).type?.includes("video")
+                      : !(image as MediaSet)?.original?.mimeType?.includes(
+                          "video"
+                        )) && "cursor-pointer hover:opacity-70 active:scale-95"
                   } `}
                   onClick={() =>
                     ((publication as any)?.decrypted
-                      ? (image as any).type
-                      : (image as MediaSet)?.original?.mimeType) !==
-                      "video/mp4" &&
+                      ? !(image as any).type?.includes("video")
+                      : !(image as MediaSet)?.original?.mimeType?.includes(
+                          "video"
+                        )) &&
                     dispatch(
                       setImageFeedViewer({
                         actionType: (publication as any)?.decrypted
@@ -228,12 +232,13 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                     )
                   }
                 >
-                  <div className="relative w-full h-full col-start-1 flex">
+                  <div className="relative w-full h-full col-start-1 flex rounded-md">
                     {(
                       (publication as any)?.decrypted
-                        ? (image as any).type
-                        : (image as MediaSet)?.original?.mimeType !==
-                          "video/mp4"
+                        ? !(image as any).type?.includes("video")
+                        : !(image as MediaSet)?.original?.mimeType.includes(
+                            "video"
+                          )
                     ) ? (
                       <Image
                         src={
@@ -268,13 +273,30 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                         className="rounded-md"
                         draggable={false}
                       />
+                    ) : formattedImageURL.includes("index") ? (
+                      <div className="rounded-md absolute w-full h-full object-cover">
+                        <ReactPlayer
+                          url={formattedImageURL}
+                          controls={true}
+                          muted={true}
+                          playsinline
+                          loop
+                          style={{
+                            borderRadius: "0.375rem",
+                            objectFit: "cover",
+                          }}
+                          width="100%"
+                          height="100%"
+                          className="rounded-md"
+                        />
+                      </div>
                     ) : (
                       <video
                         muted
                         controls
                         className="rounded-md absolute w-full h-full object-cover"
                       >
-                        <source src={formattedImageURL} type="video/mp4" />
+                        <source src={formattedImageURL} />
                       </video>
                     )}
                   </div>

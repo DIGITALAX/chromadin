@@ -9,6 +9,7 @@ import FetchMoreLoading from "../../Loading/FetchMoreLoading";
 import { CommentsProps } from "../types/interactions.types";
 import descriptionRegex from "@/lib/helpers/descriptionRegex";
 import { AiFillFastBackward, AiOutlineLoading } from "react-icons/ai";
+import ReactPlayer from "react-player";
 import { setPurchase } from "@/redux/reducers/purchaseSlice";
 import { setFollowerOnly } from "@/redux/reducers/followerOnlySlice";
 import { setSecondaryComment } from "@/redux/reducers/secondaryCommentSlice";
@@ -180,8 +181,9 @@ const Comments: FunctionComponent<CommentsProps> = ({
                                     key={index}
                                     className="relative w-24 h-24 grid grid-flow-col auto-cols-auto"
                                   >
-                                    {media?.original?.mimeType !==
-                                    "video/mp4" ? (
+                                    {!media?.original?.mimeType.includes(
+                                      "video"
+                                    ) ? (
                                       <Image
                                         src={formattedImageURL}
                                         layout="fill"
@@ -189,6 +191,23 @@ const Comments: FunctionComponent<CommentsProps> = ({
                                         draggable={false}
                                         className="rounded-lg"
                                       />
+                                    ) : formattedImageURL.includes("index") ? (
+                                      <div className="rounded-md absolute w-full h-full object-cover">
+                                        <ReactPlayer
+                                          url={formattedImageURL}
+                                          controls={true}
+                                          muted={true}
+                                          playsinline
+                                          loop
+                                          style={{
+                                            borderRadius: "0.375rem",
+                                            objectFit: "cover",
+                                          }}
+                                          width="100%"
+                                          height="100%"
+                                          className="rounded-md"
+                                        />
+                                      </div>
                                     ) : (
                                       <video
                                         muted
