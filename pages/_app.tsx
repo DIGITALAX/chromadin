@@ -22,7 +22,7 @@ const { chains, provider } = configureChains(
 const { connectors } = getDefaultWallets({
   appName: "Chromadin",
   chains,
-  projectId: process.env.WALLET_CONNECT_PROJECT_ID as string,
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
 });
 
 const wagmiClient = createClient({
