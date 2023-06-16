@@ -10,8 +10,6 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import Modals from "@/components/Common/Modals/modules/Modals";
 import { useEffect } from "react";
 
-const projectId = "b3b7fdf45176170edb033d0002c4904b";
-
 const { chains, provider } = configureChains(
   [polygon],
   [
@@ -24,7 +22,7 @@ const { chains, provider } = configureChains(
 const { connectors } = getDefaultWallets({
   appName: "Chromadin",
   chains,
-  projectId,
+  projectId: process.env.WALLET_CONNECT_PROJECT_ID as string,
 });
 
 const wagmiClient = createClient({
