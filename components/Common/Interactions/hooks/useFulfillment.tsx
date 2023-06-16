@@ -12,7 +12,7 @@ import {
   useContractRead,
   useAccount,
 } from "wagmi";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import ChromadinMarketplaceABI from "./../../../../abis/ChromadinMarketplace.json";
 import { setIndexModal } from "@/redux/reducers/indexModalSlice";
 import { setSuccess } from "@/redux/reducers/successSlice";
@@ -159,7 +159,7 @@ const useFulfillment = () => {
     enabled: Boolean(tokenId),
   });
 
-  const { writeAsync } = useContractWrite(config);
+  const { writeAsync } = useContractWrite(config as any);
   const { writeAsync: buyNFTAsync } = useContractWrite(buyNFTConfig);
 
   const getTotalAmount = () => {
@@ -289,7 +289,7 @@ const useFulfillment = () => {
   useEffect(() => {
     if (address) {
       if (
-        Number(data?.toBigInt()?.toString()) /
+        Number((data as BigNumber)?.toBigInt()?.toString()) /
           (currency === "USDT" ? 10 ** 6 : 10 ** 18) >=
         totalAmount
       ) {
