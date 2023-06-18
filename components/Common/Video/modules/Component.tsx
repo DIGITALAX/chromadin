@@ -11,12 +11,15 @@ const Component: FunctionComponent<ComponentProps> = ({
   streamRef,
   mainVideo,
   isPlaying,
-  videos,
   volume,
   dispatchVideos,
   muted,
   videoSync,
   dispatch,
+  hasMore,
+  fetchMoreVideos,
+  videosLoading,
+  setVideosLoading,
 }): JSX.Element => {
   const currentIndex = lodash.findIndex(dispatchVideos, { id: mainVideo.id });
   return (
@@ -32,31 +35,65 @@ const Component: FunctionComponent<ComponentProps> = ({
       }}
       width="100%"
       height="100%"
-      onEnded={() =>
-        dispatch(
-          setMainVideo({
-            actionVideo: `${INFURA_GATEWAY}/ipfs/${
-              dispatchVideos[
-                (currentIndex + 1) % videos?.length
-              ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
-            }`,
-            actionCollected:
-              videoSync.collectedArray[
-                (currentIndex + 1) % dispatchVideos?.length
-              ],
-            actionLiked:
-              videoSync.likedArray[(currentIndex + 1) % dispatchVideos?.length],
-            actionMirrored:
-              videoSync.mirroredArray[
-                (currentIndex + 1) % dispatchVideos?.length
-              ],
-            actionId:
-              dispatchVideos[(currentIndex + 1) % dispatchVideos?.length].id,
-            actionLocal: `${
-              json[(currentIndex + 1) % dispatchVideos?.length].link
-            }`,
-          })
-        )
+      onEnded={
+        hasMore &&
+        (currentIndex + 1) % dispatchVideos?.length === 0 &&
+        !videosLoading
+          ? async () => {
+              setVideosLoading(true);
+              const more = await fetchMoreVideos();
+
+              dispatch(
+                setMainVideo({
+                  actionVideo: `${INFURA_GATEWAY}/ipfs/${
+                    more?.videos[
+                      (currentIndex + 1) % more?.videos?.length!
+                    ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
+                  }`,
+                  actionCollected:
+                    more?.collects[(currentIndex + 1) % more?.videos?.length!],
+                  actionLiked:
+                    more?.likes[(currentIndex + 1) % more?.videos?.length!],
+                  actionMirrored:
+                    more?.mirrors[(currentIndex + 1) % more?.videos?.length!],
+                  actionId:
+                    more?.videos[(currentIndex + 1) % more?.videos?.length!]
+                      ?.id,
+                  actionLocal: `${
+                    json[(currentIndex + 1) % more?.videos?.length!]?.link
+                  }`,
+                })
+              );
+              setVideosLoading(false);
+            }
+          : () =>
+              dispatch(
+                setMainVideo({
+                  actionVideo: `${INFURA_GATEWAY}/ipfs/${
+                    dispatchVideos[
+                      (currentIndex + 1) % dispatchVideos?.length
+                    ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
+                  }`,
+                  actionCollected:
+                    videoSync.collectedArray[
+                      (currentIndex + 1) % dispatchVideos?.length
+                    ],
+                  actionLiked:
+                    videoSync.likedArray[
+                      (currentIndex + 1) % dispatchVideos?.length
+                    ],
+                  actionMirrored:
+                    videoSync.mirroredArray[
+                      (currentIndex + 1) % dispatchVideos?.length
+                    ],
+                  actionId:
+                    dispatchVideos[(currentIndex + 1) % dispatchVideos?.length]
+                      .id,
+                  actionLocal: `${
+                    json[(currentIndex + 1) % dispatchVideos?.length].link
+                  }`,
+                })
+              )
       }
       volume={volume}
       onDuration={(duration) =>

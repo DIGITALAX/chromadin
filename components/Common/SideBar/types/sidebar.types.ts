@@ -3,20 +3,25 @@ import { VideoSyncState } from "@/redux/reducers/videoSyncSlice";
 import { AnyAction, Dispatch } from "redux";
 
 export type ChannelsProps = {
-  videos: Publication[];
   dispatch: Dispatch<AnyAction>;
   dispatchVideos: Publication[];
   videoSync: VideoSyncState;
-  fetchMoreVideos: () => Promise<void>;
+  fetchMoreVideos: () => Promise<
+    | { videos: any[]; mirrors: any[]; collects: boolean[]; likes: any[] }
+    | undefined
+  >;
   hasMore: boolean;
 };
 
 export type UseChannelsResults = {
-  videos: Publication[];
   tab: number;
   setTab: (e: number) => void;
-  fetchMoreVideos: () => Promise<void>;
-  hasMore: boolean;
+  fetchMoreVideos: () => Promise<
+    | { videos: any[]; mirrors: any[]; collects: boolean[]; likes: any[] }
+    | undefined
+  >;
+  videosLoading: boolean;
+  setVideosLoading: (e: boolean) => void;
 };
 
 export type UseConnectResults = {
@@ -68,12 +73,14 @@ export type SideBarProps = {
   tab: number;
   setTab: (e: number) => void;
   dispatch: Dispatch<AnyAction>;
-  videos: Publication[];
   viewer: string;
   dispatchVideos: Publication[];
   options: string;
   videoSync: VideoSyncState;
-  fetchMoreVideos: () => Promise<void>;
+  fetchMoreVideos: () => Promise<
+    | { videos: any[]; mirrors: any[]; collects: boolean[]; likes: any[] }
+    | undefined
+  >;
   hasMore: boolean;
 };
 

@@ -201,8 +201,6 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                 }
               }
 
-              console.log(image);
-
               return (
                 <div
                   key={index}

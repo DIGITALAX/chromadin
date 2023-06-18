@@ -14,22 +14,20 @@ const SideBar: FunctionComponent<SideBarProps> = ({
   authStatus,
   tab,
   setTab,
-  videos,
   dispatch,
   viewer,
   dispatchVideos,
   options,
   videoSync,
   fetchMoreVideos,
-  hasMore
+  hasMore,
 }): JSX.Element => {
   return (
     <div className="relative w-full lg:w-80 h-fit lg:h-full flex flex-col">
-      <Switcher options={options} dispatch={dispatch}/>
+      <Switcher options={options} dispatch={dispatch} />
       <Tabs tab={tab} setTab={setTab} viewer={viewer} />
       {tab === 0 ? (
         <Channels
-          videos={videos}
           dispatch={dispatch}
           dispatchVideos={dispatchVideos}
           videoSync={videoSync}

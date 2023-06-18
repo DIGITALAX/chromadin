@@ -99,11 +99,17 @@ export type FullScreenVideoProps = {
   mainVideo: MainVideoState;
   videoRef: Ref<HTMLDivElement>;
   streamRef: Ref<ReactPlayer>;
-  videos: Publication[];
   wrapperRef: Ref<HTMLDivElement>;
   dispatchVideos: Publication[];
   videoSync: VideoSyncState;
   viewer: string;
+  hasMore: boolean;
+  fetchMoreVideos: () => Promise<
+    | { videos: any[]; mirrors: any[]; collects: boolean[]; likes: any[] }
+    | undefined
+  >;
+  videosLoading: boolean;
+  setVideosLoading: (e: boolean) => void;
 };
 
 export type SuperFollowProps = {

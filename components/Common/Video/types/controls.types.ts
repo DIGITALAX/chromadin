@@ -25,7 +25,6 @@ export type ControlsProps = {
   authStatus: boolean;
   profileId: string;
   mainVideo: MainVideoState;
-  videos: Publication[];
   progressRef: Ref<HTMLDivElement>;
   handleSeek: (
     e: MouseEvent<HTMLDivElement, MouseEvent<Element, MouseEvent>>
@@ -35,6 +34,13 @@ export type ControlsProps = {
   mirrorAmount: number[];
   likeAmount: number[];
   dispatch: Dispatch<AnyAction>;
+  hasMore: boolean;
+  fetchMoreVideos: () => Promise<
+    | { videos: any[]; mirrors: any[]; collects: boolean[]; likes: any[] }
+    | undefined
+  >;
+  videosLoading: boolean;
+  setVideosLoading: (e: boolean) => void;
 };
 
 export type UseControlsResults = {
@@ -75,7 +81,6 @@ export type VideoProps = {
 export type PlayerProps = {
   streamRef: Ref<ReactPlayer>;
   mainVideo: MainVideoState;
-  videos: Publication[];
   volume: number;
   wrapperRef: Ref<HTMLDivElement>;
   dispatchVideos: Publication[];
@@ -84,16 +89,29 @@ export type PlayerProps = {
   videoSync: VideoSyncState;
   viewer: string;
   dispatch: Dispatch<AnyAction>;
+  hasMore: boolean;
+  fetchMoreVideos: () => Promise<
+    | { videos: any[]; mirrors: any[]; collects: boolean[]; likes: any[] }
+    | undefined
+  >;
+  videosLoading: boolean;
+  setVideosLoading: (e: boolean) => void;
 };
 
 export type ComponentProps = {
   streamRef: Ref<ReactPlayer>;
   mainVideo: MainVideoState;
   isPlaying: boolean;
-  videos: Publication[];
   volume: number;
   dispatchVideos: Publication[];
   muted: boolean;
   videoSync: VideoSyncState;
   dispatch: Dispatch<AnyAction>;
+  hasMore: boolean;
+  fetchMoreVideos: () => Promise<
+    | { videos: any[]; mirrors: any[]; collects: boolean[]; likes: any[] }
+    | undefined
+  >;
+  videosLoading: boolean;
+  setVideosLoading: (e: boolean) => void;
 };

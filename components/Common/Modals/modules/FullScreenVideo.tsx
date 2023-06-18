@@ -11,11 +11,14 @@ const FullScreenVideo: FunctionComponent<FullScreenVideoProps> = ({
   mainVideo,
   videoRef,
   streamRef,
-  videos,
   wrapperRef,
   dispatchVideos,
   videoSync,
-  viewer
+  viewer,
+  hasMore,
+  fetchMoreVideos,
+  videosLoading,
+  setVideosLoading,
 }): JSX.Element => {
   return (
     <Draggable
@@ -56,7 +59,6 @@ const FullScreenVideo: FunctionComponent<FullScreenVideoProps> = ({
           <Player
             streamRef={streamRef}
             mainVideo={mainVideo}
-            videos={videos}
             wrapperRef={wrapperRef}
             dispatchVideos={dispatchVideos}
             fullScreen={true}
@@ -65,6 +67,10 @@ const FullScreenVideo: FunctionComponent<FullScreenVideoProps> = ({
             videoSync={videoSync}
             viewer={viewer}
             dispatch={dispatch}
+            hasMore={hasMore}
+            fetchMoreVideos={fetchMoreVideos}
+            videosLoading={videosLoading}
+            setVideosLoading={setVideosLoading}
           />
         </div>
       </div>

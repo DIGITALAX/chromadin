@@ -10,7 +10,6 @@ const Component = dynamic(() => import("./Component"), { ssr: false });
 const Player: FunctionComponent<PlayerProps> = ({
   streamRef,
   mainVideo,
-  videos,
   volume,
   wrapperRef,
   dispatchVideos,
@@ -19,6 +18,10 @@ const Player: FunctionComponent<PlayerProps> = ({
   videoSync,
   dispatch,
   viewer,
+  hasMore,
+  fetchMoreVideos,
+  setVideosLoading,
+  videosLoading
 }): JSX.Element => {
   return (
     <div
@@ -56,12 +59,15 @@ const Player: FunctionComponent<PlayerProps> = ({
           streamRef={streamRef}
           mainVideo={mainVideo}
           isPlaying={videoSync.isPlaying}
-          videos={videos}
           volume={volume}
           dispatchVideos={dispatchVideos}
           muted={muted}
           videoSync={videoSync}
           dispatch={dispatch}
+          hasMore={hasMore}
+          fetchMoreVideos={fetchMoreVideos}
+          videosLoading={videosLoading}
+          setVideosLoading={setVideosLoading}
         />
       )}
     </div>

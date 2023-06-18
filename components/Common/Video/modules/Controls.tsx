@@ -27,7 +27,6 @@ const Controls: FunctionComponent<ControlsProps> = ({
   likeLoading,
   mirrorLoading,
   collectLoading,
-  videos,
   mainVideo,
   progressRef,
   handleSeek,
@@ -37,6 +36,10 @@ const Controls: FunctionComponent<ControlsProps> = ({
   likeAmount,
   videoSync,
   dispatch,
+  hasMore,
+  fetchMoreVideos,
+  videosLoading,
+  setVideosLoading,
 }): JSX.Element => {
   const currentIndex = lodash.findIndex(dispatchVideos, { id: mainVideo.id });
   return (
@@ -221,7 +224,7 @@ const Controls: FunctionComponent<ControlsProps> = ({
                       : currentIndex === 0
                       ? dispatchVideos.length - 1
                       : currentIndex - 1
-                  ].id,
+                  ]?.id,
                 actionLocal: `${
                   json[
                     currentIndex === dispatchVideos.length - 1
@@ -229,7 +232,7 @@ const Controls: FunctionComponent<ControlsProps> = ({
                       : currentIndex === 0
                       ? dispatchVideos.length - 1
                       : currentIndex - 1
-                  ].link
+                  ]?.link
                 }`,
               })
             )
@@ -273,43 +276,91 @@ const Controls: FunctionComponent<ControlsProps> = ({
           />
         </div>
         <div
-          className="relative cursor-pointer"
-          onClick={() =>
-            dispatch(
-              setMainVideo({
-                actionVideo: `${INFURA_GATEWAY}/ipfs/${
-                  dispatchVideos[
-                    (currentIndex + 1) % dispatchVideos?.length
-                  ]?.metadata?.media[0]?.original?.url?.split("ipfs://")[1]
-                }`,
-                actionCollected:
-                  videoSync.collectedArray[
-                    (currentIndex + 1) % dispatchVideos?.length
-                  ],
-                actionLiked:
-                  videoSync.likedArray[
-                    (currentIndex + 1) % dispatchVideos?.length
-                  ],
-                actionMirrored:
-                  videoSync.mirroredArray[
-                    (currentIndex + 1) % dispatchVideos?.length
-                  ],
-                actionId:
-                  dispatchVideos[(currentIndex + 1) % dispatchVideos.length].id,
-                actionLocal: `${
-                  json[(currentIndex + 1) % dispatchVideos?.length].link
-                }`,
-              })
-            )
+          className={`relative cursor-pointer ${
+            videosLoading && "animate-spin"
+          }`}
+          onClick={
+            hasMore &&
+            (currentIndex + 1) % dispatchVideos?.length === 0 &&
+            !videosLoading
+              ? async () => {
+                  setVideosLoading(true);
+                  const more = await fetchMoreVideos();
+
+                  dispatch(
+                    setMainVideo({
+                      actionVideo: `${INFURA_GATEWAY}/ipfs/${
+                        more?.videos[
+                          (currentIndex + 1) % more?.videos?.length!
+                        ]?.metadata?.media[0]?.original?.url?.split(
+                          "ipfs://"
+                        )[1]
+                      }`,
+                      actionCollected:
+                        more?.collects[
+                          (currentIndex + 1) % more?.videos?.length!
+                        ],
+                      actionLiked:
+                        more?.likes[(currentIndex + 1) % more?.videos?.length!],
+                      actionMirrored:
+                        more?.mirrors[
+                          (currentIndex + 1) % more?.videos?.length!
+                        ],
+                      actionId:
+                        more?.videos[(currentIndex + 1) % more?.videos?.length!]
+                          ?.id,
+                      actionLocal: `${
+                        json[(currentIndex + 1) % more?.videos?.length!]?.link
+                      }`,
+                    })
+                  );
+                  setVideosLoading(false);
+                }
+              : () =>
+                  !videosLoading &&
+                  dispatch(
+                    setMainVideo({
+                      actionVideo: `${INFURA_GATEWAY}/ipfs/${
+                        dispatchVideos[
+                          (currentIndex + 1) % dispatchVideos?.length
+                        ]?.metadata?.media[0]?.original?.url?.split(
+                          "ipfs://"
+                        )[1]
+                      }`,
+                      actionCollected:
+                        videoSync.collectedArray[
+                          (currentIndex + 1) % dispatchVideos?.length
+                        ],
+                      actionLiked:
+                        videoSync.likedArray[
+                          (currentIndex + 1) % dispatchVideos?.length
+                        ],
+                      actionMirrored:
+                        videoSync.mirroredArray[
+                          (currentIndex + 1) % dispatchVideos?.length
+                        ],
+                      actionId:
+                        dispatchVideos[
+                          (currentIndex + 1) % dispatchVideos.length
+                        ]?.id,
+                      actionLocal: `${
+                        json[(currentIndex + 1) % dispatchVideos?.length]?.link
+                      }`,
+                    })
+                  )
           }
         >
-          <Image
-            src={`${INFURA_GATEWAY}/ipfs/QmcYHKZJWJjgibox8iLqNozENnkgD4CZQqYsmmVJpoYUyo`}
-            width={12}
-            height={12}
-            alt="forward"
-            draggable={false}
-          />
+          {videosLoading ? (
+            <AiOutlineLoading color="white" size={12} />
+          ) : (
+            <Image
+              src={`${INFURA_GATEWAY}/ipfs/QmcYHKZJWJjgibox8iLqNozENnkgD4CZQqYsmmVJpoYUyo`}
+              width={12}
+              height={12}
+              alt="forward"
+              draggable={false}
+            />
+          )}
         </div>
         <div
           className="relative cursor-pointer"

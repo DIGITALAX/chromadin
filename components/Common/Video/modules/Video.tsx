@@ -29,7 +29,7 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
     progressRef,
     handleSeek,
   } = useControls();
-  const { videos } = useChannels();
+  const { fetchMoreVideos, videosLoading, setVideosLoading } = useChannels();
   const dispatch = useDispatch();
   const dispatchVideos = useSelector(
     (state: RootState) => state.app.channelsReducer.value
@@ -39,6 +39,9 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
   );
   const reactions = useSelector(
     (state: RootState) => state.app.videoCountReducer
+  );
+  const hasMore = useSelector(
+    (state: RootState) => state.app.hasMoreVideosReducer.value
   );
   return (
     <div
@@ -61,7 +64,6 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
           viewer={viewer}
           streamRef={streamRef}
           mainVideo={mainVideo}
-          videos={videos}
           volume={volume}
           wrapperRef={wrapperRef}
           dispatchVideos={dispatchVideos}
@@ -69,6 +71,10 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
           videoSync={videoSync}
           muted={false}
           dispatch={dispatch}
+          hasMore={hasMore}
+          fetchMoreVideos={fetchMoreVideos}
+          videosLoading={videosLoading}
+          setVideosLoading={setVideosLoading}
         />
         {viewer !== "sampler" && (
           <Controls
@@ -90,7 +96,6 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
             authStatus={authStatus}
             profileId={profileId}
             mainVideo={mainVideo}
-            videos={videos}
             progressRef={progressRef}
             handleSeek={handleSeek}
             dispatchVideos={dispatchVideos}
@@ -99,6 +104,10 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
             likeAmount={reactions.like}
             videoSync={videoSync}
             dispatch={dispatch}
+            hasMore={hasMore}
+            fetchMoreVideos={fetchMoreVideos}
+            videosLoading={videosLoading}
+            setVideosLoading={setVideosLoading}
           />
         )}
       </div>

@@ -11,13 +11,13 @@ import checkPostReactions from "@/lib/helpers/checkPostReactions";
 import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import { ApolloQueryResult } from "@apollo/client";
 import { setMainVideo } from "@/redux/reducers/mainVideoSlice";
-import { INFURA_GATEWAY } from "@/lib/constants";
 import json from "./../../../../public/videos/local.json";
 import { setChannelsRedux } from "@/redux/reducers/channelsSlice";
 import lodash from "lodash";
 import { setReactId } from "@/redux/reducers/reactIdSlice";
 import { setVideoSync } from "@/redux/reducers/videoSyncSlice";
 import { setVideoCount } from "@/redux/reducers/videoCountSlice";
+import { setHasMoreVideosRedux } from "@/redux/reducers/hasMoreVideosSlice";
 
 const useChannels = (): UseChannelsResults => {
   const authStatus = useSelector(
@@ -45,10 +45,9 @@ const useChannels = (): UseChannelsResults => {
     (state: RootState) => state.app.videoCountReducer
   );
   const dispatch = useDispatch();
-  const [videos, setVideos] = useState<Publication[]>([]);
   const [tab, setTab] = useState<number>(0);
   const [paginated, setPaginated] = useState<any>();
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [videosLoading, setVideosLoading] = useState<boolean>(false);
 
   const getVideos = async (): Promise<void> => {
     dispatch(
@@ -92,13 +91,12 @@ const useChannels = (): UseChannelsResults => {
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
       if (sortedArr?.length < 10) {
-        setHasMore(false);
+        dispatch(setHasMoreVideosRedux(false));
       } else {
-        setHasMore(true);
+        dispatch(setHasMoreVideosRedux(true));
       }
       setPaginated(data?.data.publications?.pageInfo);
       dispatch(setChannelsRedux(sortedArr));
-      setVideos(sortedArr);
       dispatch(
         setVideoCount({
           actionLike: sortedArr.map(
@@ -161,7 +159,7 @@ const useChannels = (): UseChannelsResults => {
       hasMirroredArr: any[] = [],
       sortedArr: any[] = [];
     if (!paginated?.next) {
-      setHasMore(false);
+      dispatch(setHasMoreVideosRedux(false));
       return;
     }
     try {
@@ -189,13 +187,12 @@ const useChannels = (): UseChannelsResults => {
       );
 
       if (sortedArr?.length < 10) {
-        setHasMore(false);
+        dispatch(setHasMoreVideosRedux(false));
       } else {
-        setHasMore(true);
+        dispatch(setHasMoreVideosRedux(true));
       }
       setPaginated(data?.data.publications?.pageInfo);
       dispatch(setChannelsRedux([...channelsDispatched, ...sortedArr]));
-      setVideos([...channelsDispatched, ...sortedArr]);
       dispatch(
         setVideoCount({
           actionLike: [
@@ -252,6 +249,21 @@ const useChannels = (): UseChannelsResults => {
         actionVideosLoading: videoSync.videosLoading,
       })
     );
+    return {
+      videos: [...channelsDispatched, ...sortedArr],
+      mirrors: [
+        ...videoSync.mirroredArray,
+        ...(hasMirroredArr?.length > 0 ? hasMirroredArr : []),
+      ],
+      collects: [
+        ...videoSync.collectedArray,
+        ...sortedArr?.map((obj: Publication) => obj?.hasCollectedByMe),
+      ],
+      likes: [
+        ...videoSync.likedArray,
+        ...(hasReactedArr?.length > 0 ? hasReactedArr : []),
+      ],
+    };
   };
 
   const refetchInteractions = async () => {
@@ -286,7 +298,7 @@ const useChannels = (): UseChannelsResults => {
         lensProfile
       );
       const hasMirroredArr = await checkIfMirrored(
-        videos?.length > 0 ? videos : channelsDispatched,
+        channelsDispatched,
         lensProfile
       );
       const hasCollectedArr = sortedArr.map(
@@ -318,10 +330,9 @@ const useChannels = (): UseChannelsResults => {
         })
       );
       if (reactId === mainVideo.id) {
-        const currentIndex = lodash.findIndex(
-          videos?.length > 0 ? videos : channelsDispatched,
-          { id: reactId }
-        );
+        const currentIndex = lodash.findIndex(channelsDispatched, {
+          id: reactId,
+        });
         dispatch(
           setMainVideo({
             actionVideo: mainVideo.video,
@@ -352,11 +363,11 @@ const useChannels = (): UseChannelsResults => {
   }, [lensProfile]);
 
   return {
-    videos,
     tab,
     setTab,
     fetchMoreVideos,
-    hasMore,
+    videosLoading,
+    setVideosLoading,
   };
 };
 

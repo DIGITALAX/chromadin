@@ -27,6 +27,7 @@ import useImageUpload from "../../NFT/hooks/useImageUpload";
 import useMakePost from "../../Wavs/hooks/usePost";
 import Decrypt from "./Decrypt";
 import IPFS from "./IPFS";
+import useChannels from "../../SideBar/hooks/useChannels";
 
 const Modals = () => {
   const videoRef = useRef<HTMLDivElement>(null);
@@ -80,6 +81,9 @@ const Modals = () => {
   );
   const reaction = useSelector(
     (state: RootState) => state.app.reactionStateReducer
+  );
+  const hasMore = useSelector(
+    (state: RootState) => state.app.hasMoreVideosReducer.value
   );
   const makePost = useSelector((state: RootState) => state.app.makePostReducer);
   const rain = useSelector((state: RootState) => state.app.rainReducer.value);
@@ -201,8 +205,10 @@ const Modals = () => {
     uploadVideo,
     handleRemoveImage,
     mappedFeaturedFiles,
-    setImageLoading
+    setImageLoading,
   } = useImageUpload();
+  const { fetchMoreVideos, videosLoading, setVideosLoading } = useChannels();
+
   return (
     <>
       {fullScreenVideo.value && (
@@ -211,11 +217,14 @@ const Modals = () => {
           mainVideo={mainVideo}
           streamRef={fullVideoRef}
           wrapperRef={wrapperRef}
-          videos={dispatchVideos}
           dispatchVideos={dispatchVideos}
           videoSync={videoSync}
           videoRef={videoRef}
           viewer={viewer}
+          hasMore={hasMore}
+          fetchMoreVideos={fetchMoreVideos}
+          videosLoading={videosLoading}
+          setVideosLoading={setVideosLoading}
         />
       )}
       {reaction.open && (

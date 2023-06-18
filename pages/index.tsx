@@ -38,10 +38,13 @@ const Home: NextPage = (): JSX.Element => {
   const videoSync = useSelector(
     (state: RootState) => state.app.videoSyncReducer
   );
+  const hasMore = useSelector(
+    (state: RootState) => state.app.hasMoreVideosReducer.value
+  );
   const dispatch = useDispatch();
   const router = useRouter();
   const { handleConnect, handleLensSignIn, connected } = useConnect();
-  const { videos, tab, setTab, fetchMoreVideos, hasMore } = useChannels();
+  const { tab, setTab, fetchMoreVideos } = useChannels();
 
   useEffect(() => {
     dispatch(setHistoryURLRedux(router.asPath));
@@ -66,7 +69,6 @@ const Home: NextPage = (): JSX.Element => {
               profile={profile}
               tab={tab}
               setTab={setTab}
-              videos={videos}
               viewer={viewer}
               dispatch={dispatch}
               dispatchVideos={dispatchVideos}
@@ -94,7 +96,6 @@ const Home: NextPage = (): JSX.Element => {
           <Tabs tab={tab} setTab={setTab} viewer={viewer} />
           {tab === 0 ? (
             <Channels
-              videos={videos}
               dispatch={dispatch}
               dispatchVideos={dispatchVideos}
               videoSync={videoSync}
