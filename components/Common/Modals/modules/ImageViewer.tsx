@@ -1,6 +1,5 @@
 import Image from "next/legacy/image";
 import { FunctionComponent } from "react";
-import { setImageViewer } from "../../../../redux/reducers/imageViewerSlice";
 import { ImageViewerProps } from "../types/modals.types";
 import { setImageFeedViewer } from "@/redux/reducers/imageFeedViewerSlice";
 import ReactPlayer from "react-player";
