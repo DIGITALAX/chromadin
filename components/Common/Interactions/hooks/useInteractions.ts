@@ -126,6 +126,7 @@ const useInteractions = () => {
         !comments?.data?.publications ||
         comments?.data?.publications?.items?.length < 1
       ) {
+        setHasMoreComments(false);
         setCommentsLoading(false);
         return;
       }
