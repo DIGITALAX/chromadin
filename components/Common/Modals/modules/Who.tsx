@@ -248,14 +248,16 @@ const Who: FunctionComponent<WhoProps> = ({
                                   className="relative w-fit h-fit justify-center flex"
                                 >
                                   @
-                                  {
-                                    (type === 0
-                                      ? reacter?.profile
-                                      : type === 1
-                                      ? reacter.defaultProfile
-                                      : reacter
-                                    )?.handle?.split(".lens")[0]
-                                  }
+                                  {type == 1
+                                    ? reacter.defaultProfile
+                                      ? reacter.defaultProfile?.handle?.split(
+                                          ".lens"
+                                        )[0]
+                                      : reacter.address.slice(0, 13)
+                                    : (type === 0
+                                        ? reacter?.profile
+                                        : reacter
+                                      )?.handle?.split(".lens")[0]}
                                 </div>
                               </div>
                             </div>

@@ -59,9 +59,10 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
                 }
                 return (
                   <div
-                    className="relative w-full h-fit flex flex-row gap-3 cursor-pointer"
+                    className={`relative w-full h-fit flex flex-row gap-3 ${collector?.defaultProfile?.handle && "cursor-pointer"}`}
                     key={index}
-                    onClick={() => {
+                    onClick={() =>
+                      collector?.defaultProfile?.handle &&
                       window.open(
                         router.asPath.includes("&search=")
                           ? `https://www.chromadin.xyz/#chat?option=history&search=` +
@@ -77,8 +78,8 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
                                 ".lens"
                               )[0]
                             }`
-                      );
-                    }}
+                      )
+                    }
                   >
                     <div
                       className="relative w-6 h-6 border border-white"
@@ -94,7 +95,9 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
                       )}
                     </div>
                     <div className="relative w-full h-fit text-ama font-arcade">
-                      {collector?.defaultProfile?.handle}
+                      {collector?.defaultProfile?.handle
+                        ? collector?.defaultProfile?.handle
+                        : collector?.address?.slice(0, 20)}
                     </div>
                   </div>
                 );
