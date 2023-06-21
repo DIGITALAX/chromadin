@@ -55,9 +55,15 @@ const Comments: FunctionComponent<CommentsProps> = ({
               {video?.metadata?.content?.split("\n\n")[0]}
             </div>
           </div>
-          <div className="relative w-full h-full flex font-arcade text-sm text-white">
-            {video?.metadata?.content?.split("\n\n")[1]}
-          </div>
+          <div
+            className="relative w-full h-full flex font-arcade text-sm text-white whitespace-preline"
+            dangerouslySetInnerHTML={{
+              __html: video?.metadata?.content
+                ?.split("\n\n")
+                .slice(1)
+                .join("<br><br>"),
+            }}
+          />
         </div>
       </div>
       <div className="relative w-full h-[15rem] xl:h-[27.7rem] border-white border bg-offBlack overflow-y-scroll">
