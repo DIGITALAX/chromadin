@@ -10,7 +10,7 @@ const SuperCreator: FunctionComponent<SuperCreatorProps> = ({
   dispatch,
 }): JSX.Element => {
   return (
-    <div className="relative w-auto h-fit flex items-start justify-start ml-auto px-3 order-2 sm:order-1 lg:order-2 stuck1:order-1">
+    <div className="relative w-auto h-fit flex items-start justify-start ml-auto px-3 order-2 sm:order-1 lg:order-2 stuck2:order-1">
       <div className="relative flex flex-col h-fit w-full rounded-md text-white whitespace-nowrap gap-1">
         <div
           className={`relative text-sm w-fit h-fit justify-center flex border border-white font-earl border-dashed py-px px-2 flex items-center rounded-md active:scale-95 hover:text-moda cursor-pointer `}

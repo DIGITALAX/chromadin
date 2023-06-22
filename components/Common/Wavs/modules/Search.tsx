@@ -16,7 +16,7 @@ const Search: FunctionComponent<SearchProps> = ({
   setProfilesFound,
 }): JSX.Element => {
   return (
-    <div className="relative w-full sm:w-44 h-full flex flex-col items-start justify-end ml-auto order-1 sm:order-2 lg:order-1 stuck1:order-2">
+    <div className="relative w-full sm:w-44 h-full grid grid-flow-cols ml-auto order-1 sm:order-2 lg:order-1 stuck2:order-2">
       <input
         className={`relative row-start-1 col-start-1 h-10 bg-black border border-white font-dosis text-white p-2 rounded-md w-full text-sm`}
         placeholder="Explore Profiles"

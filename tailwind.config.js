@@ -68,6 +68,7 @@ module.exports = {
         wrap: "1360px",
         alto: "1950px",
         stuck1: "1120px",
+        stuck2: "1440px",
       },
     },
   },

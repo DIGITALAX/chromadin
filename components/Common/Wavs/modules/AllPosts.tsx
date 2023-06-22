@@ -110,16 +110,16 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   decryptScrollPos,
   setScrollPosDecrypt,
   handleImagePaste,
-  setImageLoading
+  setImageLoading,
 }): JSX.Element => {
   return (
-    <div className="relative w-full h-full flex flex-col items-start justify-start gap-4">
+    <div className="relative w-full h-full flex flex-col items-start justify-start gap-4 max-w-full">
       <div className="relative flex flex-col items-start justify-start gap-3 h-full w-full">
-        <div className="relative w-full h-fit flex flex-col sm:flex-row gap-3 sm:gap-10">
-          <div className="max-w-full overflow-x-scroll">
+        <div className="relative w-full h-fit flex flex-col sm:flex-row lg:flex-col stuck2:flex-row gap-3 sm:gap-10">
+          <div className="overflow-x-auto">
             <QuickProfiles router={router} quickProfiles={quickProfiles} />
           </div>
-          <div className="relative flex flex-col sm:flex-row lg:flex-col stuck1:flex-row gap-5 sm:gap-1 lg:gap-3 stuck1:gap-1 w-full flex-shrink-0 sm:w-auto h-fit ml-auto sm:pt-0 pt-3">
+          <div className="relative flex flex-col sm:flex-row lg:flex-col stuck2:flex-row gap-5 sm:gap-1 lg:gap-3 stuck2:gap-1 w-full sm:w-auto h-fit ml-auto sm:pt-0 pt-3">
             <SuperCreator
               dispatch={dispatch}
               handleConnect={handleConnect}
