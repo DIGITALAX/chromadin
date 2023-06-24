@@ -108,7 +108,8 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   fetchMoreProfileDecrypt,
   followerOnlyProfileDecrypt,
   handleImagePaste,
-  setImageLoading
+  setImageLoading,
+  profileCollectionsLoading,
 }): JSX.Element => {
   const history = useSelector(
     (state: RootState) => state.app.historyURLReducer.value
@@ -128,19 +129,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
             onClick={() => {
               history.includes("#chat") &&
               (history.includes("&profile=") || history.includes("&post="))
-                ? router.asPath.includes("&search=")
-                  ? router.push(
-                      `#chat?option=history&search=${
-                        router.asPath
-                          ?.split("&search=")[1]
-                          ?.split(
-                            history.includes("&profile=")
-                              ? "&profile="
-                              : "&post="
-                          )[0]
-                      }`
-                    )
-                  : router.push("#chat?option=history")
+                ? router.push("#chat?option=history")
                 : router.back();
             }}
           >
@@ -151,6 +140,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           dispatch={dispatch}
           profile={profile}
           profileCollections={profileCollections}
+          profileCollectionsLoading={profileCollectionsLoading}
         />
         <InfiniteScroll
           height={"40rem"}

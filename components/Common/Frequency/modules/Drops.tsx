@@ -11,10 +11,11 @@ const Drops: FunctionComponent<DropsProps> = ({
   dispatch,
   collectionsLoading,
   router,
+  moreCollectionsLoading,
 }): JSX.Element => {
   return (
     <div className="relative w-[80%] h-full p-4 flex flex-row gap-4">
-      {collectionsLoading
+      {collectionsLoading || moreCollectionsLoading
         ? Array.from({ length: 7 }).map((_: any, index: number) => {
             return (
               <div
@@ -70,182 +71,76 @@ const Drops: FunctionComponent<DropsProps> = ({
                     router.asPath.includes("#sampler") ||
                     router.asPath.includes("#chat")
                   ) {
-                    if (!router.asPath.includes("&search=")) {
-                      if (router.asPath.includes("&post=")) {
-                        router.push(
-                          router.asPath.split(
-                            router.asPath.includes("#chat")
-                              ? "#chat"
-                              : "#sampler"
-                          )[0] +
-                            "#collect?option=fulfillment&post=" +
-                            router.asPath.split("&post=")[1]
-                        );
-                      } else if (router.asPath.includes("&profile=")) {
-                        router.push(
-                          router.asPath.split(
-                            router.asPath.includes("#chat")
-                              ? "#chat"
-                              : "#sampler"
-                          )[0] +
-                            "#collect?option=fulfillment&profile=" +
-                            router.asPath.split("&profile=")[1]
-                        );
-                      } else {
-                        router.push(
-                          router.asPath.split(
-                            router.asPath.includes("#chat")
-                              ? "#chat"
-                              : "#sampler"
-                          )[0] + "#collect?option=fulfillment"
-                        );
-                      }
+                    if (router.asPath.includes("&post=")) {
+                      router.push(
+                        router.asPath.split(
+                          router.asPath.includes("#chat") ? "#chat" : "#sampler"
+                        )[0] +
+                          "#collect?option=fulfillment" +
+                          "&post=" +
+                          router.asPath.split("&post=")[1]
+                      );
+                    } else if (router.asPath.includes("&profile=")) {
+                      router.push(
+                        router.asPath.split(
+                          router.asPath.includes("#chat") ? "#chat" : "#sampler"
+                        )[0] +
+                          "#collect?option=fulfillment" +
+                          "&profile=" +
+                          router.asPath.split("&profile=")[1]
+                      );
                     } else {
-                      if (router.asPath.includes("&post=")) {
-                        router.push(
-                          router.asPath.split(
-                            router.asPath.includes("#chat")
-                              ? "#chat"
-                              : "#sampler"
-                          )[0] +
-                            "#collect?option=fulfillment" +
-                            `&search=${
-                              router.asPath
-                                .split("&search=")[1]
-                                ?.split("&post=")[0]
-                            }` +
-                            "&post=" +
-                            router.asPath.split("&post=")[1]
-                        );
-                      } else if (router.asPath.includes("&profile=")) {
-                        router.push(
-                          router.asPath.split(
-                            router.asPath.includes("#chat")
-                              ? "#chat"
-                              : "#sampler"
-                          )[0] +
-                            "#collect?option=fulfillment" +
-                            `&search=${
-                              router.asPath
-                                .split("&search=")[1]
-                                ?.split("&profile=")[0]
-                            }` +
-                            "&profile=" +
-                            router.asPath.split("&profile=")[1]
-                        );
-                      } else {
-                        router.push(
-                          router.asPath.split(
-                            router.asPath.includes("#chat")
-                              ? "#chat"
-                              : "#sampler"
-                          )[0] +
-                            "#collect?option=fulfillment" +
-                            `&search=${router.asPath.split("&search=")[1]}`
-                        );
-                      }
+                      router.push(
+                        router.asPath.split(
+                          router.asPath.includes("#chat") ? "#chat" : "#sampler"
+                        )[0] + "#collect?option=fulfillment"
+                      );
                     }
                   } else {
-                    if (!router.asPath.includes("&search=")) {
-                      if (router.asPath.includes("#")) {
-                        if (router.asPath.includes("&profile=")) {
-                          router.asPath.includes("?option=")
-                            ? router.push(
-                                router.asPath.split("?option=")[0] +
-                                  "?option=fulfillment&profile=" +
-                                  router.asPath.split("&profile=")[1]
-                              )
-                            : router.push(
-                                router.asPath.split("&profile=")[0] +
-                                  "?option=fulfillment&profile=" +
-                                  router.asPath.split("&profile=")[1]
-                              );
-                        } else if (router.asPath.includes("&post=")) {
-                          router.asPath.includes("?option=")
-                            ? router.push(
-                                router.asPath.split("?option=")[0] +
-                                  "?option=fulfillment&post=" +
-                                  router.asPath.split("&post=")[1]
-                              )
-                            : router.push(
-                                router.asPath.split("&post=")[0] +
-                                  "?option=fulfillment&post=" +
-                                  router.asPath.split("&post=")[1]
-                              );
-                        } else {
-                          router.asPath.includes("?option=")
-                            ? router.push(
-                                router.asPath.split("?option=")[0] +
-                                  "?option=fulfillment"
-                              )
-                            : router.push(
-                                router.asPath + "?option=fulfillment"
-                              );
-                        }
+                    if (router.asPath.includes("#")) {
+                      if (router.asPath.includes("&profile=")) {
+                        router.asPath.includes("?option=")
+                          ? router.push(
+                              router.asPath.split("?option=")[0] +
+                                "?option=fulfillment" +
+                                "&profile=" +
+                                router.asPath.split("&profile=")[1]
+                            )
+                          : router.push(
+                              "?option=fulfillment" +
+                                "&profile=" +
+                                router.asPath.split("&profile=")[1]
+                            );
+                      } else if (router.asPath.includes("&post=")) {
+                        router.asPath.includes("?option=")
+                          ? router.push(
+                              router.asPath.split("?option=")[0] +
+                                "?option=fulfillment" +
+                                router.asPath
+                                  .split("?option=fulfillment")[1]
+                                  .split("&post=")[0] +
+                                "&post=" +
+                                router.asPath.split("&post=")[1]
+                            )
+                          : router.push(
+                              "?option=fulfillment" +
+                                router.asPath
+                                  .split("?option=fulfillment")[1]
+                                  .split("&post=")[0] +
+                                "&post=" +
+                                router.asPath.split("&post=")[1]
+                            );
                       } else {
-                        router.push("#stream?option=fulfillment");
+                        router.asPath.includes("?option=")
+                          ? router.push(
+                              router.asPath.split("?option=")[0] +
+                                "?option=fulfillment" +
+                                router.asPath.split("?option=fulfillment")[1]
+                            )
+                          : router.push("?option=fulfillment");
                       }
                     } else {
-                      if (router.asPath.includes("#")) {
-                        if (router.asPath.includes("&profile=")) {
-                          router.asPath.includes("?option=")
-                            ? router.push(
-                                router.asPath.split("?option=")[0] +
-                                  "?option=fulfillment&search=" +
-                                  router.asPath
-                                    .split("&search=")[1]
-                                    .split("&profile=")[0] +
-                                  "&profile=" +
-                                  router.asPath.split("&profile=")[1]
-                              )
-                            : router.push(
-                                router.asPath.split("&search=")[0] +
-                                  "?option=fulfillment&search=" +
-                                  router.asPath
-                                    .split("&search=")[1]
-                                    .split("&profile=")[0] +
-                                  "&profile=" +
-                                  router.asPath.split("&profile=")[1]
-                              );
-                        } else if (router.asPath.includes("&post=")) {
-                          router.asPath.includes("?option=")
-                            ? router.push(
-                                router.asPath.split("?option=")[0] +
-                                  "?option=fulfillment&search=" +
-                                  router.asPath
-                                    .split("&search=")[1]
-                                    .split("&post=")[0] +
-                                  "&post=" +
-                                  router.asPath.split("&post=")[1]
-                              )
-                            : router.push(
-                                router.asPath.split("&search=")[0] +
-                                  "?option=fulfillment&search=" +
-                                  router.asPath
-                                    .split("&search=")[1]
-                                    .split("&post=")[0] +
-                                  "&post=" +
-                                  router.asPath.split("&post=")[1]
-                              );
-                        } else {
-                          router.asPath.includes("?option=")
-                            ? router.push(
-                                router.asPath.split("?option=")[0] +
-                                  "?option=fulfillment&search=" +
-                                  router.asPath.split("&search=")[1]
-                              )
-                            : router.push(
-                                router.asPath.split("&search=")[0] +
-                                  "?option=fulfillment&search=" +
-                                  router.asPath.split("&search=")[1]
-                              );
-                        }
-                      } else {
-                        router.push(
-                          "#stream?option=fulfillment&search=" +
-                            router.asPath.split("&search=")[1]
-                        );
-                      }
+                      router.push("#stream?option=fulfillment");
                     }
                   }
                 }}

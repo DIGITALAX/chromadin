@@ -12,6 +12,7 @@ const Account: FunctionComponent<AccountProps> = ({
   profile,
   profileCollections,
   dispatch,
+  profileCollectionsLoading,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col gap-2 items-start justify-center break-words">
@@ -251,7 +252,7 @@ const Account: FunctionComponent<AccountProps> = ({
                     id="crt"
                     onClick={() =>
                       window.open(
-                        `https://www.chromadin.xyz/#collect?option=fulfillment&search=${coll.name}`
+                        `https://www.chromadin.xyz/autograph/${coll.profile?.handle}`
                       )
                     }
                   >

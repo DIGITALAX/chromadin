@@ -135,49 +135,7 @@ const Reactions: FunctionComponent<ReactionProps> = ({
           onClick={() =>
             commentAmount > 0 &&
             router.push(
-              !router.asPath.includes("&search=")
-                ? router.asPath.includes("&post=")
-                  ? router.asPath.includes("?option=")
-                    ? router.asPath.split("&post=")[0] +
-                      `&post=${
-                        publication?.__typename !== "Mirror"
-                          ? publication?.id
-                          : publication?.mirrorOf.id
-                      }`
-                    : router.asPath.split("&post=")[0] +
-                      `?option=history&post=${
-                        publication?.__typename !== "Mirror"
-                          ? publication?.id
-                          : publication?.mirrorOf.id
-                      }`
-                  : router.asPath.includes("&profile=")
-                  ? router.asPath.includes("?option=")
-                    ? router.asPath.split("&profile=")[0] +
-                      `&post=${
-                        publication?.__typename !== "Mirror"
-                          ? publication?.id
-                          : publication?.mirrorOf.id
-                      }`
-                    : router.asPath.split("&profile=")[0] +
-                      `?option=history&post=${
-                        publication?.__typename !== "Mirror"
-                          ? publication?.id
-                          : publication?.mirrorOf.id
-                      }`
-                  : router.asPath.includes("?option=")
-                  ? router.asPath +
-                    `&post=${
-                      publication?.__typename !== "Mirror"
-                        ? publication?.id
-                        : publication?.mirrorOf.id
-                    }`
-                  : router.asPath +
-                    `?option=history&post=${
-                      publication?.__typename !== "Mirror"
-                        ? publication?.id
-                        : publication?.mirrorOf.id
-                    }`
-                : router.asPath.includes("&post=")
+              router.asPath.includes("&post=")
                 ? router.asPath.includes("?option=")
                   ? router.asPath.split("&post=")[0] +
                     `&post=${
@@ -185,10 +143,8 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                         ? publication?.id
                         : publication?.mirrorOf.id
                     }`
-                  : router.asPath.split("&search=")[0] +
-                    "?option=history&search=" +
-                    router.asPath.split("&search=")[1].split("&post=")[0] +
-                    `&post=${
+                  : router.asPath.split("&post=")[0] +
+                    `?option=history&post=${
                       publication?.__typename !== "Mirror"
                         ? publication?.id
                         : publication?.mirrorOf.id
@@ -201,10 +157,8 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                         ? publication?.id
                         : publication?.mirrorOf.id
                     }`
-                  : router.asPath.split("&search=")[0] +
-                    "?option=history&search=" +
-                    router.asPath.split("&search=")[1].split("&profile=")[0] +
-                    `&post=${
+                  : router.asPath.split("&profile=")[0] +
+                    `?option=history&post=${
                       publication?.__typename !== "Mirror"
                         ? publication?.id
                         : publication?.mirrorOf.id
@@ -216,10 +170,8 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                       ? publication?.id
                       : publication?.mirrorOf.id
                   }`
-                : router.asPath.split("&search=")[0] +
-                  "?option=history&search" +
-                  router.asPath.split("&search=")[1] +
-                  `&post=${
+                : router.asPath +
+                  `?option=history&post=${
                     publication?.__typename !== "Mirror"
                       ? publication?.id
                       : publication?.mirrorOf.id
@@ -317,7 +269,8 @@ const Reactions: FunctionComponent<ReactionProps> = ({
                     publication?.collectModule?.type ===
                       "SimpleCollectModule") &&
                     !(publication?.collectModule as any)?.amount &&
-                    !(publication?.collectModule as any)?.optionalCollectLimit &&
+                    !(publication?.collectModule as any)
+                      ?.optionalCollectLimit &&
                     !(publication?.collectModule as any)?.optionalEndTimestamp)
                 ? () =>
                     collectPost(

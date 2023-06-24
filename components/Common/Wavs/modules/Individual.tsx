@@ -102,7 +102,6 @@ const Individual: FunctionComponent<IndividualProps> = ({
   router,
   profileType,
   preElement,
-  allCollections,
   handleImagePaste,
   setImageLoading,
 }): JSX.Element => {
@@ -123,17 +122,7 @@ const Individual: FunctionComponent<IndividualProps> = ({
           onClick={() => {
             history.includes("#chat") &&
             (history.includes("&profile=") || history.includes("&post="))
-              ? router.asPath.includes("&search=")
-                ? router.push(
-                    `#chat?option=history&search=${
-                      router.asPath
-                        ?.split("&search=")[1]
-                        ?.split(
-                          history.includes("&profile=") ? "&profile=" : "&post="
-                        )[0]
-                    }`
-                  )
-                : router.push("#chat?option=history")
+              ? router.push("#chat?option=history")
               : router.back();
           }}
         >
@@ -168,7 +157,6 @@ const Individual: FunctionComponent<IndividualProps> = ({
             openComment={commentOpen}
             router={router}
             profileType={profileType}
-            allCollections={allCollections}
           />
           {(mainPost?.__typename === "Mirror"
             ? mainPost?.mirrorOf?.id
@@ -335,7 +323,6 @@ const Individual: FunctionComponent<IndividualProps> = ({
         router={router}
         profileType={profileType}
         preElement={preElement}
-        allCollections={allCollections}
         handleImagePaste={handleImagePaste}
         setImageLoading={setImageLoading}
       />

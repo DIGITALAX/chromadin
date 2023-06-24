@@ -2,9 +2,8 @@ import { FetchResult, gql } from "@apollo/client";
 import { graphClient } from "@/lib/subgraph/client";
 
 const HISTORY = `
-  query {
-    tokensBoughts(orderBy: blockTimestamp
-      orderDirection: desc) {
+  query($first: Int, $skip: Int) {
+    tokensBoughts(first: $first, skip: $skip, orderDirection: desc, orderBy: blockTimestamp) {
         uri
         totalPrice
         tokenIds
@@ -13,14 +12,16 @@ const HISTORY = `
         creator
         transactionHash
         blockTimestamp
+        chosenAddress
+        price
       }
   }
 `;
 
 const HISTORY_SPECIFIC = `
-  query($buyer: String!) {
+  query($buyer: String!, $first: Int, $skip: Int) {
     tokensBoughts(where: {buyer: $buyer} orderBy: blockTimestamp
-      orderDirection: desc) {
+      orderDirection: desc, first: $first, skip: $skip) {
         uri
         totalPrice
         tokenIds
@@ -29,13 +30,22 @@ const HISTORY_SPECIFIC = `
         creator
         transactionHash
         blockTimestamp
+        chosenAddress
+        price
       }
   }
 `;
 
-const getBuyerHistory = async (): Promise<FetchResult<any>> => {
+const getBuyerHistory = async (
+  first: number,
+  skip: number
+): Promise<FetchResult<any>> => {
   return graphClient.query({
     query: gql(HISTORY),
+    variables: {
+      first,
+      skip,
+    },
     fetchPolicy: "no-cache",
   });
 };
@@ -43,12 +53,16 @@ const getBuyerHistory = async (): Promise<FetchResult<any>> => {
 export default getBuyerHistory;
 
 export const getBuyerHistorySpecific = async (
-  buyer: string
+  buyer: string,
+  first: number,
+  skip: number
 ): Promise<FetchResult<any>> => {
   return graphClient.query({
     query: gql(HISTORY_SPECIFIC),
     variables: {
-      buyer: buyer,
+      buyer,
+      first,
+      skip,
     },
     fetchPolicy: "no-cache",
   });

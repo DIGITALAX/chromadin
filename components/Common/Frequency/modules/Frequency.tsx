@@ -17,11 +17,18 @@ const Frequency: FunctionComponent = (): JSX.Element => {
     moshVideoRef,
     currentVideoIndex,
   } = useDrops();
-  const { collectionsLoading } = useDrop();
+  const {
+    collectionsLoading,
+    handleGetMoreCollections,
+    moreCollectionsLoading,
+  } = useDrop();
   const dispatch = useDispatch();
   const router = useRouter();
   const dispatchCollections = useSelector(
     (state: RootState) => state.app.collectionsReducer.value
+  );
+  const hasMoreCollections = useSelector(
+    (state: RootState) => state.app.hasMoreCollectionReducer.value
   );
   return (
     <div className="relative w-full h-fit preG:h-60 flex flex-row items-center md:pt-0 pt-6">
@@ -37,7 +44,13 @@ const Frequency: FunctionComponent = (): JSX.Element => {
               width={20}
               height={20}
               className="flex cursor-pointer active:scale-95"
-              onClick={() => moveBackward()}
+              onClick={async () => {
+                if (moreCollectionsLoading) return;
+                if (hasMoreCollections && currentIndex === 0) {
+                  await handleGetMoreCollections();
+                }
+                moveBackward();
+              }}
               draggable={false}
             />
             <Image
@@ -54,7 +67,16 @@ const Frequency: FunctionComponent = (): JSX.Element => {
               width={20}
               height={20}
               className="flex cursor-pointer active:scale-95"
-              onClick={() => moveForward()}
+              onClick={async () => {
+                if (moreCollectionsLoading) return;
+                if (
+                  hasMoreCollections &&
+                  currentIndex === dispatchCollections.length -6
+                ) {
+                  await handleGetMoreCollections();
+                }
+                moveForward();
+              }}
               draggable={false}
             />
           </div>
@@ -64,10 +86,11 @@ const Frequency: FunctionComponent = (): JSX.Element => {
           collections={[
             ...dispatchCollections!?.slice(currentIndex),
             ...dispatchCollections!?.slice(0, currentIndex),
-          ]?.reverse()}
+          ]}
           dispatch={dispatch}
           collectionsLoading={collectionsLoading}
           router={router}
+          moreCollectionsLoading={moreCollectionsLoading}
         />
       </div>
       <div

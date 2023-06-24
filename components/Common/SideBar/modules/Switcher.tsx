@@ -57,64 +57,28 @@ const Switcher: FunctionComponent<SwitcherProps> = ({
                   key={index}
                   onClick={() => {
                     dispatch(setCollectOpen(false));
-                    if (!router.asPath.includes("&search=")) {
-                      if (router.asPath.includes("&profile=")) {
-                        router.push(
-                          `#${values[1]}` +
-                            "?option=" +
-                            (options ? options : "history") +
-                            "&profile=" +
-                            router.asPath.split("&profile=")[1]
-                        );
-                      } else if (router.asPath.includes("&post=")) {
-                        router.push(
-                          `#${values[1]}` +
-                            "?option=" +
-                            (options ? options : "history") +
-                            "&post=" +
-                            router.asPath.split("&post=")[1]
-                        );
-                      } else {
-                        router.push(
-                          `#${values[1]}` +
-                            "?option=" +
-                            (options ? options : "history")
-                        );
-                      }
+                    if (router.asPath.includes("&profile=")) {
+                      router.push(
+                        `#${values[1]}` +
+                          "?option=" +
+                          (options ? options : "history") +
+                          "&profile=" +
+                          router.asPath.split("&profile=")[1]
+                      );
+                    } else if (router.asPath.includes("&post=")) {
+                      router.push(
+                        `#${values[1]}` +
+                          "?option=" +
+                          (options ? options : "history") +
+                          "&post=" +
+                          router.asPath.split("&post=")[1]
+                      );
                     } else {
-                      if (router.asPath.includes("&profile=")) {
-                        router.push(
-                          `#${values[1]}` +
-                            "?option=" +
-                            options +
-                            "&search=" +
-                            router.asPath
-                              .split("&search=")[1]
-                              .split("&profile=")[0] +
-                            "&profile=" +
-                            router.asPath.split("&profile=")[1]
-                        );
-                      } else if (router.asPath.includes("&post=")) {
-                        router.push(
-                          `#${values[1]}` +
-                            "?option=" +
-                            options +
-                            "&search=" +
-                            router.asPath
-                              .split("&search=")[1]
-                              .split("&post=")[0] +
-                            "&post=" +
-                            router.asPath.split("&post=")[1]
-                        );
-                      } else {
-                        router.push(
-                          `#${values[1]}` +
-                            "?option=" +
-                            options +
-                            "&search=" +
-                            router.asPath.split("&search=")[1]
-                        );
-                      }
+                      router.push(
+                        `#${values[1]}` +
+                          "?option=" +
+                          (options ? options : "history")
+                      );
                     }
                   }}
                 >

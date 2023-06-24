@@ -5,15 +5,20 @@ import { History, HistoryProps } from "../types/interactions.types";
 import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import Link from "next/link";
 import moment from "moment";
+import InfiniteScroll from "react-infinite-scroll-component";
+import FetchMoreLoading from "../../Loading/FetchMoreLoading";
 
 const History: FunctionComponent<HistoryProps> = ({
-  history,
   historyReducer,
   historyLoading,
-  buyerHistory,
   buyerHistoryReducer,
   historySwitch,
   setHistorySwitch,
+  moreHistoryLoading,
+  getMoreUserHistory,
+  getMoreBuyerHistory,
+  hasMoreHistory,
+  hasMoreHistorySpecific,
 }): JSX.Element => {
   return (
     <div
@@ -23,7 +28,7 @@ const History: FunctionComponent<HistoryProps> = ({
           : "h-full xl:h-[45.8rem]"
       }`}
     >
-      <div className="relative w-full h-20 max-h-20 flex flex-row border-white border-b text-white font-earl text-sm">
+      <div className="relative w-full h-16 max-h-20 flex flex-row border-white border-b text-white font-earl text-sm">
         <div
           className="relative w-full h-full flex items-center justify-center border-r border-white cursor-pointer hover:opacity-70"
           onClick={() => setHistorySwitch(false)}
@@ -75,8 +80,8 @@ const History: FunctionComponent<HistoryProps> = ({
         </div>
       ) : (
           historySwitch
-            ? buyerHistory?.length === 0 && buyerHistoryReducer?.length === 0
-            : history?.length === 0 && historyReducer?.length === 0
+            ? buyerHistoryReducer?.length === 0
+            : historyReducer?.length === 0
         ) ? (
         <div className="relative w-full h-full flex flex-col items-center justify-center font-earl text-moda text-center p-3">
           Nothing to see here.
@@ -89,91 +94,96 @@ const History: FunctionComponent<HistoryProps> = ({
           old channel surfing.
         </div>
       ) : (
-        <div className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap items-start">
-          {(historySwitch
-            ? buyerHistory?.length < 1
-              ? buyerHistoryReducer
-              : buyerHistory
-            : history?.length < 1
-            ? historyReducer
-            : history
-          )?.map((value: History, index: number) => {
-            const pfp = createProfilePicture(value.profile);
-            return (
-              <Link
-                key={index}
-                className="relative w-full preG:w-fit lg:w-full h-fit flex flex-row gap-3 cursor-pointer items-start justify-center"
-                target={"_blank"}
-                rel={"noreferrer"}
-                href={`https://polygonscan.com/tx/${value.transactionHash}`}
-              >
-                <div
-                  className="flex relative w-36 h-full rounded-tl-lg rounded-br-lg items-center justify-center"
-                  id="staticLoad"
+        <InfiniteScroll
+          hasMore={historySwitch ? hasMoreHistorySpecific : hasMoreHistory}
+          height={"20rem"}
+          loader={<FetchMoreLoading size="3" />}
+          dataLength={
+            historySwitch ? buyerHistoryReducer?.length : historyReducer?.length
+          }
+          next={historySwitch ? getMoreBuyerHistory : getMoreUserHistory}
+          className="relative w-full h-full flex flex-col overflow-y-scroll gap-8 p-3 lg:flex-nowrap flex-nowrap preG:flex-wrap items-start"
+        >
+          {(historySwitch ? buyerHistoryReducer : historyReducer)?.map(
+            (value: History, index: number) => {
+              const pfp = createProfilePicture(value.profile);
+              return (
+                <Link
+                  key={index}
+                  className="relative w-full preG:w-fit lg:w-full h-fit flex flex-row gap-3 cursor-pointer items-start justify-center"
+                  target={"_blank"}
+                  rel={"noreferrer"}
+                  href={`https://polygonscan.com/tx/${value.transactionHash}`}
                 >
-                  <Image
-                    src={`${INFURA_GATEWAY}/ipfs/${
-                      value.uri.image.split("ipfs://")[1]
-                    }`}
-                    layout="fill"
-                    objectFit="cover"
-                    draggable={false}
-                    className="rounded-tl-lg rounded-br-lg"
-                  />
-                </div>
-                <div className="relative flex flex-col w-full preG:w-fit lg:w-full h-full gap-2 items-start justify-center">
-                  <div className="relative w-fit h-fit flex flex-row gap-2">
-                    <div
-                      className="relative w-6 h-6 border border-white flex justify-start items-center rounded-full"
-                      id="crt"
-                    >
-                      {pfp !== "" && (
-                        <Image
-                          objectFit="cover"
-                          alt="pfp"
-                          layout="fill"
-                          className="relative w-full h-full flex rounded-full"
-                          src={pfp}
-                          draggable={false}
-                        />
-                      )}
-                    </div>
-                    <div className="relative w-fit h-fit text-ama font-arcade text-sm">
-                      @
-                      {value?.profile?.handle?.split(".lens")[0].length > 15
-                        ? value?.profile?.handle
-                            ?.split(".lens")[0]
-                            .slice(0, 13) + "..."
-                        : value?.profile?.handle?.split(".lens")[0]}
-                    </div>
+                  <div
+                    className="flex relative w-36 h-full rounded-tl-lg rounded-br-lg items-center justify-center"
+                    id="staticLoad"
+                  >
+                    <Image
+                      src={`${INFURA_GATEWAY}/ipfs/${
+                        value.uri.image.split("ipfs://")[1]
+                      }`}
+                      layout="fill"
+                      objectFit="cover"
+                      draggable={false}
+                      className="rounded-tl-lg rounded-br-lg"
+                    />
                   </div>
-                  <div className="relative text-moda font-arcade flex items-center justify-start text-sm w-fit h-fit">
-                    {value.transactionHash.slice(0, 14) + "..."}
-                  </div>
-                  <div className="relative text-white font-arcade flex items-center justify-start text-sm w-fit h-fit">
-                    {Number(value.totalPrice) /
-                      (value.type ===
+                  <div className="relative flex flex-col w-full preG:w-fit lg:w-full h-full gap-2 items-start justify-center">
+                    <div className="relative w-fit h-fit flex flex-row gap-2">
+                      <div
+                        className="relative w-6 h-6 border border-white flex justify-start items-center rounded-full"
+                        id="crt"
+                      >
+                        {pfp !== "" && (
+                          <Image
+                            objectFit="cover"
+                            alt="pfp"
+                            layout="fill"
+                            className="relative w-full h-full flex rounded-full"
+                            src={pfp}
+                            draggable={false}
+                          />
+                        )}
+                      </div>
+                      <div className="relative w-fit h-fit text-ama font-arcade text-sm">
+                        @
+                        {value?.profile?.handle?.split(".lens")[0].length > 15
+                          ? value?.profile?.handle
+                              ?.split(".lens")[0]
+                              .slice(0, 13) + "..."
+                          : value?.profile?.handle?.split(".lens")[0]}
+                      </div>
+                    </div>
+                    <div className="relative text-moda font-arcade flex items-center justify-start text-sm w-fit h-fit">
+                      {value.transactionHash.slice(0, 14) + "..."}
+                    </div>
+                    <div className="relative text-white font-arcade flex items-center justify-start text-sm w-fit h-fit">
+                      {Number(value.totalPrice) /
+                        (value.chosenAddress ===
+                        "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+                          ? 10 ** 6
+                          : 10 ** 18)}{" "}
+                      {value.chosenAddress ===
                       "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
-                        ? 10 ** 6
-                        : 10 ** 18)}{" "}
-                    {value.type === "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
-                      ? "USDT"
-                      : value.type ===
-                        "0x6968105460f67c3bf751be7c15f92f5286fd0ce5"
-                      ? "MONA"
-                      : value.type ===
-                        "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"
-                      ? "WMATIC"
-                      : "WETH"}
+                        ? "USDT"
+                        : value.chosenAddress ===
+                          "0x6968105460f67c3bf751be7c15f92f5286fd0ce5"
+                        ? "MONA"
+                        : value.chosenAddress ===
+                          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"
+                        ? "WMATIC"
+                        : "WETH"}
+                    </div>
+                    <div className="relative text-verde font-arcade flex items-center justify-start text-xs w-fit h-fit">
+                      {moment(Number(value.blockTimestamp), "X").format("lll")}
+                    </div>
                   </div>
-                  <div className="relative text-verde font-arcade flex items-center justify-start text-xs w-fit h-fit">
-                    {moment(Number(value.blockTimestamp), "X").format("lll")}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+                </Link>
+              );
+            }
+          )}
+        </InfiniteScroll>
       )}
       <div className={`relative w-full h-full hidden xl:flex`}>
         <Image
@@ -184,9 +194,11 @@ const History: FunctionComponent<HistoryProps> = ({
           priority
         />
       </div>
-      <div className="relative bottom-0 w-full h-fit py-2 border-y border-white text-white font-arcade uppercase items-end justify-center flex">
-        CHROMADIN HISTORY
-      </div>
+      {!historyLoading && (
+        <div className="relative bottom-0 w-full h-fit py-2 border-y border-white text-white font-arcade uppercase items-end justify-center flex">
+          CHROMADIN HISTORY
+        </div>
+      )}
     </div>
   );
 };

@@ -1,11 +1,13 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 export interface CollectionPaginatedState {
-  value: any;
+  skip: number,
+  first: number
 }
 
 const initialCollectionPaginatedState: CollectionPaginatedState = {
-  value: {},
+  skip: 12,
+  first: 12
 };
 
 export const collectionPaginatedSlice = createSlice({
@@ -14,9 +16,10 @@ export const collectionPaginatedSlice = createSlice({
   reducers: {
     setCollectionPaginated: (
       state: CollectionPaginatedState,
-      action: PayloadAction<any>
+      { payload: { actionSkip, actionFirst } }
     ) => {
-      state.value = action.payload;
+      state.skip = actionSkip;
+      state.first = actionFirst;
     },
   },
 });

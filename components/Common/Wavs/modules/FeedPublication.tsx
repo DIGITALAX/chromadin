@@ -10,7 +10,6 @@ import descriptionRegex from "@/lib/helpers/descriptionRegex";
 import { FaRegCommentDots } from "react-icons/fa";
 import { BiLock } from "react-icons/bi";
 import { setDecrypt } from "@/redux/reducers/decryptSlice";
-import { Collection } from "@/components/Home/types/home.types";
 import ReactPlayer from "react-player";
 
 const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
@@ -40,7 +39,6 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
   openComment,
   router,
   profileType,
-  allCollections,
 }): JSX.Element => {
   return (
     <div
@@ -318,20 +316,15 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                   dispatch(
                     setDecrypt({
                       actionOpen: true,
-                      actionCollections: allCollections.filter(
-                        (coll: Collection) => {
-                          return (
-                            publication?.__typename === "Mirror"
-                              ? publication?.mirrorOf?.metadata?.description
-                              : publication?.metadata?.description
-                          )
-                            ?.split("gate.")[1]
-                            ?.split("are ready to collect")[0]
-                            .split(",")
-                            .map((word: string) => word.trim())
-                            .includes(coll.name.toLowerCase());
-                        }
-                      ),
+                      actionCollections: (publication?.__typename === "Mirror"
+                        ? publication?.mirrorOf?.metadata?.description
+                        : publication?.metadata?.description
+                      )
+                        ?.split("gate.")[1]
+                        ?.split("are ready to collect")[0]
+                        .split(",")
+                        .map((word: string) => word.trim()),
+                      actionName: publication?.profile?.ownedBy,
                     })
                   )
                 }

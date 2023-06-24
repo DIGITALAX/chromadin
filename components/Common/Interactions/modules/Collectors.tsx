@@ -59,25 +59,16 @@ const Collectors: FunctionComponent<CollectorsProps> = ({
                 }
                 return (
                   <div
-                    className={`relative w-full h-fit flex flex-row gap-3 ${collector?.defaultProfile?.handle && "cursor-pointer"}`}
+                    className={`relative w-full h-fit flex flex-row gap-3 ${
+                      collector?.defaultProfile?.handle && "cursor-pointer"
+                    }`}
                     key={index}
                     onClick={() =>
                       collector?.defaultProfile?.handle &&
                       window.open(
-                        router.asPath.includes("&search=")
-                          ? `https://www.chromadin.xyz/#chat?option=history&search=` +
-                              router.asPath
-                                .split("&search=")[1]
-                                .split("&profile=")[0] +
-                              "&profile=" +
-                              collector?.defaultProfile?.handle?.split(
-                                ".lens"
-                              )[0]
-                          : `https://www.chromadin.xyz/#chat?option=history&profile=${
-                              collector?.defaultProfile?.handle?.split(
-                                ".lens"
-                              )[0]
-                            }`
+                        `https://www.chromadin.xyz/#chat?option=history&profile=${
+                          collector?.defaultProfile?.handle?.split(".lens")[0]
+                        }`
                       )
                     }
                   >

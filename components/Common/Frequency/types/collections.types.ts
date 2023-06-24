@@ -7,7 +7,8 @@ export type DropsProps = {
   collections: Collection[];
   dispatch: Dispatch<AnyAction>;
   collectionsLoading: boolean;
-  router: NextRouter
+  router: NextRouter;
+  moreCollectionsLoading: boolean;
 };
 
 export type DropsResults = {

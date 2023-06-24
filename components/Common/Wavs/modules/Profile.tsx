@@ -93,18 +93,6 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
                             ".lens"
                           )[0]
                     }`
-                  : router.asPath.includes("&search=")
-                  ? router.asPath.split("&search=")[0] +
-                    `?option=history&search=${
-                      router.asPath.split("&search=")[1]
-                    }` +
-                    `&profile=${
-                      publication?.__typename !== "Mirror"
-                        ? publication?.profile?.handle?.split(".lens")[0]
-                        : publication?.mirrorOf?.profile?.handle?.split(
-                            ".lens"
-                          )[0]
-                    }`
                   : router.asPath +
                     `?option=history&profile=${
                       publication?.__typename !== "Mirror"

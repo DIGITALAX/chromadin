@@ -158,6 +158,7 @@ const Feed: FunctionComponent<FeedProps> = ({
   setScrollPosDecryptProfile,
   setImageLoading,
   handleImagePaste,
+  profileCollectionsLoading,
 }): JSX.Element => {
   return (
     <div className="relative w-3/4 h-fit flex flex-col items-start justify-start gap-4">
@@ -271,7 +272,6 @@ const Feed: FunctionComponent<FeedProps> = ({
             individualAmounts={individualAmounts}
             router={router}
             profileType={profileType}
-            allCollections={profileCollections}
             handleImagePaste={handleImagePaste}
             setImageLoading={setImageLoading}
           />
@@ -417,6 +417,7 @@ const Feed: FunctionComponent<FeedProps> = ({
             decryptProfileScrollPos={decryptProfileScrollPos}
             handleImagePaste={handleImagePaste}
             setImageLoading={setImageLoading}
+            profileCollectionsLoading={profileCollectionsLoading}
           />
         )}
       </div>

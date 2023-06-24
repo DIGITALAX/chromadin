@@ -28,6 +28,7 @@ import useMakePost from "../../Wavs/hooks/usePost";
 import Decrypt from "./Decrypt";
 import IPFS from "./IPFS";
 import useChannels from "../../SideBar/hooks/useChannels";
+import useAllPosts from "../../Wavs/hooks/useAllPosts";
 
 const Modals = () => {
   const videoRef = useRef<HTMLDivElement>(null);
@@ -208,6 +209,7 @@ const Modals = () => {
     setImageLoading,
   } = useImageUpload();
   const { fetchMoreVideos, videosLoading, setVideosLoading } = useChannels();
+  const { decryptCollections } = useAllPosts();
 
   return (
     <>
@@ -391,7 +393,7 @@ const Modals = () => {
         />
       )}
       {decrypt.open && (
-        <Decrypt dispatch={dispatch} collections={decrypt.collections} />
+        <Decrypt dispatch={dispatch} collections={decryptCollections} />
       )}
       {errorModal.value && <Error />}
       {ipfsModal.value && <IPFS />}

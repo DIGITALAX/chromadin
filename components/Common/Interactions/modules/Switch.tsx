@@ -33,6 +33,12 @@ const Switch: FunctionComponent = (): JSX.Element => {
   const buyerHistoryReducer = useSelector(
     (state: RootState) => state.app.buyerHistoryReducer.value
   );
+  const hasMoreHistory = useSelector(
+    (state: RootState) => state.app.hasMoreHistoryReducer.value
+  );
+  const hasMoreHistorySpecific = useSelector(
+    (state: RootState) => state.app.hasMoreBuyerHistoryReducer.value
+  );
   const {
     currency,
     setCurrency,
@@ -53,11 +59,12 @@ const Switch: FunctionComponent = (): JSX.Element => {
     purchaseLoading,
   } = useFulfillment();
   const {
-    history,
     historyLoading,
-    buyerHistory,
     historySwitch,
     setHistorySwitch,
+    getMoreBuyerHistory,
+    getMoreUserHistory,
+    moreHistoryLoading,
   } = useHistory();
   switch (action) {
     case "account":
@@ -93,13 +100,16 @@ const Switch: FunctionComponent = (): JSX.Element => {
     default:
       return (
         <History
-          history={history}
           historyReducer={historyReducer}
           historyLoading={historyLoading}
-          buyerHistory={buyerHistory}
           buyerHistoryReducer={buyerHistoryReducer}
           historySwitch={historySwitch}
           setHistorySwitch={setHistorySwitch}
+          getMoreBuyerHistory={getMoreBuyerHistory}
+          getMoreUserHistory={getMoreUserHistory}
+          moreHistoryLoading={moreHistoryLoading}
+          hasMoreHistory={hasMoreHistory}
+          hasMoreHistorySpecific={hasMoreHistorySpecific}
         />
       );
   }

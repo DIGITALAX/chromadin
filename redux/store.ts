@@ -34,7 +34,6 @@ import graphReducer from "./reducers/graphSlice";
 import isCreatorReducer from "./reducers/isCreatorSlice";
 import priceFilterReducer from "./reducers/priceFilterSlice";
 import dateFilterReducer from "./reducers/dateFilterSlice";
-import searchReducer from "./reducers/searchSlice";
 import dropsReducer from "./reducers/dropsSlice";
 import commentFeedCountReducer from "./reducers/commentFeedCountSlice";
 import reactionFeedCountReducer from "./reducers/reactionFeedCountSlice";
@@ -78,6 +77,12 @@ import collectionPaginatedReducer from "./reducers/collectionPaginatedSlice";
 import buyerHistoryReducer from "./reducers/buyerHistorySlice";
 import IPFSReducer from "./reducers/IPFSSlice";
 import hasMoreVideosReducer from "./reducers/hasMoreVideosSlice";
+import hasMoreCollectionReducer from "./reducers/hasMoreCollectionSlice";
+import hasMoreHistoryReducer from "./reducers/hasMoreHistoryReducer";
+import historyPaginationReducer from "./reducers/historyPaginationSlice";
+import buyerHistoryPaginationReducer from "./reducers/buyerHistoryPaginationSlice";
+import hasMoreBuyerHistoryReducer from "./reducers/hasMoreBuyerHistorySlice";
+import autographReducer from "./reducers/autographSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -114,7 +119,6 @@ const reducer = combineReducers({
   isCreatorReducer,
   priceFilterReducer,
   dateFilterReducer,
-  searchReducer,
   dropsReducer,
   feedTypeReducer,
   openCommentReducer,
@@ -157,7 +161,13 @@ const reducer = combineReducers({
   collectionPaginatedReducer,
   buyerHistoryReducer,
   IPFSReducer,
-  hasMoreVideosReducer
+  hasMoreVideosReducer,
+  hasMoreCollectionReducer,
+  hasMoreHistoryReducer,
+  historyPaginationReducer,
+  buyerHistoryPaginationReducer,
+  hasMoreBuyerHistoryReducer,
+  autographReducer,
 });
 
 export const store = configureStore({

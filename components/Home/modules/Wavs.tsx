@@ -64,9 +64,6 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const profileScroll = useSelector(
     (state: RootState) => state.app.profileScrollPosReducer.value
   );
-  const profileCollections = useSelector(
-    (state: RootState) => state.app.collectionsReducer.value
-  );
   const individualAmounts = useSelector(
     (state: RootState) => state.app.individualFeedCountReducer
   );
@@ -230,6 +227,8 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     followerOnlyProfileDecrypt,
     fetchMoreProfileDecrypt,
     decryptProfileLoading,
+    profileCollections,
+    profileCollectionsLoading
   } = useProfileFeed();
 
   const {
@@ -396,6 +395,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         decryptProfileScrollPos={decryptProfileScroll}
         handleImagePaste={handleImagePaste}
         setImageLoading={setImageLoading}
+        profileCollectionsLoading={profileCollectionsLoading}
       />
     </div>
   );

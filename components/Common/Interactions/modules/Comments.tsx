@@ -113,16 +113,9 @@ const Comments: FunctionComponent<CommentsProps> = ({
                         className="relative w-fit h-full flex items-start justify-start cursor-pointer"
                         onClick={() => {
                           router.push(
-                            router.asPath.includes("&search=")
-                              ? `https://www.chromadin.xyz/#chat?option=history&search=` +
-                                  router.asPath
-                                    .split("&search=")[1]
-                                    .split("&profile=")[0] +
-                                  "&profile=" +
-                                  comment?.profile?.handle?.split(".lens")[0]
-                              : `https://www.chromadin.xyz/#chat?option=history&profile=${
-                                  comment?.profile?.handle?.split(".lens")[0]
-                                }`
+                            `https://www.chromadin.xyz/#chat?option=history&profile=${
+                              comment?.profile?.handle?.split(".lens")[0]
+                            }`
                           );
                         }}
                       >
@@ -147,16 +140,9 @@ const Comments: FunctionComponent<CommentsProps> = ({
                           className="relative w-full h-full text-ama justify-start flex cursor-pointer"
                           onClick={() => {
                             router.push(
-                              router.asPath.includes("&search=")
-                                ? `https://www.chromadin.xyz/#chat?option=history&search=` +
-                                    router.asPath
-                                      .split("&search=")[1]
-                                      .split("&profile=")[0] +
-                                    "&profile=" +
-                                    comment?.profile?.handle?.split(".lens")[0]
-                                : `https://www.chromadin.xyz/#chat?option=history&profile=${
-                                    comment?.profile?.handle?.split(".lens")[0]
-                                  }`
+                              `https://www.chromadin.xyz/#chat?option=history&profile=${
+                                comment?.profile?.handle?.split(".lens")[0]
+                              }`
                             );
                           }}
                         >

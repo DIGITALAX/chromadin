@@ -119,22 +119,28 @@ export interface History {
   transactionHash: string;
   blockTimestamp: string;
   type: string;
+  chosenAddress: string;
+  price: string;
 }
 
 export type useHistoryResults = {
-  history: History[];
   historyLoading: boolean;
-  buyerHistory: History[];
   historySwitch: boolean;
   setHistorySwitch: (e: boolean) => void;
+  getMoreUserHistory: () => Promise<void>;
+  getMoreBuyerHistory: () => Promise<void>;
+  moreHistoryLoading: boolean;
 };
 
 export type HistoryProps = {
-  history: History[];
   historyReducer: History[];
   historyLoading: boolean;
-  buyerHistory: History[];
   buyerHistoryReducer: History[];
   historySwitch: boolean;
   setHistorySwitch: (e: boolean) => void;
+  moreHistoryLoading: boolean;
+  getMoreUserHistory: () => Promise<void>;
+  getMoreBuyerHistory: () => Promise<void>;
+  hasMoreHistory: boolean;
+  hasMoreHistorySpecific: boolean;
 };

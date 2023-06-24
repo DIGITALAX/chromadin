@@ -8,7 +8,9 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { polygon } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import Modals from "@/components/Common/Modals/modules/Modals";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import RouterChange from "@/components/Common/Loading/RouterChange";
 
 const { chains, provider } = configureChains(
   [polygon],
@@ -32,6 +34,9 @@ const wagmiClient = createClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const [routerChangeLoading, setRouterChangeLoading] =
+    useState<boolean>(false);
   useEffect(() => {
     console.log(`
     ██████╗░██╗░█████╗░██╗░░░░░  ██╗███╗░░██╗  ████████╗░█████╗░  ████████╗██╗░░██╗███████╗
@@ -48,6 +53,31 @@ export default function App({ Component, pageProps }: AppProps) {
     ██████╔╝██║██║░╚███║
     ╚═════╝░╚═╝╚═╝░░╚══╝`);
   }, []);
+
+  useEffect(() => {
+    const handleStart = () => {
+      setRouterChangeLoading(true);
+    };
+
+    const handleStop = () => {
+      setRouterChangeLoading(false);
+    };
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
+
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, [router]);
+
+  if (routerChangeLoading) {
+    return <RouterChange />;
+  }
+
   return (
     <Provider store={store}>
       <WagmiConfig client={wagmiClient}>

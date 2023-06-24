@@ -10,6 +10,10 @@ import getDefaultProfile from "@/graphql/lens/queries/getDefaultProfile";
 import { setHistoryRedux } from "@/redux/reducers/historySlice";
 import { useAccount } from "wagmi";
 import { setBuyerHistoryRedux } from "@/redux/reducers/buyerHistorySlice";
+import { setHistoryPaginated } from "@/redux/reducers/historyPaginationSlice";
+import { setHasMoreHistorysRedux } from "@/redux/reducers/hasMoreHistoryReducer";
+import { setBuyerHistoryPaginated } from "@/redux/reducers/buyerHistoryPaginationSlice";
+import { setHasMoreBuyerHistorysRedux } from "@/redux/reducers/hasMoreBuyerHistorySlice";
 
 const useHistory = (): useHistoryResults => {
   const { address } = useAccount();
@@ -21,23 +25,37 @@ const useHistory = (): useHistoryResults => {
     (state: RootState) => state.app.buyerHistoryReducer.value
   );
   const [historySwitch, setHistorySwitch] = useState<boolean>(false);
-  const [history, setHistory] = useState<History[]>([]);
-  const [buyerHistory, setBuyerHistory] = useState<History[]>([]);
   const [historyLoading, setHistoryLoading] = useState<boolean>(false);
+  const [moreHistoryLoading, setMoreHistoryLoading] = useState<boolean>(false);
   const options = useSelector(
     (state: RootState) => state.app.optionsReducer.value
   );
   const indexModal = useSelector(
     (state: RootState) => state.app.indexModalReducer.message
   );
-  const allCollections = useSelector(
-    (state: RootState) => state.app.collectionsReducer.value
+  const historyPagination = useSelector(
+    (state: RootState) => state.app.historyPaginationReducer
+  );
+  const buyerPagination = useSelector(
+    (state: RootState) => state.app.buyerHistoryPaginationReducer
+  );
+  const hasMoreUserHistory = useSelector(
+    (state: RootState) => state.app.hasMoreHistoryReducer.value
+  );
+  const hasMoreBuyerHistory = useSelector(
+    (state: RootState) => state.app.hasMoreBuyerHistoryReducer.value
   );
 
   const getUserHistory = async () => {
     setHistoryLoading(true);
     try {
-      const res = await getBuyerHistory();
+      const res = await getBuyerHistory(12, 0);
+      if (res.data.tokensBoughts?.length < 12) {
+        dispatch(setHasMoreHistorysRedux(false));
+      } else {
+        dispatch(setHasMoreHistorysRedux(true));
+      }
+
       if (res.data.tokensBoughts.length > 0) {
         const history = await Promise.all(
           res.data.tokensBoughts.map(async (history: History) => {
@@ -56,26 +74,8 @@ const useHistory = (): useHistoryResults => {
             };
           })
         );
-        const newHistory: History[] = [];
-        history.forEach((tokenBought) => {
-          const tokenId = tokenBought.tokenIds[0];
-          const matchingObject = allCollections.find((collection) => {
-            return collection.tokenIds.includes(tokenId);
-          });
-          if (matchingObject) {
-            const index = matchingObject.basePrices.findIndex((value) => {
-              return value === tokenBought.totalPrice;
-            });
-            if (index !== -1) {
-              newHistory.push({
-                ...tokenBought,
-                type: matchingObject.acceptedTokens[index],
-              });
-            }
-          }
-        });
-        dispatch(setHistoryRedux(newHistory));
-        setHistory(newHistory);
+
+        dispatch(setHistoryRedux(history));
       }
     } catch (err: any) {
       console.error(err.message);
@@ -87,7 +87,7 @@ const useHistory = (): useHistoryResults => {
     if (!address) return;
     setHistoryLoading(true);
     try {
-      const res = await getBuyerHistorySpecific(address as string);
+      const res = await getBuyerHistorySpecific(address as string, 12, 0);
       if (res.data.tokensBoughts.length > 0) {
         const history = await Promise.all(
           res.data.tokensBoughts.map(async (history: History) => {
@@ -106,31 +106,111 @@ const useHistory = (): useHistoryResults => {
             };
           })
         );
-        const newHistory: History[] = [];
-        history.forEach((tokenBought) => {
-          const tokenId = tokenBought.tokenIds[0];
-          const matchingObject = allCollections.find((collection) => {
-            return collection.tokenIds.includes(tokenId);
-          });
-          if (matchingObject) {
-            const index = matchingObject.basePrices.findIndex((value) => {
-              return value === tokenBought.totalPrice;
-            });
-            if (index !== -1) {
-              newHistory.push({
-                ...tokenBought,
-                type: matchingObject.acceptedTokens[index],
-              });
-            }
-          }
-        });
-        dispatch(setBuyerHistoryRedux(newHistory));
-        setBuyerHistory(newHistory);
+
+        dispatch(setBuyerHistoryRedux(history));
       }
     } catch (err: any) {
       console.error(err.message);
     }
     setHistoryLoading(false);
+  };
+
+  const getMoreUserHistory = async () => {
+    if (moreHistoryLoading || !hasMoreUserHistory) {
+      return;
+    }
+    setMoreHistoryLoading(true);
+    try {
+      const res = await getBuyerHistory(
+        historyPagination.first,
+        historyPagination.skip
+      );
+      if (res.data.tokensBoughts?.length < 12) {
+        dispatch(setHasMoreHistorysRedux(false));
+      } else {
+        dispatch(setHasMoreHistorysRedux(true));
+      }
+
+      if (res.data.tokensBoughts.length > 0) {
+        const history = await Promise.all(
+          res.data.tokensBoughts.map(async (history: History) => {
+            const json = await fetchIPFSJSON(
+              (history.uri as any)
+                ?.split("ipfs://")[1]
+                ?.replace(/"/g, "")
+                ?.trim()
+            );
+
+            const defaultProfile = await getDefaultProfile(history.creator);
+            return {
+              ...history,
+              uri: json,
+              profile: defaultProfile?.data?.defaultProfile,
+            };
+          })
+        );
+
+        dispatch(setHistoryRedux([...historyReducer, ...history]));
+        dispatch(
+          setHistoryPaginated({
+            actionFirst: historyPagination.first,
+            actionSkip: historyPagination.skip + 12,
+          })
+        );
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setMoreHistoryLoading(false);
+  };
+
+  const getMoreBuyerHistory = async () => {
+    if (moreHistoryLoading || !hasMoreBuyerHistory) {
+      return;
+    }
+    setMoreHistoryLoading(true);
+    try {
+      const res = await getBuyerHistorySpecific(
+        address as string,
+        buyerPagination.first,
+        buyerPagination.skip
+      );
+      if (res.data.tokensBoughts?.length < 12) {
+        dispatch(setHasMoreBuyerHistorysRedux(false));
+      } else {
+        dispatch(setHasMoreBuyerHistorysRedux(true));
+      }
+
+      if (res.data.tokensBoughts.length > 0) {
+        const history = await Promise.all(
+          res.data.tokensBoughts.map(async (history: History) => {
+            const json = await fetchIPFSJSON(
+              (history.uri as any)
+                ?.split("ipfs://")[1]
+                ?.replace(/"/g, "")
+                ?.trim()
+            );
+
+            const defaultProfile = await getDefaultProfile(history.creator);
+            return {
+              ...history,
+              uri: json,
+              profile: defaultProfile?.data?.defaultProfile,
+            };
+          })
+        );
+        dispatch(setBuyerHistoryRedux(history));
+        dispatch(
+          setBuyerHistoryPaginated({
+            actionFirst: buyerPagination.first,
+            actionSkip: buyerPagination.skip + 12,
+          })
+        );
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setMoreHistoryLoading(false);
   };
 
   useEffect(() => {
@@ -149,11 +229,12 @@ const useHistory = (): useHistoryResults => {
   }, [options, indexModal, history, address, historySwitch]);
 
   return {
-    history,
     historyLoading,
-    buyerHistory,
     historySwitch,
     setHistorySwitch,
+    getMoreUserHistory,
+    getMoreBuyerHistory,
+    moreHistoryLoading,
   };
 };
 

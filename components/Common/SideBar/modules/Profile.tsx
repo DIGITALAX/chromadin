@@ -15,38 +15,19 @@ const Profile: FunctionComponent<ProfileProps> = ({ profile }): JSX.Element => {
           router.asPath.includes("stream") ||
           router.asPath.includes("sampler")
         ) {
-          !router.asPath.includes("&search=")
-            ? router.asPath.includes("&profile=")
-              ? router.push(
-                  "#collect?option=account" +
-                    "&profile=" +
-                    router.asPath.split("&profile=")[1]
-                )
-              : router.asPath.includes("&post=")
-              ? router.push(
-                  "#collect?option=account" +
-                    "&post=" +
-                    router.asPath.split("&post=")[1]
-                )
-              : router.push("#collect?option=account")
-            : router.asPath.includes("&profile=")
+          router.asPath.includes("&profile=")
             ? router.push(
                 "#collect?option=account" +
-                  `&search=${
-                    router.asPath.split("&search=")[1].split("&profile=")[0]
-                  }&profile=${router.asPath.split("&profile=")[1]}`
+                  "&profile=" +
+                  router.asPath.split("&profile=")[1]
               )
             : router.asPath.includes("&post=")
             ? router.push(
                 "#collect?option=account" +
-                  `&search=${
-                    router.asPath.split("&search=")[1].split("&post=")[0]
-                  }&post=${router.asPath.split("&post=")[1]}`
+                  "&post=" +
+                  router.asPath.split("&post=")[1]
               )
-            : router.push(
-                "#collect?option=account" +
-                  `&search=${router.asPath.split("&search=")[1]}`
-              );
+            : router.push("#collect?option=account");
         }
       }}
     >

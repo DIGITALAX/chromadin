@@ -81,7 +81,6 @@ export type FeedPublicationProps = {
   setMirrorLoader?: (e: boolean[]) => void;
   openComment: string;
   profileType: string;
-  allCollections: Collection[];
 };
 
 export type ProfileSideBarProps = {
@@ -349,6 +348,7 @@ export type FeedProps = {
     setImageLoading: (e: boolean) => void
   ) => void;
   setImageLoading: (e: boolean) => void;
+  profileCollectionsLoading: boolean;
 };
 
 export interface ApprovalArgs {
@@ -517,7 +517,6 @@ export type IndividualProps = {
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
   individualAmounts: IndividualFeedCountState;
-  allCollections: Collection[];
   handleImagePaste: (
     e: ClipboardEvent<HTMLTextAreaElement>,
     setImageLoading: (e: boolean) => void
@@ -628,7 +627,6 @@ export type CommentsProps = {
   canComment: boolean;
   openComment: string;
   profileType: string;
-  allCollections: Collection[];
   handleImagePaste: (
     e: ClipboardEvent<HTMLTextAreaElement>,
     setImageLoading: (e: boolean) => void
@@ -951,6 +949,7 @@ export type ProfileFeedProps = {
     setImageLoading: (e: boolean) => void
   ) => void;
   setImageLoading: (e: boolean) => void;
+  profileCollectionsLoading: boolean;
 };
 
 export type SwitchProps = {
@@ -1100,6 +1099,7 @@ export type SwitchProps = {
     setImageLoading: (e: boolean) => void
   ) => void;
   setImageLoading: (e: boolean) => void;
+  profileCollectionsLoading: boolean;
 };
 
 export type AllPostsProps = {
@@ -1212,7 +1212,6 @@ export type AllPostsProps = {
   setProfilesOpenSearch: (e: boolean) => void;
   setProfilesFound: (e: Profile[]) => void;
   profileType: string;
-  allCollections: Collection[];
   decryptFeed: Publication[];
   decryptAmounts: DecryptFeedCountState;
   followerOnlyDecrypt: boolean[];
@@ -1233,6 +1232,8 @@ export interface QuickProfilesInterface {
   id: string;
   image: string;
   followModule: FollowModule;
+  name: string;
+  ownedBy: string;
 }
 
 export type QuickProfilesProps = {
@@ -1244,6 +1245,7 @@ export type AccountProps = {
   profile: Profile | undefined;
   profileCollections: Collection[];
   dispatch: Dispatch<AnyAction>;
+  profileCollectionsLoading: boolean;
 };
 
 export type SearchProps = {

@@ -5,7 +5,6 @@ import {
 } from "@/graphql/lens/queries/feedTimeline";
 import { Signer } from "ethers";
 import { Web3Provider } from "@ethersproject/providers";
-import getProfiles from "@/graphql/lens/queries/getProfiles";
 import { LENS_CREATORS } from "@/lib/constants";
 import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import checkPostReactions from "@/lib/helpers/checkPostReactions";
@@ -14,7 +13,6 @@ import { setFeedsRedux } from "@/redux/reducers/feedSlice";
 import { setIndividualFeedCount } from "@/redux/reducers/individualFeedCountReducer";
 import { setPaginated } from "@/redux/reducers/paginatedSlice";
 import { setProfileFeedCount } from "@/redux/reducers/profileFeedCountSlice";
-import { setQuickProfilesRedux } from "@/redux/reducers/quickProfilesSlice";
 import { setReactionFeedCount } from "@/redux/reducers/reactionFeedCountSlice";
 import { setScrollPosRedux } from "@/redux/reducers/scrollPosSlice";
 import { RootState } from "@/redux/store";
@@ -22,7 +20,6 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
-import { QuickProfilesInterface } from "../types/wavs.types";
 import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
 import { useSigner, useAccount } from "wagmi";
 import { setPostSent } from "@/redux/reducers/postSentSlice";
@@ -32,6 +29,8 @@ import { setDecryptFeedCount } from "@/redux/reducers/decryptFeedCountSlice";
 import { setDecryptPaginated } from "@/redux/reducers/decryptPaginatedSlice";
 import { setDecryptScrollPosRedux } from "@/redux/reducers/decryptScrollPosSlice";
 import { setDecryptProfileFeedCount } from "@/redux/reducers/decryptProfileCountSlice";
+import { Collection } from "@/components/Home/types/home.types";
+import { getCollectionsDecrypt } from "@/graphql/subgraph/queries/getAllCollections";
 
 const useAllPosts = () => {
   const { data: signer } = useSigner();
@@ -54,6 +53,7 @@ const useAllPosts = () => {
   const indexer = useSelector(
     (state: RootState) => state.app.indexModalReducer
   );
+  const decrypt = useSelector((state: RootState) => state.app.decryptReducer);
   const feedId = useSelector(
     (state: RootState) => state.app.feedReactIdReducer
   );
@@ -111,24 +111,9 @@ const useAllPosts = () => {
   );
   const [decryptLoading, setDecryptLoading] = useState<boolean>(false);
   const [hasMoreDecrypt, setHasMoreDecrypt] = useState<boolean>(true);
-
-  const getQuickProfiles = async () => {
-    try {
-      const profs = await getProfiles({ profileIds: LENS_CREATORS });
-      const quickProfiles: QuickProfilesInterface[] =
-        profs?.data?.profiles?.items?.map((prof: any) => {
-          return {
-            id: prof.id,
-            handle: prof.handle,
-            image: prof?.picture?.original?.url,
-            followModule: prof?.followModule,
-          };
-        });
-      dispatch(setQuickProfilesRedux(quickProfiles));
-    } catch (err: any) {
-      console.error(err.message);
-    }
-  };
+  const [decryptCollections, setDecryptCollections] = useState<Collection[]>(
+    []
+  );
 
   const getTimeline = async () => {
     setPostsLoading(true);
@@ -1147,6 +1132,37 @@ const useAllPosts = () => {
     dispatch(setDecryptScrollPosRedux((e.target as HTMLDivElement)?.scrollTop));
   };
 
+  const getDecryptCollections = async (): Promise<void> => {
+    try {
+      let collections: Collection[] = [];
+
+      for (let name = 0; name <= decrypt.collections.length - 1; name++) {
+        const collection = await getCollectionsDecrypt(
+          decrypt.collections[name],
+          decrypt.owner as string
+        );
+        const json = await fetchIPFSJSON(
+          (collection?.data?.collectionMinteds[0].uri as any)
+            ?.split("ipfs://")[1]
+            ?.replace(/"/g, "")
+            ?.trim()
+        );
+
+        if (collection?.data?.collectionMinteds?.length > 0) {
+          const newCollections = {
+            ...collection?.data?.collectionMinteds[0],
+            uri: json,
+          };
+          collections.push(newCollections);
+        }
+      }
+
+      setDecryptCollections(collections);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+
   useEffect(() => {
     if (router.asPath?.includes("#chat")) {
       if (indexer.message === "Successfully Indexed") {
@@ -1170,13 +1186,6 @@ const useAllPosts = () => {
           getTimeline();
         }
       }
-
-      if (
-        (!feedDispatch || feedDispatch.length < 1) &&
-        (decryptFeed.length < 1 || !decryptFeed)
-      ) {
-        getQuickProfiles();
-      }
     }
   }, [filterDecrypt, auth]);
 
@@ -1196,6 +1205,12 @@ const useAllPosts = () => {
     }
   }, [postSent]);
 
+  useEffect(() => {
+    if (decrypt.open) {
+      getDecryptCollections();
+    }
+  }, [decrypt.open]);
+
   return {
     followerOnly,
     postsLoading,
@@ -1209,6 +1224,7 @@ const useAllPosts = () => {
     scrollRefDecrypt,
     setScrollPosDecrypt,
     followerOnlyDecrypt,
+    decryptCollections,
   };
 };
 

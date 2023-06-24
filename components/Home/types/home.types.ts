@@ -34,6 +34,7 @@ export interface Collection {
   timeStamp?: string;
   tokenIds: string[];
   soldTokens: string[] | null;
+  id: string;
 }
 
 export interface Drop {
@@ -41,7 +42,10 @@ export interface Drop {
   creator: string;
   collectionIds: string;
   blockTimestamp: string;
-  uri: string;
+  uri: {
+    name: string;
+    image: string;
+  };
 }
 
 export enum MediaType {

@@ -1,14 +1,15 @@
-import { Collection } from "@/components/Home/types/home.types";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface DecryptState {
   open: boolean;
-  collections: Collection[];
+  collections: string[];
+  owner: string | undefined;
 }
 
 const initialDecryptState: DecryptState = {
   open: false,
   collections: [],
+  owner: undefined,
 };
 
 export const decryptSlice = createSlice({
@@ -17,10 +18,11 @@ export const decryptSlice = createSlice({
   reducers: {
     setDecrypt: (
       state: DecryptState,
-      { payload: { actionOpen, actionCollections } }
+      { payload: { actionOpen, actionCollections, actionName } }
     ) => {
       state.open = actionOpen;
       state.collections = actionCollections;
+      state.owner = actionName;
     },
   },
 });

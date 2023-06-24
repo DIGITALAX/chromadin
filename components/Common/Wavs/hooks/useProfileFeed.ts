@@ -1,4 +1,4 @@
-import { Publication } from "@/components/Home/types/lens.types";
+import { Profile, Publication } from "@/components/Home/types/lens.types";
 import { getFollowingAuth } from "@/graphql/lens/queries/getFollowing";
 import {
   getOneProfileAuth,
@@ -30,6 +30,8 @@ import { setDecryptProfileScrollPosRedux } from "@/redux/reducers/decryptProfile
 import { setDecryptProfilePaginated } from "@/redux/reducers/decryptProfilePaginatedSlice";
 import { setDecryptProfileFeedRedux } from "@/redux/reducers/decryptProfileFeedSlice";
 import { setDecryptProfileFeedCount } from "@/redux/reducers/decryptProfileCountSlice";
+import { Collection } from "@/components/Home/types/home.types";
+import { getCollectionsProfile } from "@/graphql/subgraph/queries/getAllCollections";
 
 const useProfileFeed = () => {
   const router = useRouter();
@@ -46,6 +48,9 @@ const useProfileFeed = () => {
   );
   const postSent = useSelector(
     (state: RootState) => state.app.postSentReducer.value
+  );
+  const quickProfiles = useSelector(
+    (state: RootState) => state.app.quickProfilesReducer.value
   );
   const auth = useSelector(
     (state: RootState) => state.app.authStatusReducer.value
@@ -90,6 +95,11 @@ const useProfileFeed = () => {
   );
   const [profileLoading, setProfileLoading] = useState<boolean>(false);
   const [decryptProfileLoading, setDecryptProfileLoading] =
+    useState<boolean>(false);
+  const [profileCollections, setProfileCollections] = useState<Collection[]>(
+    []
+  );
+  const [profileCollectionsLoading, setProfileCollectionsLoading] =
     useState<boolean>(false);
 
   const getProfile = async () => {
@@ -866,6 +876,14 @@ const useProfileFeed = () => {
         );
       }
 
+      if (
+        quickProfiles
+          .map((profile) => profile.handle)
+          .includes(router?.asPath?.split("profile=")[1])
+      ) {
+        getProfileCollections(prof?.data?.profile);
+      }
+
       dispatch(
         setProfile({
           ...prof?.data?.profile,
@@ -885,6 +903,21 @@ const useProfileFeed = () => {
     dispatch(
       setDecryptProfileScrollPosRedux((e.target as HTMLDivElement)?.scrollTop)
     );
+  };
+
+  const getProfileCollections = async (prof: Profile) => {
+    setProfileCollectionsLoading(true);
+    try {
+      const colls = await getCollectionsProfile(prof.ownedBy);
+      if (colls?.data?.collectionsMinted?.length < 1 || !colls?.data) {
+        setProfileCollectionsLoading(false);
+        return;
+      }
+      setProfileCollections(colls?.data?.collectionsMinted);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setProfileCollectionsLoading(true);
   };
 
   useEffect(() => {
@@ -915,6 +948,8 @@ const useProfileFeed = () => {
     followerOnlyProfileDecrypt,
     fetchMoreProfileDecrypt,
     decryptProfileLoading,
+    profileCollectionsLoading,
+    profileCollections,
   };
 };
 

@@ -99,7 +99,6 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   setProfilesOpenSearch,
   profileType,
   preElement,
-  allCollections,
   filterDecrypt,
   decryptFeed,
   decryptAmounts,
@@ -233,7 +232,6 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
                       feedType={feedType}
                       router={router}
                       profileType={profileType}
-                      allCollections={allCollections}
                     />
                     {(publication?.__typename === "Mirror"
                       ? publication?.mirrorOf?.id
