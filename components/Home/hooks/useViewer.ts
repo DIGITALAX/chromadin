@@ -94,14 +94,23 @@ const useViewer = () => {
 
   useEffect(() => {
     if (router.asPath.includes("#")) {
+      dispatch(setView(router.asPath.split("#")[1].split("?option=")[0]));
       if (router.asPath.includes("&profile=")) {
-        dispatch(setView(router.asPath.split("#")[1].split("?option=")[0]));
-        dispatch(setOptions(router.asPath.split("#")[1].split("?option=")[1]));
+        dispatch(
+          setOptions(
+            router.asPath
+              .split("#")[1]
+              .split("?option=")[1]
+              ?.split("&profile=")[0]
+          )
+        );
       } else if (router.asPath.includes("&post=")) {
-        dispatch(setView(router.asPath.split("#")[1].split("?option=")[0]));
-        dispatch(setOptions(router.asPath.split("#")[1].split("?option=")[1]));
+        dispatch(
+          setOptions(
+            router.asPath.split("#")[1].split("?option=")[1]?.split("&post=")[0]
+          )
+        );
       } else {
-        dispatch(setView(router.asPath.split("#")[1].split("?option=")[0]));
         dispatch(setOptions(router.asPath.split("#")[1].split("?option=")[1]));
       }
     }
@@ -112,7 +121,7 @@ const useViewer = () => {
   ): Promise<void> => {
     setSearchOpen(false);
     let autograph: Profile;
-    if ((chosen as Collection)?.acceptedTokens.length > 0) {
+    if ((chosen as Collection)?.acceptedTokens?.length > 0) {
       const defaultProfile = await getDefaultProfile(
         (chosen as Collection).owner
       );
@@ -123,7 +132,11 @@ const useViewer = () => {
         (chosen as QuickProfilesInterface).ownedBy
       );
       autograph = defaultProfile?.data?.defaultProfile;
-      router.push(`/autograph/${autograph}`);
+      router.push(
+        `/autograph/${
+          defaultProfile?.data?.defaultProfile?.handle?.split(".lens")[0]
+        }`
+      );
     } else {
       const defaultProfile = await getDefaultProfile((chosen as Drop).creator);
       autograph = defaultProfile?.data?.defaultProfile;

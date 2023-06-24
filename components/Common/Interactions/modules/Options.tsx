@@ -1,9 +1,7 @@
 import { INFURA_GATEWAY } from "@/lib/constants";
-import { setOptions } from "@/redux/reducers/optionsSlice";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
-import { useDispatch } from "react-redux";
 
 const Options: FunctionComponent = (): JSX.Element => {
   const router = useRouter();

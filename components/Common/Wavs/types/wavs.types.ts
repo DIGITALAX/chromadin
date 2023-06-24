@@ -1246,6 +1246,7 @@ export type AccountProps = {
   profileCollections: Collection[];
   dispatch: Dispatch<AnyAction>;
   profileCollectionsLoading: boolean;
+  router: NextRouter
 };
 
 export type SearchProps = {

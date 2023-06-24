@@ -35,9 +35,6 @@ const useSuperCreator = () => {
   const quickProfiles = useSelector(
     (state: RootState) => state.app.quickProfilesReducer.value
   );
-  const superFollow = useSelector(
-    (state: RootState) => state.app.superFollowReducer.open
-  );
   const rain = useSelector((state: RootState) => state.app.rainReducer.value);
 
   const { config, isSuccess } = usePrepareContractWrite({

@@ -879,9 +879,9 @@ const useProfileFeed = () => {
       if (
         quickProfiles
           .map((profile) => profile.handle)
-          .includes(router?.asPath?.split("profile=")[1])
+          .includes(router?.asPath?.split("profile=")[1] + ".lens")
       ) {
-        getProfileCollections(prof?.data?.profile);
+        await getProfileCollections(prof?.data?.profile);
       }
 
       dispatch(
@@ -909,11 +909,28 @@ const useProfileFeed = () => {
     setProfileCollectionsLoading(true);
     try {
       const colls = await getCollectionsProfile(prof.ownedBy);
-      if (colls?.data?.collectionsMinted?.length < 1 || !colls?.data) {
+
+      if (colls?.data?.collectionMinteds?.length < 1 || !colls?.data) {
         setProfileCollectionsLoading(false);
         return;
       }
-      setProfileCollections(colls?.data?.collectionsMinted);
+
+      const collections = await Promise.all(
+        colls?.data?.collectionMinteds?.map(async (collection: Collection) => {
+          const json = await fetchIPFSJSON(
+            (collection.uri as any)
+              ?.split("ipfs://")[1]
+              ?.replace(/"/g, "")
+              ?.trim()
+          );
+          return {
+            ...collection,
+            uri: json,
+          };
+        })
+      );
+
+      setProfileCollections(collections);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -923,11 +940,11 @@ const useProfileFeed = () => {
   useEffect(() => {
     if (
       router.asPath.includes("&profile=") &&
-      router.asPath.includes("#chat")
+      router.asPath.includes("#chat") && quickProfiles?.length > 0
     ) {
       getSingleProfile();
     }
-  }, [router.asPath, auth, lensProfile]);
+  }, [router.asPath, auth, lensProfile, quickProfiles]);
 
   return {
     hasMoreProfile,

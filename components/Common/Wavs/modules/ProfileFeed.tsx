@@ -141,6 +141,7 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           profile={profile}
           profileCollections={profileCollections}
           profileCollectionsLoading={profileCollectionsLoading}
+          router={router}
         />
         <InfiniteScroll
           height={"40rem"}
@@ -246,7 +247,6 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
                       setMirrorLoader={setMirrorProfileLoading}
                       setReactLoader={setReactProfileLoading}
                       profileType={profileType}
-                      allCollections={profileCollections}
                     />
                     {(publication?.__typename === "Mirror"
                       ? publication?.mirrorOf?.id

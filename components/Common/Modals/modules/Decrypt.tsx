@@ -43,7 +43,7 @@ const Decrypt: FunctionComponent<DecryptProps> = ({
                         className="relative w-36 h-36 preG:w-52 preG:h-52 justify-center items-center rounded-lg border border-white cursor-pointer"
                         id="staticLoad"
                         key={index}
-                        href={`https://chromadin.xyz/autograph/collection/${coll?.name}`}
+                        href={`/autograph/collection/${coll?.name}`}
                         target="_blank"
                         rel="noreferrer"
                       >

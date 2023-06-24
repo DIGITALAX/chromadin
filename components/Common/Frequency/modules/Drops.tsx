@@ -71,71 +71,60 @@ const Drops: FunctionComponent<DropsProps> = ({
                     router.asPath.includes("#sampler") ||
                     router.asPath.includes("#chat")
                   ) {
-                    if (router.asPath.includes("&post=")) {
+                    if (router.asPath?.includes("&post=")) {
                       router.push(
-                        router.asPath.split(
-                          router.asPath.includes("#chat") ? "#chat" : "#sampler"
-                        )[0] +
-                          "#collect?option=fulfillment" +
+                        "#collect?option=fulfillment" +
                           "&post=" +
-                          router.asPath.split("&post=")[1]
+                          router.asPath?.split("&post=")[1]
                       );
-                    } else if (router.asPath.includes("&profile=")) {
+                    } else if (router.asPath?.includes("&profile=")) {
                       router.push(
-                        router.asPath.split(
-                          router.asPath.includes("#chat") ? "#chat" : "#sampler"
-                        )[0] +
-                          "#collect?option=fulfillment" +
+                        "#collect?option=fulfillment" +
                           "&profile=" +
-                          router.asPath.split("&profile=")[1]
+                          router.asPath?.split("&profile=")[1]
                       );
                     } else {
-                      router.push(
-                        router.asPath.split(
-                          router.asPath.includes("#chat") ? "#chat" : "#sampler"
-                        )[0] + "#collect?option=fulfillment"
-                      );
+                      router.push("#collect?option=fulfillment");
                     }
                   } else {
                     if (router.asPath.includes("#")) {
                       if (router.asPath.includes("&profile=")) {
                         router.asPath.includes("?option=")
                           ? router.push(
-                              router.asPath.split("?option=")[0] +
+                              router.asPath?.split("?option=")[0] +
                                 "?option=fulfillment" +
                                 "&profile=" +
-                                router.asPath.split("&profile=")[1]
+                                router.asPath?.split("&profile=")[1]
                             )
                           : router.push(
                               "?option=fulfillment" +
                                 "&profile=" +
-                                router.asPath.split("&profile=")[1]
+                                router.asPath?.split("&profile=")[1]
                             );
                       } else if (router.asPath.includes("&post=")) {
                         router.asPath.includes("?option=")
                           ? router.push(
-                              router.asPath.split("?option=")[0] +
+                              router.asPath?.split("?option=")[0] +
                                 "?option=fulfillment" +
                                 router.asPath
-                                  .split("?option=fulfillment")[1]
-                                  .split("&post=")[0] +
+                                  ?.split("?option=fulfillment")[1]
+                                  ?.split("&post=")[0] +
                                 "&post=" +
-                                router.asPath.split("&post=")[1]
+                                router.asPath?.split("&post=")[1]
                             )
                           : router.push(
                               "?option=fulfillment" +
                                 router.asPath
-                                  .split("?option=fulfillment")[1]
-                                  .split("&post=")[0] +
+                                  ?.split("?option=fulfillment")[1]
+                                  ?.split("&post=")[0] +
                                 "&post=" +
-                                router.asPath.split("&post=")[1]
+                                router.asPath?.split("&post=")[1]
                             );
                       } else {
                         router.asPath.includes("?option=")
                           ? router.push(
-                              router.asPath.split("?option=")[0] +
-                                "?option=fulfillment" +
-                                router.asPath.split("?option=fulfillment")[1]
+                              router.asPath?.split("?option=")[0] +
+                                "?option=fulfillment"
                             )
                           : router.push("?option=fulfillment");
                       }

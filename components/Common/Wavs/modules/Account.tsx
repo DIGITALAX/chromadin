@@ -13,6 +13,7 @@ const Account: FunctionComponent<AccountProps> = ({
   profileCollections,
   dispatch,
   profileCollectionsLoading,
+  router
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col gap-2 items-start justify-center break-words">
@@ -238,37 +239,34 @@ const Account: FunctionComponent<AccountProps> = ({
           </div>
         </div>
       </div>
-      {profileCollections && (
+      {profileCollections?.length > 0 && (
         <div className="relative w-full h-fit grid grid-flow-col auto-cols-auto overflow-x-scroll">
           <div className="relative w-fit h-full overflow-x-scroll grid grid-flow-col auto-cols-auto gap-2">
-            {profileCollections
-              ?.filter((coll: Collection) => coll.profile?.id === profile?.id)
-              ?.reverse()
-              ?.map((coll: Collection, index: number) => {
-                return (
-                  <div
-                    key={index}
-                    className="relative rounded-md cursor-pointer active:scale-95 h-28 w-28 flex-shrink-0"
-                    id="crt"
-                    onClick={() =>
-                      window.open(
-                        `https://www.chromadin.xyz/autograph/${coll.profile?.handle}`
-                      )
-                    }
-                  >
-                    <Image
-                      layout="fill"
-                      className="rounded-md w-full h-full flex"
-                      objectFit="cover"
-                      objectPosition={"center"}
-                      src={`${INFURA_GATEWAY}/ipfs/${
-                        coll.uri.image?.split("ipfs://")[1]
-                      }`}
-                    />
-                    <div className="relative absolute top-0 left-0 bg-black opacity-60 w-full h-full rounded-md hover:opacity-0"></div>
-                  </div>
-                );
-              })}
+            {profileCollections?.map((coll: Collection, index: number) => {
+              return (
+                <div
+                  key={index}
+                  className="relative rounded-md cursor-pointer active:scale-95 h-28 w-28 flex-shrink-0"
+                  id="crt"
+                  onClick={() =>
+                    router.push(
+                      `/autograph/collection/${coll?.name}`
+                    )
+                  }
+                >
+                  <Image
+                    layout="fill"
+                    className="rounded-md w-full h-full flex"
+                    objectFit="cover"
+                    objectPosition={"center"}
+                    src={`${INFURA_GATEWAY}/ipfs/${
+                      coll.uri.image?.split("ipfs://")[1]
+                    }`}
+                  />
+                  <div className="relative absolute top-0 left-0 bg-black opacity-60 w-full h-full rounded-md hover:opacity-0"></div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

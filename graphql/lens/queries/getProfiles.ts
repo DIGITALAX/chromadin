@@ -7,6 +7,7 @@ query Profiles($request: ProfileQueryRequest!) {
       items {
         id
         name
+        ownedBy
         picture {
           ... on NftImage {
             contractAddress
