@@ -122,8 +122,8 @@ const Vending: FunctionComponent<VendingProps> = ({
           </div>
           <InfiniteScroll
             hasMore={hasMoreCollections}
-            height={"28.6rem"}
-            loader={<FetchMoreLoading size="3" />}
+            height={"40rem"}
+            loader={""}
             dataLength={dispatchCollections?.length}
             next={handleGetMoreCollections}
             className={`relative row-start-1 w-full h-full overflow-y-scroll flex flex-col`}

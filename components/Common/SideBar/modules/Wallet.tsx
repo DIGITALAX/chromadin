@@ -11,10 +11,12 @@ const Wallet: FunctionComponent<WalletProps> = ({
 }): JSX.Element => {
   return (
     <div
-      className={`relative w-full sm:w-40 lg:w-full h-12 font-geom text-white flex flex-row items-center px-2 cursor-pointer ${
+      className={`relative h-12 font-geom text-white flex flex-row items-center px-2 cursor-pointer ${
         isConnected && !mainPage && "bg-lensLight/70"
       } ${
-        mainPage ? "gap-1" : "border-white border rounded-tl-lg rounded-br-lg"
+        mainPage
+          ? "gap-1 w-full sm:w-40"
+          : "border-white border rounded-tl-lg rounded-br-lg w-full sm:w-40 lg:w-full"
       }`}
       onClick={() => handleTransaction()}
     >
