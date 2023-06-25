@@ -40,6 +40,10 @@ const Drops: FunctionComponent<DropsProps> = ({
             );
           })
         : collections?.map((collection: Collection, index: number) => {
+            const profileImage = createProfilePicture(
+              collection?.profile,
+              false
+            );
             return (
               <div
                 className="relative w-60 h-40 flex flex-col items-center shrink-0 cursor-pointer"
