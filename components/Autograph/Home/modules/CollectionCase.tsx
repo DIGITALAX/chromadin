@@ -25,6 +25,7 @@ const CollectionCase: FunctionComponent<CollectionCaseProps> = ({
             ?.toLowerCase()}`
         )
       }
+      id="staticLoad"
     >
       {collection?.uri?.image && (
         <Image

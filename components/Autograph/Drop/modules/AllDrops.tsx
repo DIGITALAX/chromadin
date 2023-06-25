@@ -57,7 +57,7 @@ const AllDrops: FunctionComponent<AllDropsProps> = ({
                 )
               }
             >
-              <div className="relative w-48 h-48 rounded-md">
+              <div className="relative w-48 h-48 rounded-md" id="staticLoad">
                 <Image
                   src={`${INFURA_GATEWAY}/ipfs/${
                     collection?.uri?.image?.split("ipfs://")[1]

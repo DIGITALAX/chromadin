@@ -31,7 +31,7 @@ const MoreDrops: FunctionComponent<MoreDropsProps> = ({
                   )
                 }
               >
-                <div className="w-24 h-24 relative flex rounded-md">
+                <div className="w-24 h-24 relative flex rounded-md" id="staticLoad">
                   {collection?.uri?.image && (
                     <Image
                       draggable={false}

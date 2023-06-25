@@ -65,43 +65,53 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
             className={`absolute rounded-full flex bg-white w-8 h-full justify-self-center sm:right-6 col-start-1 cursor-pointer active:scale-95 hover:opacity-80`}
             id="crt"
             onClick={() =>
-              router.push(
-                router.asPath.includes("&post=")
-                  ? router.asPath.split("&post=")[0] +
-                      `&profile=${
-                        publication?.__typename !== "Mirror"
-                          ? publication?.profile?.handle?.split(".lens")[0]
-                          : publication?.mirrorOf?.profile?.handle?.split(
-                              ".lens"
-                            )[0]
-                      }`
-                  : router.asPath.includes("&profile=")
-                  ? router.asPath.split("&profile=")[0] +
-                    `&profile=${
+              !router.asPath?.includes("/autograph/")
+                ? router.push(
+                    router.asPath.includes("&post=")
+                      ? router.asPath.split("&post=")[0] +
+                          `&profile=${
+                            publication?.__typename !== "Mirror"
+                              ? publication?.profile?.handle?.split(".lens")[0]
+                              : publication?.mirrorOf?.profile?.handle?.split(
+                                  ".lens"
+                                )[0]
+                          }`
+                      : router.asPath.includes("&profile=")
+                      ? router.asPath.split("&profile=")[0] +
+                        `&profile=${
+                          publication?.__typename !== "Mirror"
+                            ? publication?.profile?.handle?.split(".lens")[0]
+                            : publication?.mirrorOf?.profile?.handle?.split(
+                                ".lens"
+                              )[0]
+                        }`
+                      : router.asPath.includes("?option=")
+                      ? router.asPath +
+                        `&profile=${
+                          publication?.__typename !== "Mirror"
+                            ? publication?.profile?.handle?.split(".lens")[0]
+                            : publication?.mirrorOf?.profile?.handle?.split(
+                                ".lens"
+                              )[0]
+                        }`
+                      : router.asPath +
+                        `?option=history&profile=${
+                          publication?.__typename !== "Mirror"
+                            ? publication?.profile?.handle?.split(".lens")[0]
+                            : publication?.mirrorOf?.profile?.handle?.split(
+                                ".lens"
+                              )[0]
+                        }`
+                  )
+                : router.replace(
+                    `/#chat?option=history&profile=${
                       publication?.__typename !== "Mirror"
                         ? publication?.profile?.handle?.split(".lens")[0]
                         : publication?.mirrorOf?.profile?.handle?.split(
                             ".lens"
                           )[0]
                     }`
-                  : router.asPath.includes("?option=")
-                  ? router.asPath +
-                    `&profile=${
-                      publication?.__typename !== "Mirror"
-                        ? publication?.profile?.handle?.split(".lens")[0]
-                        : publication?.mirrorOf?.profile?.handle?.split(
-                            ".lens"
-                          )[0]
-                    }`
-                  : router.asPath +
-                    `?option=history&profile=${
-                      publication?.__typename !== "Mirror"
-                        ? publication?.profile?.handle?.split(".lens")[0]
-                        : publication?.mirrorOf?.profile?.handle?.split(
-                            ".lens"
-                          )[0]
-                    }`
-              )
+                  )
             }
           >
             {profileImage !== "" && (

@@ -354,49 +354,57 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
               <div
                 className={`relative w-fit h-full col-start-1 row-start-1 sm:col-start-2 sm:pt-0 pt-3 justify-self-end self-center grid grid-flow-col auto-cols-auto font-digi gap-1 cursor-pointer hover:opacity-70 active:scale-95 text-white`}
                 onClick={() =>
-                  router.push(
-                    router.asPath.includes("&post=")
-                      ? router.asPath.includes("?option=")
-                        ? router.asPath.split("&post=")[0] +
-                          `&post=${
-                            publication?.__typename !== "Mirror"
-                              ? publication?.id
-                              : publication?.mirrorOf.id
-                          }`
-                        : router.asPath.split("&post=")[0] +
-                          `?option=history&post=${
-                            publication?.__typename !== "Mirror"
-                              ? publication?.id
-                              : publication?.mirrorOf.id
-                          }`
-                      : router.asPath.includes("&profile=")
-                      ? router.asPath.includes("?option=")
-                        ? router.asPath.split("&profile=")[0] +
-                          `&post=${
-                            publication?.__typename !== "Mirror"
-                              ? publication?.id
-                              : publication?.mirrorOf.id
-                          }`
-                        : router.asPath.split("&profile=")[0] +
-                          `?option=history&post=${
-                            publication?.__typename !== "Mirror"
-                              ? publication?.id
-                              : publication?.mirrorOf.id
-                          }`
-                      : router.asPath.includes("?option=")
-                      ? router.asPath +
-                        `&post=${
+                  !router.asPath.includes("/autograph/")
+                    ? router.push(
+                        router.asPath.includes("&post=")
+                          ? router.asPath.includes("?option=")
+                            ? router.asPath.split("&post=")[0] +
+                              `&post=${
+                                publication?.__typename !== "Mirror"
+                                  ? publication?.id
+                                  : publication?.mirrorOf.id
+                              }`
+                            : router.asPath.split("&post=")[0] +
+                              `?option=history&post=${
+                                publication?.__typename !== "Mirror"
+                                  ? publication?.id
+                                  : publication?.mirrorOf.id
+                              }`
+                          : router.asPath.includes("&profile=")
+                          ? router.asPath.includes("?option=")
+                            ? router.asPath.split("&profile=")[0] +
+                              `&post=${
+                                publication?.__typename !== "Mirror"
+                                  ? publication?.id
+                                  : publication?.mirrorOf.id
+                              }`
+                            : router.asPath.split("&profile=")[0] +
+                              `?option=history&post=${
+                                publication?.__typename !== "Mirror"
+                                  ? publication?.id
+                                  : publication?.mirrorOf.id
+                              }`
+                          : router.asPath.includes("?option=")
+                          ? router.asPath +
+                            `&post=${
+                              publication?.__typename !== "Mirror"
+                                ? publication?.id
+                                : publication?.mirrorOf.id
+                            }`
+                          : router.asPath +
+                            `?option=history&post=${
+                              publication?.__typename !== "Mirror"
+                                ? publication?.id
+                                : publication?.mirrorOf.id
+                            }`
+                      )
+                    : router.replace(
+                        `/#chat?option=history&post=${
                           publication?.__typename !== "Mirror"
                             ? publication?.id
                             : publication?.mirrorOf.id
                         }`
-                      : router.asPath +
-                        `?option=history&post=${
-                          publication?.__typename !== "Mirror"
-                            ? publication?.id
-                            : publication?.mirrorOf.id
-                        }`
-                  )
+                      )
                 }
               >
                 <div className="relative w-fit h-fit self-end col-start-1 text-sm">

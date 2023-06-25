@@ -23,7 +23,7 @@ const InDrop: FunctionComponent<InDropProps> = ({
               <div
                 key={index}
                 className="relative rounded-md cursor-pointer active:scale-95 h-28 w-28 flex-shrink-0"
-                id="crt"
+                id="staticLoad"
                 onClick={() =>
                   push(
                     `/autograph/${

@@ -31,7 +31,7 @@ const Drops: FunctionComponent<DropsProps> = ({
                   )
                 }
               >
-                <div className="w-52 h-52 relative flex rounded-md">
+                <div className="w-52 h-52 relative flex rounded-md" id="staticLoad">
                   {drop?.uri?.image && (
                     <Image
                       draggable={false}

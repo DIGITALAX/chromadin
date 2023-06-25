@@ -11,10 +11,8 @@ import useCollectOptions from "@/components/Common/NFT/hooks/useCollectOptions";
 import useImageUpload from "@/components/Common/NFT/hooks/useImageUpload";
 import useConnect from "@/components/Common/SideBar/hooks/useConnect";
 import useComment from "@/components/Common/Wavs/hooks/useComment";
-import useIndividual from "@/components/Common/Wavs/hooks/useIndividual";
 import useReactions from "@/components/Common/Wavs/hooks/useReactions";
 import Account from "@/components/Common/Wavs/modules/Account";
-import Individual from "@/components/Common/Wavs/modules/Individual";
 import MakePost from "@/components/Common/Wavs/modules/MakePost";
 import useViewer from "@/components/Home/hooks/useViewer";
 import { RootState } from "@/redux/store";
@@ -38,12 +36,6 @@ const Autograph: NextPage = (): JSX.Element => {
   const authStatus = useSelector(
     (state: RootState) => state.app.authStatusReducer.value
   );
-  const reactionAmounts = useSelector(
-    (state: RootState) => state.app.reactionFeedCountReducer
-  );
-  const commentAmounts = useSelector(
-    (state: RootState) => state.app.commentFeedCountReducer
-  );
   const profileType = useSelector(
     (state: RootState) => state.app.profileReducer.profile?.id
   );
@@ -65,9 +57,6 @@ const Autograph: NextPage = (): JSX.Element => {
   const postImagesDispatched = useSelector(
     (state: RootState) => state.app.postImageReducer.value
   );
-  const commentors = useSelector(
-    (state: RootState) => state.app.commentReducer.value
-  );
   const imageLoading = useSelector(
     (state: RootState) => state.app.imageLoadingReducer.value
   );
@@ -86,28 +75,6 @@ const Autograph: NextPage = (): JSX.Element => {
     useAutograph();
 
   const { reactPost, collectPost, mirrorPost } = useReactions();
-
-  const {
-    getMorePostComments,
-    hasMoreComments,
-    commentsLoading,
-    mainPostLoading,
-    followerOnly: followerOnlyMain,
-    mainPost,
-    followerOnlyComments,
-    reactCommentLoading,
-    mirrorCommentLoading,
-    collectCommentLoading,
-    setMirrorCommentLoading,
-    setCollectCommentLoading,
-    setReactCommentLoading,
-    setCollectPostLoading,
-    setMirrorPostLoading,
-    setReactPostLoading,
-    collectPostLoading,
-    reactPostLoading,
-    mirrorPostLoading,
-  } = useIndividual();
 
   const {
     commentPost,
@@ -373,17 +340,10 @@ const Autograph: NextPage = (): JSX.Element => {
         autoDispatch.profile &&
         profileFeed && (
           <div className="relative flex flex-col w-full h-fit gap-3 justify-start px-20 py-10">
-            <Account dispatch={dispatch} profile={profile} />
+            <Account dispatch={dispatch} profile={autoDispatch.profile} />
             <div className="relative flex flex-row gap-3 items-start justify-center w-full h-full">
               <div className="relative w-full h-fit flex flex-col items-start justify-start gap-4">
                 <div className="relative w-full h-full flex flex-col items-start justify-center gap-3">
-                  <div className="relative w-full h-fit flex flex-row">
-                    <MakePost
-                      dispatch={dispatch}
-                      profileId={profileId}
-                      address={address}
-                    />
-                  </div>
                   {profileLoading || decryptProfileLoading ? (
                     <div className="relative w-full h-full flex flex-col gap-4 overflow-y-scroll">
                       {Array.from({ length: 3 }).map((_, index: number) => {
@@ -486,7 +446,7 @@ const Autograph: NextPage = (): JSX.Element => {
                   )}
                 </div>
               </div>
-              <div className="relative w-full h-fit flex flex-col gap-2 pt-8 px-4">
+              <div className="relative w-full h-fit flex flex-col gap-2 px-4">
                 <Collections
                   autoCollections={autoDispatch.collections}
                   router={router}
