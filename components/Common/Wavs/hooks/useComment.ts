@@ -34,6 +34,7 @@ import { setPostImages } from "@/redux/reducers/postImageSlice";
 import { searchProfile } from "@/graphql/lens/queries/search";
 import { setCollectOpen } from "@/redux/reducers/collectOpenSlice";
 import useImageUpload from "../../NFT/hooks/useImageUpload";
+import { setImageLoadingRedux } from "@/redux/reducers/imageLoadingSlice";
 
 const useComment = () => {
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
@@ -350,9 +351,8 @@ const useComment = () => {
 
   const handleImagePaste = async (
     e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
   ) => {
-    setImageLoading(true);
+    dispatch(setImageLoadingRedux(true));
     const items = e.clipboardData?.items;
     if (!items) return;
     let files: File[] = [];
@@ -366,9 +366,9 @@ const useComment = () => {
     }
     if (files.length > 0) {
       await uploadImage(files, true);
-      setImageLoading(false);
+      dispatch(setImageLoadingRedux(false));
     } else {
-      setImageLoading(false);
+      dispatch(setImageLoadingRedux(false));
     }
   };
 

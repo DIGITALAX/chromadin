@@ -46,16 +46,19 @@ export type AuthProps = {
   connected: boolean;
   authStatus: boolean;
   profile: Profile | undefined;
+  mainPage?: boolean;
 };
 
 export type WalletProps = {
   handleTransaction: () => void;
   isConnected: boolean;
   buttonText: string;
+  mainPage?: boolean;
 };
 
 export type ProfileProps = {
   profile: Profile | undefined;
+  mainPage?: boolean;
 };
 
 export type TabProps = {

@@ -71,15 +71,16 @@ const NFT: FunctionComponent<NFTProps> = ({ mainNFT, viewer }): JSX.Element => {
   } = useCollectOptions();
   const {
     videoLoading,
-    imageLoading,
     uploadImage,
     uploadVideo,
     handleRemoveImage,
     mappedFeaturedFiles,
-    setImageLoading,
   } = useImageUpload();
   const authStatus = useSelector(
     (state: RootState) => state.app.authStatusReducer.value
+  );
+  const imageLoading = useSelector(
+    (state: RootState) => state.app.imageLoadingReducer.value
   );
   const commentId = useSelector(
     (state: RootState) => state.app.secondaryCommentReducer.value
@@ -172,7 +173,6 @@ const NFT: FunctionComponent<NFTProps> = ({ mainNFT, viewer }): JSX.Element => {
           canComment={canComment}
           preElement={preElement}
           handleImagePaste={handleImagePaste}
-          setImageLoading={setImageLoading}
         />
       ) : (
         <Description

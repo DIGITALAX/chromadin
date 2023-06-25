@@ -573,3 +573,13 @@ input[type="range"]::-moz-range-thumb {
   outline: 1px solid #dbac2a;
   outline-offset: -8px;
 }
+
+#calc {
+  min-height: fit-content;
+
+  @media (min-width: 480px) {
+    min-height: calc(
+      100vh - 17.5rem
+    ); /* Apply the height calculation above 480px */
+  }
+}

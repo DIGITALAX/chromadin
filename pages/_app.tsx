@@ -11,6 +11,8 @@ import Modals from "@/components/Common/Modals/modules/Modals";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import RouterChange from "@/components/Common/Loading/RouterChange";
+import Frequency from "@/components/Common/Frequency/modules/Frequency";
+import Marquee from "@/components/Common/Marquee/Marquee";
 
 const { chains, provider } = configureChains(
   [polygon],
@@ -82,8 +84,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider chains={chains}>
-          <Component {...pageProps} />
-          <Modals />
+          <div className="relative w-full h-full flex flex-col overflow-x-hidden">
+            <Component {...pageProps} />
+            <Frequency />
+            <Marquee />
+            <Modals />
+          </div>
         </RainbowKitProvider>
       </WagmiConfig>
     </Provider>

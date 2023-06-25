@@ -37,6 +37,7 @@ import { setPublicationImages } from "@/redux/reducers/publicationImageSlice";
 import { setMakePost } from "@/redux/reducers/makePostSlice";
 import { setPostSent } from "@/redux/reducers/postSentSlice";
 import useImageUpload from "./../../NFT/hooks/useImageUpload";
+import { setImageLoadingRedux } from "@/redux/reducers/imageLoadingSlice";
 
 const useMakePost = () => {
   const [postLoading, setPostLoading] = useState<boolean>(false);
@@ -382,11 +383,8 @@ const useMakePost = () => {
     setPostHTML(newHTMLPost);
   };
 
-  const handleImagePaste = async (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
-  ) => {
-    setImageLoading(true);
+  const handleImagePaste = async (e: ClipboardEvent<HTMLTextAreaElement>) => {
+    dispatch(setImageLoadingRedux(true));
     const items = e.clipboardData?.items;
     if (!items) return;
     let files: File[] = [];
@@ -400,9 +398,9 @@ const useMakePost = () => {
     }
     if (files.length > 0) {
       await uploadImage(files, true);
-      setImageLoading(false);
+      dispatch(setImageLoadingRedux(false));
     } else {
-      setImageLoading(false);
+      dispatch(setImageLoadingRedux(false));
     }
   };
 

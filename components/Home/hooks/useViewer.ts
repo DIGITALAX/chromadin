@@ -9,8 +9,6 @@ import { getCollectionsSearch } from "@/graphql/subgraph/queries/getAllCollectio
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
 import { QuickProfilesInterface } from "@/components/Common/Wavs/types/wavs.types";
 import getDefaultProfile from "@/graphql/lens/queries/getDefaultProfile";
-import { Profile } from "../types/lens.types";
-import { setAutographRedux } from "@/redux/reducers/autographSlice";
 
 const useViewer = () => {
   const router = useRouter();
@@ -120,18 +118,21 @@ const useViewer = () => {
     chosen: QuickProfilesInterface | Drop | Collection
   ): Promise<void> => {
     setSearchOpen(false);
-    let autograph: Profile;
     if ((chosen as Collection)?.acceptedTokens?.length > 0) {
       const defaultProfile = await getDefaultProfile(
         (chosen as Collection).owner
       );
-      autograph = defaultProfile?.data?.defaultProfile;
-      router.push(`/autograph/collection/${(chosen as Collection)?.uri?.name}`);
+      router.push(
+        `/autograph/${
+          defaultProfile?.data?.defaultProfile?.handle?.split(".lens")[0]
+        }/collection/${(chosen as Collection)?.uri?.name
+          ?.replace(/\s/g, "-")
+          .toLowerCase()}`
+      );
     } else if ((chosen as QuickProfilesInterface)?.handle) {
       const defaultProfile = await getDefaultProfile(
         (chosen as QuickProfilesInterface).ownedBy
       );
-      autograph = defaultProfile?.data?.defaultProfile;
       router.push(
         `/autograph/${
           defaultProfile?.data?.defaultProfile?.handle?.split(".lens")[0]
@@ -139,11 +140,12 @@ const useViewer = () => {
       );
     } else {
       const defaultProfile = await getDefaultProfile((chosen as Drop).creator);
-      autograph = defaultProfile?.data?.defaultProfile;
-      router.push(`/autograph/drop/${(chosen as Drop).uri.name}`);
+      router.push(
+        `/autograph/${
+          defaultProfile?.data?.defaultProfile?.handle?.split(".lens")[0]
+        }/drop/${(chosen as Drop).uri.name?.replace(/\s/g, "-").toLowerCase()}`
+      );
     }
-
-    dispatch(setAutographRedux(autograph));
   };
 
   return {

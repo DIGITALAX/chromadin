@@ -7,13 +7,12 @@ import { IoGlobeOutline } from "react-icons/io5";
 import { MdOutlineShareLocation } from "react-icons/md";
 import { Collection } from "@/components/Home/types/home.types";
 import { setFollowerOnly } from "@/redux/reducers/followerOnlySlice";
-
 const Account: FunctionComponent<AccountProps> = ({
   profile,
   profileCollections,
   dispatch,
   profileCollectionsLoading,
-  router
+  router,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col gap-2 items-start justify-center break-words">
@@ -250,7 +249,11 @@ const Account: FunctionComponent<AccountProps> = ({
                   id="crt"
                   onClick={() =>
                     router.push(
-                      `/autograph/collection/${coll?.name}`
+                      `/autograph/${
+                        coll?.profile?.handle?.split(".lens")[0]
+                      }/collection/${coll?.name
+                        ?.replace(/\s/g, "-")
+                        .toLowerCase()}`
                     )
                   }
                 >
@@ -262,6 +265,7 @@ const Account: FunctionComponent<AccountProps> = ({
                     src={`${INFURA_GATEWAY}/ipfs/${
                       coll.uri.image?.split("ipfs://")[1]
                     }`}
+                    draggable={false}
                   />
                   <div className="relative absolute top-0 left-0 bg-black opacity-60 w-full h-full rounded-md hover:opacity-0"></div>
                 </div>

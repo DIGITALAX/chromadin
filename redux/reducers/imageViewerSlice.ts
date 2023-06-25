@@ -2,18 +2,24 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ImageViewerState {
   value: boolean;
+  image: string;
 }
 
 const initialImageViewerState: ImageViewerState = {
   value: false,
+  image: "",
 };
 
 export const imageViewerSlice = createSlice({
   name: "imageViewer",
   initialState: initialImageViewerState,
   reducers: {
-    setImageViewer: (state: ImageViewerState, action: PayloadAction<boolean>) => {
-      state.value = action.payload;
+    setImageViewer: (
+      state: ImageViewerState,
+      { payload: { actionValue, actionImage } }
+    ) => {
+      state.value = actionValue;
+      state.image = actionImage;
     },
   },
 });

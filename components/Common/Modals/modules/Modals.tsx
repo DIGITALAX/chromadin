@@ -71,9 +71,6 @@ const Modals = () => {
   const claimModal = useSelector(
     (state: RootState) => state.app.noHandleReducer
   );
-  const mainImage = useSelector(
-    (state: RootState) => state.app.mainNFTReducer.value?.media
-  );
   const imageViewer = useSelector(
     (state: RootState) => state.app.imageViewerReducer
   );
@@ -96,6 +93,9 @@ const Modals = () => {
   );
   const superFollow = useSelector(
     (state: RootState) => state.app.superFollowReducer
+  );
+  const imageLoading = useSelector(
+    (state: RootState) => state.app.imageLoadingReducer.value
   );
   const quickProfiles = useSelector(
     (state: RootState) => state.app.quickProfilesReducer.value
@@ -201,12 +201,10 @@ const Modals = () => {
   } = useCollectOptions();
   const {
     videoLoading,
-    imageLoading,
     uploadImage,
     uploadVideo,
     handleRemoveImage,
     mappedFeaturedFiles,
-    setImageLoading,
   } = useImageUpload();
   const { fetchMoreVideos, videosLoading, setVideosLoading } = useChannels();
   const { decryptCollections } = useAllPosts();
@@ -268,6 +266,7 @@ const Modals = () => {
       )}
       {purchaseModal?.open && (
         <Purchase
+          dispatch={dispatch}
           collectInfoLoading={
             router.asPath?.includes("#chat")
               ? purchaseInfoLoading
@@ -322,7 +321,9 @@ const Modals = () => {
           canvasRef={canvasRef}
         />
       )}
-      {imageViewer.value && <ImageLarge mainImage={mainImage!} />}
+      {imageViewer.value && (
+        <ImageLarge mainImage={imageViewer.image} dispatch={dispatch} />
+      )}
       {makePost.value && (
         <Post
           handlePost={handlePost}
@@ -389,7 +390,6 @@ const Modals = () => {
           postImagesDispatched={postImagesDispatched}
           preElement={preElement}
           handleImagePaste={handleImagePaste}
-          setImageLoading={setImageLoading}
         />
       )}
       {decrypt.open && (

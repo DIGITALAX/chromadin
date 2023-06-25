@@ -1,9 +1,7 @@
-import Marquee from "@/components/Common/Marquee/Marquee";
 import SideBar from "@/components/Common/SideBar/modules/SideBar";
 import { NextPage } from "next";
 import Head from "next/head";
 import NFT from "@/components/Common/NFT/modules/NFT";
-import Frequency from "@/components/Common/Frequency/modules/Frequency";
 import View from "@/components/Home/View";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -112,8 +110,6 @@ const Home: NextPage = (): JSX.Element => {
           </div>
         )}
       </div>
-      <Frequency />
-      <Marquee />
     </div>
   );
 };

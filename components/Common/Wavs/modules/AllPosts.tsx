@@ -109,7 +109,6 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
   decryptScrollPos,
   setScrollPosDecrypt,
   handleImagePaste,
-  setImageLoading,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full flex flex-col items-start justify-start gap-4 max-w-full">
@@ -303,7 +302,6 @@ const AllPosts: FunctionComponent<AllPostsProps> = ({
                         postImagesDispatched={postImagesDispatched}
                         preElement={preElement}
                         handleImagePaste={handleImagePaste}
-                        setImageLoading={setImageLoading}
                       />
                     )}
                   </div>

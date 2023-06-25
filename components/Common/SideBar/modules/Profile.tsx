@@ -4,12 +4,19 @@ import createProfilePicture from "@/lib/helpers/createProfilePicture";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-const Profile: FunctionComponent<ProfileProps> = ({ profile }): JSX.Element => {
+const Profile: FunctionComponent<ProfileProps> = ({
+  profile,
+  mainPage,
+}): JSX.Element => {
   const picture = createProfilePicture(profile);
   const router = useRouter();
   return (
     <div
-      className="relative w-full sm:w-40 lg:w-full h-12 font-geom text-white border-white border rounded-tl-lg rounded-br-lg flex flex-row px-2 cursor-pointer bg-lensLight/70 gap-4 items-center justify-center"
+      className={`relative w-full sm:w-40 lg:w-full h-12 font-geom text-white flex flex-row px-2 cursor-pointer items-center justify-center ${
+        mainPage
+          ? "bg-none gap-2"
+          : "bg-lensLight/70 border-white border rounded-tl-lg rounded-br-lg gap-4"
+      }`}
       onClick={() => {
         if (
           router.asPath.includes("stream") ||
@@ -31,7 +38,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ profile }): JSX.Element => {
         }
       }}
     >
-      <div className="relative w-6 h-6 rounded-full" id="crt">
+      <div className={`relative rounded-full w-6 h-6`} id="crt">
         {picture !== "" && (
           <Image
             src={picture}
@@ -42,7 +49,11 @@ const Profile: FunctionComponent<ProfileProps> = ({ profile }): JSX.Element => {
           />
         )}
       </div>
-      <div className="relative w-fit h-fit text-sm sm:text-xs lg:text-sm font-geom text-pesa">
+      <div
+        className={`relative w-fit h-fit font-geom text-pesa ${
+          mainPage ? "text-xs" : "text-sm sm:text-xs lg:text-sm"
+        }`}
+      >
         @{profile?.handle?.split(".lens")[0] || ""}
       </div>
     </div>

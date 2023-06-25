@@ -56,6 +56,7 @@ export type PurchaseProps = {
   approveCurrency: () => Promise<void>;
   handleLensSignIn: () => Promise<void>;
   commentId: string;
+  dispatch: Dispatch<AnyAction>;
 };
 
 export type FollowerOnlyProps = {
@@ -71,6 +72,7 @@ export type FollowerOnlyProps = {
 
 export type ImageLargeProps = {
   mainImage: string;
+  dispatch: Dispatch<AnyAction>;
 };
 
 export type SuccessProps = {
@@ -189,11 +191,7 @@ export type PostProps = {
     x: number;
     y: number;
   };
-  handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
-  ) => void;
-  setImageLoading: (e: boolean) => void;
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
 };
 
 export type ClaimProps = {

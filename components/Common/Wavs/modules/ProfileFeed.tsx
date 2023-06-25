@@ -108,7 +108,6 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   fetchMoreProfileDecrypt,
   followerOnlyProfileDecrypt,
   handleImagePaste,
-  setImageLoading,
   profileCollectionsLoading,
 }): JSX.Element => {
   const history = useSelector(
@@ -317,7 +316,6 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
                         dispatch={dispatch}
                         postImagesDispatched={postImagesDispatched}
                         preElement={preElement}
-                        setImageLoading={setImageLoading}
                         handleImagePaste={handleImagePaste}
                       />
                     )}

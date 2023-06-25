@@ -83,7 +83,6 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
   address,
   preElement,
   handleImagePaste,
-  setImageLoading,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-60 flex flex-col">
@@ -269,7 +268,7 @@ const MakeComment: FunctionComponent<MakeCommentProps> = ({
                   handleKeyDownDelete(e)
                 }
                 onPaste={(e: ClipboardEvent<HTMLTextAreaElement>) =>
-                  handleImagePaste(e, setImageLoading)
+                  handleImagePaste(e)
                 }
                 style={{ resize: "none" }}
                 className="relative w-full h-full bg-black font-economicaB text-white p-2 z-1 rounded-lg overflow-y-auto"

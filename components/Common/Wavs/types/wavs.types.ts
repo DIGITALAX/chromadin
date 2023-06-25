@@ -343,11 +343,7 @@ export type FeedProps = {
   setScrollPosDecryptProfile: (e: MouseEvent) => void;
   hasMoreDecryptProfile: boolean;
   decryptProfileScrollPos: number;
-  handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
-  ) => void;
-  setImageLoading: (e: boolean) => void;
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
   profileCollectionsLoading: boolean;
 };
 
@@ -517,11 +513,7 @@ export type IndividualProps = {
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
   individualAmounts: IndividualFeedCountState;
-  handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
-  ) => void;
-  setImageLoading: (e: boolean) => void;
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
 };
 
 export type CommentsProps = {
@@ -627,11 +619,7 @@ export type CommentsProps = {
   canComment: boolean;
   openComment: string;
   profileType: string;
-  handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
-  ) => void;
-  setImageLoading: (e: boolean) => void;
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
 };
 
 export interface UploadedMedia {
@@ -765,11 +753,7 @@ export type MakeCommentProps = {
   handleKeyDownDelete: (e: KeyboardEvent<Element>) => void;
   commentId: string;
   canComment: boolean;
-  handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
-  ) => void;
-  setImageLoading: (e: boolean) => void;
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
 };
 
 export type OptionsCommentProps = {
@@ -944,11 +928,8 @@ export type ProfileFeedProps = {
   setScrollPosDecryptProfile: (e: MouseEvent) => void;
   hasMoreDecryptProfile: boolean;
   decryptProfileScrollPos: number;
-  handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
-  ) => void;
-  setImageLoading: (e: boolean) => void;
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
+
   profileCollectionsLoading: boolean;
 };
 
@@ -1094,11 +1075,8 @@ export type SwitchProps = {
   setScrollPosDecryptProfile: (e: MouseEvent) => void;
   hasMoreDecryptProfile: boolean;
   decryptProfileScrollPos: number;
-  handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
-  ) => void;
-  setImageLoading: (e: boolean) => void;
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
+
   profileCollectionsLoading: boolean;
 };
 
@@ -1220,11 +1198,7 @@ export type AllPostsProps = {
   decryptScrollPos: number;
   setScrollPosDecrypt: (e: MouseEvent) => void;
   scrollRefDecrypt: Ref<InfiniteScroll>;
-  handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
-  ) => void;
-  setImageLoading: (e: boolean) => void;
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
 };
 
 export interface QuickProfilesInterface {
@@ -1246,7 +1220,7 @@ export type AccountProps = {
   profileCollections: Collection[];
   dispatch: Dispatch<AnyAction>;
   profileCollectionsLoading: boolean;
-  router: NextRouter
+  router: NextRouter;
 };
 
 export type SearchProps = {

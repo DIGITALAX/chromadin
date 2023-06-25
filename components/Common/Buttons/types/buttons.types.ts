@@ -43,4 +43,5 @@ export type SearchVendingProps = {
   searchOpen: boolean;
   searchResults: (Collection | Drop | QuickProfilesInterface)[];
   handleSearchChoose: (chosen: QuickProfilesInterface | Drop | Collection) => Promise<void>;
+  mainPage?: boolean;
 };

@@ -3,6 +3,8 @@ import Image from "next/legacy/image";
 import { FunctionComponent } from "react";
 import { PurchaseProps } from "../types/interactions.types";
 import { AiOutlineLoading } from "react-icons/ai";
+import { MainNFT } from "../../NFT/types/nft.types";
+import { Collection } from "@/components/Home/types/home.types";
 
 const Purchase: FunctionComponent<PurchaseProps> = ({
   acceptedtokens,
@@ -17,14 +19,18 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col">
-      {mainNFT && (
-        <div className="relative w-full h-full flex flex-col items-center justify-center pt-4">
+      {(mainNFT as MainNFT)?.media && (
+        <div
+          className={
+            "relative w-full h-full flex flex-col items-center justify-center pt-4"
+          }
+        >
           <div
             className="relative w-60 h-60 lg:w-2/3 lg:h-52 rounded-br-lg rounded-tl-lg border border-white"
             id="staticLoad"
           >
             <Image
-              src={`${INFURA_GATEWAY}/ipfs/${mainNFT.media}`}
+              src={`${INFURA_GATEWAY}/ipfs/${(mainNFT as MainNFT).media}`}
               className="rounded-br-lg rounded-tl-lg w-full h-full"
               layout="fill"
               draggable={false}
@@ -33,7 +39,13 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
           </div>
         </div>
       )}
-      <div className="relative w-full h-fit flex flex-col items-center gap-3 pt-4 justify-center px-3">
+      <div
+        className={`relative w-full h-fit flex flex-col gap-3 pt-4  px-3 ${
+          (mainNFT as MainNFT)?.media
+            ? "justify-center items-center"
+            : "items-end justify-end"
+        }`}
+      >
         <div className="relative w-fit h-fit flex flex-row items-center justify-center gap-2">
           {Array.from([
             [
@@ -78,45 +90,106 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
               );
             })}
         </div>
-        <div className="relative w-1/2 h-fit font-digi text-white text-sm items-center justify-center flex whitespace-nowrap">
+        <div
+          className={`relative w-1/2 h-fit font-digi text-white text-sm flex whitespace-nowrap ${
+            (mainNFT as MainNFT)?.media
+              ? "justify-center items-center"
+              : "items-end justify-end"
+          }`}
+        >
           Total: {totalAmount} {currency}
         </div>
       </div>
-      <div className="relative w-full h-fit font-earl items-center justify-center flex text-sm pt-4">
-        <div
-          className={`relative rounded-lg p-1.5 w-24 text-center border-white border text-white h-8 hover:bg-moda cursor-pointer
+      <div
+        className={`relative w-full h-fit font-earl flex text-sm pt-4 ${
+          (mainNFT as MainNFT)?.media
+            ? "justify-center items-center"
+            : "items-end justify-end"
+        }`}
+      >
+        {(mainNFT as MainNFT)?.media ? (
+          <div
+            className={`relative rounded-lg p-1.5 w-24 text-center border-white border text-white h-8 hover:bg-moda cursor-pointer
           ${
-            mainNFT?.tokensSold &&
-            mainNFT?.tokenIds?.length! - mainNFT?.tokensSold?.length !== 0
+            (mainNFT as MainNFT)?.tokensSold &&
+            mainNFT?.tokenIds?.length! -
+              (mainNFT as MainNFT)?.tokensSold?.length! !==
+              0
               ? " bg-verde/60"
               : "bg-verde/20"
           }`}
-          onClick={
-            mainNFT?.tokensSold &&
-            mainNFT?.tokenIds?.length! - mainNFT?.tokensSold?.length === 0
-              ? () => {}
-              : !approved
-              ? () => approveSpend()
-              : () => buyNFT()
-          }
-        >
-          <div
-            className={`relative w-full h-full flex items-center justify-center ${
-              purchaseLoading && "animate-spin"
-            }`}
+            onClick={
+              (mainNFT as MainNFT)?.tokensSold &&
+              mainNFT?.tokenIds?.length! -
+                (mainNFT as MainNFT)?.tokensSold?.length! ===
+                0
+                ? () => {}
+                : !approved
+                ? () => approveSpend()
+                : () => buyNFT()
+            }
           >
-            {purchaseLoading ? (
-              <AiOutlineLoading size={10} color="white" />
-            ) : mainNFT?.tokensSold &&
-              mainNFT?.tokenIds?.length! - mainNFT?.tokensSold?.length === 0 ? (
-              "SOLD OUT"
-            ) : !approved ? (
-              "APPROVE"
-            ) : (
-              "COLLECT"
-            )}
+            <div
+              className={`relative w-full h-full flex items-center justify-center ${
+                purchaseLoading && "animate-spin"
+              }`}
+            >
+              {purchaseLoading ? (
+                <AiOutlineLoading size={10} color="white" />
+              ) : (mainNFT as MainNFT)?.tokensSold &&
+                (mainNFT as MainNFT)?.tokenIds?.length! -
+                  (mainNFT as MainNFT)?.tokensSold?.length! ===
+                  0 ? (
+                "SOLD OUT"
+              ) : !approved ? (
+                "APPROVE"
+              ) : (
+                "COLLECT"
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div
+            className={`relative rounded-lg p-1.5 w-24 text-center border-white border text-white h-8 hover:bg-moda cursor-pointer
+        ${
+          (mainNFT as Collection)?.soldTokens &&
+          mainNFT?.tokenIds?.length! -
+            (mainNFT as Collection)?.soldTokens?.length! !==
+            0
+            ? " bg-verde/60"
+            : "bg-verde/20"
+        }`}
+            onClick={
+              (mainNFT as Collection)?.soldTokens &&
+              mainNFT?.tokenIds?.length! -
+                (mainNFT as Collection)?.soldTokens?.length! ===
+                0
+                ? () => {}
+                : !approved
+                ? () => approveSpend()
+                : () => buyNFT()
+            }
+          >
+            <div
+              className={`relative w-full h-full flex items-center justify-center ${
+                purchaseLoading && "animate-spin"
+              }`}
+            >
+              {purchaseLoading ? (
+                <AiOutlineLoading size={10} color="white" />
+              ) : (mainNFT as Collection)?.soldTokens &&
+                (mainNFT as Collection)?.soldTokens?.length! -
+                  (mainNFT as Collection)?.soldTokens?.length! ===
+                  0 ? (
+                "SOLD OUT"
+              ) : !approved ? (
+                "APPROVE"
+              ) : (
+                "COLLECT"
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

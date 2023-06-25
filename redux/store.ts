@@ -82,7 +82,8 @@ import hasMoreHistoryReducer from "./reducers/hasMoreHistoryReducer";
 import historyPaginationReducer from "./reducers/historyPaginationSlice";
 import buyerHistoryPaginationReducer from "./reducers/buyerHistoryPaginationSlice";
 import hasMoreBuyerHistoryReducer from "./reducers/hasMoreBuyerHistorySlice";
-import autographReducer from "./reducers/autographSlice";
+import autoCollectionReducer from "./reducers/autoCollectionSlice";
+import imageLoadingReducer from "./reducers/imageLoadingSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -167,7 +168,8 @@ const reducer = combineReducers({
   historyPaginationReducer,
   buyerHistoryPaginationReducer,
   hasMoreBuyerHistoryReducer,
-  autographReducer,
+  autoCollectionReducer,
+  imageLoadingReducer,
 });
 
 export const store = configureStore({

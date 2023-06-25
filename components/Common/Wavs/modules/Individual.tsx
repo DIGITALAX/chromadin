@@ -103,7 +103,6 @@ const Individual: FunctionComponent<IndividualProps> = ({
   profileType,
   preElement,
   handleImagePaste,
-  setImageLoading,
 }): JSX.Element => {
   const history = useSelector(
     (state: RootState) => state.app.historyURLReducer.value
@@ -227,7 +226,6 @@ const Individual: FunctionComponent<IndividualProps> = ({
               currencyDropDown={currencyDropDown}
               dispatch={dispatch}
               postImagesDispatched={postImagesDispatched}
-              setImageLoading={setImageLoading}
               handleImagePaste={handleImagePaste}
             />
           )}
@@ -324,7 +322,6 @@ const Individual: FunctionComponent<IndividualProps> = ({
         profileType={profileType}
         preElement={preElement}
         handleImagePaste={handleImagePaste}
-        setImageLoading={setImageLoading}
       />
     </div>
   );

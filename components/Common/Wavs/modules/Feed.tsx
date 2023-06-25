@@ -156,7 +156,6 @@ const Feed: FunctionComponent<FeedProps> = ({
   hasMoreDecryptProfile,
   scrollRefDecryptProfile,
   setScrollPosDecryptProfile,
-  setImageLoading,
   handleImagePaste,
   profileCollectionsLoading,
 }): JSX.Element => {
@@ -273,7 +272,6 @@ const Feed: FunctionComponent<FeedProps> = ({
             router={router}
             profileType={profileType}
             handleImagePaste={handleImagePaste}
-            setImageLoading={setImageLoading}
           />
         ) : postsLoading ||
           profileLoading ||
@@ -416,7 +414,6 @@ const Feed: FunctionComponent<FeedProps> = ({
             hasMoreDecryptProfile={hasMoreDecryptProfile}
             decryptProfileScrollPos={decryptProfileScrollPos}
             handleImagePaste={handleImagePaste}
-            setImageLoading={setImageLoading}
             profileCollectionsLoading={profileCollectionsLoading}
           />
         )}

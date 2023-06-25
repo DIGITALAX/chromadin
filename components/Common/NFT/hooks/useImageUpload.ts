@@ -10,18 +10,15 @@ import { FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import lodash from "lodash";
 import { setPostImages } from "@/redux/reducers/postImageSlice";
-import compressImageFiles from "@/lib/helpers/compressImageFiles";
-import fileLimitAlert from "@/lib/helpers/fileLimitAlert";
-import videoLimitAlert from "@/lib/helpers/videoLimitAlert";
 import { setPublicationImages } from "@/redux/reducers/publicationImageSlice";
 import { setIPFS } from "@/redux/reducers/IPFSSlice";
+import { setImageLoadingRedux } from "@/redux/reducers/imageLoadingSlice";
 
 const useImageUpload = () => {
   const page = useSelector((state: RootState) => state.app.viewReducer.value);
   const postOpen = useSelector(
     (state: RootState) => state.app.makePostReducer.value
   );
-  const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [videoLoading, setVideoLoading] = useState<boolean>(false);
   const [mappedFeaturedFiles, setMappedFeaturedFiles] = useState<
     UploadedMedia[]
@@ -55,7 +52,7 @@ const useImageUpload = () => {
       }
     }
     let finalImages: UploadedMedia[] = [];
-    setImageLoading(true);
+    dispatch(setImageLoadingRedux(true));
     // if (
     //   fileLimitAlert(pasted ? (e as File[])[0] : (e as any).target.files[0])
     // ) {
@@ -86,7 +83,7 @@ const useImageUpload = () => {
               : (e as any).target.files[index],
           });
           if (response.status !== 200) {
-            setImageLoading(false);
+            dispatch(setImageLoadingRedux(false));
             return;
           } else {
             let cid = await response.json();
@@ -98,7 +95,7 @@ const useImageUpload = () => {
 
             if (uploadCounter === numberOfFiles) {
               // check counter here
-              setImageLoading(false);
+              dispatch(setImageLoadingRedux(false));
             }
             if (
               finalImages?.length ===
@@ -135,7 +132,7 @@ const useImageUpload = () => {
         } catch (err: any) {
           dispatch(setIPFS(true));
           console.error(err.message);
-          setImageLoading(false);
+          dispatch(setImageLoadingRedux(false));
         }
       })
     );
@@ -235,12 +232,10 @@ const useImageUpload = () => {
 
   return {
     uploadImage,
-    imageLoading,
     mappedFeaturedFiles,
     handleRemoveImage,
     videoLoading,
     uploadVideo,
-    setImageLoading
   };
 };
 

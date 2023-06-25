@@ -82,7 +82,6 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
   commentId,
   canComment,
   preElement,
-  setImageLoading,
   handleImagePaste,
 }): JSX.Element => {
   return (
@@ -269,7 +268,7 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
                   handleKeyDownDelete(e)
                 }
                 onPaste={(e: ClipboardEvent<HTMLTextAreaElement>) =>
-                  handleImagePaste(e, setImageLoading)
+                  handleImagePaste(e)
                 }
                 style={{ resize: "none" }}
                 className="relative w-full h-full bg-offBlack font-arcade text-white p-2 z-1 rounded-lg overflow-y-auto"

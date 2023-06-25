@@ -283,11 +283,33 @@ const Vending: FunctionComponent<VendingProps> = ({
                               ? collection?.name.slice(0, 18) + "..."
                               : collection?.name}
                           </div>
-                          <div className="relative w-full h-fit text-ama justify-end flex">
-                            {Number(collection?.tokenIds?.length) -
-                              (collection?.soldTokens?.length
-                                ? collection?.soldTokens?.length
-                                : 0)}
+                          <div className="flex flex-row relative w-full h-fit gap-1.5 justify-end">
+                            <div className="relative w-fit h-fit text-ama justify-end flex">
+                              {Number(collection?.tokenIds?.length) -
+                                (collection?.soldTokens?.length
+                                  ? collection?.soldTokens?.length
+                                  : 0)}
+                            </div>
+                            <div
+                              className="relative w-2 h-2 text-ama items-center flex cursor-pointer active:scale-95"
+                              onClick={() =>
+                                router.push(
+                                  `/autograph/${
+                                    collection?.profile?.handle?.split(
+                                      ".lens"
+                                    )[0]
+                                  }/collection/${collection?.name
+                                    ?.replace(/\s/g, "-")
+                                    .toLowerCase()}`
+                                )
+                              }
+                            >
+                              <Image
+                                layout="fill"
+                                src={`${INFURA_GATEWAY}/ipfs/QmRbgQM3Unc2wYYJStNHP4Y2JvVk3HrP5rnrmCNE1u9cWu`}
+                                draggable={false}
+                              />
+                            </div>
                           </div>
                         </div>
                         <Link

@@ -288,7 +288,11 @@ const useDrop = () => {
   // };
 
   useEffect(() => {
-    if (router.asPath.includes("#chat") || router.asPath.includes("#collect")) {
+    if (
+      router.asPath.includes("#chat") ||
+      router.asPath.includes("#collect") ||
+      router.asPath.includes("autograph")
+    ) {
       if (
         (!feedDispatch || feedDispatch.length < 1) &&
         (decryptFeed.length < 1 || !decryptFeed)

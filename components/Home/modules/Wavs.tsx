@@ -91,6 +91,9 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   const decryptProfileScroll = useSelector(
     (state: RootState) => state.app.decryptProfileScrollPosReducer.value
   );
+  const imageLoading = useSelector(
+    (state: RootState) => state.app.imageLoadingReducer.value
+  );
   const decryptProfileAmounts = useSelector(
     (state: RootState) => state.app.decryptProfileFeedCountReducer
   );
@@ -200,12 +203,10 @@ const Wavs: FunctionComponent = (): JSX.Element => {
   } = useCollectOptions();
   const {
     videoLoading,
-    imageLoading,
     uploadImage,
     uploadVideo,
     handleRemoveImage,
     mappedFeaturedFiles,
-    setImageLoading,
   } = useImageUpload();
 
   const {
@@ -228,7 +229,7 @@ const Wavs: FunctionComponent = (): JSX.Element => {
     fetchMoreProfileDecrypt,
     decryptProfileLoading,
     profileCollections,
-    profileCollectionsLoading
+    profileCollectionsLoading,
   } = useProfileFeed();
 
   const {
@@ -394,7 +395,6 @@ const Wavs: FunctionComponent = (): JSX.Element => {
         hasMoreDecryptProfile={hasMoreDecryptProfile}
         decryptProfileScrollPos={decryptProfileScroll}
         handleImagePaste={handleImagePaste}
-        setImageLoading={setImageLoading}
         profileCollectionsLoading={profileCollectionsLoading}
       />
     </div>

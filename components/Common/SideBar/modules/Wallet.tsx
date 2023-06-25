@@ -7,18 +7,29 @@ const Wallet: FunctionComponent<WalletProps> = ({
   handleTransaction,
   isConnected,
   buttonText,
+  mainPage,
 }): JSX.Element => {
   return (
     <div
-      className={`relative w-full sm:w-40 lg:w-full h-12 font-geom text-white border-white border rounded-tl-lg rounded-br-lg flex flex-row items-center px-2 cursor-pointer ${
-        isConnected && "bg-lensLight/70"
+      className={`relative w-full sm:w-40 lg:w-full h-12 font-geom text-white flex flex-row items-center px-2 cursor-pointer ${
+        isConnected && !mainPage && "bg-lensLight/70"
+      } ${
+        mainPage ? "gap-1" : "border-white border rounded-tl-lg rounded-br-lg"
       }`}
       onClick={() => handleTransaction()}
     >
-      <div className="relative w-full h-full flex items-center justify-center">
+      <div
+        className={`relative w-full h-full flex items-center justify-center ${
+          mainPage && "text-xs"
+        }`}
+      >
         {buttonText}
       </div>
-      <div className="relative justify-end w-8 h-6 flex">
+      <div
+        className={`relative justify-end flex ${
+          mainPage ? "w-6 h-4" : "w-8 h-6"
+        }`}
+      >
         <Image
           src={`${INFURA_GATEWAY}/ipfs/QmSsD6iPFKafxKTE349DPoULssBnfZqbY7DuriT85UbMAv`}
           layout="fill"

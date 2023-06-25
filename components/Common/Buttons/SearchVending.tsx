@@ -10,10 +10,13 @@ const SearchVending: FunctionComponent<SearchVendingProps> = ({
   searchOpen,
   searchResults,
   handleSearchChoose,
+  mainPage,
 }): JSX.Element => {
   return (
     <div
-      className={`relative w-fit h-full flex flex-row font-earl text-white text-xs lowercase border border-white rounded-tr-lg rounded-bl-lg justify-start preG:justify-end preG:ml-auto`}
+      className={`relative flex flex-row font-earl text-white text-xs lowercase border border-white rounded-tr-lg rounded-bl-lg justify-start preG:justify-end preG:ml-auto ${
+        mainPage ? "w-full h-8" : "w-fit h-full"
+      }`}
     >
       <input
         className="relative w-full h-8 preG:h-full p-1 bg-black  rounded-tr-lg rounded-bl-lg"
@@ -31,11 +34,18 @@ const SearchVending: FunctionComponent<SearchVendingProps> = ({
               return (
                 <div
                   key={index}
-                  className="relative w-full h-10 flex justify-start items-center cursor-pointer hover:opacity-70"
+                  className={`relative w-full flex justify-start items-center cursor-pointer hover:opacity-70 ${
+                    mainPage ? "h-20" : "h-10"
+                  }`}
                   onClick={() => handleSearchChoose(result)}
                 >
                   <div className="relative flex flex-row gap-2 w-full h-fit justify-start items-center">
-                    <div className="relative w-12 h-9 rounded-md" id="crt">
+                    <div
+                      className={`relative rounded-md ${
+                        mainPage ? "w-20 h-14" : "w-12 h-9"
+                      }`}
+                      id="crt"
+                    >
                       {(result as QuickProfilesInterface)?.handle ? (
                         <Image
                           src={(result as QuickProfilesInterface).image}
@@ -76,9 +86,20 @@ const SearchVending: FunctionComponent<SearchVendingProps> = ({
                       </div>
                       <div className="relative w-full h-fit justify-start items-center text-xs">
                         {(result as Collection | Drop)?.uri?.name
-                          ? (result as Collection)?.uri?.name?.length > 10
-                            ? (result as Collection)?.uri?.name?.slice(0, 8) +
-                              "..."
+                          ? (
+                              mainPage
+                                ? (result as Collection)?.uri?.name?.length > 20
+                                : (result as Collection)?.uri?.name?.length > 10
+                            )
+                            ? (mainPage
+                                ? (result as Collection)?.uri?.name?.slice(
+                                    0,
+                                    18
+                                  )
+                                : (result as Collection)?.uri?.name?.slice(
+                                    0,
+                                    8
+                                  )) + "..."
                             : (result as Collection)?.uri?.name
                           : (result as QuickProfilesInterface)?.handle?.length >
                             10

@@ -7,7 +7,7 @@ import { setImageViewer } from "@/redux/reducers/imageViewerSlice";
 const MainDrop: FunctionComponent<MainDropProps> = ({
   mainNFT,
   collectionsLoading,
-  dispatch
+  dispatch,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-96 sm:h-full flex">
@@ -56,7 +56,17 @@ const MainDrop: FunctionComponent<MainDropProps> = ({
             {collectionsLoading ? "7zXj@tE$vU^%" : mainNFT?.name}
           </div>
         </div>
-        <div className="relative w-5 h-5 cursor-pointer justify-end items-end flex ml-auto" onClick={() => dispatch(setImageViewer(true))}>
+        <div
+          className="relative w-5 h-5 cursor-pointer justify-end items-end flex ml-auto"
+          onClick={() =>
+            dispatch(
+              setImageViewer({
+                actionValue: true,
+                actionImage: mainNFT?.media,
+              })
+            )
+          }
+        >
           <Image
             src={`${INFURA_GATEWAY}/ipfs/QmVpncAteeF7voaGu1ZV5qP63UpZW2xmiCWVftL1QnL5ja`}
             alt="expand"

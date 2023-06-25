@@ -84,10 +84,8 @@ export type UserCommentProps = {
   commentId: string | undefined;
   canComment: boolean;
   handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>,
-    setImageLoading: (e: boolean) => void
+    e: ClipboardEvent<HTMLTextAreaElement>
   ) => void;
-  setImageLoading: (e: boolean) => void;
 };
 
 export type MainDropProps = {

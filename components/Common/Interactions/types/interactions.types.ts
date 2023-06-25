@@ -97,7 +97,7 @@ export type PurchaseProps = {
   currency: string;
   setCurrency: (e: string) => void;
   totalAmount: number;
-  mainNFT: MainNFT | undefined;
+  mainNFT: MainNFT | undefined | Collection;
   approveSpend: () => Promise<void>;
   buyNFT: () => void;
   purchaseLoading: boolean;
