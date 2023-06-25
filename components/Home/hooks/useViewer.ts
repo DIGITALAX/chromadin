@@ -22,6 +22,7 @@ const useViewer = () => {
   );
   const [dropDownPriceSort, setDropDownPriceSort] = useState<boolean>(false);
   const [dropDownDateSort, setDropDownDateSort] = useState<boolean>(false);
+  const [otherDrops, setOtherDrops] = useState<Collection[]>([])
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<
     (Collection | QuickProfilesInterface | Drop)[]
@@ -158,6 +159,7 @@ const useViewer = () => {
     searchOpen,
     searchResults,
     handleSearchChoose,
+    otherDrops
   };
 };
 

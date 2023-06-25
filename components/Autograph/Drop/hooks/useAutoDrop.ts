@@ -5,20 +5,17 @@ import {
   getOneProfile,
   getOneProfileAuth,
 } from "@/graphql/lens/queries/getProfile";
-import {
-  getCollectionsDecrypt,
-  getCollectionsProfile,
-} from "@/graphql/subgraph/queries/getAllCollections";
+import { getCollectionsDrop } from "@/graphql/subgraph/queries/getAllCollections";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
-import { setAutoCollection } from "@/redux/reducers/autoCollectionSlice";
+import { setAutoDrop } from "@/redux/reducers/autoDropSlice";
 import { setImageLoadingRedux } from "@/redux/reducers/imageLoadingSlice";
 import { setMakePost } from "@/redux/reducers/makePostSlice";
 import { RootState } from "@/redux/store";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const useAutoCollection = () => {
+const useAutoDrop = () => {
   const dispatch = useDispatch();
   const { uploadImage } = useImageUpload();
   const lensProfile = useSelector(
@@ -30,28 +27,41 @@ const useAutoCollection = () => {
   const allDrops = useSelector(
     (state: RootState) => state.app.dropsReducer.value
   );
-  const [collectionLoading, setCollectionLoading] = useState<boolean>(false);
-  const [otherCollectionsDrop, setOtherCollectionsDrop] = useState<
-    Collection[]
-  >([]);
+  const [dropLoading, setDropLoading] = useState<boolean>(false);
 
-  const getCollection = async (autograph: string, collection: string) => {
-    setCollectionLoading(true);
+  const getDrop = async (autograph: string, drop: string) => {
+    setDropLoading(true);
 
     try {
       const prof = await getProfile(autograph);
       if (!prof) {
-        setCollectionLoading(false);
+        setDropLoading(false);
         return;
       }
 
-      const colls = await getCollectionsDecrypt(
-        collection?.replaceAll("-", " ") as string,
-        prof?.ownedBy
-      );
+      const dropPromises = allDrops.filter((dropValue: Drop) => {
+        if (
+          dropValue?.uri?.name?.toLowerCase() ===
+            (drop?.replaceAll("-", " ")?.toLowerCase() as string) &&
+          dropValue?.creator?.toLowerCase() === prof?.ownedBy?.toLowerCase()
+        ) {
+          return dropValue;
+        }
+      });
+
+      const filteredDrops = (await Promise.all(dropPromises)).filter(Boolean);
+
+      let colls: Collection[] = [];
+
+      for (let i = 0; i < filteredDrops[0]?.collectionIds?.length; i++) {
+        const col = await getCollectionsDrop(
+          filteredDrops[0]?.collectionIds[i]
+        );
+        colls.push(col?.data?.collectionMinteds[0]);
+      }
 
       const coll = await Promise.all(
-        colls?.data?.collectionMinteds.map(async (collection: Collection) => {
+        colls.map(async (collection: Collection) => {
           const json = await fetchIPFSJSON(
             (collection.uri as any)
               ?.split("ipfs://")[1]
@@ -77,49 +87,17 @@ const useAutoCollection = () => {
         })
       );
 
-      const allColls = await getCollectionsProfile(prof?.ownedBy);
-      const filteredCollsPromises = allColls?.data?.collectionMinteds?.map(
-        async (collection: Collection) => {
-          if (
-            coll[0]?.drop?.collectionIds?.includes(collection?.collectionId)
-          ) {
-            return collection;
-          }
-          return null;
-        }
-      );
-
-      const filteredColls = (await Promise.all(filteredCollsPromises)).filter(
-        Boolean
-      );
-
-      const otherDrops = await Promise.all(
-        filteredColls?.map(async (collection: Collection) => {
-          const json = await fetchIPFSJSON(
-            (collection.uri as any)
-              ?.split("ipfs://")[1]
-              ?.replace(/"/g, "")
-              ?.trim()
-          );
-
-          return {
-            ...collection,
-            uri: json,
-          };
-        })
-      );
-
-      setOtherCollectionsDrop(otherDrops);
       dispatch(
-        setAutoCollection({
-          actionCollection: coll[0],
+        setAutoDrop({
+          actionDrop: filteredDrops[0],
+          actionCollection: coll,
           actionProfile: prof,
         })
       );
     } catch (err: any) {
       console.error(err.message);
     }
-    setCollectionLoading(false);
+    setDropLoading(false);
   };
 
   const getProfile = async (
@@ -180,11 +158,10 @@ const useAutoCollection = () => {
   };
 
   return {
-    collectionLoading,
-    getCollection,
-    otherCollectionsDrop,
+    dropLoading,
+    getDrop,
     handleShareCollection,
   };
 };
 
-export default useAutoCollection;
+export default useAutoDrop;

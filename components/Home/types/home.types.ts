@@ -40,7 +40,7 @@ export interface Collection {
 export interface Drop {
   dropId: string;
   creator: string;
-  collectionIds: string;
+  collectionIds: string[];
   blockTimestamp: string;
   uri: {
     name: string;

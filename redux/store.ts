@@ -84,6 +84,7 @@ import buyerHistoryPaginationReducer from "./reducers/buyerHistoryPaginationSlic
 import hasMoreBuyerHistoryReducer from "./reducers/hasMoreBuyerHistorySlice";
 import autoCollectionReducer from "./reducers/autoCollectionSlice";
 import imageLoadingReducer from "./reducers/imageLoadingSlice";
+import autoDropReducer from "./reducers/autoDropSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -170,6 +171,7 @@ const reducer = combineReducers({
   hasMoreBuyerHistoryReducer,
   autoCollectionReducer,
   imageLoadingReducer,
+  autoDropReducer,
 });
 
 export const store = configureStore({

@@ -82,6 +82,22 @@ query($name: String, $owner: String) {
   }
 }`;
 
+const COLLECTIONS_DROP = `
+query($collectionId: String) {
+  collectionMinteds(where: {collectionId: $collectionId}, orderDirection: desc, orderBy: blockTimestamp) {
+    basePrices
+    uri
+    collectionId
+    amount
+    acceptedTokens
+    name
+    owner
+    blockTimestamp
+    tokenIds
+    soldTokens
+  }
+}`;
+
 export const getAllCollections = async (): Promise<any> => {
   const queryPromise = graphClient.query({
     query: gql(COLLECTIONS),
@@ -188,6 +204,32 @@ export const getCollectionsDecrypt = async (
     variables: {
       name,
       owner,
+    },
+    fetchPolicy: "no-cache",
+    errorPolicy: "all",
+  });
+
+  const timeoutPromise = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ timedOut: true });
+    }, 60000); // 1 minute timeout
+  });
+
+  const result: any = await Promise.race([queryPromise, timeoutPromise]);
+  if (result.timedOut) {
+    return;
+  } else {
+    return result;
+  }
+};
+
+export const getCollectionsDrop = async (
+  collectionId: string
+): Promise<any> => {
+  const queryPromise = graphClient.query({
+    query: gql(COLLECTIONS_DROP),
+    variables: {
+      collectionId,
     },
     fetchPolicy: "no-cache",
     errorPolicy: "all",

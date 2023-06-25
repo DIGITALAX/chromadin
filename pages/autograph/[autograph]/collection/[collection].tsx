@@ -76,7 +76,7 @@ const Collection: NextPage = (): JSX.Element => {
           name="og:url"
           content={`https://chromadin.xyz/autograph/${
             autoDispatch.profile?.handle?.split(".lens")[0]
-          }/collection${autoDispatch.collection?.name
+          }/collection/${autoDispatch.collection?.name
             ?.replaceAll(" ", "-")
             ?.toLowerCase()}`}
         />
@@ -106,7 +106,7 @@ const Collection: NextPage = (): JSX.Element => {
           name="twitter:image"
           content={`https://chromadin.xyz/autograph/${
             autoDispatch.profile?.handle?.split(".lens")[0]
-          }/collection${autoDispatch.collection?.name
+          }/collection/${autoDispatch.collection?.name
             ?.replaceAll(" ", "-")
             ?.toLowerCase()}`}
         />
@@ -114,7 +114,7 @@ const Collection: NextPage = (): JSX.Element => {
           name="twitter:url"
           content={`https://chromadin.xyz/autograph/${
             autoDispatch.profile?.handle?.split(".lens")[0]
-          }/collection${autoDispatch.collection?.name
+          }/collection/${autoDispatch.collection?.name
             ?.replaceAll(" ", "-")
             ?.toLowerCase()}`}
         />
