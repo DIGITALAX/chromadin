@@ -1,3 +1,4 @@
+import useImageUpload from "@/components/Common/NFT/hooks/useImageUpload";
 import { Collection, Drop } from "@/components/Home/types/home.types";
 import { Profile } from "@/components/Home/types/lens.types";
 import {
@@ -5,14 +6,18 @@ import {
   getOneProfileAuth,
 } from "@/graphql/lens/queries/getProfile";
 import { getCollectionsProfile } from "@/graphql/subgraph/queries/getAllCollections";
+import { INFURA_GATEWAY } from "@/lib/constants";
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
 import { setAutograph } from "@/redux/reducers/autographSlice";
+import { setImageLoadingRedux } from "@/redux/reducers/imageLoadingSlice";
+import { setMakePost } from "@/redux/reducers/makePostSlice";
 import { RootState } from "@/redux/store";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useAutograph = () => {
   const dispatch = useDispatch();
+  const { uploadImage } = useImageUpload();
   const lensProfile = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
@@ -114,10 +119,41 @@ const useAutograph = () => {
     }
   };
 
+  const handleShareCollection = async (collection: Collection) => {
+    dispatch(setImageLoadingRedux(true));
+    try {
+      dispatch(setMakePost(true));
+
+      if (!collection?.uri?.image) {
+        dispatch(setImageLoadingRedux(false));
+        return;
+      }
+      const response = await fetch(
+        `${INFURA_GATEWAY}/ipfs/${collection?.uri?.image?.split("ipfs://")[1]}`
+      );
+      const blob = await response.blob();
+      const file = new File([blob], collection?.uri?.name, {
+        type: "image/png",
+        lastModified: Date.now(),
+      });
+
+      if (file) {
+        await uploadImage([file], true);
+        dispatch(setImageLoadingRedux(false));
+      } else {
+        dispatch(setImageLoadingRedux(false));
+      }
+    } catch (err: any) {
+      dispatch(setImageLoadingRedux(false));
+      console.error(err.message);
+    }
+  };
+
   return {
     autographLoading,
     getAllCollections,
     getProfileFeed,
+    handleShareCollection,
   };
 };
 

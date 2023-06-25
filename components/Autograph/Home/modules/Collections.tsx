@@ -7,6 +7,7 @@ const Collections: FunctionComponent<CollectionsProps> = ({
   autoCollections,
   router,
   autoProfile,
+  handleShareCollection,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col gap-14">
@@ -18,6 +19,7 @@ const Collections: FunctionComponent<CollectionsProps> = ({
             autoProfile={autoProfile}
             width={0}
             height={0}
+            handleShareCollection={handleShareCollection}
           />
         </div>
         <div className="relative w-full h-fit overflow-x-scroll flex justify-end">
@@ -40,6 +42,7 @@ const Collections: FunctionComponent<CollectionsProps> = ({
                     autoProfile={autoProfile}
                     width={1}
                     height={1}
+                    handleShareCollection={handleShareCollection}
                   />
                 );
               })}
@@ -63,6 +66,7 @@ const Collections: FunctionComponent<CollectionsProps> = ({
                   autoProfile={autoProfile}
                   width={2}
                   height={2}
+                  handleShareCollection={handleShareCollection}
                 />
               );
             })}

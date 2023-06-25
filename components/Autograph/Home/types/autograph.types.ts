@@ -1,4 +1,8 @@
-import { Collection, Drop, UploadedMedia } from "@/components/Home/types/home.types";
+import {
+  Collection,
+  Drop,
+  UploadedMedia,
+} from "@/components/Home/types/home.types";
 import {
   Erc20,
   Profile,
@@ -119,6 +123,7 @@ export type CollectionsProps = {
   autoCollections: Collection[] | undefined;
   router: NextRouter;
   autoProfile: Profile | undefined;
+  handleShareCollection: (collection: Collection) => Promise<void>;
 };
 
 export type CollectionCaseProps = {
@@ -127,10 +132,11 @@ export type CollectionCaseProps = {
   autoProfile: Profile | undefined;
   width: number;
   height: number;
+  handleShareCollection: (collection: Collection) => Promise<void>;
 };
 
 export type DropsProps = {
   router: NextRouter;
   allDrops: Drop[] | undefined;
-  autoProfile: Profile | undefined
-}
+  autoProfile: Profile | undefined;
+};

@@ -71,8 +71,12 @@ const Autograph: NextPage = (): JSX.Element => {
   const { handleSearch, searchOpen, searchResults, handleSearchChoose } =
     useViewer();
   const { handleConnect, handleLensSignIn, connected } = useConnect();
-  const { autographLoading, getProfileFeed, getAllCollections } =
-    useAutograph();
+  const {
+    autographLoading,
+    getProfileFeed,
+    getAllCollections,
+    handleShareCollection,
+  } = useAutograph();
 
   const { reactPost, collectPost, mirrorPost } = useReactions();
 
@@ -450,6 +454,7 @@ const Autograph: NextPage = (): JSX.Element => {
                 <Collections
                   autoCollections={autoDispatch.collections}
                   router={router}
+                  handleShareCollection={handleShareCollection}
                   autoProfile={autoDispatch.profile}
                 />
               </div>

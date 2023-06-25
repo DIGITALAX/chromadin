@@ -10,21 +10,13 @@ const CollectionCase: FunctionComponent<CollectionCaseProps> = ({
   autoProfile,
   width,
   height,
+  handleShareCollection,
 }): JSX.Element => {
   return (
     <div
-      className={`relative flex rounded-md cursor-pointer hover:opacity-70 ${
+      className={`relative flex rounded-md ${
         width === 1 ? "w-40" : width === 2 ? "w-72" : "w-full"
       } ${height === 1 ? "h-40" : width === 2 ? "h-80" : "h-[40rem]"}`}
-      onClick={() =>
-        router.push(
-          `/autograph/${
-            autoProfile?.handle?.split(".lens")[0]
-          }/collection/${collection?.uri?.name
-            ?.replaceAll(" ", "-")
-            ?.toLowerCase()}`
-        )
-      }
       id="staticLoad"
     >
       {collection?.uri?.image && (
@@ -34,11 +26,20 @@ const CollectionCase: FunctionComponent<CollectionCaseProps> = ({
           }`}
           layout="fill"
           objectFit="cover"
-          className="rounded-md"
+          className="rounded-md cursor-pointer hover:opacity-80"
           draggable={false}
+          onClick={() =>
+            router.push(
+              `/autograph/${
+                autoProfile?.handle?.split(".lens")[0]
+              }/collection/${collection?.uri?.name
+                ?.replaceAll(" ", "-")
+                ?.toLowerCase()}`
+            )
+          }
         />
       )}
-      <div className="absolute bottom-3 right-2 w-full h-fit flex items-end justify-end ml-auto">
+      <div className="absolute bottom-3 right-2 w-full h-fit flex items-end justify-end ml-auto z-1">
         <div
           className={`relative w-5/6 h-fit flex ml-auto justify-end items-end ${
             width === 0 ? "flex-row" : "flex-col"
@@ -56,23 +57,36 @@ const CollectionCase: FunctionComponent<CollectionCaseProps> = ({
             />
           </div>
           <div className={`relative w-fit h-fit flex items-end p-2 flex-row`}>
-            <div className="relative flex flex-row w-fit h-fit gap-3 items-center cursor-pointer">
-              <div
-                className="relative w-6 h-6 cursor-pointer border border-ama rounded-full"
-                id="crt"
-              >
-                {createProfilePicture(autoProfile) !== "" && (
-                  <Image
-                    src={createProfilePicture(autoProfile)}
-                    layout="fill"
-                    alt="pfp"
-                    className="rounded-full w-full h-full flex"
-                    draggable={false}
-                  />
-                )}
+            <div className="relative w-fit h-fit flex flex-col gap-3">
+              <div className="relative flex flex-row w-fit h-fit gap-3 items-center">
+                <div
+                  className="relative w-6 h-6 border border-ama rounded-full"
+                  id="crt"
+                >
+                  {createProfilePicture(autoProfile) !== "" && (
+                    <Image
+                      src={createProfilePicture(autoProfile)}
+                      layout="fill"
+                      alt="pfp"
+                      className="rounded-full w-full h-full flex"
+                      draggable={false}
+                    />
+                  )}
+                </div>
+                <div className="relative w-fit h-fit text-ama font-arcade text-sm">
+                  @{autoProfile?.handle?.split(".lens")[0]}
+                </div>
               </div>
-              <div className="relative w-fit h-fit cursor-pointer text-ama font-arcade text-sm">
-                @{autoProfile?.handle?.split(".lens")[0]}
+              <div
+                className="relative w-4 h-4 text-ama items-center flex cursor-pointer active:scale-95"
+                onClick={() => handleShareCollection(collection!)}
+              >
+                <Image
+                  layout="fill"
+                  alt="post to lens"
+                  src={`${INFURA_GATEWAY}/ipfs/QmRbgQM3Unc2wYYJStNHP4Y2JvVk3HrP5rnrmCNE1u9cWu`}
+                  draggable={false}
+                />
               </div>
             </div>
           </div>

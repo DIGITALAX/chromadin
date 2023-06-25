@@ -9,11 +9,8 @@ import {
   getCollectionsDrop,
   getCollectionsProfile,
 } from "@/graphql/subgraph/queries/getAllCollections";
-import { INFURA_GATEWAY } from "@/lib/constants";
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
 import { setAutoDrop } from "@/redux/reducers/autoDropSlice";
-import { setImageLoadingRedux } from "@/redux/reducers/imageLoadingSlice";
-import { setMakePost } from "@/redux/reducers/makePostSlice";
 import { RootState } from "@/redux/store";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -163,42 +160,9 @@ const useAutoDrop = () => {
     }
   };
 
-  const handleShareCollection = async () => {
-    dispatch(setImageLoadingRedux(true));
-    try {
-      dispatch(setMakePost(true));
-
-      if (!actionCollection?.uri?.image) {
-        dispatch(setImageLoadingRedux(false));
-        return;
-      }
-      const response = await fetch(
-        `${INFURA_GATEWAY}/ipfs/${
-          actionCollection?.uri?.image?.split("ipfs://")[1]
-        }`
-      );
-      const blob = await response.blob();
-      const file = new File([blob], actionCollection?.uri?.name, {
-        type: "image/png",
-        lastModified: Date.now(),
-      });
-
-      if (file) {
-        await uploadImage([file], true);
-        dispatch(setImageLoadingRedux(false));
-      } else {
-        dispatch(setImageLoadingRedux(false));
-      }
-    } catch (err: any) {
-      dispatch(setImageLoadingRedux(false));
-      console.error(err.message);
-    }
-  };
-
   return {
     dropLoading,
     getDrop,
-    handleShareCollection,
     otherDrops,
   };
 };
