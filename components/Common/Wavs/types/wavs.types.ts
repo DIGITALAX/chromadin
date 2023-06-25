@@ -82,6 +82,8 @@ export type FeedPublicationProps = {
   setMirrorLoader?: (e: boolean[]) => void;
   openComment: string;
   profileType: string;
+  decryptPost?: (post: Publication) => Promise<void>;
+  decryptLoading?: boolean
 };
 
 export type ProfileSideBarProps = {

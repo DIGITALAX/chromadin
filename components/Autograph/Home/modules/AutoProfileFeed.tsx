@@ -89,6 +89,8 @@ const AutoProfileFeed: FunctionComponent<AutoProfileFeedProps> = ({
   profileType,
   preElement,
   handleImagePaste,
+  decryptPost,
+  decryptLoading
 }): JSX.Element => {
   return (
     <InfiniteScroll
@@ -135,6 +137,8 @@ const AutoProfileFeed: FunctionComponent<AutoProfileFeedProps> = ({
                 setMirrorLoader={setMirrorProfileLoading}
                 setReactLoader={setReactProfileLoading}
                 profileType={profileType}
+                decryptPost={decryptPost}
+                decryptLoading={decryptLoading}
               />
               {(publication?.__typename === "Mirror"
                 ? publication?.mirrorOf?.id

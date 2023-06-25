@@ -2,7 +2,7 @@ import { MediaSet } from "@/components/Home/types/lens.types";
 import Profile from "./Profile";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import Image from "next/legacy/image";
-import { AiFillEye, AiOutlineRetweet } from "react-icons/ai";
+import { AiFillEye, AiOutlineLoading, AiOutlineRetweet } from "react-icons/ai";
 import { FunctionComponent } from "react";
 import { FeedPublicationProps } from "../types/wavs.types";
 import { setImageFeedViewer } from "@/redux/reducers/imageFeedViewerSlice";
@@ -39,6 +39,8 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
   openComment,
   router,
   profileType,
+  decryptPost,
+  decryptLoading,
 }): JSX.Element => {
   return (
     <div
@@ -93,24 +95,28 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
             }`}
             onClick={() =>
               publication?.__typename === "Comment" &&
-              router.push(
-                router.asPath.includes("&post=")
-                  ? router.asPath.includes("?option=")
-                    ? router.asPath.split("&post=")[0] +
-                      `&post=${publication?.mainPost?.id}`
-                    : router.asPath.split("&post=")[0] +
-                      `?option=history&post=${publication?.mainPost?.id}`
-                  : router.asPath.includes("&profile=")
-                  ? router.asPath.includes("?option=")
-                    ? router.asPath.split("&profile=")[0] +
-                      `&post=${publication?.mainPost?.id}`
-                    : router.asPath.split("&profile=")[0] +
-                      `?option=history&post=${publication?.mainPost?.id}`
-                  : router.asPath.includes("?option=")
-                  ? router.asPath + `&post=${publication?.mainPost?.id}`
-                  : router.asPath +
-                    `?option=history&post=${publication?.mainPost?.id}`
-              )
+              (!router.asPath.includes("/autograph/")
+                ? router.push(
+                    router.asPath.includes("&post=")
+                      ? router.asPath.includes("?option=")
+                        ? router.asPath.split("&post=")[0] +
+                          `&post=${publication?.mainPost?.id}`
+                        : router.asPath.split("&post=")[0] +
+                          `?option=history&post=${publication?.mainPost?.id}`
+                      : router.asPath.includes("&profile=")
+                      ? router.asPath.includes("?option=")
+                        ? router.asPath.split("&profile=")[0] +
+                          `&post=${publication?.mainPost?.id}`
+                        : router.asPath.split("&profile=")[0] +
+                          `?option=history&post=${publication?.mainPost?.id}`
+                      : router.asPath.includes("?option=")
+                      ? router.asPath + `&post=${publication?.mainPost?.id}`
+                      : router.asPath +
+                        `?option=history&post=${publication?.mainPost?.id}`
+                  )
+                : router.replace(
+                    `/#chat?option=history&post=${publication?.mainPost?.id}`
+                  ))
             }
           >
             <div
@@ -313,27 +319,40 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
               <div
                 className={`relative w-fit h-full col-start-1 row-start-1 sm:col-start-2 sm:pt-0 pt-3 justify-self-end self-center grid grid-flow-col auto-cols-auto font-digi gap-1 cursor-pointer hover:opacity-70 active:scale-95 text-white`}
                 onClick={() =>
-                  dispatch(
-                    setDecrypt({
-                      actionOpen: true,
-                      actionCollections: (publication?.__typename === "Mirror"
-                        ? publication?.mirrorOf?.metadata?.description
-                        : publication?.metadata?.description
+                  router.asPath.includes("/autograph/") && decryptPost
+                    ? decryptPost(publication)
+                    : dispatch(
+                        setDecrypt({
+                          actionOpen: true,
+                          actionCollections: (publication?.__typename ===
+                          "Mirror"
+                            ? publication?.mirrorOf?.metadata?.description
+                            : publication?.metadata?.description
+                          )
+                            ?.split("gate.")[1]
+                            ?.split("are ready to collect")[0]
+                            .split(",")
+                            .map((word: string) => word.trim()),
+                          actionName: publication?.profile?.ownedBy,
+                        })
                       )
-                        ?.split("gate.")[1]
-                        ?.split("are ready to collect")[0]
-                        .split(",")
-                        .map((word: string) => word.trim()),
-                      actionName: publication?.profile?.ownedBy,
-                    })
-                  )
                 }
               >
-                <div className="relative w-fit h-fit self-end col-start-1 text-sm">
+                <div
+                  className={`relative w-fit h-fit self-end col-start-1 text-sm flex items-center`}
+                >
                   Decrypt
                 </div>
-                <div className="relative w-fit h-fit col-start-2 self-end -top-1">
-                  <BiLock color={"white"} size={15} />
+                <div
+                  className={`relative w-fit h-fit col-start-2 self-end -top-1 ${
+                    decryptLoading && "animate-spin"
+                  }`}
+                >
+                  {decryptLoading ? (
+                    <AiOutlineLoading size={12} />
+                  ) : (
+                    <BiLock color={"white"} size={15} />
+                  )}
                 </div>
               </div>
             }

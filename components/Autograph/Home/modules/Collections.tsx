@@ -18,7 +18,6 @@ const Collections: FunctionComponent<CollectionsProps> = ({
             collection={autoCollections?.[0]}
             autoProfile={autoProfile}
             width={0}
-            height={0}
             handleShareCollection={handleShareCollection}
           />
         </div>
@@ -41,7 +40,6 @@ const Collections: FunctionComponent<CollectionsProps> = ({
                     collection={collection}
                     autoProfile={autoProfile}
                     width={1}
-                    height={1}
                     handleShareCollection={handleShareCollection}
                   />
                 );
@@ -65,7 +63,6 @@ const Collections: FunctionComponent<CollectionsProps> = ({
                   collection={collection}
                   autoProfile={autoProfile}
                   width={2}
-                  height={2}
                   handleShareCollection={handleShareCollection}
                 />
               );

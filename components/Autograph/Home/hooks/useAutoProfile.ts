@@ -8,15 +8,17 @@ import checkPostReactions from "@/lib/helpers/checkPostReactions";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSigner, useAccount } from "wagmi";
 import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
 import { Signer } from "ethers";
 import { Web3Provider } from "@ethersproject/providers";
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
+import { setDecrypt } from "@/redux/reducers/decryptSlice";
 
 const useAutoProfile = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const autoDispatch = useSelector(
@@ -50,6 +52,7 @@ const useAutoProfile = () => {
     hasMirrored: [],
     hasCollected: [],
   });
+  const [decryptLoading, setDecryptLoading] = useState<boolean>(false);
   const [profileFeed, setProfileFeed] = useState<Publication[]>([]);
   const [profilePageData, setProfilePageData] = useState<any>();
   const [decryptProfileFeedCount, setDecryptProfileFeedCount] = useState<{
@@ -122,78 +125,22 @@ const useAutoProfile = () => {
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
 
-      if (signer && address) {
-        const sdk = await LensGatedSDK.create({
-          provider: new Web3Provider(window?.ethereum as any),
-          signer: signer as Signer,
-          env: LensEnvironment.Polygon,
-        });
-
-        sortedArr = await Promise.all(
-          sortedArr.map(async (post) => {
-            if (post.canDecrypt && post.canDecrypt.result) {
-              try {
-                const data = await fetchIPFSJSON(
-                  post.onChainContentURI
-                    ?.split("ipfs://")[1]
-                    ?.replace(/"/g, "")
-                    ?.trim()
-                );
-                const { decrypted, error } = await sdk.gated.decryptMetadata(
-                  data
-                );
-                if (decrypted) {
-                  return {
-                    ...post,
-                    decrypted,
-                  };
-                } else {
-                  return {
-                    ...post,
-                    gated: true,
-                  };
-                }
-              } catch (err: any) {
-                console.error(err.message);
-                return {
-                  ...post,
-                  gated: true,
-                };
-              }
-            } else if (
-              post?.metadata?.content?.includes("This publication is gated") ||
-              (post.__typename === "Mirror" &&
-                post.mirrorOf.metadata.content.includes(
-                  "This publication is gated"
-                ))
-            ) {
-              return {
-                ...post,
-                gated: true,
-              };
-            } else {
-              return post;
-            }
-          })
-        );
-      } else {
-        sortedArr = sortedArr.map((post) => {
-          if (
-            post.metadata.content.includes("This publication is gated") ||
-            (post.__typename === "Mirror" &&
-              post.mirrorOf.metadata.content.includes(
-                "This publication is gated"
-              ))
-          ) {
-            return {
-              ...post,
-              gated: true,
-            };
-          } else {
-            return post;
-          }
-        });
-      }
+      sortedArr = sortedArr.map((post) => {
+        if (
+          post.metadata.content.includes("This publication is gated") ||
+          (post.__typename === "Mirror" &&
+            post.mirrorOf.metadata.content.includes(
+              "This publication is gated"
+            ))
+        ) {
+          return {
+            ...post,
+            gated: true,
+          };
+        } else {
+          return post;
+        }
+      });
 
       if (!sortedArr || sortedArr?.length < 10) {
         setHasMoreProfile(false);
@@ -294,78 +241,22 @@ const useAutoProfile = () => {
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
 
-      if (signer && address) {
-        const sdk = await LensGatedSDK.create({
-          provider: new Web3Provider(window?.ethereum as any),
-          signer: signer as Signer,
-          env: LensEnvironment.Polygon,
-        });
-
-        sortedArr = await Promise.all(
-          sortedArr.map(async (post) => {
-            if (post.canDecrypt && post.canDecrypt.result) {
-              try {
-                const data = await fetchIPFSJSON(
-                  post.onChainContentURI
-                    ?.split("ipfs://")[1]
-                    ?.replace(/"/g, "")
-                    ?.trim()
-                );
-                const { decrypted, error } = await sdk.gated.decryptMetadata(
-                  data
-                );
-                if (decrypted) {
-                  return {
-                    ...post,
-                    decrypted,
-                  };
-                } else {
-                  return {
-                    ...post,
-                    gated: true,
-                  };
-                }
-              } catch (err: any) {
-                console.error(err.message);
-                return {
-                  ...post,
-                  gated: true,
-                };
-              }
-            } else if (
-              post?.metadata?.content?.includes("This publication is gated") ||
-              (post.__typename === "Mirror" &&
-                post.mirrorOf.metadata.content.includes(
-                  "This publication is gated"
-                ))
-            ) {
-              return {
-                ...post,
-                gated: true,
-              };
-            } else {
-              return post;
-            }
-          })
-        );
-      } else {
-        sortedArr = sortedArr.map((post) => {
-          if (
-            post.metadata.content.includes("This publication is gated") ||
-            (post.__typename === "Mirror" &&
-              post.mirrorOf.metadata.content.includes(
-                "This publication is gated"
-              ))
-          ) {
-            return {
-              ...post,
-              gated: true,
-            };
-          } else {
-            return post;
-          }
-        });
-      }
+      sortedArr = sortedArr.map((post) => {
+        if (
+          post.metadata.content.includes("This publication is gated") ||
+          (post.__typename === "Mirror" &&
+            post.mirrorOf.metadata.content.includes(
+              "This publication is gated"
+            ))
+        ) {
+          return {
+            ...post,
+            gated: true,
+          };
+        } else {
+          return post;
+        }
+      });
 
       if (sortedArr?.length < 10) {
         setHasMoreProfile(false);
@@ -494,68 +385,16 @@ const useAutoProfile = () => {
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
 
-      if (signer && address) {
-        const sdk = await LensGatedSDK.create({
-          provider: new Web3Provider(window?.ethereum as any),
-          signer: signer as Signer,
-          env: LensEnvironment.Polygon,
-        });
-
-        sortedArr = await Promise.all(
-          sortedArr.map(async (post) => {
-            if (post.canDecrypt && post.canDecrypt.result) {
-              try {
-                const data = await fetchIPFSJSON(
-                  post.onChainContentURI
-                    ?.split("ipfs://")[1]
-                    ?.replace(/"/g, "")
-                    ?.trim()
-                );
-                const { decrypted, error } = await sdk.gated.decryptMetadata(
-                  data
-                );
-                if (decrypted) {
-                  return {
-                    ...post,
-                    decrypted,
-                  };
-                } else {
-                  return {
-                    ...post,
-                    gated: true,
-                  };
-                }
-              } catch (err: any) {
-                console.error(err.message);
-                return {
-                  ...post,
-                  gated: true,
-                };
-              }
-            } else if (
-              post?.metadata?.content?.includes("This publication is gated")
-            ) {
-              return {
-                ...post,
-                gated: true,
-              };
-            } else {
-              return post;
-            }
-          })
-        );
-      } else {
-        sortedArr = sortedArr.map((post) => {
-          if (post.metadata.content.includes("This publication is gated")) {
-            return {
-              ...post,
-              gated: true,
-            };
-          } else {
-            return post;
-          }
-        });
-      }
+      sortedArr = sortedArr.map((post) => {
+        if (post.metadata.content.includes("This publication is gated")) {
+          return {
+            ...post,
+            gated: true,
+          };
+        } else {
+          return post;
+        }
+      });
 
       if (!sortedArr || sortedArr?.length < 10) {
         setHasMoreDecryptProfile(false);
@@ -613,6 +452,81 @@ const useAutoProfile = () => {
     setDecryptProfileLoading(false);
   };
 
+  const decryptPost = async (post: Publication) => {
+    setDecryptLoading(true);
+    try {
+      let newPost: any;
+      if (
+        signer &&
+        address &&
+        (post as any).canDecrypt &&
+        (post as any).canDecrypt.result
+      ) {
+        const sdk = await LensGatedSDK.create({
+          provider: new Web3Provider(window?.ethereum as any),
+          signer: signer as Signer,
+          env: LensEnvironment.Polygon,
+        });
+
+        try {
+          const data = await fetchIPFSJSON(
+            post.onChainContentURI
+              ?.split("ipfs://")[1]
+              ?.replace(/"/g, "")
+              ?.trim()
+          );
+          const { decrypted } = await sdk.gated.decryptMetadata(data);
+          if (decrypted) {
+            newPost = {
+              ...post,
+              decrypted,
+              gated: false,
+            };
+          } else {
+            newPost = {
+              ...post,
+              gated: true,
+            };
+          }
+        } catch (err: any) {
+          console.error(err.message);
+          newPost = {
+            ...post,
+            gated: true,
+          };
+        }
+
+        const newProfileFeed = [...profileFeed]?.map((item) =>
+          item?.id === post?.id ? newPost : item
+        );
+        const newDecryptFeed = [...decryptProfileFeed]?.map((item) =>
+          item?.id === post?.id ? newPost : item
+        );
+
+        setProfileFeed(newProfileFeed);
+        setDecryptProfileFeed(newDecryptFeed);
+      } else {
+        dispatch(
+          setDecrypt({
+            actionOpen: true,
+            actionCollections: (post?.__typename === "Mirror"
+              ? post?.mirrorOf?.metadata?.description
+              : post?.metadata?.description
+            )
+              ?.split("gate.")[1]
+              ?.split("are ready to collect")[0]
+              .split(",")
+              .map((word: string) => word.trim()),
+            actionName: post?.profile?.ownedBy,
+          })
+        );
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+    setDecryptLoading(false);
+  };
+
   const fetchMoreProfileDecrypt = async () => {
     let data;
     try {
@@ -654,68 +568,16 @@ const useAutoProfile = () => {
         (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
       );
 
-      if (signer && address) {
-        const sdk = await LensGatedSDK.create({
-          provider: new Web3Provider(window?.ethereum as any),
-          signer: signer as Signer,
-          env: LensEnvironment.Polygon,
-        });
-
-        sortedArr = await Promise.all(
-          sortedArr.map(async (post) => {
-            if (post.canDecrypt && post.canDecrypt.result) {
-              try {
-                const data = await fetchIPFSJSON(
-                  post.onChainContentURI
-                    ?.split("ipfs://")[1]
-                    ?.replace(/"/g, "")
-                    ?.trim()
-                );
-                const { decrypted, error } = await sdk.gated.decryptMetadata(
-                  data
-                );
-                if (decrypted) {
-                  return {
-                    ...post,
-                    decrypted,
-                  };
-                } else {
-                  return {
-                    ...post,
-                    gated: true,
-                  };
-                }
-              } catch (err: any) {
-                console.error(err.message);
-                return {
-                  ...post,
-                  gated: true,
-                };
-              }
-            } else if (
-              post?.metadata?.content?.includes("This publication is gated")
-            ) {
-              return {
-                ...post,
-                gated: true,
-              };
-            } else {
-              return post;
-            }
-          })
-        );
-      } else {
-        sortedArr = sortedArr.map((post) => {
-          if (post.metadata.content.includes("This publication is gated")) {
-            return {
-              ...post,
-              gated: true,
-            };
-          } else {
-            return post;
-          }
-        });
-      }
+      sortedArr = sortedArr.map((post) => {
+        if (post.metadata.content.includes("This publication is gated")) {
+          return {
+            ...post,
+            gated: true,
+          };
+        } else {
+          return post;
+        }
+      });
 
       if (sortedArr?.length < 10) {
         setHasMoreDecryptProfile(false);
@@ -827,6 +689,8 @@ const useAutoProfile = () => {
     profileFeedCount,
     decryptProfileFeed,
     decryptProfileFeedCount,
+    decryptPost,
+    decryptLoading,
   };
 };
 

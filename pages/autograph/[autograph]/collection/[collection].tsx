@@ -67,11 +67,11 @@ const Collection: NextPage = (): JSX.Element => {
 
   return (
     <div
-      className="relative w-full flex flex-col bg-black items-center justify-start h-full gap-6"
+      className="relative w-full flex flex-col bg-black items-center justify-start h-full gap-6 z-0"
       id="calc"
     >
       <Head>
-        <title>{autoDispatch.collection?.name?.toUpperCase()}</title>
+        <title>Chromadin | {autoDispatch.collection?.name?.toUpperCase()}</title>
         <meta
           name="og:url"
           content={`https://chromadin.xyz/autograph/${
@@ -203,137 +203,141 @@ const Collection: NextPage = (): JSX.Element => {
         searchResults={searchResults}
         handleSearchChoose={handleSearchChoose}
       />
-      <div className="relative w-full h-full flex flex-row bg-black items-center justify-center gap-8 pl-20 pt-10">
-        <div className="relative w-5/6 h-128 flex flex-col items-center justify-center gap-3">
-          <div className="relative flex flex-col w-full h-full bg-offBlack/50 p-2">
-            <div className="relative w-full h-full flex">
-              {autoDispatch.collection?.uri?.image && (
+      {autoDispatch.collection && autoDispatch.profile && (
+        <div className="relative w-full h-full flex flex-row bg-black items-center justify-center gap-8 pl-20 pt-10">
+          <div className="relative w-5/6 h-128 flex flex-col items-center justify-center gap-3">
+            <div className="relative flex flex-col w-full h-full bg-offBlack/50 p-2">
+              <div className="relative w-full h-full flex">
+                {autoDispatch.collection?.uri?.image && (
+                  <Image
+                    src={`${INFURA_GATEWAY}/ipfs/${
+                      autoDispatch.collection?.uri?.image?.split("ipfs://")[1]
+                    }`}
+                    layout="fill"
+                    objectFit="contain"
+                    className="flex flex-col w-full h-full"
+                    draggable={false}
+                  />
+                )}
+              </div>
+            </div>
+            <div className="relative w-full h-fit flex flex-row gap-3 justify-end items-end">
+              <div
+                className="relative w-5 h-5 cursor-pointer justify-end items-end flex ml-auto"
+                onClick={() =>
+                  dispatch(
+                    setImageViewer({
+                      actionValue: true,
+                      actionImage:
+                        autoDispatch.collection?.uri?.image?.split(
+                          "ipfs://"
+                        )[1],
+                    })
+                  )
+                }
+              >
                 <Image
-                  src={`${INFURA_GATEWAY}/ipfs/${
-                    autoDispatch.collection?.uri?.image?.split("ipfs://")[1]
-                  }`}
+                  src={`${INFURA_GATEWAY}/ipfs/QmVpncAteeF7voaGu1ZV5qP63UpZW2xmiCWVftL1QnL5ja`}
+                  alt="expand"
                   layout="fill"
-                  objectFit="contain"
-                  className="flex flex-col w-full h-full"
+                  className="flex items-center"
                   draggable={false}
                 />
-              )}
-            </div>
-          </div>
-          <div className="relative w-full h-fit flex flex-row gap-3 justify-end items-end">
-            <div
-              className="relative w-5 h-5 cursor-pointer justify-end items-end flex ml-auto"
-              onClick={() =>
-                dispatch(
-                  setImageViewer({
-                    actionValue: true,
-                    actionImage:
-                      autoDispatch.collection?.uri?.image?.split("ipfs://")[1],
-                  })
-                )
-              }
-            >
-              <Image
-                src={`${INFURA_GATEWAY}/ipfs/QmVpncAteeF7voaGu1ZV5qP63UpZW2xmiCWVftL1QnL5ja`}
-                alt="expand"
-                layout="fill"
-                className="flex items-center"
-                draggable={false}
-              />
-            </div>
-            <div
-              className="relative w-4 h-4 text-ama items-center flex cursor-pointer active:scale-95"
-              onClick={() => handleShareCollection()}
-            >
-              <Image
-                layout="fill"
-                alt="post to lens"
-                src={`${INFURA_GATEWAY}/ipfs/QmRbgQM3Unc2wYYJStNHP4Y2JvVk3HrP5rnrmCNE1u9cWu`}
-                draggable={false}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="relative w-full h-full flex flex-col items-center justify-center px-10 pb-8">
-          <div className="relative flex flex-col gap-3 text-right items-end justify-end w-full h-fit">
-            <div className="relative flex flex-col gap-0.5 items-end w-fit h-fit text-right">
-              <div className="relative w-fit h-fit text-white font-earl text-4xl">
-                {autoDispatch.collection?.name}
               </div>
-              <div className="relative w-fit h-fit font-digi text-lg text-verde">
-                {autoDispatch.collection?.drop?.name}
+              <div
+                className="relative w-4 h-4 text-ama items-center flex cursor-pointer active:scale-95"
+                onClick={() => handleShareCollection()}
+              >
+                <Image
+                  layout="fill"
+                  alt="post to lens"
+                  src={`${INFURA_GATEWAY}/ipfs/QmRbgQM3Unc2wYYJStNHP4Y2JvVk3HrP5rnrmCNE1u9cWu`}
+                  draggable={false}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="relative w-full h-full flex flex-col items-center justify-center px-10 pb-8">
+            <div className="relative flex flex-col gap-3 text-right items-end justify-end w-full h-fit">
+              <div className="relative flex flex-col gap-0.5 items-end w-fit h-fit text-right">
+                <div className="relative w-fit h-fit text-white font-earl text-4xl">
+                  {autoDispatch.collection?.name}
+                </div>
+                <div className="relative w-fit h-fit font-digi text-lg text-verde">
+                  {autoDispatch.collection?.drop?.name}
+                </div>
+              </div>
+              {autoDispatch.collection && (
+                <div className="relative w-fit h-fit text-white font-earl text-2xl">
+                  {Number(autoDispatch.collection?.tokenIds?.length) -
+                    (autoDispatch.collection?.soldTokens?.length
+                      ? autoDispatch.collection?.soldTokens?.length
+                      : 0) ===
+                  0
+                    ? "SOLD OUT"
+                    : `${
+                        Number(autoDispatch.collection?.tokenIds?.length) -
+                        (autoDispatch.collection?.soldTokens?.length
+                          ? autoDispatch.collection?.soldTokens?.length
+                          : 0)
+                      } /
+                  ${Number(autoDispatch.collection?.tokenIds?.length)}`}
+                </div>
+              )}
+              {autoDispatch.profile && autoDispatch.collection && (
+                <Link
+                  className="relative flex flex-row w-fit h-fit gap-3 items-center pt-3 cursor-pointer"
+                  href={`/autograph/${
+                    autoDispatch.profile?.handle?.split(".lens")[0]
+                  }`}
+                >
+                  <div
+                    className="relative w-6 h-6 cursor-pointer border border-ama rounded-full"
+                    id="crt"
+                  >
+                    {createProfilePicture(autoDispatch.profile) !== "" && (
+                      <Image
+                        src={createProfilePicture(autoDispatch.profile)}
+                        layout="fill"
+                        alt="pfp"
+                        className="rounded-full w-full h-full flex"
+                        draggable={false}
+                      />
+                    )}
+                  </div>
+                  <div className="relative w-fit h-fit cursor-pointer text-ama font-arcade text-sm">
+                    @{autoDispatch.profile?.handle?.split(".lens")[0]}
+                  </div>
+                </Link>
+              )}
+              <div className="relative w-5/6 break-words h-fit max-h-80 text-white font-earl text-base overflow-y-scroll">
+                {autoDispatch.collection?.uri?.description}
               </div>
             </div>
             {autoDispatch.collection && (
-              <div className="relative w-fit h-fit text-white font-earl text-2xl">
-                {Number(autoDispatch.collection?.tokenIds?.length) -
-                  (autoDispatch.collection?.soldTokens?.length
-                    ? autoDispatch.collection?.soldTokens?.length
-                    : 0) ===
-                0
-                  ? "SOLD OUT"
-                  : `${
-                      Number(autoDispatch.collection?.tokenIds?.length) -
-                      (autoDispatch.collection?.soldTokens?.length
-                        ? autoDispatch.collection?.soldTokens?.length
-                        : 0)
-                    } /
-                  ${Number(autoDispatch.collection?.tokenIds?.length)}`}
+              <div className="relative w-full h-fit py-10 flex justify-end items-end">
+                <Purchase
+                  acceptedtokens={autoDispatch.collection?.acceptedTokens}
+                  approved={approved}
+                  currency={currency}
+                  setCurrency={setCurrency}
+                  totalAmount={totalAmount}
+                  mainNFT={autoDispatch.collection}
+                  approveSpend={approveSpend}
+                  buyNFT={buyNFT}
+                  purchaseLoading={purchaseLoading}
+                />
               </div>
             )}
-            {autoDispatch.profile && autoDispatch.collection && (
-              <Link
-                className="relative flex flex-row w-fit h-fit gap-3 items-center pt-3 cursor-pointer"
-                href={`/autograph/${
-                  autoDispatch.profile?.handle?.split(".lens")[0]
-                }`}
-              >
-                <div
-                  className="relative w-6 h-6 cursor-pointer border border-ama rounded-full"
-                  id="crt"
-                >
-                  {createProfilePicture(autoDispatch.profile) !== "" && (
-                    <Image
-                      src={createProfilePicture(autoDispatch.profile)}
-                      layout="fill"
-                      alt="pfp"
-                      className="rounded-full w-full h-full flex"
-                      draggable={false}
-                    />
-                  )}
-                </div>
-                <div className="relative w-fit h-fit cursor-pointer text-ama font-arcade text-sm">
-                  @{autoDispatch.profile?.handle?.split(".lens")[0]}
-                </div>
-              </Link>
-            )}
-            <div className="relative w-5/6 break-words h-fit max-h-80 text-white font-earl text-base overflow-y-scroll">
-              {autoDispatch.collection?.uri?.description}
-            </div>
+            <InDrop
+              autoCollection={autoDispatch.collection}
+              otherCollectionsDrop={otherCollectionsDrop}
+              push={push}
+              autoProfile={autoDispatch.profile}
+            />
           </div>
-          {autoDispatch.collection && (
-            <div className="relative w-full h-fit py-10 flex justify-end items-end">
-              <Purchase
-                acceptedtokens={autoDispatch.collection?.acceptedTokens}
-                approved={approved}
-                currency={currency}
-                setCurrency={setCurrency}
-                totalAmount={totalAmount}
-                mainNFT={autoDispatch.collection}
-                approveSpend={approveSpend}
-                buyNFT={buyNFT}
-                purchaseLoading={purchaseLoading}
-              />
-            </div>
-          )}
-          <InDrop
-            autoCollection={autoDispatch.collection}
-            otherCollectionsDrop={otherCollectionsDrop}
-            push={push}
-            autoProfile={autoDispatch.profile}
-          />
         </div>
-      </div>
+      )}
     </div>
   );
 };

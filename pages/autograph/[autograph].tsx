@@ -164,7 +164,10 @@ const Autograph: NextPage = (): JSX.Element => {
     decryptProfileFeed,
     profileFeedCount,
     decryptProfileFeedCount,
+    decryptPost,
+    decryptLoading,
   } = useAutoProfile();
+
   useEffect(() => {
     if (
       !autographLoading &&
@@ -195,11 +198,11 @@ const Autograph: NextPage = (): JSX.Element => {
 
   return (
     <div
-      className="relative w-full flex flex-col bg-black items-center justify-start h-full gap-6"
+      className="relative w-full flex flex-col bg-black items-center justify-start h-full gap-6 z-0"
       id="calc"
     >
       <Head>
-        <title>{autoDispatch.profile?.name?.toUpperCase()}</title>
+        <title>Chromadin | {autoDispatch.profile?.name?.toUpperCase()}</title>
         <meta
           name="og:url"
           content={`https://chromadin.xyz/autograph/${
@@ -446,6 +449,8 @@ const Autograph: NextPage = (): JSX.Element => {
                       preElement={preElement}
                       handleImagePaste={handleImagePaste}
                       router={router}
+                      decryptPost={decryptPost}
+                      decryptLoading={decryptLoading}
                     />
                   )}
                 </div>
@@ -550,6 +555,8 @@ const Autograph: NextPage = (): JSX.Element => {
                     preElement={preElement}
                     handleImagePaste={handleImagePaste}
                     router={router}
+                    decryptPost={decryptPost}
+                    decryptLoading={decryptLoading}
                   />
                 </div>
               )}

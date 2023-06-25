@@ -9,14 +9,13 @@ const CollectionCase: FunctionComponent<CollectionCaseProps> = ({
   collection,
   autoProfile,
   width,
-  height,
   handleShareCollection,
 }): JSX.Element => {
   return (
     <div
       className={`relative flex rounded-md ${
         width === 1 ? "w-40" : width === 2 ? "w-72" : "w-full"
-      } ${height === 1 ? "h-40" : width === 2 ? "h-80" : "h-[40rem]"}`}
+      } ${width === 1 ? "h-40" : width === 2 ? "h-80" : "h-[40rem]"}`}
       id="staticLoad"
     >
       {collection?.uri?.image && (
@@ -39,9 +38,13 @@ const CollectionCase: FunctionComponent<CollectionCaseProps> = ({
           }
         />
       )}
-      <div className="absolute bottom-3 right-2 w-full h-fit flex items-end justify-end ml-auto z-1">
+      <div
+        className={`absolute right-2 w-5/6 h-fit flex items-end justify-end ml-auto z-1 ${
+          width === 1 ? "bottom-1" : "bottom-3"
+        }`}
+      >
         <div
-          className={`relative w-5/6 h-fit flex ml-auto justify-end items-end ${
+          className={`relative w-full h-fit flex ml-auto justify-end items-end ${
             width === 0 ? "flex-row" : "flex-col"
           }`}
         >
@@ -58,7 +61,11 @@ const CollectionCase: FunctionComponent<CollectionCaseProps> = ({
           </div>
           <div className={`relative w-fit h-fit flex items-end p-2 flex-row`}>
             <div className="relative w-fit h-fit flex flex-col gap-3">
-              <div className="relative flex flex-row w-fit h-fit gap-3 items-center">
+              <div
+                className={`relative flex w-fit h-fit gap-3 items-center ${
+                  width === 1 ? "flex-col" : "flex-row"
+                }`}
+              >
                 <div
                   className="relative w-6 h-6 border border-ama rounded-full"
                   id="crt"
@@ -74,11 +81,17 @@ const CollectionCase: FunctionComponent<CollectionCaseProps> = ({
                   )}
                 </div>
                 <div className="relative w-fit h-fit text-ama font-arcade text-sm">
-                  @{autoProfile?.handle?.split(".lens")[0]}
+                  @
+                  {autoProfile?.handle?.length > 10
+                    ? autoProfile?.handle?.split(".lens")[0]?.slice(0, 12) +
+                      "..."
+                    : autoProfile?.handle?.split(".lens")[0]}
                 </div>
               </div>
               <div
-                className="relative w-4 h-4 text-ama items-center flex cursor-pointer active:scale-95"
+                className={`relative text-ama items-center flex cursor-pointer active:scale-95 ${
+                  width === 1 ? "w-2 h-2" : "w-4 h-4"
+                }`}
                 onClick={() => handleShareCollection(collection!)}
               >
                 <Image

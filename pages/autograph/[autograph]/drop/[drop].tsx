@@ -46,11 +46,11 @@ const Drop: NextPage = (): JSX.Element => {
 
   return (
     <div
-      className="relative w-full flex flex-col bg-black items-center justify-start h-full gap-6"
+      className="relative w-full flex flex-col bg-black items-center justify-start h-full gap-6 z-0"
       id="calc"
     >
       <Head>
-        <title>{autoDispatch.drop?.uri?.name?.toUpperCase()}</title>
+        <title>Chromadin | {autoDispatch.drop?.uri?.name?.toUpperCase()}</title>
         <meta
           name="og:url"
           content={`https://chromadin.xyz/autograph/${

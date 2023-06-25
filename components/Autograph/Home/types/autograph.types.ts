@@ -117,6 +117,8 @@ export type AutoProfileFeedProps = {
   profile: Profile | undefined;
   profileCollections?: Collection[];
   handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
+  decryptPost: (post: Publication) => Promise<void>;
+  decryptLoading: boolean;
 };
 
 export type CollectionsProps = {
@@ -131,7 +133,6 @@ export type CollectionCaseProps = {
   router: NextRouter;
   autoProfile: Profile | undefined;
   width: number;
-  height: number;
   handleShareCollection: (collection: Collection) => Promise<void>;
 };
 

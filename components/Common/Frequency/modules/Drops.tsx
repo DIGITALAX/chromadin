@@ -40,10 +40,6 @@ const Drops: FunctionComponent<DropsProps> = ({
             );
           })
         : collections?.map((collection: Collection, index: number) => {
-            const profileImage = createProfilePicture(
-              collection?.profile,
-              false
-            );
             return (
               <div
                 className="relative w-60 h-40 flex flex-col items-center shrink-0 cursor-pointer"
@@ -67,7 +63,15 @@ const Drops: FunctionComponent<DropsProps> = ({
                       tokensSold: collection?.soldTokens,
                     })
                   );
-                  if (
+                  if (router.asPath.includes("/autograph")) {
+                    router.replace(
+                      `/autograph/${
+                        collection?.profile?.handle?.split(".lens")[0]
+                      }/collection/${collection?.name
+                        ?.replaceAll(" ", "-")
+                        ?.toLowerCase()}`
+                    );
+                  } else if (
                     router.asPath.includes("#sampler") ||
                     router.asPath.includes("#chat")
                   ) {
