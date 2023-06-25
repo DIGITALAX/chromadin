@@ -5,7 +5,10 @@ import {
   getOneProfile,
   getOneProfileAuth,
 } from "@/graphql/lens/queries/getProfile";
-import { getCollectionsDrop } from "@/graphql/subgraph/queries/getAllCollections";
+import {
+  getCollectionsDrop,
+  getCollectionsProfile,
+} from "@/graphql/subgraph/queries/getAllCollections";
 import { INFURA_GATEWAY } from "@/lib/constants";
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
 import { setAutoDrop } from "@/redux/reducers/autoDropSlice";
@@ -28,6 +31,7 @@ const useAutoDrop = () => {
     (state: RootState) => state.app.dropsReducer.value
   );
   const [dropLoading, setDropLoading] = useState<boolean>(false);
+  const [otherDrops, setOtherDrops] = useState<Collection[]>([]);
 
   const getDrop = async (autograph: string, drop: string) => {
     setDropLoading(true);
@@ -86,6 +90,40 @@ const useAutoDrop = () => {
           };
         })
       );
+
+      const allColls = await getCollectionsProfile(prof?.ownedBy);
+      const filteredCollsPromises = allColls?.data?.collectionMinteds?.map(
+        async (collection: Collection) => {
+          if (
+            !coll[0]?.drop?.collectionIds?.includes(collection?.collectionId)
+          ) {
+            return collection;
+          }
+          return null;
+        }
+      );
+
+      const filteredColls = (await Promise.all(filteredCollsPromises)).filter(
+        Boolean
+      );
+
+      const otherDrops = await Promise.all(
+        filteredColls?.map(async (collection: Collection) => {
+          const json = await fetchIPFSJSON(
+            (collection.uri as any)
+              ?.split("ipfs://")[1]
+              ?.replace(/"/g, "")
+              ?.trim()
+          );
+
+          return {
+            ...collection,
+            uri: json,
+          };
+        })
+      );
+
+      setOtherDrops(otherDrops);
 
       dispatch(
         setAutoDrop({
@@ -161,6 +199,7 @@ const useAutoDrop = () => {
     dropLoading,
     getDrop,
     handleShareCollection,
+    otherDrops,
   };
 };
 

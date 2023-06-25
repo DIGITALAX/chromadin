@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "@/lib/constants";
-import { BarProps } from "../types/collection.types";
+import { BarProps } from "../../Collection/types/collection.types";
 import Auth from "@/components/Common/SideBar/modules/Auth";
 import SearchVending from "@/components/Common/Buttons/SearchVending";
 import Video from "@/components/Common/Video/modules/Video";

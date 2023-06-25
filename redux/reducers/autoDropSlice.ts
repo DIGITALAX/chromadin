@@ -15,7 +15,7 @@ const initialAutoDropState: AutoDropState = {
 };
 
 export const autoDropSlice = createSlice({
-  name: "AutoDrop",
+  name: "autoDrop",
   initialState: initialAutoDropState,
   reducers: {
     setAutoDrop: (

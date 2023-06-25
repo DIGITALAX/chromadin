@@ -85,6 +85,7 @@ import hasMoreBuyerHistoryReducer from "./reducers/hasMoreBuyerHistorySlice";
 import autoCollectionReducer from "./reducers/autoCollectionSlice";
 import imageLoadingReducer from "./reducers/imageLoadingSlice";
 import autoDropReducer from "./reducers/autoDropSlice";
+import autographReducer from "./reducers/autographSlice";
 
 const reducer = combineReducers({
   authStatusReducer,
@@ -172,6 +173,7 @@ const reducer = combineReducers({
   autoCollectionReducer,
   imageLoadingReducer,
   autoDropReducer,
+  autographReducer
 });
 
 export const store = configureStore({

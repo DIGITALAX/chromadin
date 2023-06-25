@@ -11,6 +11,7 @@ import { DecryptProfileFeedCountState } from "@/redux/reducers/decryptProfileCou
 import { IndividualFeedCountState } from "@/redux/reducers/individualFeedCountReducer";
 import { ProfileFeedCountState } from "@/redux/reducers/profileFeedCountSlice";
 import { ReactionFeedCountState } from "@/redux/reducers/reactionFeedCountSlice";
+import { Url } from "next/dist/shared/lib/router/router";
 import { NextRouter } from "next/router";
 import {
   ClipboardEvent,
@@ -914,23 +915,21 @@ export type ProfileFeedProps = {
   handleLensSignIn: () => Promise<void>;
   handleConnect: () => void;
   feedType: string;
-  profileRef: Ref<InfiniteScroll>;
-  setScrollPos: (e: MouseEvent) => void;
-  scrollPos: number;
+  profileRef: Ref<InfiniteScroll> | undefined;
+  setScrollPos?: (e: MouseEvent) => void;
+  scrollPos?: number;
   profile: Profile | undefined;
-  profileCollections: Collection[];
+  profileCollections?: Collection[];
   filterDecrypt: boolean;
   decryptFeedProfile: Publication[];
   decryptProfileAmounts: DecryptProfileFeedCountState;
   fetchMoreProfileDecrypt: () => Promise<void>;
   followerOnlyProfileDecrypt: boolean[];
-  scrollRefDecryptProfile: Ref<InfiniteScroll>;
-  setScrollPosDecryptProfile: (e: MouseEvent) => void;
+  scrollRefDecryptProfile?: Ref<InfiniteScroll>;
+  setScrollPosDecryptProfile?: (e: MouseEvent) => void;
   hasMoreDecryptProfile: boolean;
-  decryptProfileScrollPos: number;
+  decryptProfileScrollPos?: number;
   handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
-
-  profileCollectionsLoading: boolean;
 };
 
 export type SwitchProps = {
@@ -1217,10 +1216,9 @@ export type QuickProfilesProps = {
 
 export type AccountProps = {
   profile: Profile | undefined;
-  profileCollections: Collection[];
+  profileCollections?: Collection[];
   dispatch: Dispatch<AnyAction>;
-  profileCollectionsLoading: boolean;
-  router: NextRouter;
+  router?: NextRouter;
 };
 
 export type SearchProps = {

@@ -108,7 +108,6 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
   fetchMoreProfileDecrypt,
   followerOnlyProfileDecrypt,
   handleImagePaste,
-  profileCollectionsLoading,
 }): JSX.Element => {
   const history = useSelector(
     (state: RootState) => state.app.historyURLReducer.value
@@ -126,8 +125,8 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           <div
             className="relative w-fit h-fit flex items-start cursor-pointer justify-start"
             onClick={() => {
-              history.includes("#chat") &&
-              (history.includes("&profile=") || history.includes("&post="))
+              (history.includes("#chat") && history.includes("&profile=")) ||
+              history.includes("&post=")
                 ? router.push("#chat?option=history")
                 : router.back();
             }}
@@ -139,7 +138,6 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           dispatch={dispatch}
           profile={profile}
           profileCollections={profileCollections}
-          profileCollectionsLoading={profileCollectionsLoading}
           router={router}
         />
         <InfiniteScroll
@@ -157,14 +155,19 @@ const ProfileFeed: FunctionComponent<ProfileFeedProps> = ({
           ref={filterDecrypt ? scrollRefDecryptProfile : profileRef}
           onScroll={
             filterDecrypt
-              ? (e: MouseEvent) => setScrollPosDecryptProfile(e)
-              : (e: MouseEvent) => setScrollPos(e)
+              ? (e: MouseEvent) =>
+                  setScrollPosDecryptProfile && setScrollPosDecryptProfile(e)
+              : (e: MouseEvent) => setScrollPos && setScrollPos(e)
           }
           initialScrollY={
             feedType === ""
               ? decryptProfileAmounts
                 ? decryptProfileScrollPos
+                  ? decryptProfileScrollPos
+                  : 0
                 : scrollPos
+                ? scrollPos
+                : 0
               : 0
           }
         >

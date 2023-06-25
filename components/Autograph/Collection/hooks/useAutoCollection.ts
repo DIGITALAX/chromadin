@@ -79,11 +79,15 @@ const useAutoCollection = () => {
 
       const allColls = await getCollectionsProfile(prof?.ownedBy);
       const filteredCollsPromises = allColls?.data?.collectionMinteds?.map(
-        async (collection: Collection) => {
+        (collectionValue: Collection) => {
           if (
-            coll[0]?.drop?.collectionIds?.includes(collection?.collectionId)
+            coll[0]?.drop?.collectionIds?.includes(
+              collectionValue?.collectionId
+            ) &&
+            collectionValue?.name?.toLowerCase() !==
+              collection?.replace("-", " ")?.toLowerCase()
           ) {
-            return collection;
+            return collectionValue;
           }
           return null;
         }

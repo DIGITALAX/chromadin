@@ -1,56 +1,26 @@
-import { Profile, Publication } from "@/components/Home/types/lens.types";
-import { getFollowingAuth } from "@/graphql/lens/queries/getFollowing";
-import {
-  getOneProfileAuth,
-  getOneProfile,
-} from "@/graphql/lens/queries/getProfile";
+import { Publication } from "@/components/Home/types/lens.types";
 import {
   profilePublications,
   profilePublicationsAuth,
 } from "@/graphql/lens/queries/getVideos";
 import checkIfMirrored from "@/lib/helpers/checkIfMirrored";
 import checkPostReactions from "@/lib/helpers/checkPostReactions";
-import { setProfileFeedCount } from "@/redux/reducers/profileFeedCountSlice";
-import { setProfileFeedRedux } from "@/redux/reducers/profileFeedSlice";
-import { setProfilePaginated } from "@/redux/reducers/profilePaginatedSlice";
-import { setProfileScrollPosRedux } from "@/redux/reducers/profileScrollPosSlice";
-import { setProfile } from "@/redux/reducers/profileSlice";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useSigner, useAccount } from "wagmi";
 import { LensEnvironment, LensGatedSDK } from "@lens-protocol/sdk-gated";
 import { Signer } from "ethers";
 import { Web3Provider } from "@ethersproject/providers";
-import { setPostSent } from "@/redux/reducers/postSentSlice";
 import fetchIPFSJSON from "@/lib/helpers/fetchIPFSJSON";
-import { setDecryptProfileScrollPosRedux } from "@/redux/reducers/decryptProfileScrollPosSlice";
-import { setDecryptProfilePaginated } from "@/redux/reducers/decryptProfilePaginatedSlice";
-import { setDecryptProfileFeedRedux } from "@/redux/reducers/decryptProfileFeedSlice";
-import { setDecryptProfileFeedCount } from "@/redux/reducers/decryptProfileCountSlice";
-import { Collection } from "@/components/Home/types/home.types";
-import { getCollectionsProfile } from "@/graphql/subgraph/queries/getAllCollections";
 
-const useProfileFeed = () => {
+const useAutoProfile = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const { data: signer } = useSigner();
   const { address } = useAccount();
-  const profileRef = useRef<InfiniteScroll>(null);
-  const scrollRefDecryptProfile = useRef<InfiniteScroll>(null);
-  const profileDispatch = useSelector(
-    (state: RootState) => state.app.profileFeedReducer.value
-  );
-  const filterDecrypt = useSelector(
-    (state: RootState) => state.app.filterDecryptReducer.value
-  );
-  const postSent = useSelector(
-    (state: RootState) => state.app.postSentReducer.value
-  );
-  const quickProfiles = useSelector(
-    (state: RootState) => state.app.quickProfilesReducer.value
+  const autoDispatch = useSelector(
+    (state: RootState) => state.app.autographReducer
   );
   const auth = useSelector(
     (state: RootState) => state.app.authStatusReducer.value
@@ -58,27 +28,51 @@ const useProfileFeed = () => {
   const lensProfile = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
-  const profileId = useSelector((state: RootState) => state.app.profileReducer);
-  const profilePageData = useSelector(
-    (state: RootState) => state.app.profilePaginatedReducer.value
-  );
-  const profileFeedCount = useSelector(
-    (state: RootState) => state.app.profileFeedCountReducer
-  );
-  const decryptProfilePageData = useSelector(
-    (state: RootState) => state.app.decryptProfilePaginatedReducer.value
-  );
-  const decryptProfileFeedCount = useSelector(
-    (state: RootState) => state.app.decryptProfileFeedCountReducer
-  );
-  const decryptProfileFeed = useSelector(
-    (state: RootState) => state.app.decryptProfileFeedReducer.value
-  );
 
   const [hasMoreProfile, setHasMoreProfile] = useState<boolean>(true);
   const [followerOnlyProfile, setFollowerOnlyProfile] = useState<boolean[]>(
     Array.from({ length: 10 }, () => false)
   );
+  const [profileFeedCount, setProfileFeedCount] = useState<{
+    like: number[];
+    mirror: number[];
+    collect: number[];
+    comment: number[];
+    hasLiked: boolean[];
+    hasMirrored: boolean[];
+    hasCollected: boolean[];
+  }>({
+    like: [],
+    mirror: [],
+    collect: [],
+    comment: [],
+    hasLiked: [],
+    hasMirrored: [],
+    hasCollected: [],
+  });
+  const [profileFeed, setProfileFeed] = useState<Publication[]>([]);
+  const [profilePageData, setProfilePageData] = useState<any>();
+  const [decryptProfileFeedCount, setDecryptProfileFeedCount] = useState<{
+    like: number[];
+    mirror: number[];
+    collect: number[];
+    comment: number[];
+    hasLiked: boolean[];
+    hasMirrored: boolean[];
+    hasCollected: boolean[];
+  }>({
+    like: [],
+    mirror: [],
+    collect: [],
+    comment: [],
+    hasLiked: [],
+    hasMirrored: [],
+    hasCollected: [],
+  });
+  const [decryptProfileFeed, setDecryptProfileFeed] = useState<Publication[]>(
+    []
+  );
+  const [decryptProfilePageData, setDecryptProfilePageData] = useState<any>();
   const [hasMoreDecryptProfile, setHasMoreDecryptProfile] =
     useState<boolean>(true);
   const [followerOnlyProfileDecrypt, setFollowerOnlyProfileDecrypt] = useState<
@@ -96,11 +90,6 @@ const useProfileFeed = () => {
   const [profileLoading, setProfileLoading] = useState<boolean>(false);
   const [decryptProfileLoading, setDecryptProfileLoading] =
     useState<boolean>(false);
-  const [profileCollections, setProfileCollections] = useState<Collection[]>(
-    []
-  );
-  const [profileCollectionsLoading, setProfileCollectionsLoading] =
-    useState<boolean>(false);
 
   const getProfile = async () => {
     setProfileLoading(true);
@@ -108,14 +97,14 @@ const useProfileFeed = () => {
     try {
       if (!lensProfile) {
         data = await profilePublications({
-          profileId: profileId?.profile?.id,
+          profileId: autoDispatch?.profile?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
         });
       } else {
         data = await profilePublicationsAuth(
           {
-            profileId: profileId?.profile?.id,
+            profileId: autoDispatch?.profile?.id,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
             limit: 10,
           },
@@ -216,7 +205,7 @@ const useProfileFeed = () => {
       if (lensProfile) {
         hasReactedArr = await checkPostReactions(
           {
-            profileId: profileId?.profile?.id,
+            profileId: autoDispatch?.profile?.id,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
             limit: 10,
           },
@@ -241,35 +230,33 @@ const useProfileFeed = () => {
             : false
         )
       );
-      dispatch(setProfilePaginated(data?.data?.publications?.pageInfo));
-      dispatch(setProfileFeedRedux(sortedArr));
-      dispatch(
-        setProfileFeedCount({
-          actionLike: sortedArr.map((obj: Publication) =>
-            obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats?.totalUpvotes
-              : obj.stats?.totalUpvotes
-          ),
-          actionMirror: sortedArr.map((obj: Publication) =>
-            obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats?.totalAmountOfMirrors
-              : obj.stats?.totalAmountOfMirrors
-          ),
-          actionCollect: sortedArr.map((obj: Publication) =>
-            obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats?.totalAmountOfCollects
-              : obj.stats?.totalAmountOfCollects
-          ),
-          actionComment: sortedArr.map((obj: Publication) =>
-            obj.__typename === "Mirror"
-              ? obj.mirrorOf.stats?.totalAmountOfComments
-              : obj.stats?.totalAmountOfComments
-          ),
-          actionHasLiked: hasReactedArr ?? [],
-          actionHasMirrored: hasMirroredArr ?? [],
-          actionHasCollected: hasCollectedArr ?? [],
-        })
-      );
+      setProfilePageData(data?.data?.publications?.pageInfo);
+      setProfileFeed(sortedArr);
+      setProfileFeedCount({
+        like: sortedArr.map((obj: Publication) =>
+          obj.__typename === "Mirror"
+            ? obj.mirrorOf.stats?.totalUpvotes
+            : obj.stats?.totalUpvotes
+        ),
+        mirror: sortedArr.map((obj: Publication) =>
+          obj.__typename === "Mirror"
+            ? obj.mirrorOf.stats?.totalAmountOfMirrors
+            : obj.stats?.totalAmountOfMirrors
+        ),
+        collect: sortedArr.map((obj: Publication) =>
+          obj.__typename === "Mirror"
+            ? obj.mirrorOf.stats?.totalAmountOfCollects
+            : obj.stats?.totalAmountOfCollects
+        ),
+        comment: sortedArr.map((obj: Publication) =>
+          obj.__typename === "Mirror"
+            ? obj.mirrorOf.stats?.totalAmountOfComments
+            : obj.stats?.totalAmountOfComments
+        ),
+        hasLiked: hasReactedArr ?? [],
+        hasMirrored: hasMirroredArr ?? [],
+        hasCollected: hasCollectedArr ?? [],
+      });
     } catch (err: any) {
       console.error(err.message);
     }
@@ -286,7 +273,7 @@ const useProfileFeed = () => {
 
       if (!lensProfile) {
         data = await profilePublications({
-          profileId: profileId?.profile?.id,
+          profileId: autoDispatch?.profile?.id,
           publicationTypes: ["POST", "COMMENT", "MIRROR"],
           limit: 10,
           cursor: profilePageData?.next,
@@ -294,7 +281,7 @@ const useProfileFeed = () => {
       } else {
         data = await profilePublicationsAuth(
           {
-            profileId: profileId?.profile?.id,
+            profileId: autoDispatch?.profile?.id,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
             limit: 10,
             cursor: profilePageData?.next,
@@ -389,7 +376,7 @@ const useProfileFeed = () => {
         hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
         hasReactedArr = await checkPostReactions(
           {
-            profileId: profileId?.profile?.id,
+            profileId: autoDispatch?.profile?.id,
             publicationTypes: ["POST", "COMMENT", "MIRROR"],
             limit: 10,
             cursor: profilePageData?.next,
@@ -416,56 +403,51 @@ const useProfileFeed = () => {
             : false
         ),
       ]);
-      dispatch(
-        setProfileFeedCount({
-          actionLike: [
-            ...profileFeedCount.like,
-            ...sortedArr.map((obj: Publication) =>
-              obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats.totalUpvotes
-                : obj.stats.totalUpvotes
-            ),
-          ],
-          actionMirror: [
-            ...profileFeedCount.mirror,
-            ...sortedArr.map((obj: Publication) =>
-              obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats.totalAmountOfMirrors
-                : obj.stats.totalAmountOfMirrors
-            ),
-          ],
-          actionCollect: [
-            ...profileFeedCount.collect,
-            ...sortedArr.map((obj: Publication) =>
-              obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats.totalAmountOfCollects
-                : obj.stats.totalAmountOfCollects
-            ),
-          ],
-          actionComment: [
-            ...profileFeedCount.comment,
-            ...sortedArr.map((obj: Publication) =>
-              obj.__typename === "Mirror"
-                ? obj.mirrorOf.stats.totalAmountOfComments
-                : obj.stats.totalAmountOfComments
-            ),
-          ],
-          actionHasLiked: [
-            ...profileFeedCount.hasLiked,
-            ...(hasReactedArr ?? []),
-          ],
-          actionHasMirrored: [
-            ...profileFeedCount.hasMirrored,
-            ...(hasMirroredArr ?? []),
-          ],
-          actionHasCollected: [
-            ...profileFeedCount.hasCollected,
-            ...(hasCollectedArr ?? []),
-          ],
-        })
-      );
-      dispatch(setProfilePaginated(data?.data?.publications?.pageInfo));
-      dispatch(setProfileFeedRedux([...profileDispatch, ...sortedArr]));
+      setProfileFeedCount({
+        like: [
+          ...profileFeedCount?.like,
+          ...sortedArr.map((obj: Publication) =>
+            obj.__typename === "Mirror"
+              ? obj.mirrorOf.stats.totalUpvotes
+              : obj.stats.totalUpvotes
+          ),
+        ],
+        mirror: [
+          ...profileFeedCount?.mirror,
+          ...sortedArr.map((obj: Publication) =>
+            obj.__typename === "Mirror"
+              ? obj.mirrorOf.stats.totalAmountOfMirrors
+              : obj.stats.totalAmountOfMirrors
+          ),
+        ],
+        collect: [
+          ...profileFeedCount?.collect,
+          ...sortedArr.map((obj: Publication) =>
+            obj.__typename === "Mirror"
+              ? obj.mirrorOf.stats.totalAmountOfCollects
+              : obj.stats.totalAmountOfCollects
+          ),
+        ],
+        comment: [
+          ...profileFeedCount?.comment,
+          ...sortedArr.map((obj: Publication) =>
+            obj.__typename === "Mirror"
+              ? obj.mirrorOf.stats.totalAmountOfComments
+              : obj.stats.totalAmountOfComments
+          ),
+        ],
+        hasLiked: [...profileFeedCount?.hasLiked, ...(hasReactedArr ?? [])],
+        hasMirrored: [
+          ...profileFeedCount?.hasMirrored,
+          ...(hasMirroredArr ?? []),
+        ],
+        hasCollected: [
+          ...profileFeedCount?.hasCollected,
+          ...(hasCollectedArr ?? []),
+        ],
+      });
+      setProfilePageData(data?.data?.publications?.pageInfo);
+      setProfileFeed([...profileFeed, ...sortedArr]);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -477,7 +459,7 @@ const useProfileFeed = () => {
     try {
       if (!lensProfile) {
         data = await profilePublications({
-          profileId: profileId?.profile?.id,
+          profileId: autoDispatch?.profile?.id,
           publicationTypes: ["POST"],
           metadata: {
             tags: {
@@ -489,7 +471,7 @@ const useProfileFeed = () => {
       } else {
         data = await profilePublicationsAuth(
           {
-            profileId: profileId?.profile?.id,
+            profileId: autoDispatch?.profile?.id,
             publicationTypes: ["POST"],
             metadata: {
               tags: {
@@ -585,7 +567,7 @@ const useProfileFeed = () => {
       if (lensProfile) {
         hasReactedArr = await checkPostReactions(
           {
-            profileId: profileId?.profile?.id,
+            profileId: autoDispatch?.profile?.id,
             publicationTypes: ["POST"],
             metadata: {
               tags: {
@@ -608,27 +590,23 @@ const useProfileFeed = () => {
             : false
         )
       );
-      dispatch(setDecryptProfilePaginated(data?.data?.publications?.pageInfo));
-      dispatch(setDecryptProfileFeedRedux(sortedArr));
-      dispatch(
-        setDecryptProfileFeedCount({
-          actionLike: sortedArr.map(
-            (obj: Publication) => obj.stats?.totalUpvotes
-          ),
-          actionMirror: sortedArr.map(
-            (obj: Publication) => obj.stats?.totalAmountOfMirrors
-          ),
-          actionCollect: sortedArr.map(
-            (obj: Publication) => obj.stats?.totalAmountOfCollects
-          ),
-          actionComment: sortedArr.map(
-            (obj: Publication) => obj.stats?.totalAmountOfComments
-          ),
-          actionHasLiked: hasReactedArr ?? [],
-          actionHasMirrored: hasMirroredArr ?? [],
-          actionHasCollected: hasCollectedArr ?? [],
-        })
-      );
+      setDecryptProfilePageData(data?.data?.publications?.pageInfo);
+      setDecryptProfileFeed(sortedArr);
+      setDecryptProfileFeedCount({
+        like: sortedArr.map((obj: Publication) => obj.stats?.totalUpvotes),
+        mirror: sortedArr.map(
+          (obj: Publication) => obj.stats?.totalAmountOfMirrors
+        ),
+        collect: sortedArr.map(
+          (obj: Publication) => obj.stats?.totalAmountOfCollects
+        ),
+        comment: sortedArr.map(
+          (obj: Publication) => obj.stats?.totalAmountOfComments
+        ),
+        hasLiked: hasReactedArr ?? [],
+        hasMirrored: hasMirroredArr ?? [],
+        hasCollected: hasCollectedArr ?? [],
+      });
     } catch (err: any) {
       console.error(err.message);
     }
@@ -645,7 +623,7 @@ const useProfileFeed = () => {
 
       if (!lensProfile) {
         data = await profilePublications({
-          profileId: profileId?.profile?.id,
+          profileId: autoDispatch?.profile?.id,
           publicationTypes: ["POST"],
           metadata: {
             tags: {
@@ -658,7 +636,7 @@ const useProfileFeed = () => {
       } else {
         data = await profilePublicationsAuth(
           {
-            profileId: profileId?.profile?.id,
+            profileId: autoDispatch?.profile?.id,
             publicationTypes: ["POST"],
             metadata: {
               tags: {
@@ -748,7 +726,7 @@ const useProfileFeed = () => {
         hasMirroredArr = await checkIfMirrored(sortedArr, lensProfile);
         hasReactedArr = await checkPostReactions(
           {
-            profileId: profileId?.profile?.id,
+            profileId: autoDispatch?.profile?.id,
             publicationTypes: ["POST"],
             metadata: {
               tags: {
@@ -765,44 +743,43 @@ const useProfileFeed = () => {
       const hasCollectedArr = sortedArr.map(
         (obj: Publication) => obj.hasCollectedByMe
       );
-      dispatch(
-        setDecryptProfileFeedCount({
-          actionLike: [
-            ...decryptProfileFeedCount.like,
-            ...sortedArr.map((obj: Publication) => obj.stats.totalUpvotes),
-          ],
-          actionMirror: [
-            ...decryptProfileFeedCount.mirror,
-            ...sortedArr.map(
-              (obj: Publication) => obj.stats.totalAmountOfMirrors
-            ),
-          ],
-          actionCollect: [
-            ...decryptProfileFeedCount.collect,
-            ...sortedArr.map(
-              (obj: Publication) => obj.stats.totalAmountOfCollects
-            ),
-          ],
-          actionComment: [
-            ...decryptProfileFeedCount.comment,
-            ...sortedArr.map(
-              (obj: Publication) => obj.stats.totalAmountOfComments
-            ),
-          ],
-          actionHasLiked: [
-            ...decryptProfileFeedCount.hasLiked,
-            ...(hasReactedArr ?? []),
-          ],
-          actionHasMirrored: [
-            ...decryptProfileFeedCount.hasMirrored,
-            ...(hasMirroredArr ?? []),
-          ],
-          actionHasCollected: [
-            ...decryptProfileFeedCount.hasCollected,
-            ...(hasCollectedArr ?? []),
-          ],
-        })
-      );
+      setDecryptProfileFeedCount({
+        like: [
+          ...decryptProfileFeedCount?.like,
+          ...sortedArr.map((obj: Publication) => obj.stats.totalUpvotes),
+        ],
+        mirror: [
+          ...decryptProfileFeedCount?.mirror,
+          ...sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfMirrors
+          ),
+        ],
+        collect: [
+          ...decryptProfileFeedCount?.collect,
+          ...sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfCollects
+          ),
+        ],
+        comment: [
+          ...decryptProfileFeedCount?.comment,
+          ...sortedArr.map(
+            (obj: Publication) => obj.stats.totalAmountOfComments
+          ),
+        ],
+        hasLiked: [
+          ...decryptProfileFeedCount?.hasLiked,
+          ...(hasReactedArr ?? []),
+        ],
+        hasMirrored: [
+          ...decryptProfileFeedCount?.hasMirrored,
+          ...(hasMirroredArr ?? []),
+        ],
+        hasCollected: [
+          ...decryptProfileFeedCount?.hasCollected,
+          ...(hasCollectedArr ?? []),
+        ],
+      });
+
       setFollowerOnlyProfileDecrypt([
         ...followerOnlyProfileDecrypt,
         ...sortedArr.map((obj: Publication) =>
@@ -811,10 +788,9 @@ const useProfileFeed = () => {
             : false
         ),
       ]);
-      dispatch(setDecryptProfilePaginated(data?.data?.publications?.pageInfo));
-      dispatch(
-        setDecryptProfileFeedRedux([...decryptProfileFeed, ...sortedArr])
-      );
+      setDecryptProfilePageData(data?.data?.publications?.pageInfo);
+
+      setDecryptProfileFeed([...decryptProfileFeed, ...sortedArr]);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -822,135 +798,19 @@ const useProfileFeed = () => {
 
   useEffect(() => {
     if (
-      router.asPath.includes("#chat") &&
-      router.asPath.includes("&profile=") &&
-      profileId?.profile
+      router.asPath.includes("autograph") &&
+      !router.asPath.includes("collection") &&
+      !router.asPath.includes("drop") &&
+      autoDispatch?.profile?.id
     ) {
-      if (filterDecrypt) {
-        getProfileDecrypt();
-      } else {
-        getProfile();
-      }
-    } else if (
-      router.asPath.includes("#chat") &&
-      !router.asPath.includes("&profile=")
-    ) {
-      dispatch(setProfile(undefined));
-    }
-  }, [auth, profileId.profile, router.asPath, filterDecrypt]);
-
-  useEffect(() => {
-    if (
-      postSent &&
-      !router.asPath.includes("&post=") &&
-      router.asPath.includes("&profile=")
-    ) {
-      dispatch(setPostSent(false));
       getProfile();
+      getProfileDecrypt();
     }
-  }, [postSent]);
-
-  const getSingleProfile = async () => {
-    let prof, follow;
-    try {
-      if (lensProfile) {
-        prof = await getOneProfileAuth({
-          handle:
-            router.asPath.split("&profile=")[1] === "lensprotocol"
-              ? router.asPath.split("&profile=")[1]
-              : router.asPath.split("&profile=")[1] + ".lens",
-        });
-      } else {
-        prof = await getOneProfile({
-          handle:
-            router.asPath.split("&profile=")[1] === "lensprotocol"
-              ? router.asPath.split("&profile=")[1]
-              : router.asPath.split("&profile=")[1] + ".lens",
-        });
-      }
-
-      if (lensProfile) {
-        follow = await getFollowingAuth(
-          { profileId: lensProfile },
-          prof?.data?.profile?.id
-        );
-      }
-
-      if (
-        quickProfiles
-          .map((profile) => profile.handle)
-          .includes(router?.asPath?.split("profile=")[1] + ".lens")
-      ) {
-        await getProfileCollections(prof?.data?.profile);
-      }
-
-      dispatch(
-        setProfile({
-          ...prof?.data?.profile,
-          isFollowing: follow ? follow?.data?.profile?.isFollowing : false,
-        })
-      );
-    } catch (err: any) {
-      console.error(err.message);
-    }
-  };
-
-  const setProfileScroll = (e: MouseEvent) => {
-    dispatch(setProfileScrollPosRedux((e.target as HTMLDivElement)?.scrollTop));
-  };
-
-  const setScrollPosDecryptProfile = (e: MouseEvent) => {
-    dispatch(
-      setDecryptProfileScrollPosRedux((e.target as HTMLDivElement)?.scrollTop)
-    );
-  };
-
-  const getProfileCollections = async (prof: Profile) => {
-    setProfileCollectionsLoading(true);
-    try {
-      const colls = await getCollectionsProfile(prof.ownedBy);
-
-      if (colls?.data?.collectionMinteds?.length < 1 || !colls?.data) {
-        setProfileCollectionsLoading(false);
-        return;
-      }
-
-      const collections = await Promise.all(
-        colls?.data?.collectionMinteds?.map(async (collection: Collection) => {
-          const json = await fetchIPFSJSON(
-            (collection.uri as any)
-              ?.split("ipfs://")[1]
-              ?.replace(/"/g, "")
-              ?.trim()
-          );
-          return {
-            ...collection,
-            uri: json,
-          };
-        })
-      );
-
-      setProfileCollections(collections);
-    } catch (err: any) {
-      console.error(err.message);
-    }
-    setProfileCollectionsLoading(true);
-  };
-
-  useEffect(() => {
-    if (
-      router.asPath.includes("&profile=") &&
-      router.asPath.includes("#chat") &&
-      quickProfiles?.length > 0
-    ) {
-      getSingleProfile();
-    }
-  }, [router.asPath, auth, lensProfile, quickProfiles]);
+  }, [auth, autoDispatch?.profile?.id, router.asPath]);
 
   return {
     hasMoreProfile,
     fetchMoreProfile,
-    profileRef,
     followerOnlyProfile,
     setCollectProfileLoading,
     setMirrorProfileLoading,
@@ -959,16 +819,15 @@ const useProfileFeed = () => {
     collectProfileLoading,
     reactProfileLoading,
     setReactProfileLoading,
-    setProfileScroll,
     hasMoreDecryptProfile,
-    setScrollPosDecryptProfile,
-    scrollRefDecryptProfile,
     followerOnlyProfileDecrypt,
     fetchMoreProfileDecrypt,
     decryptProfileLoading,
-    profileCollectionsLoading,
-    profileCollections,
+    profileFeed,
+    profileFeedCount,
+    decryptProfileFeed,
+    decryptProfileFeedCount,
   };
 };
 
-export default useProfileFeed;
+export default useAutoProfile;

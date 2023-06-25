@@ -1,6 +1,6 @@
 import useAutoCollection from "@/components/Autograph/Collection/hooks/useAutoCollection";
 import usePurchase from "@/components/Autograph/Collection/hooks/usePurchase";
-import Bar from "@/components/Autograph/Collection/modules/Bar";
+import Bar from "@/components/Autograph/Common/modules/Bar";
 import InDrop from "@/components/Autograph/Collection/modules/InDrop";
 import Purchase from "@/components/Common/Interactions/modules/Purchase";
 import RouterChange from "@/components/Common/Loading/RouterChange";

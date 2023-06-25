@@ -12,3 +12,13 @@ export type AllDropsProps = {
     options?: any | undefined
   ) => Promise<boolean>;
 };
+
+export type MoreDropsProps = {
+  otherDrops: Collection[];
+  autoProfile: Profile | undefined;
+  push: (
+    url: Url,
+    as?: Url | undefined,
+    options?: any | undefined
+  ) => Promise<boolean>;
+};

@@ -1,6 +1,7 @@
-import Bar from "@/components/Autograph/Collection/modules/Bar";
+import Bar from "@/components/Autograph/Common/modules/Bar";
 import useAutoDrop from "@/components/Autograph/Drop/hooks/useAutoDrop";
 import AllDrops from "@/components/Autograph/Drop/modules/AllDrops";
+import MoreDrops from "@/components/Autograph/Drop/modules/MoreDrops";
 import RouterChange from "@/components/Common/Loading/RouterChange";
 import useConnect from "@/components/Common/SideBar/hooks/useConnect";
 import useViewer from "@/components/Home/hooks/useViewer";
@@ -28,15 +29,10 @@ const Drop: NextPage = (): JSX.Element => {
     query: { autograph, drop },
     push,
   } = useRouter();
-  const {
-    handleSearch,
-    searchOpen,
-    searchResults,
-    handleSearchChoose,
-    otherDrops,
-  } = useViewer();
+  const { handleSearch, searchOpen, searchResults, handleSearchChoose } =
+    useViewer();
   const { handleConnect, handleLensSignIn, connected } = useConnect();
-  const { dropLoading, getDrop } = useAutoDrop();
+  const { dropLoading, getDrop, otherDrops } = useAutoDrop();
 
   useEffect(() => {
     if (!dropLoading && autograph && drop && allDrops.length > 0) {
@@ -183,12 +179,23 @@ const Drop: NextPage = (): JSX.Element => {
         searchResults={searchResults}
         handleSearchChoose={handleSearchChoose}
       />
-      <AllDrops
-        autoDrop={autoDispatch.drop}
-        autoCollections={autoDispatch.collection}
-        autoProfile={autoDispatch.profile}
-        push={push}
-      />
+      {autoDispatch && (
+        <div className="relative flex flex-col w-full h-fit gap-10 px-20 py-10">
+          <AllDrops
+            autoDrop={autoDispatch.drop}
+            autoCollections={autoDispatch.collection}
+            autoProfile={autoDispatch.profile}
+            push={push}
+          />
+          {otherDrops?.length > 0 && (
+            <MoreDrops
+              otherDrops={otherDrops}
+              autoProfile={autoDispatch.profile}
+              push={push}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };

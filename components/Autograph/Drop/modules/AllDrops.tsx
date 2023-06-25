@@ -13,7 +13,7 @@ const AllDrops: FunctionComponent<AllDropsProps> = ({
   push,
 }): JSX.Element => {
   return (
-    <div className="relative w-full h-full flex flex-col gap-3 py-10 px-20">
+    <div className="relative w-full h-full flex flex-col gap-3">
       <div className="relative w-fit h-fit text-white font-earl text-3xl">
         {autoDrop?.uri?.name}
       </div>
@@ -51,7 +51,9 @@ const AllDrops: FunctionComponent<AllDropsProps> = ({
                 push(
                   `/autograph/${
                     autoProfile?.handle?.split(".lens")[0]
-                  }/collection/${collection?.name}`
+                  }/collection/${collection.name
+                    ?.replaceAll(" ", "-")
+                    ?.toLowerCase()}`
                 )
               }
             >

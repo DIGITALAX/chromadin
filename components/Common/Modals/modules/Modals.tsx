@@ -18,7 +18,7 @@ import useWho from "../../Wavs/hooks/useWho";
 import useReactions from "../../Wavs/hooks/useReactions";
 import { useRouter } from "next/router";
 import FullScreenVideo from "./FullScreenVideo";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import FollowSuper from "./FollowSuper";
 import useSuperCreator from "../../Wavs/hooks/useSuperCreator";
 import Post from "./Post";
@@ -208,6 +208,24 @@ const Modals = () => {
   } = useImageUpload();
   const { fetchMoreVideos, videosLoading, setVideosLoading } = useChannels();
   const { decryptCollections } = useAllPosts();
+
+  const [distanceFromBottom, setDistanceFromBottom] = useState<number>(10);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const distance =
+        document.documentElement.scrollHeight -
+        window.pageYOffset -
+        window.innerHeight;
+      setDistanceFromBottom(distance + 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -401,7 +419,10 @@ const Modals = () => {
         <Success dispatch={dispatch} media={successModal.media} />
       )}
       {indexingModal?.value && (
-        <IndexingModal message={indexingModal?.message} />
+        <IndexingModal
+          message={indexingModal?.message}
+          distanceFromBottom={distanceFromBottom}
+        />
       )}
       {claimModal?.value && (
         <Claim

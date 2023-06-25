@@ -128,7 +128,6 @@ const Switch: FunctionComponent<SwitchProps> = ({
   scrollRefDecryptProfile,
   setScrollPosDecryptProfile,
   handleImagePaste,
-  profileCollectionsLoading
 }): JSX.Element => {
   let action: string;
 
@@ -224,7 +223,6 @@ const Switch: FunctionComponent<SwitchProps> = ({
           postImagesDispatched={postImagesDispatched}
           profileRef={profileRef}
           profileCollections={profileCollections}
-          profileCollectionsLoading={profileCollectionsLoading}
           setCollectProfileLoading={setCollectProfileLoading}
           setMirrorProfileLoading={setMirrorProfileLoading}
           setReactProfileLoading={setReactProfileLoading}

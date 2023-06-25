@@ -13,7 +13,7 @@ const initialAutoCollectionState: AutoCollectionState = {
 };
 
 export const autoCollectionSlice = createSlice({
-  name: "AutoCollection",
+  name: "autoCollection",
   initialState: initialAutoCollectionState,
   reducers: {
     setAutoCollection: (

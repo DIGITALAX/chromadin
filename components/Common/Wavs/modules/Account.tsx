@@ -11,7 +11,6 @@ const Account: FunctionComponent<AccountProps> = ({
   profile,
   profileCollections,
   dispatch,
-  profileCollectionsLoading,
   router,
 }): JSX.Element => {
   return (
@@ -238,7 +237,7 @@ const Account: FunctionComponent<AccountProps> = ({
           </div>
         </div>
       </div>
-      {profileCollections?.length > 0 && (
+      {profileCollections && profileCollections?.length > 0 && (
         <div className="relative w-full h-fit grid grid-flow-col auto-cols-auto overflow-x-scroll">
           <div className="relative w-fit h-full overflow-x-scroll grid grid-flow-col auto-cols-auto gap-2">
             {profileCollections?.map((coll: Collection, index: number) => {
@@ -248,6 +247,7 @@ const Account: FunctionComponent<AccountProps> = ({
                   className="relative rounded-md cursor-pointer active:scale-95 h-28 w-28 flex-shrink-0"
                   id="crt"
                   onClick={() =>
+                    router &&
                     router.push(
                       `/autograph/${
                         coll?.profile?.handle?.split(".lens")[0]
