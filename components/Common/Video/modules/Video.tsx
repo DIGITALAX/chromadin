@@ -46,7 +46,9 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
   return (
     <div
       className={`${
-        viewer === "sampler"
+        viewer === "autograph"
+          ? "h-20 z-0 relative w-full bg-offBlack"
+          : viewer === "sampler"
           ? "absolute top-0 z-2 w-0 h-0"
           : viewer === "collect" || viewer === "chat"
           ? "h-28 bg-chroma bg-cover z-0 relative w-full"
@@ -57,6 +59,8 @@ const Video: FunctionComponent<VideoProps> = ({ viewer }): JSX.Element => {
         className={`relative w-full h-full flex gap-2 items-center justify-center ${
           viewer === "collect" || viewer === "chat"
             ? "flex-row bg-black/50 p-2"
+            : viewer === "autograph"
+            ? "flex-row bg-offBlack p-2"
             : "flex-col"
         }`}
       >

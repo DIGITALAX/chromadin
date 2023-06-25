@@ -4,6 +4,7 @@ import { INFURA_GATEWAY } from "@/lib/constants";
 import { BarProps } from "../types/collection.types";
 import Auth from "@/components/Common/SideBar/modules/Auth";
 import SearchVending from "@/components/Common/Buttons/SearchVending";
+import Video from "@/components/Common/Video/modules/Video";
 
 const Bar: FunctionComponent<BarProps> = ({
   push,
@@ -29,7 +30,9 @@ const Bar: FunctionComponent<BarProps> = ({
           <span className="static">DIN</span>
         </div>
       </div>
-      <div className="relative w-full"></div>
+      <div className="relative w-full">
+        <Video viewer={"autograph"} />
+      </div>
       <div className="relative w-full h-full flex justify-end items-center flex-row ml-auto">
         <SearchVending
           handleSearch={handleSearch}

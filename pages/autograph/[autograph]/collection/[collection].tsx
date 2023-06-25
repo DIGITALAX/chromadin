@@ -67,7 +67,7 @@ const Collection: NextPage = (): JSX.Element => {
 
   return (
     <div
-      className="relative w-full flex flex-col bg-black items-center justify-center h-full pb-8 gap-6"
+      className="relative w-full flex flex-col bg-black items-center justify-start h-full gap-6"
       id="calc"
     >
       <Head>
@@ -203,7 +203,7 @@ const Collection: NextPage = (): JSX.Element => {
         searchResults={searchResults}
         handleSearchChoose={handleSearchChoose}
       />
-      <div className="relative w-full h-full flex flex-row bg-black items-center justify-center gap-8 pl-20 top-10">
+      <div className="relative w-full h-full flex flex-row bg-black items-center justify-center gap-8 pl-20 pt-10">
         <div className="relative w-5/6 h-128 flex flex-col items-center justify-center gap-3">
           <div className="relative flex flex-col w-full h-full bg-offBlack/50 p-2">
             <div className="relative w-full h-full flex">
@@ -254,7 +254,7 @@ const Collection: NextPage = (): JSX.Element => {
             </div>
           </div>
         </div>
-        <div className="relative w-full h-full flex flex-col items-center justify-center px-10">
+        <div className="relative w-full h-full flex flex-col items-center justify-center px-10 pb-8">
           <div className="relative flex flex-col gap-3 text-right items-end justify-end w-full h-fit">
             <div className="relative flex flex-col gap-0.5 items-end w-fit h-fit text-right">
               <div className="relative w-fit h-fit text-white font-earl text-4xl">

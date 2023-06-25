@@ -40,9 +40,9 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
         </div>
       )}
       <div
-        className={`relative w-full h-fit flex flex-col gap-3 pt-4  px-3 ${
+        className={`relative w-full h-fit flex flex-col gap-3 pt-4  ${
           (mainNFT as MainNFT)?.media
-            ? "justify-center items-center"
+            ? "justify-center items-center px-3"
             : "items-end justify-end"
         }`}
       >
@@ -177,10 +177,9 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
             >
               {purchaseLoading ? (
                 <AiOutlineLoading size={10} color="white" />
-              ) : (mainNFT as Collection)?.soldTokens &&
-                (mainNFT as Collection)?.soldTokens?.length! -
+              ) : (mainNFT as Collection)?.tokenIds?.length! -
                   (mainNFT as Collection)?.soldTokens?.length! ===
-                  0 ? (
+                0 ? (
                 "SOLD OUT"
               ) : !approved ? (
                 "APPROVE"

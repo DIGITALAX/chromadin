@@ -78,28 +78,37 @@ const useAutoCollection = () => {
       );
 
       const allColls = await getCollectionsProfile(prof?.ownedBy);
-      const otherDrops = await Promise.all(
-        allColls?.data?.collectionMinteds
-          ?.filter(async (collection: Collection) => {
-            if (
-              coll[0]?.drop?.collectionIds?.includes(collection?.collectionId)
-            ) {
-              return collection;
-            }
-          })
-          ?.map(async (collection: Collection) => {
-            const json = await fetchIPFSJSON(
-              (collection.uri as any)
-                ?.split("ipfs://")[1]
-                ?.replace(/"/g, "")
-                ?.trim()
-            );
+      const filteredCollsPromises = allColls?.data?.collectionMinteds?.map(
+        async (collection: Collection) => {
+          if (
+            coll[0]?.drop?.collectionIds?.includes(collection?.collectionId)
+          ) {
+            return collection;
+          }
+          return null;
+        }
+      );
 
-            return {
-              ...collection,
-              uri: json,
-            };
-          })
+      const filteredColls = (await Promise.all(filteredCollsPromises)).filter(
+        Boolean
+      );
+
+      console.log({ filteredColls });
+
+      const otherDrops = await Promise.all(
+        filteredColls?.map(async (collection: Collection) => {
+          const json = await fetchIPFSJSON(
+            (collection.uri as any)
+              ?.split("ipfs://")[1]
+              ?.replace(/"/g, "")
+              ?.trim()
+          );
+
+          return {
+            ...collection,
+            uri: json,
+          };
+        })
       );
 
       setOtherCollectionsDrop(otherDrops);
@@ -114,6 +123,8 @@ const useAutoCollection = () => {
     }
     setCollectionLoading(false);
   };
+
+  console.log({ otherCollectionsDrop });
 
   const getProfile = async (
     autograph: string

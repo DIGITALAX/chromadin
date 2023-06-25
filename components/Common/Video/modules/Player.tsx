@@ -21,7 +21,7 @@ const Player: FunctionComponent<PlayerProps> = ({
   hasMore,
   fetchMoreVideos,
   setVideosLoading,
-  videosLoading
+  videosLoading,
 }): JSX.Element => {
   return (
     <div
@@ -30,7 +30,7 @@ const Player: FunctionComponent<PlayerProps> = ({
           ? "w-full h-full"
           : viewer === "sampler"
           ? "w-0 h-0"
-          : viewer === "collect" || viewer === "chat"
+          : viewer === "collect" || viewer === "chat" || viewer === "autograph"
           ? "w-24 h-1/2"
           : "w-full h-[10rem] galaxy:h-[15rem] preG:h-[20rem] sm:h-[26rem] mid:h-[33rem]"
       }`}
