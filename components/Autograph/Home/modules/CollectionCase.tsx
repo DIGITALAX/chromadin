@@ -14,8 +14,8 @@ const CollectionCase: FunctionComponent<CollectionCaseProps> = ({
   return (
     <div
       className={`relative flex rounded-md ${
-        width === 1 ? "w-40" : width === 2 ? "w-72" : "w-full"
-      } ${width === 1 ? "h-40" : width === 2 ? "h-80" : "h-[40rem]"}`}
+        width === 1 ? "w-40" : width === 2 ? "w-60 stuck1:w-72" : "w-full"
+      } ${width === 1 ? "h-40" : width === 2 ? "h-72 stuck1:h-80" : "h-[40rem]"}`}
       id="staticLoad"
     >
       {collection?.uri?.image && (

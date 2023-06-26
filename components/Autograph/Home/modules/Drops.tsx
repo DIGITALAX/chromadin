@@ -11,10 +11,10 @@ const Drops: FunctionComponent<DropsProps> = ({
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col items-start justify-start gap-2">
-      <div className="relative w-fit h-fit items-start justify-start font-earl text-white break-words whitespace-nowrap text-2xl">
+      <div className="relative w-fit h-fit items-start justify-start font-earl text-white break-words text-2xl">
         {`All Drops by ${autoProfile?.name?.toLowerCase()}`}
       </div>
-      <div className="relative w-2/3 h-fit overflow-x-scroll flex items-start justify-start">
+      <div className="relative w-full md:w-2/3 h-fit overflow-x-scroll flex items-start justify-start">
         <div className="flex flex-row gap-2 w-fit h-fit">
           {allDrops?.map((drop: Drop, index: number) => {
             return (

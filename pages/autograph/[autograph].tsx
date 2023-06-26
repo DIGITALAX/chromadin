@@ -346,10 +346,10 @@ const Autograph: NextPage = (): JSX.Element => {
       ) : (
         autoDispatch.profile &&
         profileFeed && (
-          <div className="relative flex flex-col w-full h-fit gap-3 justify-start px-20 py-10">
+          <div className="relative flex flex-col w-full h-fit gap-3 justify-start px-6 preG:px-8 sm:px-20 py-10">
             <Account dispatch={dispatch} profile={autoDispatch.profile} />
-            <div className="relative flex flex-row gap-3 items-start justify-center w-full h-full">
-              <div className="relative w-full h-fit flex flex-col items-start justify-start gap-4">
+            <div className="relative flex flex-col stuck1:flex-row gap-10 stuck1:gap-3 items-start justify-center w-full h-full">
+              <div className="relative w-full h-fit flex flex-col items-start justify-start gap-4 order-2 stuck1:order-1">
                 <div className="relative w-full h-full flex flex-col items-start justify-center gap-3">
                   {profileLoading || decryptProfileLoading ? (
                     <div className="relative w-full h-full flex flex-col gap-4 overflow-y-scroll">
@@ -455,7 +455,7 @@ const Autograph: NextPage = (): JSX.Element => {
                   )}
                 </div>
               </div>
-              <div className="relative w-full h-fit flex flex-col gap-2 px-4">
+              <div className="relative w-full h-fit flex flex-col gap-2 px-4 order-1 stuck1:order-2">
                 <Collections
                   autoCollections={autoDispatch.collections}
                   router={router}
@@ -464,10 +464,10 @@ const Autograph: NextPage = (): JSX.Element => {
                 />
               </div>
             </div>
-            <div className="relative w-full h-fit flex flex-col gap-5 pt-10">
+            <div className="relative w-full h-fit flex flex-col gap-10 md:gap-5 pt-10">
               {decryptProfileFeed?.length > 0 && (
                 <div className="relative w-full h-fit flex flex-col items-start justify-start gap-2">
-                  <div className="relative w-fit h-fit items-start justify-start font-earl text-white break-words whitespace-nowrap text-2xl">
+                  <div className="relative w-fit h-fit items-start justify-start font-earl text-white break-words text-2xl">
                     Encrypted Posts
                   </div>
                   <Encrypted

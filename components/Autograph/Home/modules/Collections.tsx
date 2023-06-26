@@ -48,7 +48,7 @@ const Collections: FunctionComponent<CollectionsProps> = ({
         </div>
       </div>
       <div className="relative w-full h-[50rem] overflow-y-scroll justify-end items-start flex">
-        <div className="relative w-fit h-fit gap-12 flex inline-flex flex-wrap overflow-y-scroll justify-end">
+        <div className="relative w-fit h-fit gap-6 stuck1:gap-12 flex inline-flex flex-wrap overflow-y-scroll justify-end">
           {autoCollections
             ?.filter((collection) => {
               if (collection?.drop?.name !== autoCollections[0]?.drop?.name) {
