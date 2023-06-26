@@ -132,7 +132,6 @@ export type CollectionCaseProps = {
   collection: Collection | undefined;
   router: NextRouter;
   autoProfile: Profile | undefined;
-  width: number;
   handleShareCollection: (collection: Collection) => Promise<void>;
 };
 

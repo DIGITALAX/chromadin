@@ -1,7 +1,9 @@
 import { FunctionComponent } from "react";
 import { CollectionsProps } from "../types/autograph.types";
 import { Collection } from "@/components/Home/types/home.types";
-import CollectionCase from "./CollectionCase";
+import CollectionCaseLarge from "./CollectionCaseLarge";
+import CollectionCaseMedium from "./CollectionCaseMedium";
+import CollectionCaseSmall from "./CollectionCaseSmall";
 
 const Collections: FunctionComponent<CollectionsProps> = ({
   autoCollections,
@@ -13,16 +15,15 @@ const Collections: FunctionComponent<CollectionsProps> = ({
     <div className="relative w-full h-fit flex flex-col gap-14">
       <div className="relative flex flex-col w-full h-fit gap-3">
         <div className="relative w-full h-full flex flex-col">
-          <CollectionCase
+          <CollectionCaseLarge
             router={router}
             collection={autoCollections?.[0]}
             autoProfile={autoProfile}
-            width={0}
             handleShareCollection={handleShareCollection}
           />
         </div>
-        <div className="relative w-full h-fit overflow-x-scroll flex justify-end">
-          <div className="relative w-fit h-fit gap-2 flex flex-row overflow-x-scroll">
+        <div className="relative w-full h-fit overflow-x-scroll flex items-start">
+        <div className="flex flex-row gap-2 w-fit h-fit ml-auto">
             {autoCollections
               ?.filter((collection, index) => {
                 if (
@@ -34,12 +35,11 @@ const Collections: FunctionComponent<CollectionsProps> = ({
               })
               ?.map((collection: Collection, index: number) => {
                 return (
-                  <CollectionCase
+                  <CollectionCaseSmall
                     router={router}
                     key={index}
                     collection={collection}
                     autoProfile={autoProfile}
-                    width={1}
                     handleShareCollection={handleShareCollection}
                   />
                 );
@@ -57,12 +57,11 @@ const Collections: FunctionComponent<CollectionsProps> = ({
             })
             ?.map((collection: Collection, index: number) => {
               return (
-                <CollectionCase
+                <CollectionCaseMedium
                   router={router}
                   key={index}
                   collection={collection}
                   autoProfile={autoProfile}
-                  width={2}
                   handleShareCollection={handleShareCollection}
                 />
               );

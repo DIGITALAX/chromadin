@@ -67,18 +67,35 @@ const AllDrops: FunctionComponent<AllDropsProps> = ({
                   className="rounded-md"
                   draggable={false}
                 />
-              </div>
-              <div className="flex flex-row relative w-full h-fit gap-1.5 justify-start font-earl">
-                <div className="relative w-fit h-fit text-ama items-center justify-start flex cursor-pointer active:scale-95">
-                  {collection?.uri?.name?.length > 15
-                    ? collection?.uri?.name?.slice(0, 12) + "..."
-                    : collection?.uri?.name}
+                <div className="absolute w-full h-fit flex flex-col gap-2 justify-end ml-auto items-end right-0 top-4">
+                  <div
+                    className={`relative flex w-fit p-1 rounded-l-md h-fit text-ama font-mana items-end justify-end whitespace-nowrap text-xs bg-black right-0 border border-ama`}
+                  >
+                    {Number(collection?.tokenIds?.length) -
+                      (collection?.soldTokens?.length
+                        ? collection?.soldTokens?.length
+                        : 0) ===
+                    0
+                      ? "SOLD OUT"
+                      : `${
+                          Number(collection?.tokenIds?.length) -
+                          (collection?.soldTokens?.length
+                            ? collection?.soldTokens?.length
+                            : 0)
+                        } /
+                  ${Number(collection?.tokenIds?.length)}`}
+                  </div>
                 </div>
-                <div className="relative w-fit h-fit text-ama justify-end flex ml-auto">
-                  {Number(collection?.tokenIds?.length) -
-                    (collection?.soldTokens?.length
-                      ? collection?.soldTokens?.length
-                      : 0)}
+                <div
+                  className={`absolute bottom-0 right-0 flex flex-col w-full h-fit text-center items-end justify-end ml-auto`}
+                >
+                  <div
+                    className={`relative w-fit h-fit text-white font-mana words-break flex text-xs p-1 bg-black border border-ama rounded-tl-md rounded-br-md`}
+                  >
+                    {collection?.uri?.name?.length! > 12
+                      ? collection?.uri?.name?.slice(0, 12) + "..."
+                      : collection?.uri?.name}
+                  </div>
                 </div>
               </div>
             </div>

@@ -50,6 +50,12 @@
   src: url("/fonts/EconomicaBold.ttf");
 }
 
+@font-face {
+  font-family: "Manaspace";
+  font-weight: 400;
+  src: url("/fonts/Manaspc.ttf");
+}
+
 html {
   background-color: black;
 }

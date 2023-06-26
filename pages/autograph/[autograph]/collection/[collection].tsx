@@ -192,6 +192,13 @@ const Collection: NextPage = (): JSX.Element => {
           crossOrigin="anonymous"
           type="font/ttf"
         />
+        <link
+          rel="preload"
+          href="https://chromadin.xyz/fonts/Manaspc.ttf"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/ttf"
+        />
       </Head>
       <Bar
         push={push}
@@ -247,15 +254,25 @@ const Collection: NextPage = (): JSX.Element => {
                 />
               </div>
               <div
-                className="relative w-4 h-4 text-ama items-center flex cursor-pointer active:scale-95"
+                className={`relative text-ama items-center flex cursor-pointer justify-center top-1 rounded-l-md p-1 hover:opacity-70 active:scale-95 flex-row gap-1`}
                 onClick={() => handleShareCollection()}
               >
-                <Image
-                  layout="fill"
-                  alt="post to lens"
-                  src={`${INFURA_GATEWAY}/ipfs/QmRbgQM3Unc2wYYJStNHP4Y2JvVk3HrP5rnrmCNE1u9cWu`}
-                  draggable={false}
-                />
+                <div className="relative w-6 h-4 flex items-center justify-center">
+                  <Image
+                    layout="fill"
+                    alt="post to lens"
+                    src={`${INFURA_GATEWAY}/ipfs/QmTosnBk8UmFjJQJrTtZwfDHTegNyDmToPSg7N2ewGmg3Z`}
+                    draggable={false}
+                  />
+                </div>
+                <div className="relative w-4 h-4 flex items-center justify-center">
+                  <Image
+                    layout="fill"
+                    alt="post to lens"
+                    src={`${INFURA_GATEWAY}/ipfs/QmRr4axapEyQwjoGofb3BUwUT2yN115rnr2HYLLq2Awz2P`}
+                    draggable={false}
+                  />
+                </div>
               </div>
             </div>
           </div>

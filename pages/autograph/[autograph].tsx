@@ -321,6 +321,13 @@ const Autograph: NextPage = (): JSX.Element => {
           crossOrigin="anonymous"
           type="font/ttf"
         />
+        <link
+          rel="preload"
+          href="https://chromadin.xyz/fonts/Manaspc.ttf"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/ttf"
+        />
       </Head>
       <Bar
         push={push}

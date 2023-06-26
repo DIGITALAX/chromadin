@@ -20,7 +20,7 @@ const MoreDrops: FunctionComponent<MoreDropsProps> = ({
             return (
               <div
                 key={index}
-                className="relative w-fit h-fit flex flex-col gap-1.5 cursor-pointer hover:opacity-70"
+                className="relative w-fit h-fit flex flex-col gap-1.5 cursor-pointer hover:opacity-70 border border-ama rounded-md"
                 onClick={() =>
                   push(
                     `/autograph/${
@@ -31,7 +31,10 @@ const MoreDrops: FunctionComponent<MoreDropsProps> = ({
                   )
                 }
               >
-                <div className="w-24 h-24 relative flex rounded-md" id="staticLoad">
+                <div
+                  className="w-24 h-24 relative flex rounded-md"
+                  id="staticLoad"
+                >
                   {collection?.uri?.image && (
                     <Image
                       draggable={false}
@@ -43,11 +46,36 @@ const MoreDrops: FunctionComponent<MoreDropsProps> = ({
                       className="rounded-md"
                     />
                   )}
-                </div>
-                <div className="relative w-fit h-fit justify-start items-start text-ama font-earl text-sm">
-                  {collection?.name?.length > 13
-                    ? collection?.name?.slice(0, 10) + "..."
-                    : collection?.name}
+                  <div className="absolute w-full h-fit flex flex-col gap-2 justify-end ml-auto items-end right-0 top-4">
+                    <div
+                      className={`relative flex w-fit p-1 rounded-l-md h-fit text-ama font-mana items-end justify-end whitespace-nowrap text-xxs bg-black right-0 border border-ama`}
+                    >
+                      {Number(collection?.tokenIds?.length) -
+                        (collection?.soldTokens?.length
+                          ? collection?.soldTokens?.length
+                          : 0) ===
+                      0
+                        ? "SOLD OUT"
+                        : `${
+                            Number(collection?.tokenIds?.length) -
+                            (collection?.soldTokens?.length
+                              ? collection?.soldTokens?.length
+                              : 0)
+                          } /
+                  ${Number(collection?.tokenIds?.length)}`}
+                    </div>
+                  </div>
+                  <div
+                    className={`absolute bottom-0 right-0 flex flex-col w-full h-fit text-center items-end justify-end ml-auto`}
+                  >
+                    <div
+                      className={`relative w-fit h-fit text-white font-mana words-break flex text-xxs p-1 bg-black border border-ama rounded-tl-md rounded-br-md`}
+                    >
+                      {collection?.uri?.name?.length! > 8
+                        ? collection?.uri?.name?.slice(0, 6) + "..."
+                        : collection?.uri?.name}
+                    </div>
+                  </div>
                 </div>
               </div>
             );

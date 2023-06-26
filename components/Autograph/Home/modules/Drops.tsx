@@ -31,7 +31,10 @@ const Drops: FunctionComponent<DropsProps> = ({
                   )
                 }
               >
-                <div className="w-52 h-52 relative flex rounded-md" id="staticLoad">
+                <div
+                  className="w-52 h-52 relative flex rounded-md border border-ama"
+                  id="staticLoad"
+                >
                   {drop?.uri?.image && (
                     <Image
                       draggable={false}
@@ -43,11 +46,17 @@ const Drops: FunctionComponent<DropsProps> = ({
                       className="rounded-md"
                     />
                   )}
-                </div>
-                <div className="relative w-fit h-fit justify-start items-start text-ama font-earl text-sm">
-                  {drop?.uri?.name?.length > 20
-                    ? drop?.uri?.name?.slice(0, 17) + "..."
-                    : drop?.uri?.name}
+                  <div
+                    className={`absolute bottom-0 right-0 flex flex-col w-full h-fit text-center items-end justify-end ml-auto`}
+                  >
+                    <div
+                      className={`relative w-fit h-fit text-white font-mana words-break flex text-xs p-1 bg-black border border-ama rounded-tl-md rounded-br-md`}
+                    >
+                      {drop?.uri?.name?.length > 12
+                        ? drop?.uri?.name?.slice(0, 10) + "..."
+                        : drop?.uri?.name}
+                    </div>
+                  </div>
                 </div>
               </div>
             );

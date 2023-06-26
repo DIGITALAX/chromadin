@@ -75,9 +75,16 @@ export default function Document() {
           crossOrigin="anonymous"
           type="font/ttf"
         />
-         <link
+        <link
           rel="preload"
           href="/fonts/EconomicaRegular.ttf"
+          as="font"
+          crossOrigin="anonymous"
+          type="font/ttf"
+        />
+        <link
+          rel="preload"
+          href="/fonts/Manaspc.ttf"
           as="font"
           crossOrigin="anonymous"
           type="font/ttf"
@@ -133,6 +140,11 @@ export default function Document() {
                 src: url("./fonts/EconomicaRegular.ttf");
               }
               
+              @font-face {
+                font-family: "Manaspace";
+                font-weight: 400;
+                src: url("./fonts/Manaspc.ttf");
+              }
               
             `,
           }}

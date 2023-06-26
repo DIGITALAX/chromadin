@@ -16,6 +16,7 @@ module.exports = {
         clash: "Clash Display",
         economicaB: "Economica B",
         economica: "Economica R",
+        mana: "Manaspace",
       },
       colors: {
         verde: "#25EC68",
