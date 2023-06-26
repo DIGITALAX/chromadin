@@ -19,7 +19,9 @@ const SearchVending: FunctionComponent<SearchVendingProps> = ({
       }`}
     >
       <input
-        className="relative w-full h-8 preG:h-full p-1 bg-black  rounded-tr-lg rounded-bl-lg"
+        className={`relative w-full p-1 bg-black  rounded-tr-lg rounded-bl-lg ${
+          mainPage ? "h-full" : "h-8 preG:h-full"
+        }`}
         placeholder={"search"}
         onChange={(e) => handleSearch(e)}
         type="text"

@@ -26,9 +26,9 @@ const QuickProfiles: FunctionComponent<QuickProfilesProps> = ({
                       ? router.asPath +
                           `&profile=${profile?.handle?.split(".lens")[0]}`
                       : router.asPath +
-                        `?option=history&profile=${
-                          profile?.handle?.split(".lens")[0]
-                        }`
+                          `?option=history&profile=${
+                            profile?.handle?.split(".lens")[0]
+                          }`
                   )
                 }
               >

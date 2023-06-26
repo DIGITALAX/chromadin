@@ -180,7 +180,7 @@ const Drop: NextPage = (): JSX.Element => {
         handleSearchChoose={handleSearchChoose}
       />
       {autoDispatch && (
-        <div className="relative flex flex-col w-full h-fit gap-10 px-20 py-10">
+        <div className="relative flex flex-col w-full h-fit gap-10 px-8 sm:px-20 py-10">
           <AllDrops
             autoDrop={autoDispatch.drop}
             autoCollections={autoDispatch.collection}

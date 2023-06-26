@@ -43,7 +43,7 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
         className={`relative w-full h-fit flex flex-col gap-3 pt-4  ${
           (mainNFT as MainNFT)?.media
             ? "justify-center items-center px-3"
-            : "items-end justify-end"
+            : "justify-center items-center lg:items-end lg:justify-end"
         }`}
       >
         <div className="relative w-fit h-fit flex flex-row items-center justify-center gap-2">
@@ -94,7 +94,7 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
           className={`relative w-1/2 h-fit font-digi text-white text-sm flex whitespace-nowrap ${
             (mainNFT as MainNFT)?.media
               ? "justify-center items-center"
-              : "items-end justify-end"
+              : "justify-center items-center lg:items-end lg:justify-end"
           }`}
         >
           Total: {totalAmount} {currency}
@@ -104,7 +104,7 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
         className={`relative w-full h-fit font-earl flex text-sm pt-4 ${
           (mainNFT as MainNFT)?.media
             ? "justify-center items-center"
-            : "items-end justify-end"
+            : "justify-center items-center lg:items-end lg:justify-end"
         }`}
       >
         {(mainNFT as MainNFT)?.media ? (

@@ -14,7 +14,7 @@ const Profile: FunctionComponent<ProfileProps> = ({
     <div
       className={`relative h-12 font-geom text-white flex flex-row px-2 cursor-pointer items-center justify-center ${
         mainPage
-          ? "bg-none gap-2 w-full sm:w-40"
+          ? "bg-none gap-2 w-40"
           : "bg-lensLight/70 border-white border rounded-tl-lg rounded-br-lg gap-4 w-full sm:w-40 lg:w-full"
       }`}
       onClick={() => {

@@ -71,7 +71,9 @@ const Collection: NextPage = (): JSX.Element => {
       id="calc"
     >
       <Head>
-        <title>Chromadin | {autoDispatch.collection?.name?.toUpperCase()}</title>
+        <title>
+          Chromadin | {autoDispatch.collection?.name?.toUpperCase()}
+        </title>
         <meta
           name="og:url"
           content={`https://chromadin.xyz/autograph/${
@@ -204,7 +206,7 @@ const Collection: NextPage = (): JSX.Element => {
         handleSearchChoose={handleSearchChoose}
       />
       {autoDispatch.collection && autoDispatch.profile && (
-        <div className="relative w-full h-full flex flex-row bg-black items-center justify-center gap-8 pl-20 pt-10">
+        <div className="relative w-full h-full flex flex-col lg:flex-row bg-black items-center justify-center gap-12 lg:gap-8 lg:pl-20 pt-10">
           <div className="relative w-5/6 h-128 flex flex-col items-center justify-center gap-3">
             <div className="relative flex flex-col w-full h-full bg-offBlack/50 p-2">
               <div className="relative w-full h-full flex">
@@ -257,9 +259,9 @@ const Collection: NextPage = (): JSX.Element => {
               </div>
             </div>
           </div>
-          <div className="relative w-full h-full flex flex-col items-center justify-center px-10 pb-8">
-            <div className="relative flex flex-col gap-3 text-right items-end justify-end w-full h-fit">
-              <div className="relative flex flex-col gap-0.5 items-end w-fit h-fit text-right">
+          <div className="relative w-full h-full flex flex-col items-center justify-center px-6 sm:px-10 pb-8">
+            <div className="relative flex flex-col gap-3 text-center lg:text-right items-center lg:items-end lg:justify-end w-full h-fit">
+              <div className="relative flex flex-col gap-0.5 items-center lg:items-end w-fit h-fit text-center lg:text-right">
                 <div className="relative w-fit h-fit text-white font-earl text-4xl">
                   {autoDispatch.collection?.name}
                 </div>
@@ -315,7 +317,7 @@ const Collection: NextPage = (): JSX.Element => {
               </div>
             </div>
             {autoDispatch.collection && (
-              <div className="relative w-full h-fit py-10 flex justify-end items-end">
+              <div className="relative w-full h-fit py-10 flex justify-center items-center lg:justify-end lg:items-end">
                 <Purchase
                   acceptedtokens={autoDispatch.collection?.acceptedTokens}
                   approved={approved}

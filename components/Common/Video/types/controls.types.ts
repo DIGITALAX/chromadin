@@ -41,6 +41,7 @@ export type ControlsProps = {
   >;
   videosLoading: boolean;
   setVideosLoading: (e: boolean) => void;
+  viewer: string;
 };
 
 export type UseControlsResults = {

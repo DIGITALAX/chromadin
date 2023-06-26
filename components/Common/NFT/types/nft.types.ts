@@ -1,5 +1,6 @@
 import { UploadedMedia } from "@/components/Home/types/home.types";
 import { Erc20, Profile } from "@/components/Home/types/lens.types";
+import { NextRouter } from "next/router";
 import {
   ClipboardEvent,
   FormEvent,
@@ -83,15 +84,14 @@ export type UserCommentProps = {
   handleKeyDownDelete: (e: KeyboardEvent<Element>) => void;
   commentId: string | undefined;
   canComment: boolean;
-  handleImagePaste: (
-    e: ClipboardEvent<HTMLTextAreaElement>
-  ) => void;
+  handleImagePaste: (e: ClipboardEvent<HTMLTextAreaElement>) => void;
 };
 
 export type MainDropProps = {
   mainNFT: MainNFT | undefined;
   collectionsLoading: boolean;
   dispatch: Dispatch<AnyAction>;
+  router: NextRouter;
 };
 
 export interface MainNFT {

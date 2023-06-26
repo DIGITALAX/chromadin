@@ -70,6 +70,7 @@ module.exports = {
         alto: "1950px",
         stuck1: "1120px",
         stuck2: "1440px",
+        stuck3: "1507px",
       },
     },
   },

@@ -41,7 +41,7 @@ const AllDrops: FunctionComponent<AllDropsProps> = ({
           </div>
         </Link>
       )}
-      <div className="relative grid grid-cols-6 gap-5">
+      <div className="relative inline-flex flex-wrap gap-5">
         {autoCollections?.map((collection: Collection, index: number) => {
           return (
             <div

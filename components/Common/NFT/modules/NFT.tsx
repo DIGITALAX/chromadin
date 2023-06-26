@@ -10,8 +10,11 @@ import useComment from "../hooks/useComment";
 import useImageUpload from "../hooks/useImageUpload";
 import useCollectOptions from "../hooks/useCollectOptions";
 import useDrop from "@/components/Home/hooks/useDrop";
+import { useRouter } from "next/router";
 
 const NFT: FunctionComponent<NFTProps> = ({ mainNFT, viewer }): JSX.Element => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const { handleConnect, handleLensSignIn } = useConnect();
   const { collectionsLoading } = useDrop();
   const {
@@ -97,13 +100,13 @@ const NFT: FunctionComponent<NFTProps> = ({ mainNFT, viewer }): JSX.Element => {
   const postImagesDispatched = useSelector(
     (state: RootState) => state.app.postImageReducer.value
   );
-  const dispatch = useDispatch();
   return (
     <div className="relative w-full h-full sm:h-80 xl:h-72 flex flex-col sm:flex-row">
       <MainDrop
         mainNFT={mainNFT}
         collectionsLoading={collectionsLoading}
         dispatch={dispatch}
+        router={router}
       />
       {viewer !== "collect" ? (
         <UserComment

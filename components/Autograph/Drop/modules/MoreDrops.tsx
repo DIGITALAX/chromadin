@@ -11,10 +11,10 @@ const MoreDrops: FunctionComponent<MoreDropsProps> = ({
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col items-start justify-start">
-      <div className="relative w-fit h-fit items-start justify-start font-earl text-white break-words whitespace-nowrap text-lg">
+      <div className="relative w-fit h-fit items-start justify-start font-earl text-white break-words text-lg">
         {`Other Collections by ${autoProfile?.name?.toLowerCase()}`}
       </div>
-      <div className="relative w-2/3 h-fit overflow-x-scroll flex items-start justify-start">
+      <div className="relative w-full sm:w-2/3 h-fit overflow-x-scroll flex items-start justify-start">
         <div className="flex flex-row gap-2 w-fit h-fit">
           {otherDrops?.map((collection: Collection, index: number) => {
             return (

@@ -1,7 +1,5 @@
 import NotFound from "@/components/Common/Loading/NotFound";
-import { INFURA_GATEWAY } from "@/lib/constants";
 import Head from "next/head";
-import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
 

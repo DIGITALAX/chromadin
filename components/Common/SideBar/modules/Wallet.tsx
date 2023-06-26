@@ -15,7 +15,7 @@ const Wallet: FunctionComponent<WalletProps> = ({
         isConnected && !mainPage && "bg-lensLight/70"
       } ${
         mainPage
-          ? "gap-1 w-full sm:w-40"
+          ? "gap-1 w-40"
           : "border-white border rounded-tl-lg rounded-br-lg w-full sm:w-40 lg:w-full"
       }`}
       onClick={() => handleTransaction()}

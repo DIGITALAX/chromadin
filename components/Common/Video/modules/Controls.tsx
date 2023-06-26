@@ -40,11 +40,22 @@ const Controls: FunctionComponent<ControlsProps> = ({
   fetchMoreVideos,
   videosLoading,
   setVideosLoading,
+  viewer,
 }): JSX.Element => {
   const currentIndex = lodash.findIndex(dispatchVideos, { id: mainVideo.id });
   return (
-    <div className="relative h-fit flex flex-col md:flex-row w-full gap-3 items-center galaxy:px-2 justify-center">
-      <div className="relative w-fit md:w-56 h-full flex justify-center items-center gap-3">
+    <div
+      className={`relative h-fit flex w-full gap-3 items-center galaxy:px-2 justify-center ${
+        viewer === "autograph"
+          ? "flex-col stuck3:flex-row"
+          : "flex-col md:flex-row"
+      }`}
+    >
+      <div
+        className={`relative w-fit h-full flex justify-center items-center gap-3 ${
+          viewer === "autograph" ? "stuck3:w-56" : "md:w-56"
+        }`}
+      >
         <div className="relative flex flex-row w-full h-full items-center">
           <div
             className="relative w-4 h-4 cursor-pointer flex"
@@ -78,7 +89,11 @@ const Controls: FunctionComponent<ControlsProps> = ({
           />
         </div>
       </div>
-      <div className="relative w-full flex flex-row gap-3 items-center justify-center md:justify-end">
+      <div
+        className={`relative w-full flex flex-row gap-3 items-center justify-center ${
+          viewer === "autograph" ? "stuck3:justify-end" : "md:justify-end"
+        }`}
+      >
         <div className="relative flex flex-row w-fit h-fit gap-2 items-center justify-center">
           <div
             className={`cursor-pointer relative ${
