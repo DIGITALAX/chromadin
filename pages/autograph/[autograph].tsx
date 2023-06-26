@@ -355,8 +355,8 @@ const Autograph: NextPage = (): JSX.Element => {
         profileFeed && (
           <div className="relative flex flex-col w-full h-fit gap-3 justify-start px-6 preG:px-8 sm:px-20 py-10">
             <Account dispatch={dispatch} profile={autoDispatch.profile} />
-            <div className="relative flex flex-col stuck1:flex-row gap-10 stuck1:gap-3 items-start justify-center w-full h-full">
-              <div className="relative w-full h-fit flex flex-col items-start justify-start gap-4 order-2 stuck1:order-1">
+            <div className="relative flex flex-col tablet:flex-row gap-10 tablet:gap-3 items-start justify-center w-full h-full">
+              <div className="relative w-full h-fit flex flex-col items-start justify-start gap-4 order-2 tablet:order-1">
                 <div className="relative w-full h-full flex flex-col items-start justify-center gap-3">
                   {profileLoading || decryptProfileLoading ? (
                     <div className="relative w-full h-full flex flex-col gap-4 overflow-y-scroll">
@@ -462,7 +462,7 @@ const Autograph: NextPage = (): JSX.Element => {
                   )}
                 </div>
               </div>
-              <div className="relative w-full h-fit flex flex-col gap-2 px-4 order-1 stuck1:order-2">
+              <div className="relative w-full h-fit flex flex-col gap-2 px-4 order-1 tablet:order-2">
                 <Collections
                   autoCollections={autoDispatch.collections}
                   router={router}

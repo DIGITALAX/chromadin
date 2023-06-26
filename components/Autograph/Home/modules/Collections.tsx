@@ -22,33 +22,35 @@ const Collections: FunctionComponent<CollectionsProps> = ({
             handleShareCollection={handleShareCollection}
           />
         </div>
-        <div className="relative w-full h-fit overflow-x-scroll flex items-start">
-        <div className="flex flex-row gap-2 w-fit h-fit ml-auto">
-            {autoCollections
-              ?.filter((collection, index) => {
-                if (
-                  collection?.drop?.name === autoCollections[0]?.drop?.name &&
-                  index !== 0
-                ) {
-                  return true;
-                }
-              })
-              ?.map((collection: Collection, index: number) => {
-                return (
-                  <CollectionCaseSmall
-                    router={router}
-                    key={index}
-                    collection={collection}
-                    autoProfile={autoProfile}
-                    handleShareCollection={handleShareCollection}
-                  />
-                );
-              })}
+        <div className="relative w-full h-fit justify-end items-end flex ml-auto">
+          <div className="relative w-full tablet:w-132 h-fit overflow-x-scroll inline-flex">
+            <div className="flex flex-row gap-2 w-fit h-fit min-w-fit justify-end ml-auto">
+              {autoCollections
+                ?.filter((collection, index) => {
+                  if (
+                    collection?.drop?.name === autoCollections[0]?.drop?.name &&
+                    index !== 0
+                  ) {
+                    return true;
+                  }
+                })
+                ?.map((collection: Collection, index: number) => {
+                  return (
+                    <CollectionCaseSmall
+                      router={router}
+                      key={index}
+                      collection={collection}
+                      autoProfile={autoProfile}
+                      handleShareCollection={handleShareCollection}
+                    />
+                  );
+                })}
+            </div>
           </div>
         </div>
       </div>
       <div className="relative w-full h-[50rem] overflow-y-scroll justify-end items-start flex">
-        <div className="relative w-fit h-fit gap-6 stuck1:gap-12 flex inline-flex flex-wrap overflow-y-scroll justify-end">
+        <div className="relative w-fit h-fit gap-6 tablet:gap-12 flex inline-flex flex-wrap overflow-y-scroll justify-end">
           {autoCollections
             ?.filter((collection) => {
               if (collection?.drop?.name !== autoCollections[0]?.drop?.name) {
