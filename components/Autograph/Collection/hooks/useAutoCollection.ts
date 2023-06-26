@@ -152,6 +152,7 @@ const useAutoCollection = () => {
   };
 
   const handleShareCollection = async () => {
+
     dispatch(setImageLoadingRedux(true));
     try {
       dispatch(setMakePost(true));

@@ -10,6 +10,11 @@ const Collections: FunctionComponent<CollectionsProps> = ({
   router,
   autoProfile,
   handleShareCollection,
+  imageLoading,
+  address,
+  profileId,
+  handleConnect,
+  handleLensSignIn,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col gap-14">
@@ -20,6 +25,11 @@ const Collections: FunctionComponent<CollectionsProps> = ({
             collection={autoCollections?.[0]}
             autoProfile={autoProfile}
             handleShareCollection={handleShareCollection}
+            imageLoading={imageLoading}
+            address={address}
+            profileId={profileId}
+            handleConnect={handleConnect}
+            handleLensSignIn={handleLensSignIn}
           />
         </div>
         <div className="relative w-full h-fit justify-end items-end flex ml-auto">
@@ -42,6 +52,11 @@ const Collections: FunctionComponent<CollectionsProps> = ({
                       collection={collection}
                       autoProfile={autoProfile}
                       handleShareCollection={handleShareCollection}
+                      imageLoading={imageLoading}
+                      address={address}
+                      profileId={profileId}
+                      handleConnect={handleConnect}
+                      handleLensSignIn={handleLensSignIn}
                     />
                   );
                 })}
@@ -65,6 +80,11 @@ const Collections: FunctionComponent<CollectionsProps> = ({
                   collection={collection}
                   autoProfile={autoProfile}
                   handleShareCollection={handleShareCollection}
+                  imageLoading={imageLoading}
+                  address={address}
+                  profileId={profileId}
+                  handleConnect={handleConnect}
+                  handleLensSignIn={handleLensSignIn}
                 />
               );
             })}

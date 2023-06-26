@@ -126,6 +126,11 @@ export type CollectionsProps = {
   router: NextRouter;
   autoProfile: Profile | undefined;
   handleShareCollection: (collection: Collection) => Promise<void>;
+  imageLoading: boolean;
+  address: `0x${string}` | undefined;
+  profileId: string;
+  handleConnect: () => void;
+  handleLensSignIn: () => Promise<void>;
 };
 
 export type CollectionCaseProps = {
@@ -133,6 +138,11 @@ export type CollectionCaseProps = {
   router: NextRouter;
   autoProfile: Profile | undefined;
   handleShareCollection: (collection: Collection) => Promise<void>;
+  imageLoading: boolean;
+  address: `0x${string}` | undefined;
+  profileId: string;
+  handleConnect: () => void;
+  handleLensSignIn: () => Promise<void>;
 };
 
 export type DropsProps = {

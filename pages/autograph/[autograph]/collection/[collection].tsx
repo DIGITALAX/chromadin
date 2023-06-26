@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAccount } from "wagmi";
 
 const Collection: NextPage = (): JSX.Element => {
   const allDrops = useSelector(
@@ -24,6 +25,12 @@ const Collection: NextPage = (): JSX.Element => {
   );
   const autoDispatch = useSelector(
     (state: RootState) => state.app.autoCollectionReducer
+  );
+  const imageLoading = useSelector(
+    (state: RootState) => state.app.imageLoadingReducer.value
+  );
+  const profileId = useSelector(
+    (state: RootState) => state.app.lensProfileReducer.profile?.id
   );
   const profile = useSelector(
     (state: RootState) => state.app.lensProfileReducer.profile
@@ -46,6 +53,7 @@ const Collection: NextPage = (): JSX.Element => {
     currency,
     setCurrency,
   } = usePurchase();
+  const { address } = useAccount();
   const { handleSearch, searchOpen, searchResults, handleSearchChoose } =
     useViewer();
   const { handleConnect, handleLensSignIn, connected } = useConnect();
@@ -255,7 +263,15 @@ const Collection: NextPage = (): JSX.Element => {
               </div>
               <div
                 className={`relative text-ama items-center flex cursor-pointer justify-center top-1 rounded-l-md p-1 hover:opacity-70 active:scale-95 flex-row gap-1`}
-                onClick={() => handleShareCollection()}
+                onClick={
+                  !address && !profileId
+                    ? () => handleConnect()
+                    : address && !profileId
+                    ? () => handleLensSignIn()
+                    : imageLoading
+                    ? () => {}
+                    : () => handleShareCollection()
+                }
               >
                 <div className="relative w-6 h-4 flex items-center justify-center">
                   <Image

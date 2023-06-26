@@ -9,6 +9,11 @@ const CollectionCaseLarge: FunctionComponent<CollectionCaseProps> = ({
   collection,
   autoProfile,
   handleShareCollection,
+  imageLoading,
+  address,
+  profileId,
+  handleConnect,
+  handleLensSignIn
 }): JSX.Element => {
   return (
     <div
@@ -102,7 +107,15 @@ const CollectionCaseLarge: FunctionComponent<CollectionCaseProps> = ({
             </div>
             <div
               className={`relative text-ama items-start preG:items-center flex cursor-pointer hover:opacity-70 active:scale-95 flex-row gap-1`}
-              onClick={() => handleShareCollection(collection!)}
+              onClick={
+                !address && !profileId
+                  ? () => handleConnect()
+                  : address && !profileId
+                  ? () => handleLensSignIn()
+                  : imageLoading
+                  ? () => {}
+                  : () => handleShareCollection(collection!)
+              }
             >
               <div className="relative w-6 h-4 flex items-center justify-center preG:items-center preG:justify-center">
                 <Image

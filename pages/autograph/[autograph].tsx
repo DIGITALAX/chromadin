@@ -468,6 +468,11 @@ const Autograph: NextPage = (): JSX.Element => {
                   router={router}
                   handleShareCollection={handleShareCollection}
                   autoProfile={autoDispatch.profile}
+                  imageLoading={imageLoading}
+                  address={address}
+                  profileId={profileId}
+                  handleConnect={handleConnect}
+                  handleLensSignIn={handleLensSignIn}
                 />
               </div>
             </div>
