@@ -208,13 +208,20 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
               return (
                 <div
                   key={index}
-                  className={`relative w-40 h-40 preG:w-60 preG:h-60 border-2 border-black rounded-lg bg-black grid grid-flow-col auto-cols-auto col-start-${
+                  className={`${
+                    !(image as MediaSet)?.original?.mimeType.includes("audio")
+                      ? "h-40 preG:h-60 border-2 border-black rounded-lg bg-black"
+                      : "h-10"
+                  } w-40  preG:w-60 relative grid grid-flow-col auto-cols-auto col-start-${
                     index + 1
                   } ${
                     ((publication as any)?.decrypted
                       ? !(image as any).type?.includes("video")
                       : !(image as MediaSet)?.original?.mimeType?.includes(
                           "video"
+                        ) &&
+                        !(image as MediaSet)?.original?.mimeType.includes(
+                          "audio"
                         )) && "cursor-pointer hover:opacity-70 active:scale-95"
                   } `}
                   onClick={() =>
@@ -222,6 +229,9 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                       ? !(image as any).type?.includes("video")
                       : !(image as MediaSet)?.original?.mimeType?.includes(
                           "video"
+                        ) &&
+                        !(image as MediaSet)?.original?.mimeType.includes(
+                          "audio"
                         )) &&
                     dispatch(
                       setImageFeedViewer({
@@ -240,6 +250,9 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                         ? !(image as any).type?.includes("video")
                         : !(image as MediaSet)?.original?.mimeType.includes(
                             "video"
+                          ) &&
+                          !(image as MediaSet)?.original?.mimeType.includes(
+                            "audio"
                           )
                     ) ? (
                       <Image
@@ -275,6 +288,16 @@ const FeedPublication: FunctionComponent<FeedPublicationProps> = ({
                         className="rounded-md"
                         draggable={false}
                       />
+                    ) : (image as MediaSet)?.original?.mimeType.includes(
+                        "audio"
+                      ) ? (
+                      <audio
+                        muted
+                        controls
+                        className="rounded-md absolute w-full h-full object-cover"
+                      >
+                        <source src={formattedImageURL} />
+                      </audio>
                     ) : formattedImageURL.includes("index") ? (
                       <div className="rounded-md absolute w-full h-full object-cover">
                         <ReactPlayer
