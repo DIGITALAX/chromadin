@@ -101,14 +101,14 @@ const useAutoProfile = () => {
       if (!lensProfile) {
         data = await profilePublications({
           profileId: autoDispatch?.profile?.id,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          publicationTypes: ["POST", "MIRROR"],
           limit: 10,
         });
       } else {
         data = await profilePublicationsAuth(
           {
             profileId: autoDispatch?.profile?.id,
-            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            publicationTypes: ["POST", "MIRROR"],
             limit: 10,
           },
           lensProfile
@@ -153,7 +153,7 @@ const useAutoProfile = () => {
         hasReactedArr = await checkPostReactions(
           {
             profileId: autoDispatch?.profile?.id,
-            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            publicationTypes: ["POST", "MIRROR"],
             limit: 10,
           },
           lensProfile
@@ -221,7 +221,7 @@ const useAutoProfile = () => {
       if (!lensProfile) {
         data = await profilePublications({
           profileId: autoDispatch?.profile?.id,
-          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          publicationTypes: ["POST", "MIRROR"],
           limit: 10,
           cursor: profilePageData?.next,
         });
@@ -229,7 +229,7 @@ const useAutoProfile = () => {
         data = await profilePublicationsAuth(
           {
             profileId: autoDispatch?.profile?.id,
-            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            publicationTypes: ["POST", "MIRROR"],
             limit: 10,
             cursor: profilePageData?.next,
           },
@@ -268,7 +268,7 @@ const useAutoProfile = () => {
         hasReactedArr = await checkPostReactions(
           {
             profileId: autoDispatch?.profile?.id,
-            publicationTypes: ["POST", "COMMENT", "MIRROR"],
+            publicationTypes: ["POST", "MIRROR"],
             limit: 10,
             cursor: profilePageData?.next,
           },
