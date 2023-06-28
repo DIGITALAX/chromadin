@@ -250,7 +250,7 @@ const Account: FunctionComponent<AccountProps> = ({
                     router &&
                     router.push(
                       `/autograph/${
-                        coll?.profile?.handle?.split(".lens")[0]
+                        profile?.handle?.split(".lens")[0]
                       }/collection/${coll?.name
                         ?.replace(/\s/g, "-")
                         .toLowerCase()}`
