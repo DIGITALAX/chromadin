@@ -51,4 +51,5 @@ export const LENS_CREATORS: string[] = [
   "0x01cd29",
   "0x0161a4",
   "0x01cd46",
+  "0x01cd7c",
 ];
