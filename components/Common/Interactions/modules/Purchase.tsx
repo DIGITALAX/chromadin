@@ -17,6 +17,7 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
   buyNFT,
   purchaseLoading,
   router,
+  push,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit flex flex-col">
@@ -30,13 +31,22 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
             className="relative w-60 h-60 lg:w-2/3 lg:h-52 rounded-br-lg rounded-tl-lg border border-white"
             id="staticLoad"
             onClick={() =>
-              router.push(
-                `/autograph/${
-                  (mainNFT as MainNFT)?.creator?.name?.split(".lens")[0]
-                }/collection/${(mainNFT as MainNFT)?.name
-                  ?.replaceAll(" ", "-")
-                  .toLowerCase()}`
-              )
+              router
+                ? router.push(
+                    `/autograph/${
+                      (mainNFT as MainNFT)?.creator?.name?.split(".lens")[0]
+                    }/collection/${(mainNFT as MainNFT)?.name
+                      ?.replaceAll(" ", "-")
+                      .toLowerCase()}`
+                  )
+                : push &&
+                  push(
+                    `/autograph/${
+                      (mainNFT as MainNFT)?.creator?.name?.split(".lens")[0]
+                    }/collection/${(mainNFT as MainNFT)?.name
+                      ?.replaceAll(" ", "-")
+                      .toLowerCase()}`
+                  )
             }
           >
             <Image

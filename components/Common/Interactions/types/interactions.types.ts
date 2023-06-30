@@ -3,6 +3,7 @@ import { AnyAction, Dispatch } from "redux";
 import { MainNFT } from "../../NFT/types/nft.types";
 import { Collection } from "@/components/Home/types/home.types";
 import { NextRouter } from "next/router";
+import { Url } from "next/dist/shared/lib/router/router";
 
 export type InteractionProps = {
   viewer: string;
@@ -102,7 +103,12 @@ export type PurchaseProps = {
   approveSpend: () => Promise<void>;
   buyNFT: () => void;
   purchaseLoading: boolean;
-  router: NextRouter;
+  router?: NextRouter;
+  push?: (
+    url: Url,
+    as?: Url | undefined,
+    options?: any | undefined
+  ) => Promise<boolean>;
 };
 
 export interface History {

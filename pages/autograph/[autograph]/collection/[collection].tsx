@@ -361,6 +361,7 @@ const Collection: NextPage = (): JSX.Element => {
                   approveSpend={approveSpend}
                   buyNFT={buyNFT}
                   purchaseLoading={purchaseLoading}
+                  push={push}
                 />
               </div>
             )}
