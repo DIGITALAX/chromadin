@@ -89,7 +89,8 @@ const useConnect = (): UseConnectResults => {
       if (accessTokens) {
         setAuthenticationToken({ token: accessTokens.data.authenticate });
         setAddress(address as string);
-        const profile = await getDefaultProfile(address);
+        const profile = await getDefaultProfile(address?.toLowerCase());
+
         if (profile?.data?.defaultProfile) {
           dispatch(
             setNoHandle({
@@ -134,7 +135,7 @@ const useConnect = (): UseConnectResults => {
     const handleAuthentication = async () => {
       setConnected(isConnected);
       const newAddress = getAddress();
-  
+
       if (
         (newAddress && newAddress?.replace(/^"|"$/g, "") === address) ||
         (!newAddress && address)
@@ -159,13 +160,13 @@ const useConnect = (): UseConnectResults => {
         removeAuthenticationToken();
       }
     };
-  
+
     handleAuthentication(); // Call the inner async function
   }, [isConnected]);
 
   useEffect(() => {
     if (data && router) {
-      dispatch(setIsCreator(data));
+      dispatch(setIsCreator(data as boolean));
     }
   }, [data]);
 

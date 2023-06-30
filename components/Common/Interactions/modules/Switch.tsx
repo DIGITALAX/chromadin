@@ -6,9 +6,11 @@ import { RootState } from "@/redux/store";
 import Fulfillment from "./Fulfillment";
 import useFulfillment from "../hooks/useFulfillment";
 import useHistory from "../hooks/useHistory";
+import { useRouter } from "next/router";
 
 const Switch: FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const action = useSelector(
     (state: RootState) => state.app.optionsReducer.value
   );
@@ -94,6 +96,7 @@ const Switch: FunctionComponent = (): JSX.Element => {
           purchaseLoading={purchaseLoading}
           collections={collections}
           dispatch={dispatch}
+          router={router}
         />
       );
 

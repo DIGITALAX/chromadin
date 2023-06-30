@@ -69,6 +69,7 @@ export type FulfillmentProps = {
   purchaseLoading: boolean;
   collections: Collection[];
   dispatch: Dispatch<AnyAction>;
+  router: NextRouter;
 };
 
 export type CollectorsProps = {
