@@ -32,7 +32,7 @@ const Fulfillment: FunctionComponent<FulfillmentProps> = ({
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full xl:h-[45.8rem] flex items-start justify-center bg-black border-t border-white">
-      <div className="absolute w-full h-full justify-stretch flex cursor-pointer">
+      <div className="absolute w-full h-full justify-stretch flex">
         <Image
           src={`${INFURA_GATEWAY}/ipfs/QmUFwK9nUrUnAoVm3fhbw2XqtUAdzz2js8ju7LjdGXVQe5`}
           layout="fill"

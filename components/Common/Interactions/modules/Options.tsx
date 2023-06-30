@@ -16,48 +16,48 @@ const Options: FunctionComponent = (): JSX.Element => {
           <div
             className="relative w-full h-full grid grid-flow-row auto-rows-auto flex items-center"
             key={index}
-            onClick={() =>
-              router.asPath.includes("&profile=")
-                ? router.asPath.includes("?option=")
-                  ? router.push(
-                      router.asPath.split("?option=")[0] +
-                        "?option=" +
-                        value[1] +
-                        "&profile=" +
-                        router.asPath.split("&profile=")[1]
-                    )
-                  : router.push(
-                      router.asPath.split("&profile=")[0] +
-                        "?option=" +
-                        value[1] +
-                        "&profile=" +
-                        router.asPath.split("&profile=")[1]
-                    )
-                : router.asPath.includes("&post=")
-                ? router.asPath.includes("?option=")
-                  ? router.push(
-                      router.asPath.split("?option=")[0] +
-                        "?option=" +
-                        value[1] +
-                        "&post=" +
-                        router.asPath.split("&post=")[1]
-                    )
-                  : router.push(
-                      router.asPath.split("&post=")[0] +
-                        "?option=" +
-                        value[1] +
-                        "&profile=" +
-                        router.asPath.split("&post=")[1]
-                    )
-                : router.asPath.includes("?option=")
-                ? router.push(
-                    router.asPath.split("?option=")[0] + "?option=" + value[1]
-                  )
-                : router.push(router.asPath + "?option=" + value[1])
-            }
           >
             <div
               className={`relative w-12 h-12 grid grid-flow-col auto-cols-auto row-start-1 justify-self-center items-center flex cursor-pointer active:scale-95`}
+              onClick={() =>
+                router.asPath.includes("&profile=")
+                  ? router.asPath.includes("?option=")
+                    ? router.push(
+                        router.asPath.split("?option=")[0] +
+                          "?option=" +
+                          value[1] +
+                          "&profile=" +
+                          router.asPath.split("&profile=")[1]
+                      )
+                    : router.push(
+                        router.asPath.split("&profile=")[0] +
+                          "?option=" +
+                          value[1] +
+                          "&profile=" +
+                          router.asPath.split("&profile=")[1]
+                      )
+                  : router.asPath.includes("&post=")
+                  ? router.asPath.includes("?option=")
+                    ? router.push(
+                        router.asPath.split("?option=")[0] +
+                          "?option=" +
+                          value[1] +
+                          "&post=" +
+                          router.asPath.split("&post=")[1]
+                      )
+                    : router.push(
+                        router.asPath.split("&post=")[0] +
+                          "?option=" +
+                          value[1] +
+                          "&profile=" +
+                          router.asPath.split("&post=")[1]
+                      )
+                  : router.asPath.includes("?option=")
+                  ? router.push(
+                      router.asPath.split("?option=")[0] + "?option=" + value[1]
+                    )
+                  : router.push(router.asPath + "?option=" + value[1])
+              }
             >
               <Image
                 src={`${INFURA_GATEWAY}/ipfs/QmPoXfm1VgBsE4eE3UZw6uGoFAVwShnz6zaEuXkHdryoc9`}

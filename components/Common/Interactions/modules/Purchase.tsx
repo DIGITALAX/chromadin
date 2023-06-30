@@ -28,7 +28,7 @@ const Purchase: FunctionComponent<PurchaseProps> = ({
           }
         >
           <div
-            className="relative w-60 h-60 lg:w-2/3 lg:h-52 rounded-br-lg rounded-tl-lg border border-white"
+            className="relative w-60 h-60 lg:w-2/3 lg:h-52 rounded-br-lg rounded-tl-lg border border-white cursor-pointer"
             id="staticLoad"
             onClick={() =>
               router
