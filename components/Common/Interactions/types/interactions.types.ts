@@ -102,6 +102,7 @@ export type PurchaseProps = {
   approveSpend: () => Promise<void>;
   buyNFT: () => void;
   purchaseLoading: boolean;
+  router: NextRouter;
 };
 
 export interface History {

@@ -28,20 +28,11 @@ const Fulfillment: FunctionComponent<FulfillmentProps> = ({
   purchaseLoading,
   collections,
   dispatch,
-  router
+  router,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-full xl:h-[45.8rem] flex items-start justify-center bg-black border-t border-white">
-      <div
-        className="absolute w-full h-full justify-stretch flex cursor-pointer"
-        onClick={() =>
-          router.push(
-            `/autograph/${
-              mainNFT?.creator?.name?.split(".lens")[0]
-            }/collection/${mainNFT?.name?.replaceAll(" ", "-").toLowerCase()}`
-          )
-        }
-      >
+      <div className="absolute w-full h-full justify-stretch flex cursor-pointer">
         <Image
           src={`${INFURA_GATEWAY}/ipfs/QmUFwK9nUrUnAoVm3fhbw2XqtUAdzz2js8ju7LjdGXVQe5`}
           layout="fill"
@@ -86,6 +77,7 @@ const Fulfillment: FunctionComponent<FulfillmentProps> = ({
             approveSpend={approveSpend}
             buyNFT={buyNFT}
             purchaseLoading={purchaseLoading}
+            router={router}
           />
         </div>
       )}
