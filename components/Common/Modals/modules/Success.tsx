@@ -5,7 +5,10 @@ import { FunctionComponent } from "react";
 import { ImCross } from "react-icons/im";
 import { SuccessProps } from "../types/modals.types";
 
-const Success: FunctionComponent<SuccessProps> = ({ media, dispatch}): JSX.Element => {
+const Success: FunctionComponent<SuccessProps> = ({
+  media,
+  dispatch,
+}): JSX.Element => {
   return (
     <div className="inset-0 justify-center fixed z-20 bg-opacity-50 backdrop-blur-sm overflow-y-hidden grid grid-flow-col auto-cols-auto w-full h-auto">
       <div className="relative w-full lg:w-[30vw] h-fit col-start-1 place-self-center bg-offBlack rounded-lg">
