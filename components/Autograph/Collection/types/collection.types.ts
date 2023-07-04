@@ -32,4 +32,5 @@ export type BarProps = {
   handleSearchChoose: (
     chosen: QuickProfilesInterface | Drop | Collection
   ) => Promise<void>;
+  isLargeScreen: boolean;
 };

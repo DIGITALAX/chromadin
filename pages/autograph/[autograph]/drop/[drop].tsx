@@ -1,3 +1,4 @@
+import useBar from "@/components/Autograph/Common/hooks/useBar";
 import Bar from "@/components/Autograph/Common/modules/Bar";
 import useAutoDrop from "@/components/Autograph/Drop/hooks/useAutoDrop";
 import AllDrops from "@/components/Autograph/Drop/modules/AllDrops";
@@ -32,6 +33,7 @@ const Drop: NextPage = (): JSX.Element => {
   const { handleSearch, searchOpen, searchResults, handleSearchChoose } =
     useViewer();
   const { handleConnect, handleLensSignIn, connected } = useConnect();
+  const { isLargeScreen } = useBar();
   const { dropLoading, getDrop, otherDrops } = useAutoDrop();
 
   useEffect(() => {
@@ -166,7 +168,7 @@ const Drop: NextPage = (): JSX.Element => {
           crossOrigin="anonymous"
           type="font/ttf"
         />
-         <link
+        <link
           rel="preload"
           href="https://chromadin.xyz/fonts/Manaspc.ttf"
           as="font"
@@ -185,6 +187,7 @@ const Drop: NextPage = (): JSX.Element => {
         searchOpen={searchOpen}
         searchResults={searchResults}
         handleSearchChoose={handleSearchChoose}
+        isLargeScreen={isLargeScreen}
       />
       {autoDispatch && (
         <div className="relative flex flex-col w-full h-fit gap-10 px-8 sm:px-20 py-10">

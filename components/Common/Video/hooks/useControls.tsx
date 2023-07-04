@@ -37,6 +37,7 @@ import { setReactId } from "@/redux/reducers/reactIdSlice";
 import pollUntilIndexed from "@/graphql/lens/queries/checkIndexed";
 import { setVideoSync } from "@/redux/reducers/videoSyncSlice";
 import { setSeek } from "@/redux/reducers/seekSecondSlice";
+import { useRouter } from "next/router";
 
 const useControls = (): UseControlsResults => {
   const { commentors } = useInteractions();
@@ -44,8 +45,7 @@ const useControls = (): UseControlsResults => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const fullVideoRef = useRef<ReactPlayer>(null);
   const progressRef = useRef<HTMLDivElement>(null);
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [duration, setDuration] = useState<number>(0);
+
   const [volume, setVolume] = useState<number>(1);
   const [volumeOpen, setVolumeOpen] = useState<boolean>(false);
   const [likeLoading, setLikeLoading] = useState<boolean>(false);
@@ -65,6 +65,7 @@ const useControls = (): UseControlsResults => {
     Array.from({ length: commentors?.length }, () => false)
   );
   const dispatch = useDispatch();
+  const router = useRouter();
   const { address } = useAccount();
   const { signTypedDataAsync } = useSignTypedData();
   const dispatcher = useSelector(

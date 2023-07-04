@@ -17,6 +17,7 @@ const Bar: FunctionComponent<BarProps> = ({
   searchOpen,
   searchResults,
   handleSearchChoose,
+  isLargeScreen,
 }): JSX.Element => {
   return (
     <div className="relative w-full h-fit md:h-24 flex flex-col justify-start items-center bg-offBlack p-3 gap-3">
@@ -31,9 +32,11 @@ const Bar: FunctionComponent<BarProps> = ({
             <span className="static">DIN</span>
           </div>
         </div>
-        <div className="relative w-full hidden preG:flex">
-          <Video viewer={"autograph"} />
-        </div>
+        {isLargeScreen && (
+          <div className="relative w-full flex">
+            <Video viewer={"autograph"} />
+          </div>
+        )}
         <div className="relative w-full h-full hidden md:flex justify-end items-center flex-row ml-auto">
           <SearchVending
             handleSearch={handleSearch}
@@ -70,9 +73,11 @@ const Bar: FunctionComponent<BarProps> = ({
           </div>
         </div>
       </div>
-      <div className="relative w-full flex preG:hidden">
-        <Video viewer={"autograph"} />
-      </div>
+      {!isLargeScreen && (
+        <div className="relative w-full flex">
+          <Video viewer={"autograph"} />
+        </div>
+      )}
       <div className="relative w-full h-full flex md:hidden justify-end items-center flex-row ml-auto">
         <SearchVending
           handleSearch={handleSearch}

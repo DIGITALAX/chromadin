@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
+import useBar from "@/components/Autograph/Common/hooks/useBar";
 
 const Collection: NextPage = (): JSX.Element => {
   const allDrops = useSelector(
@@ -44,6 +45,7 @@ const Collection: NextPage = (): JSX.Element => {
     otherCollectionsDrop,
     handleShareCollection,
   } = useAutoCollection();
+  const { isLargeScreen } = useBar();
   const {
     purchaseLoading,
     buyNFT,
@@ -219,6 +221,7 @@ const Collection: NextPage = (): JSX.Element => {
         searchOpen={searchOpen}
         searchResults={searchResults}
         handleSearchChoose={handleSearchChoose}
+        isLargeScreen={isLargeScreen}
       />
       {autoDispatch.collection && autoDispatch.profile && (
         <div className="relative w-full h-full flex flex-col lg:flex-row bg-black items-center justify-center gap-12 lg:gap-8 lg:pl-20 pt-10">

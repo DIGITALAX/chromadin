@@ -1,3 +1,4 @@
+import useBar from "@/components/Autograph/Common/hooks/useBar";
 import Bar from "@/components/Autograph/Common/modules/Bar";
 import useAutoProfile from "@/components/Autograph/Home/hooks/useAutoProfile";
 import useAutograph from "@/components/Autograph/Home/hooks/useAutograph";
@@ -77,9 +78,8 @@ const Autograph: NextPage = (): JSX.Element => {
     getAllCollections,
     handleShareCollection,
   } = useAutograph();
-
+  const {isLargeScreen} = useBar();
   const { reactPost, collectPost, mirrorPost } = useReactions();
-
   const {
     commentPost,
     commentDescription,
@@ -100,7 +100,6 @@ const Autograph: NextPage = (): JSX.Element => {
     preElement,
     handleImagePaste,
   } = useComment();
-
   const {
     collectNotif,
     referral,
@@ -136,7 +135,6 @@ const Autograph: NextPage = (): JSX.Element => {
     value,
     setValue,
   } = useCollectOptions();
-
   const {
     videoLoading,
     uploadVideo,
@@ -144,7 +142,6 @@ const Autograph: NextPage = (): JSX.Element => {
     mappedFeaturedFiles,
     uploadImage,
   } = useImageUpload();
-
   const {
     hasMoreProfile,
     fetchMoreProfile,
@@ -340,6 +337,7 @@ const Autograph: NextPage = (): JSX.Element => {
         searchOpen={searchOpen}
         searchResults={searchResults}
         handleSearchChoose={handleSearchChoose}
+        isLargeScreen={isLargeScreen}
       />
       {quickProfiles &&
       allDrops &&
