@@ -29,6 +29,7 @@ const MakePost: FunctionComponent<MakePostProps> = ({
           src={`${INFURA_GATEWAY}/ipfs/QmSRHvHoTZHuEpzaV8apWqubM92QG94a7q6spVgrNkQZbA`}
           className="w-full h-full flex"
           layout="fill"
+          draggable={false}
         />
       </div>
     </div>

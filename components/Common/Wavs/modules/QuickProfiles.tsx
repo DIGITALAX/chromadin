@@ -37,6 +37,7 @@ const QuickProfiles: FunctionComponent<QuickProfilesProps> = ({
                     layout="fill"
                     className="rounded-full w-full h-full"
                     objectFit="cover"
+                    draggable={false}
                     objectPosition={"center"}
                     src={
                       profile?.image?.includes(

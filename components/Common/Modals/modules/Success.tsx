@@ -44,6 +44,7 @@ const Success: FunctionComponent<SuccessProps> = ({
                     layout="fill"
                     objectFit="cover"
                     className="rounded-lg"
+                    draggable={false}
                   />
                 </div>
               </div>

@@ -99,6 +99,7 @@ const Graphs: FunctionComponent<GraphsProps> = ({
                                 <Image
                                   className="rounded-full w-full h-full flex"
                                   layout="fill"
+                                  draggable={false}
                                   src={
                                     item?.label?.pfp?.includes("imagekit")
                                       ? item?.label?.pfp

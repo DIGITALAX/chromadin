@@ -47,6 +47,7 @@ const Profile: FunctionComponent<ProfileSideBarProps> = ({
           layout="fill"
           objectFit="cover"
           className="absolute w-full h-full rounded-lg"
+          draggable={false}
         />
         <div className="relative w-full h-fit grid grid-flow-col auto-cols-auto">
           <div

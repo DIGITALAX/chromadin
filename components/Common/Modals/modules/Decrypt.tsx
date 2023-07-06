@@ -58,6 +58,7 @@ const Decrypt: FunctionComponent<DecryptProps> = ({
                           layout="fill"
                           objectFit="cover"
                           className="rounded-lg"
+                          draggable={false}
                         />
                       </Link>
                     );
