@@ -306,12 +306,12 @@ const Post: FunctionComponent<PostProps> = ({
                         ></textarea>
                         <pre
                           id="highlighting3"
-                          className={`absolute w-full h-full bg-black font-economicaB text-white p-2 rounded-lg overflow-y-auto`}
+                          className={`absolute w-full h-full bg-black font-economicaB text-white p-2 rounded-lg overflow-y-auto whitespace-pre-wrap break-words`}
                           ref={preElement}
                         >
                           <code
                             id="highlighted-content3"
-                            className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-auto z-0`}
+                            className={`w-full h-full place-self-center text-left whitespace-pre-wrap break-words overflow-y-auto z-0`}
                           >
                             Have Something to Say?
                           </code>

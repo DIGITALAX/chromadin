@@ -278,14 +278,14 @@ const UserComment: FunctionComponent<UserCommentProps> = ({
               ></textarea>
               <pre
                 id="highlighting"
-                className={`absolute w-full h-full bg-offBlack font-arcade text-white p-2 rounded-lg overflow-y-auto ${
+                className={`absolute w-full h-full bg-offBlack font-arcade text-white p-2 rounded-lg overflow-y-auto break-words whitespace-pre-wrap ${
                   !canComment && "opacity-70"
                 }`}
                 ref={preElement}
               >
                 <code
                   id="highlighted-content"
-                  className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-auto z-0`}
+                  className={`w-full h-full place-self-center text-left whitespace-pre-wrap overflow-y-auto z-0 break-words`}
                 >
                   {!canComment
                     ? "Looks Like Only Select Profiles Can Comment on this Post ATM"

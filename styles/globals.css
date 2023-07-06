@@ -239,6 +239,7 @@ input[type="range"]::-moz-range-thumb {
   line-height: 1.5rem;
   overflow-y: auto;
   scrollbar-width: none;
+  white-space: pre-wrap;
 }
 
 #highlighted-content::-webkit-scrollbar {
@@ -480,6 +481,7 @@ input[type="range"]::-moz-range-thumb {
   line-height: 1.5rem;
   overflow-y: auto;
   scrollbar-width: none;
+  white-space: pre-wrap;
 }
 
 #highlighted-content2::-webkit-scrollbar {
@@ -545,6 +547,7 @@ input[type="range"]::-moz-range-thumb {
   line-height: 1.5rem;
   overflow-y: auto;
   scrollbar-width: none;
+  white-space: pre-wrap;
 }
 
 #highlighted-content3::-webkit-scrollbar {
