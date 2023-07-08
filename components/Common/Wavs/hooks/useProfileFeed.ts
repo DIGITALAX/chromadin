@@ -30,8 +30,9 @@ import { setDecryptProfileScrollPosRedux } from "@/redux/reducers/decryptProfile
 import { setDecryptProfilePaginated } from "@/redux/reducers/decryptProfilePaginatedSlice";
 import { setDecryptProfileFeedRedux } from "@/redux/reducers/decryptProfileFeedSlice";
 import { setDecryptProfileFeedCount } from "@/redux/reducers/decryptProfileCountSlice";
-import { Collection } from "@/components/Home/types/home.types";
+import { Collection, Drop } from "@/components/Home/types/home.types";
 import { getCollectionsProfile } from "@/graphql/subgraph/queries/getAllCollections";
+import getAllDrops from "@/graphql/subgraph/queries/getAllDrops";
 
 const useProfileFeed = () => {
   const router = useRouter();
@@ -882,6 +883,8 @@ const useProfileFeed = () => {
           .includes(router?.asPath?.split("profile=")[1] + ".lens")
       ) {
         await getProfileCollections(prof?.data?.profile);
+      } else {
+        setProfileCollections([]);
       }
 
       dispatch(
@@ -912,6 +915,7 @@ const useProfileFeed = () => {
 
       if (colls?.data?.collectionMinteds?.length < 1 || !colls?.data) {
         setProfileCollectionsLoading(false);
+        setProfileCollections([]);
         return;
       }
 
@@ -930,7 +934,41 @@ const useProfileFeed = () => {
         })
       );
 
-      setProfileCollections(collections);
+      const drops = await getAllDrops();
+
+      if (drops?.data?.dropCreateds?.length > 0) {
+        const fullDrops = await Promise.all(
+          drops?.data?.dropCreateds?.map(async (drop: Drop) => {
+            const dropjson = await fetchIPFSJSON(
+              (drop as any)?.dropURI
+                ?.split("ipfs://")[1]
+                ?.replace(/"/g, "")
+                ?.trim()
+            );
+
+            return {
+              ...drop,
+              uri: {
+                name: dropjson.name,
+                image: dropjson.image,
+              },
+            };
+          })
+        );
+
+        const validCollections = collections?.filter(
+          (collection: Collection) => {
+            const collectionDrops = [...fullDrops]?.filter((drop: any) =>
+              drop?.collectionIds?.includes(collection?.collectionId)
+            );
+            return collectionDrops.length > 0;
+          }
+        );
+
+        setProfileCollections(validCollections);
+      } else {
+        setProfileCollections([]);
+      }
     } catch (err: any) {
       console.error(err.message);
     }

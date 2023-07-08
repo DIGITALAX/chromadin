@@ -81,10 +81,17 @@ const useAutograph = () => {
         )
       );
 
+      const validCollections = collections?.filter((collection: Collection) => {
+        const collectionDrops = [...drops]?.filter((drop: any) =>
+          drop?.collectionIds?.includes(collection?.collectionId)
+        );
+        return collectionDrops.length > 0;
+      });
+
       dispatch(
         setAutograph({
           actionDrops: drops,
-          actionCollections: collections,
+          actionCollections: validCollections,
           actionProfile: prof,
         })
       );

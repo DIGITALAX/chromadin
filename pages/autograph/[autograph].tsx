@@ -14,7 +14,6 @@ import useConnect from "@/components/Common/SideBar/hooks/useConnect";
 import useComment from "@/components/Common/Wavs/hooks/useComment";
 import useReactions from "@/components/Common/Wavs/hooks/useReactions";
 import Account from "@/components/Common/Wavs/modules/Account";
-import MakePost from "@/components/Common/Wavs/modules/MakePost";
 import useViewer from "@/components/Home/hooks/useViewer";
 import { RootState } from "@/redux/store";
 import { NextPage } from "next";
@@ -78,7 +77,7 @@ const Autograph: NextPage = (): JSX.Element => {
     getAllCollections,
     handleShareCollection,
   } = useAutograph();
-  const {isLargeScreen} = useBar();
+  const { isLargeScreen } = useBar();
   const { reactPost, collectPost, mirrorPost } = useReactions();
   const {
     commentPost,
