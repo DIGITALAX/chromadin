@@ -1157,7 +1157,9 @@ const useAllPosts = () => {
         }
       }
 
-      setDecryptCollections(collections);
+      const newCols = collections.filter((obj) => obj.collectionId !== "104");
+
+      setDecryptCollections(newCols);
     } catch (err: any) {
       console.error(err.message);
     }

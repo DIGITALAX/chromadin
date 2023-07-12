@@ -56,6 +56,9 @@ const useViewer = () => {
         })
       );
 
+      const newCols = collectionsMatched.filter((obj) => obj.collectionId !== "104");
+
+
       const dropsMatch = dropsDispatched.filter((drop: Drop) => {
         if (
           drop.uri.name
@@ -81,7 +84,7 @@ const useViewer = () => {
       );
 
       setSearchResults([
-        ...collectionsMatched,
+        ...newCols,
         ...dropsMatch,
         ...profilesMatch,
       ]);

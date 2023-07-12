@@ -77,11 +77,13 @@ const useAutoCollection = () => {
         })
       );
 
+      const newCols = coll.filter((obj) => obj.collectionId !== "104");
+
       const allColls = await getCollectionsProfile(prof?.ownedBy);
       const filteredCollsPromises = allColls?.data?.collectionMinteds?.map(
         (collectionValue: Collection) => {
           if (
-            coll[0]?.drop?.collectionIds?.includes(
+            newCols[0]?.drop?.collectionIds?.includes(
               collectionValue?.collectionId
             ) &&
             collectionValue?.name?.toLowerCase() !==
@@ -116,7 +118,7 @@ const useAutoCollection = () => {
       setOtherCollectionsDrop(otherDrops);
       dispatch(
         setAutoCollection({
-          actionCollection: coll[0],
+          actionCollection: newCols[0],
           actionProfile: prof,
         })
       );

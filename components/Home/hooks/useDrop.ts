@@ -81,6 +81,7 @@ const useDrop = () => {
 
           return {
             ...drop,
+
             uri: {
               name: dropjson.name,
               image: dropjson.image,
@@ -142,7 +143,8 @@ const useDrop = () => {
           tokensSold: collections![collections!?.length - 1].soldTokens,
         })
       );
-      dispatch(setCollectionsRedux(collections!));
+      const newCols = collections.filter((obj) => obj.collectionId !== "104");
+      dispatch(setCollectionsRedux(newCols!));
     } catch (err: any) {
       setError(true);
       console.error(err.message);
@@ -196,10 +198,8 @@ const useDrop = () => {
         setMoreCollectionsLoading(false);
         return;
       }
-
-      dispatch(
-        setCollectionsRedux([...collectionsDispatched, ...collections!])
-      );
+      const newCols = collections.filter((obj) => obj.collectionId !== "104");
+      dispatch(setCollectionsRedux([...collectionsDispatched, ...newCols!]));
       dispatch(
         setCollectionPaginated({
           actionSkip: paginated.skip + 12,

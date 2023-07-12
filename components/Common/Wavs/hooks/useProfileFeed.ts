@@ -965,7 +965,11 @@ const useProfileFeed = () => {
           }
         );
 
-        setProfileCollections(validCollections);
+        const newCols = validCollections.filter(
+          (obj) => obj.collectionId !== "104"
+        );
+
+        setProfileCollections(newCols);
       } else {
         setProfileCollections([]);
       }

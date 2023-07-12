@@ -88,10 +88,12 @@ const useAutograph = () => {
         return collectionDrops.length > 0;
       });
 
+      const newCols = validCollections.filter((obj) => obj.collectionId !== "104");
+
       dispatch(
         setAutograph({
           actionDrops: drops,
-          actionCollections: validCollections,
+          actionCollections: newCols,
           actionProfile: prof,
         })
       );

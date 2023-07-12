@@ -88,11 +88,13 @@ const useAutoDrop = () => {
         })
       );
 
+      const newCols = coll.filter((obj) => obj.collectionId !== "104");
+
       const allColls = await getCollectionsProfile(prof?.ownedBy);
       const filteredCollsPromises = allColls?.data?.collectionMinteds?.map(
         async (collection: Collection) => {
           if (
-            !coll[0]?.drop?.collectionIds?.includes(collection?.collectionId)
+            !newCols[0]?.drop?.collectionIds?.includes(collection?.collectionId)
           ) {
             return collection;
           }
@@ -125,7 +127,7 @@ const useAutoDrop = () => {
       dispatch(
         setAutoDrop({
           actionDrop: filteredDrops[0],
-          actionCollection: coll,
+          actionCollection: newCols,
           actionProfile: prof,
         })
       );
